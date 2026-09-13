@@ -1,0 +1,63 @@
+---
+/**
+ * Pictogrammes au trait, dessinés sur une grille commune de 48 × 48.
+ * Trait d'encre uniforme, un seul détail en cuivre par dessin : l'accent
+ * reste rare, conformément à la direction esthétique retenue.
+ */
+interface Props {
+  nom: 'estate' | 'pro' | 'pim' | 'insure';
+  class?: string;
+}
+
+const { nom, class: classe = '' } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 48 48"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.25"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class={classe}
+>
+  {
+    nom === 'estate' && (
+      <>
+        <path d="M7 23 24 9l17 14" />
+        <path d="M11 21v18h26V21" />
+        <path d="M20 39v-9h8v9" />
+        <path class="text-cuivre" stroke="currentColor" d="M15 25h5v5h-5z" />
+      </>
+    )
+  }
+  {
+    nom === 'pro' && (
+      <>
+        <rect x="8" y="17" width="32" height="22" rx="2" />
+        <path d="M18 17v-4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4" />
+        <path d="M8 26h32" />
+        <path class="text-cuivre" stroke="currentColor" d="M21 26v3h6v-3" />
+      </>
+    )
+  }
+  {
+    nom === 'pim' && (
+      <>
+        <path d="M6 39h36" />
+        <path d="M11 39V27h8v12" />
+        <path d="M29 39V31h8v8" />
+        <path class="text-cuivre" stroke="currentColor" d="M22 39V15h6v24" />
+      </>
+    )
+  }
+  {
+    nom === 'insure' && (
+      <>
+        <path d="M24 7 39 12v13c0 8-6.5 13.5-15 16.5C15.5 38.5 9 33 9 25V12z" />
+        <path class="text-cuivre" stroke="currentColor" d="m18 24 4.5 4.5L31 20" />
+      </>
+    )
+  }
+</svg>

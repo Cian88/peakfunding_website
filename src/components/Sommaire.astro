@@ -1,0 +1,15 @@
+---
+interface Props { headings: { id: string; title: string }[] }
+const { headings } = Astro.props;
+---
+{headings.length > 0 && <aside class="sommaire">
+  <nav aria-label="Sommaire" class="hidden border-t border-trait pt-5 lg:block">
+    <p class="eyebrow mb-4">Dans cette page</p>
+    <ol>{headings.map(h => <li><a href={`#${h.id}`}>{h.title}</a></li>)}</ol>
+    <a href="#contenu" class="mt-6 border-t border-trait pt-4">Retour en haut ↑</a>
+  </nav>
+  <details class="rounded-donnee border border-trait px-5 lg:hidden">
+    <summary class="cursor-pointer py-4 text-[14px] font-medium text-encre">Dans cette page</summary>
+    <nav aria-label="Sommaire mobile" class="pb-4"><ol>{headings.map(h => <li><a href={`#${h.id}`}>{h.title}</a></li>)}</ol></nav>
+  </details>
+</aside>}

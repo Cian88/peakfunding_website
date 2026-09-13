@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import { ACTELO_MANDATAIRE_URL } from '../data/integrations';
+---
+
+<Base title="Espace mandataire | PEAK FUNDING" description="Mandataires PEAK FUNDING : accédez à votre espace dédié pour gérer vos dossiers et suivre leur avancement.">
+  <section class="contenu section">
+    <nav aria-label="Fil d’Ariane" class="eyebrow normal-case tracking-normal"><a href="/" class="hover:text-encre">Accueil</a> <span aria-hidden="true">/</span> Espace mandataire</nav>
+    <div class="mx-auto mt-10 max-w-[720px]">
+      <p class="eyebrow">Connexion à votre espace</p>
+      <h1 class="display mt-3">Espace mandataire</h1>
+      <p class="corps mt-5 text-[18px]">Mandataires PEAK FUNDING : accédez à votre espace dédié pour gérer vos dossiers et suivre leur avancement.</p>
+      <div class="mt-10 rounded-donnee border border-trait bg-white p-7 sm:p-10">
+        <p class="eyebrow">Plateforme Actelo</p>
+        <h2 class="mt-4 text-[24px]">Connexion à votre espace</h2>
+        <p class="corps mt-3">Vous allez être redirigé vers la plateforme sécurisée de gestion des dossiers mandataires.</p>
+        <a href={ACTELO_MANDATAIRE_URL} target="_blank" rel="noopener" class="btn-cuivre mt-7">Accéder à l’espace mandataire ↗</a>
+        <p class="mt-4 text-[12px] text-gris">Ouverture dans un nouvel onglet.</p>
+      </div>
+    </div>
+  </section>
+</Base>

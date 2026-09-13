@@ -1,0 +1,288 @@
+---
+import Base from '../layouts/Base.astro';
+import Pictogramme from '../components/Pictogramme.astro';
+import SimulateurCapacite from '../components/react/SimulateurCapacite';
+import { mission, expertisesResume, methode, equipe } from '../data/site';
+import { faqAccueil, partenaires } from '../data/textes';
+import { ASSURANCE_URL } from '../data/integrations';
+import MethodeSchema from '../components/MethodeSchema.astro';
+import ObservatoireWidget from '../components/react/ObservatoireWidget';
+
+const chiffres = [
+  { valeur: 500, suffixe: '+', libelle: 'Projets financés' },
+  { valeur: 95, suffixe: ' %', libelle: 'Taux d’obtention' },
+  { valeur: 30, suffixe: '+', libelle: 'Partenaires bancaires' },
+  { valeur: 72, suffixe: ' h', libelle: 'Première réponse' },
+];
+const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') ? 'valentin' : photo.includes('yves') ? 'yves' : 'maxime'}.webp`;
+---
+
+<Base heros title="PEAK FUNDING — Courtier en financement immobilier et professionnel" description="Cabinet de courtage indépendant à Neuilly-sur-Seine. Nous montons votre dossier, le défendons auprès de plus de trente banques et restons à vos côtés jusqu’au déblocage des fonds.">
+
+  <!-- ═══ 1 · Héros ═══ -->
+  <section class="sombre heros -mt-[76px] overflow-hidden">
+    <picture>
+      <source media="(max-width: 640px)" srcset="/img/hero-mobile-1200.webp" />
+      <img src="/img/hero-1600.webp" srcset="/img/hero-1200.webp 1200w, /img/hero-1600.webp 1600w, /img/hero-2400.webp 2400w" sizes="100vw" alt="" fetchpriority="high" class="heros-photo absolute inset-0 h-full w-full object-cover object-[center_40%]" />
+    </picture>
+    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,13,18,0.76)_0%,rgba(11,13,18,0.42)_50%,rgba(11,13,18,0.08)_100%)]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,13,18,0.12)_50%,rgba(11,13,18,0.9)_100%)]"></div>
+    <div class="heros-voile absolute inset-0 bg-abime opacity-0"></div>
+    <div class="contenu heros-contenu relative">
+      <div class="heros-texte">
+        <p class="eyebrow heros-fondu text-cuivre-clair">Courtier indépendant · France entière</p>
+        <h1 class="display heros-titre mt-6 text-etoile">
+          <span class="ligne"><span>Votre financement, </span></span>
+          <span class="ligne"><span>pensé dans </span></span>
+          <span class="ligne"><span>son ensemble.</span></span>
+        </h1>
+        <p class="heros-fondu mt-7 max-w-[530px] text-[17px] leading-[1.6] font-light text-etoile/90">Immobilier, entreprise, patrimoine. Nous structurons votre dossier, le défendons auprès de plus de trente banques et restons à vos côtés jusqu’au déblocage des fonds.</p>
+        <div class="heros-fondu mt-9 flex flex-wrap gap-3">
+          <a href="#rdv" class="btn-cuivre gap-4">Parlons de votre projet <span aria-hidden="true">↗</span></a>
+          <a href="#simulateur" class="btn-fantome">Estimer ma capacité</a>
+        </div>
+        <p class="heros-fondu mt-5 text-[13px] text-etoile/80">Un premier échange de 30 minutes, sans engagement.</p>
+        <a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="heros-fondu mt-4 inline-block text-[13px] text-etoile/90 underline decoration-etoile/40 underline-offset-4 hover:text-cuivre-clair">Comparer mon assurance emprunteur ↗<span class="sr-only"> (nouvel onglet)</span></a>
+      </div>
+    </div>
+    <div class="contenu relative pb-7">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-t border-etoile/20 pt-5">
+        <p class="font-mono text-[10px] tracking-wide text-etoile/75 sm:text-[11px]">ORIAS n° 24002546 · Supervision ACPR</p>
+        <a href="#expertises" class="flex items-center gap-4 text-[12px] text-etoile/90">Découvrir nos expertises <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 2 · Chiffres ═══ -->
+  <section class="sombre border-y border-filet" aria-label="Nos chiffres">
+    <div class="grille"></div>
+    <ul class="contenu reveal-groupe relative grid grid-cols-2 gap-x-8 gap-y-10 py-14 md:grid-cols-4">
+      {chiffres.map((c) => (
+        <li class="grid gap-3.5">
+          <span class="donnee text-[48px] leading-none font-medium text-etoile lg:text-[56px]" data-compte={c.valeur} data-suffixe={c.suffixe}>{c.valeur}{c.suffixe}</span>
+          <span class="block h-px w-full bg-[linear-gradient(90deg,#b87b4f_60%,#2a2f3a_60%)]"></span>
+          <span class="eyebrow text-argent">{c.libelle}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- ═══ 3 · Mission — ouverture du chapitre sombre ═══ -->
+  <section id="mission" class="sombre section-sombre">
+    <div class="contenu">
+      <div class="reveal grid gap-8 lg:grid-cols-2 lg:gap-16 lg:items-end">
+        <div><p class="eyebrow">Notre mission</p><h2 class="titre mt-4">Nous ne cherchons pas un taux. Nous construisons une opération.</h2></div>
+        <p class="corps text-[18px]">{mission.intro}</p>
+      </div>
+      <div class="mission-composition mt-14">
+        <figure class="reveal mission-photo overflow-hidden rounded-donnee">
+          <img src="/img/cabinet-travail.webp" alt="Analyse d’un dossier de financement, documents et écran de travail." width="1600" height="1000" loading="lazy" decoding="async" class="h-full w-full object-cover object-[center_55%]" />
+        </figure>
+        <ul class="reveal-groupe mission-principes">
+          {mission.cartes.map((c, i) => (<li class="border-t border-filet pt-6"><span class="font-mono text-[12px] text-cuivre-clair">0{i + 1}</span><h3 class="mt-4 text-[18px] font-medium">{c.titre}</h3><p class="corps mt-2.5 text-[14.5px]">{c.texte}</p></li>))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4 · Simulateur — mécanique v1 ═══ -->
+  <section id="simulateur" class="clair accueil-clair section-sombre scroll-mt-16">
+    <div class="grille"></div>
+    <div class="contenu relative">
+      <div class="chapitre-filet reveal" aria-hidden="true"></div>
+      <div class="reveal simulateur-intro">
+        <div>
+        <p class="eyebrow">Simulateur</p>
+        <h2 id="sim-titre" class="titre mt-4">Combien pouvez-vous emprunter ?</h2>
+        </div>
+        <p class="corps max-w-md text-[17px] font-light">Revenus, charges, apport, durée : un ordre de grandeur immédiat, calculé avec les règles que les banques appliquent réellement. Nous partons de ce chiffre pour construire l’opération.</p>
+      </div>
+      <div class="simulator-panel surface-claire reveal mt-12">
+        <div class="simulateur-observatoire"><ObservatoireWidget client:visible /></div>
+        <SimulateurCapacite client:visible />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 5 · Expertises — lignes illustrées sur canevas clair ═══ -->
+  <section id="expertises" class="clair accueil-clair section-sombre scroll-mt-16">
+    <div class="contenu">
+      <div class="chapitre-filet reveal" aria-hidden="true"></div>
+      <div class="reveal flex flex-wrap items-end justify-between gap-6">
+        <div><p class="eyebrow">Nos expertises</p><h2 class="titre mt-4">Quatre pôles d’expertise, un interlocuteur unique.</h2></div>
+        <a href="#rdv" class="btn-fantome">Parler de mon projet →</a>
+      </div>
+      <ul class="expertises-lignes mt-14">
+        {expertisesResume.map((x, i) => (
+          <li class="expertise-carte reveal" data-expertise-reveal>
+            <a href={`/expertises/${x.slug}`} class="expertise-lien group">
+              <div class="expertise-photo relative overflow-hidden rounded-donnee">
+                <img src={`/img/ambiance-${x.slug}.webp`} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]" />
+              </div>
+              <div class="expertise-texte">
+                <div class="flex items-center justify-between gap-4"><p class="eyebrow">0{i + 1} / {x.nom}</p><Pictogramme nom={x.icone} class="trace h-9 w-9 text-cuivre-clair" /></div>
+                <h3 class="mt-4 text-[26px] leading-[1.15] font-light lg:text-[32px]">{x.accroche}</h3>
+                <p class="corps mt-3 text-[15px]">{x.texte}</p>
+                <span class="mt-6 flex items-center justify-between text-[14px] font-medium">Découvrir {x.nom}<span class="expertise-fleche flex h-10 w-10 items-center justify-center rounded-full border border-filet" aria-hidden="true">↗</span></span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ 6 · Méthode épinglée ═══ -->
+  <section id="methode" class="sombre section-sombre scroll-mt-16">
+    <div class="grille"></div>
+    <div class="contenu relative"><div class="chapitre-filet reveal" aria-hidden="true"></div></div>
+    <div class="contenu relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <p class="eyebrow">Notre méthode</p>
+        <h2 class="titre mt-4">De la première question<br />au déblocage des fonds.</h2>
+        <p class="corps mt-5 max-w-md">Quatre étapes. Un interlocuteur qui connaît votre dossier, du début à la fin.</p>
+        <nav aria-label="Les étapes de notre accompagnement" class="relative mt-10 pl-6">
+          <div class="absolute inset-y-0 left-0 w-px bg-filet" aria-hidden="true"><div data-rail class="absolute inset-0 origin-top bg-cuivre-clair transition-transform duration-500" style="transform:scaleY(.25)"></div></div>
+          <ol class="grid gap-5">
+            {methode.map((s, i) => (
+              <li>
+                <a href={`#etape-${i + 1}`} data-onglet aria-current={i === 0 ? 'step' : undefined} class:list={['onglet flex items-baseline gap-4 py-1', { active: i === 0 }]}>
+                  <span class="font-mono text-[12px] text-cuivre-clair">0{i + 1}</span>
+                  <span class="text-[17px] lg:text-[19px]">{s.titre}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </div>
+      <div class="grid gap-6">
+        {methode.map((s, i) => (
+          <article id={`etape-${i + 1}`} data-etape class="etape carte-donnee flex scroll-mt-28 flex-col justify-center gap-5 lg:min-h-[340px] lg:p-10">
+            <span class="eyebrow text-argent">Étape 0{i + 1} · {s.titre}</span>
+            <MethodeSchema etape={i} />
+            <p class="text-[22px] leading-[1.45] font-light text-etoile lg:text-[26px]">{s.texte}</p>
+            <div class="mt-4 flex items-center gap-4 border-t border-filet pt-5" aria-hidden="true"><span class="font-mono text-[12px] text-cuivre-clair">0{i + 1} / 04</span><span class="h-px flex-1 bg-filet"></span></div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 7 · Équipe et partenaires — clair ═══ -->
+  <section id="equipe" class="clair section-claire scroll-mt-16">
+    <div class="contenu">
+      <div class="reveal grid gap-8 lg:grid-cols-2 lg:gap-16 lg:items-end">
+        <div><p class="eyebrow">L’équipe</p><h2 class="titre mt-4">Une équipe, pas une plateforme.</h2></div>
+        <p class="corps text-[18px]">{equipe.intro}</p>
+      </div>
+      <ul class="reveal-groupe mt-12 grid gap-6 sm:grid-cols-3">
+        {equipe.membres.map((m) => (
+          <li>
+            <div class="aspect-[4/5] overflow-hidden rounded-carte bg-trait"><img src={portrait(m.photo)} alt={`Portrait de ${m.nom}`} loading="lazy" decoding="async" class="h-full w-full object-cover object-top" /></div>
+            <p class="eyebrow mt-5">{m.role}</p>
+            <h3 class="mt-1 text-[18px] font-medium">{m.nom}</h3>
+            <p class="corps text-[14px]">{m.domaine}</p>
+            <button type="button" data-rdv class="mt-3 inline-block text-[14px] font-medium underline underline-offset-4 decoration-trait hover:decoration-cuivre-profond">Prendre rendez-vous →</button>
+          </li>
+        ))}
+      </ul>
+      <div id="partenaires" class="reveal mt-20 scroll-mt-16 border-t border-trait pt-14">
+        <p class="eyebrow">Nos partenaires</p>
+        <h2 class="titre mt-4">Un écosystème de confiance, autour de votre projet.</h2>
+        <ul class="mt-10 grid gap-4 md:grid-cols-2">
+          {partenaires.map((p) => (
+            <li class="carte-claire flex flex-col p-7">
+              <div class="partenaire-marque"><img src={p.nom === 'PRIVEOS' ? '/img/priveos-logo.svg' : '/img/edilos-logo.svg'} alt={p.nom} data-partenaire={p.nom.toLowerCase()} class="partenaire-logo" loading="lazy" /></div>
+              <p class="corps mt-6 text-[15px]">{p.texte}</p>
+              <a href={p.url} rel="noopener" class="mt-auto inline-block pt-6 text-[14px] font-medium underline underline-offset-4 decoration-trait hover:decoration-cuivre-profond">Découvrir {p.nom} →</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 8 · FAQ — fin du chapitre clair ═══ -->
+  <section id="faq" class="clair accueil-clair section-sombre scroll-mt-16">
+    <div class="grille"></div>
+    <div class="contenu relative grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div class="reveal">
+        <p class="eyebrow">Questions fréquentes</p>
+        <h2 class="titre mt-4">Ce qu’on nous demande souvent.</h2>
+        <p class="corps mt-6 max-w-sm">Votre situation mérite un échange ? Faisons le point ensemble.</p>
+        <a href="#rdv" class="btn-fantome mt-6">Poser ma question ↗</a>
+      </div>
+      <div class="reveal divide-y divide-filet border-y border-filet">
+        {faqAccueil.map((q) => (
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-[18px] text-etoile"><span>{q.q}</span><span class="signe font-mono text-cuivre-clair" aria-hidden="true">+</span></summary>
+            <div><p class="corps mt-3 max-w-2xl">{q.r}</p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 9 · Parlons de votre projet — bandeau, ouvre la fenêtre de rendez-vous ═══ -->
+  <section class="sombre border-t border-filet">
+    <div class="contenu py-20">
+      <div class="reveal carte-donnee grid gap-8 overflow-hidden p-0 lg:grid-cols-[1.2fr_0.8fr]">
+        <div class="p-8 lg:p-12">
+          <p class="eyebrow">Prendre rendez-vous</p>
+          <h2 class="titre mt-4">Parlons de votre projet.</h2>
+          <p class="corps mt-4 max-w-lg text-[17px]">30 minutes pour faire le point, sans engagement. Vous repartez avec un avis clair sur votre financement, même si vous ne travaillez pas avec nous.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#rdv" class="btn-cuivre">Planifier un rendez-vous</a>
+            <a href="#simulateur" class="btn-fantome">Estimer ma capacité</a>
+          </div>
+        </div>
+        <div class="relative hidden min-h-[360px] lg:block"><img src="/img/hero-mobile-1200.webp" alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-[center_30%]" /></div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .heros { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; padding-top: 76px; }
+  .heros-contenu { flex:1; display:grid; gap:40px; align-items:start; max-width:1760px; padding-inline:clamp(20px,5vw,96px); padding-top:clamp(36px,5vh,72px); padding-bottom:32px; }
+  .heros-texte { max-width:790px; min-width:0; }
+  @media (min-width:1024px) {
+    /* Échelle 120 % : dimensions réelles, sans transform sur les liens / boutons. */
+    .heros-texte { max-width:948px; }
+    .heros-texte .heros-titre { font-size:clamp(48px,min(7.32vw,9.6dvh),96px); margin-top:28.8px; }
+    .heros-texte > .eyebrow { font-size:14.4px; }
+    .heros-texte > p.mt-7 { max-width:636px; font-size:20.4px; margin-top:33.6px; }
+    .heros-texte > div.mt-9 { margin-top:43.2px; gap:14.4px; }
+    .heros-texte .btn-cuivre, .heros-texte .btn-fantome { height:57.6px; font-size:18px; padding-inline:28.8px; }
+    .heros-texte > p.mt-5 { margin-top:24px; font-size:15.6px; }
+    .heros-texte > a { margin-top:19.2px; font-size:15.6px; }
+  }
+  .heros-titre { font-size: clamp(40px, min(6.1vw, 8dvh), 80px); letter-spacing: -.045em; }
+  .onglet { color: var(--color-argent); transition: color .25s; }
+  .onglet:hover, .onglet.active { color: var(--color-etoile); }
+  .onglet.active span:last-child { font-weight: 500; }
+  .mission-composition { display:grid; gap:40px; align-items:stretch; }
+  .mission-photo { aspect-ratio:4 / 3; }
+  .mission-principes { display:grid; gap:32px; }
+  .expertise-carte { border-bottom:1px solid var(--color-filet); }
+  .expertise-lien { display:grid; gap:24px; padding-block:32px; }
+  .expertise-photo { aspect-ratio:16 / 9; }
+  .expertise-texte { min-width:0; align-self:center; }
+  .expertise-fleche { transition:background-color .15s, border-color .15s, transform .15s; }
+  .expertise-lien:hover .expertise-fleche, .expertise-lien:focus-visible .expertise-fleche { background:var(--color-cuivre-clair); border-color:var(--color-cuivre-clair); color:var(--color-abime); transform:translate(2px,-2px); }
+  @media (min-width:640px) {
+    .mission-principes { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .expertise-lien { grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:40px; padding-block:40px; }
+    .expertise-photo { aspect-ratio:4 / 3; align-self:center; }
+  }
+  @media (min-width:1024px) {
+    .mission-composition { grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:64px; }
+    .mission-photo { aspect-ratio:auto; min-height:420px; }
+    .expertise-lien { grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr); gap:72px; padding-block:48px; }
+    .expertise-texte { max-width:620px; }
+  }
+  @media (max-width: 639px) {
+    .heros-contenu { padding-top: 48px; padding-bottom: 40px; }
+    .heros-titre { font-size: clamp(34px, 8.9vw, 56px); }
+  }
+</style>

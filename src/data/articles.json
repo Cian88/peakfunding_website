@@ -1,0 +1,121 @@
+[
+ {
+  "slug": "capacite-locatif",
+  "title": "Comment les banques calculent votre capacité d'emprunt en investissement locatif",
+  "description": "Deux dossiers presque identiques, deux réponses opposées. En locatif, votre capacité d'emprunt ne dépend pas seulement de vos revenus : elle dépend…",
+  "avant": [
+   "Accueil",
+   "INVESTISSEMENT LOCATIF",
+   "6 min de lecture"
+  ],
+  "apres": [
+   "Yves Monnier",
+   "Financement immobilier locatif · 3 juillet 2026",
+   "Deux dossiers presque identiques, deux réponses opposées. En locatif, votre capacité d'emprunt ne dépend pas seulement de vos revenus : elle dépend surtout de la méthode de calcul retenue par la banque.",
+   "Le taux d'endettement, la règle de base"
+  ],
+  "blocs": 12
+ },
+ {
+  "slug": "enchainer",
+  "title": "Enchaîner les investissements sans se faire bloquer par sa banque",
+  "description": "Le premier crédit est rarement le problème. C'est le deuxième, puis le troisième, qui coincent. Anticiper dès le départ change tout.",
+  "avant": [
+   "Accueil",
+   "INVESTISSEMENT LOCATIF",
+   "6 min de lecture"
+  ],
+  "apres": [
+   "Yves Monnier",
+   "Financement immobilier locatif · 12 juin 2026",
+   "Le premier crédit est rarement le problème. C'est le deuxième, puis le troisième, qui coincent. Anticiper dès le départ change tout.",
+   "Le mur de l'endettement"
+  ],
+  "blocs": 10
+ },
+ {
+  "slug": "lemoine",
+  "title": "Loi Lemoine : changer d'assurance emprunteur, à tout moment",
+  "description": "L'assurance de prêt peut représenter jusqu'à un tiers du coût de votre crédit. Depuis la loi Lemoine, vous pouvez en changer quand vous le souhaitez — et…",
+  "avant": [
+   "Accueil",
+   "ASSURANCE EMPRUNTEUR",
+   "4 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 5 juin 2026",
+   "L'assurance de prêt peut représenter jusqu'à un tiers du coût de votre crédit. Depuis la loi Lemoine, vous pouvez en changer quand vous le souhaitez — et l'économie se chiffre souvent en milliers d'euros.",
+   "Ce que permet la loi Lemoine"
+  ],
+  "blocs": 10
+ },
+ {
+  "slug": "non-resident",
+  "title": "Investir en France depuis l'étranger : le guide du non-résident",
+  "description": "Expatrié ou non-résident, financer un bien en France est tout à fait possible — mais le parcours diffère de celui d'un résident. Voici ce qui change et…",
+  "avant": [
+   "Accueil",
+   "INVESTISSEMENT LOCATIF",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Yves Monnier",
+   "Financement immobilier locatif · 28 mai 2026",
+   "Expatrié ou non-résident, financer un bien en France est tout à fait possible — mais le parcours diffère de celui d'un résident. Voici ce qui change et comment s'y préparer.",
+   "Un marché bancaire plus restreint"
+  ],
+  "blocs": 10
+ },
+ {
+  "slug": "primo",
+  "title": "Primo-accédant avec peu d'apport : les leviers qui existent vraiment",
+  "description": "Un apport limité ne condamne pas votre projet. Entre prêts aidés et financement des frais, plusieurs dispositifs permettent d'acheter sa résidence…",
+  "avant": [
+   "Accueil",
+   "RÉSIDENCE PRINCIPALE",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 19 juin 2026",
+   "Un apport limité ne condamne pas votre projet. Entre prêts aidés et financement des frais, plusieurs dispositifs permettent d'acheter sa résidence principale plus tôt que prévu.",
+   "Le prêt à taux zéro (PTZ)"
+  ],
+  "blocs": 10
+ },
+ {
+  "slug": "sci",
+  "title": "SCI à l'IR ou à l'IS : ce que cela change pour votre financement",
+  "description": "La SCI est un outil de détention, pas une baguette magique fiscale. Le choix entre impôt sur le revenu et impôt sur les sociétés a pourtant des…",
+  "avant": [
+   "Accueil",
+   "INVESTISSEMENT LOCATIF",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Yves Monnier",
+   "Financement immobilier locatif · 26 juin 2026",
+   "La SCI est un outil de détention, pas une baguette magique fiscale. Le choix entre impôt sur le revenu et impôt sur les sociétés a pourtant des conséquences directes sur votre financement et votre trésorerie.",
+   "La SCI, d'abord un mode de détention"
+  ],
+  "blocs": 12
+ },
+ {
+  "slug": "taux",
+  "title": "Où en sont les taux immobiliers ? Notre lecture du marché",
+  "description": "Après deux années de fortes turbulences, le marché du crédit a retrouvé une forme de stabilité. Voici ce que cela signifie concrètement si vous avez un…",
+  "avant": [
+   "Accueil",
+   "TAUX & MARCHÉ",
+   "4 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 1er juillet 2026",
+   "Après deux années de fortes turbulences, le marché du crédit a retrouvé une forme de stabilité. Voici ce que cela signifie concrètement si vous avez un projet.",
+   "Des taux stabilisés autour de 3,4 à 3,5 %"
+  ],
+  "blocs": 11
+ }
+]

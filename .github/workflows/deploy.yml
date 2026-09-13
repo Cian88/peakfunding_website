@@ -27,6 +27,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Installer, builder et uploader le site
         uses: withastro/action@v3
+        with:
+          # Astro 7 exige Node >= 22.12 (l'action utilise Node 20 par défaut)
+          node-version: 22
         # withastro/action détecte npm, exécute `npm ci` + `npm run build`
         # et téléverse automatiquement le dossier `dist` comme artefact Pages.
 

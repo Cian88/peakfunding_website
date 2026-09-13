@@ -80,23 +80,21 @@ create view avis_publics as
   from avis where statut = 'publie';
 grant select on avis_publics to anon, authenticated;
 
--- Dépôt : un utilisateur connecté, avec un jeton valide et non utilisé
-create policy "depot_avec_invitation" on avis
-  for insert to authenticated
-  with check (
-    auth.uid() = auteur_uid
-    and exists (
-      select 1 from invitations i
-      where i.jeton = avis.jeton and i.utilise_le is null and i.expire_le > now()
-    )
-  );
-
--- Vérification d'un jeton depuis le site (ne révèle rien d'autre que sa validité)
+-- Vérification d'un jeton (security definer : lit `invitations` malgré le RLS,
+-- et ne révèle que la validité — jamais l'e-mail)
 create or replace function jeton_valide(j uuid) returns boolean
 language sql security definer stable as $$
   select exists (select 1 from invitations where jeton = j and utilise_le is null and expire_le > now());
 $$;
 grant execute on function jeton_valide(uuid) to anon, authenticated;
+
+-- Dépôt : un utilisateur connecté, avec un jeton valide et non utilisé.
+-- Passe obligatoirement par jeton_valide() : une sous-requête directe sur
+-- `invitations` verrait 0 ligne (RLS activé, aucune règle de lecture) et
+-- refuserait tout dépôt.
+create policy "depot_avec_invitation" on avis
+  for insert to authenticated
+  with check (auth.uid() = auteur_uid and jeton_valide(jeton));
 
 -- Marquer l'invitation utilisée à l'insertion
 create or replace function marquer_invitation() returns trigger

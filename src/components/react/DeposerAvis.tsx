@@ -90,7 +90,7 @@ export default function DeposerAvis({ lang = 'fr', accueilHref }: { lang?: Lang;
       note, projet, montant: m, ville: ville.trim(), lat: pos?.lat ?? null, lng: pos?.lng ?? null, texte: texte.trim(),
     });
     setEnvoi(false);
-    if (error) { setErreur(T.err_envoi); return; }
+    if (error) { setErreur(`${T.err_envoi} — ${[error.code, error.message].filter(Boolean).join(' · ')}`); return; }
     setEtape('succes');
   };
 

@@ -2,20 +2,27 @@
 import Base from './Base.astro';
 import Sommaire from '../components/Sommaire.astro';
 import { documentAvecSommaire } from '../lib/document.mjs';
+import { langCourante, localiser, t } from '../i18n';
 /* Contenu injecté tel quel depuis src/contenu-legal/ (extrait de la v1, vérifié
-   identique au caractère près). Ne pas éditer le texte à la main. */
+   identique au caractère près). Ne pas éditer le texte à la main. Le corps
+   reste en français, seule version juridiquement opposable ; en anglais, un
+   court avertissement le précise. */
 interface Props { title: string; description: string; intitule: string; miseAJour: string; contenu: string }
 const { title, description, intitule, miseAJour, contenu } = Astro.props;
 const { html, headings } = documentAvecSommaire(contenu);
+const lang = langCourante(Astro.currentLocale);
+const tr = t(lang);
+const L = (p: string) => localiser(p, lang);
 ---
 
 <Base title={title} description={description}>
   <article class="contenu section">
-    <nav aria-label="Fil d’Ariane" class="eyebrow normal-case tracking-normal"><a href="/" class="hover:text-encre">Accueil</a> <span aria-hidden="true">/</span> {intitule}</nav>
+    <nav aria-label="Fil d’Ariane" class="eyebrow normal-case tracking-normal"><a href={L('/')} class="hover:text-encre">{tr.fil_accueil}</a> <span aria-hidden="true">/</span> {intitule}</nav>
     <div class="mt-10 max-w-[880px] border-b border-trait pb-10">
-      <p class="eyebrow mb-5">Informations réglementaires</p>
+      <p class="eyebrow mb-5">{tr.legal_surtitre}</p>
       <h1 class="display text-[36px] sm:text-[44px]">{intitule}</h1>
       <p class="donnee mt-4 text-[13px] text-gris">{miseAJour}</p>
+      {lang === 'en' && <p class="mt-5 max-w-[760px] rounded-donnee border border-trait bg-blanc p-4 text-[13px] leading-relaxed text-gris">{tr.legal_langue}</p>}
     </div>
     <div class="lecture-grille mt-10">
       <Sommaire headings={headings} />

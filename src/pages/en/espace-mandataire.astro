@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import { ACTELO_MANDATAIRE_URL } from '../../data/integrations';
+---
+
+<Base title="Partner portal | PEAK FUNDING" description="PEAK FUNDING partners: access your dedicated portal to manage your files and follow their progress.">
+  <section class="contenu section">
+    <nav aria-label="Breadcrumb" class="eyebrow normal-case tracking-normal"><a href="/en/" class="hover:text-encre">Home</a> <span aria-hidden="true">/</span> Partner portal</nav>
+    <div class="mx-auto mt-10 max-w-[720px]">
+      <p class="eyebrow">Sign in to your portal</p>
+      <h1 class="display mt-3">Partner portal</h1>
+      <p class="corps mt-5 text-[18px]">PEAK FUNDING partners: access your dedicated portal to manage your files and follow their progress.</p>
+      <div class="mt-10 rounded-donnee border border-trait bg-white p-7 sm:p-10">
+        <p class="eyebrow">Actelo platform</p>
+        <h2 class="mt-4 text-[24px]">Sign in to your portal</h2>
+        <p class="corps mt-3">You will be redirected to the secure partner file-management platform.</p>
+        <a href={ACTELO_MANDATAIRE_URL} target="_blank" rel="noopener" class="btn-cuivre mt-7">Go to the partner portal ↗</a>
+        <p class="mt-4 text-[12px] text-gris">Opens in a new tab.</p>
+      </div>
+    </div>
+  </section>
+</Base>

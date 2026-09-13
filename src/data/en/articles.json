@@ -1,0 +1,93 @@
+[
+  {
+    "slug": "capacite-locatif",
+    "title": "How banks calculate your borrowing capacity for buy-to-let",
+    "description": "Two nearly identical files, two opposite answers. In buy-to-let, your borrowing capacity depends not only on your income — it depends…",
+    "avant": ["Home", "BUY-TO-LET", "6 min read"],
+    "apres": [
+      "Yves Monnier",
+      "Buy-to-let property financing · 3 July 2026",
+      "Two nearly identical files, two opposite answers. In buy-to-let, your borrowing capacity depends not only on your income but, above all, on the calculation method the bank uses.",
+      "The debt ratio, the basic rule"
+    ],
+    "blocs": 12
+  },
+  {
+    "slug": "enchainer",
+    "title": "Chaining investments without getting blocked by your bank",
+    "description": "The first loan is rarely the problem. It’s the second, then the third, that get stuck. Anticipating from the start changes everything.",
+    "avant": ["Home", "BUY-TO-LET", "6 min read"],
+    "apres": [
+      "Yves Monnier",
+      "Buy-to-let property financing · 12 June 2026",
+      "The first loan is rarely the problem. It’s the second, then the third, that get stuck. Anticipating from the start changes everything.",
+      "The debt wall"
+    ],
+    "blocs": 10
+  },
+  {
+    "slug": "lemoine",
+    "title": "The Lemoine law: switching borrower insurance, at any time",
+    "description": "Loan insurance can represent up to a third of the cost of your credit. Since the Lemoine law, you can switch whenever you like — and…",
+    "avant": ["Home", "BORROWER INSURANCE", "4 min read"],
+    "apres": [
+      "Valentin Boura-Defranoux",
+      "PEAK FUNDING · 5 June 2026",
+      "Loan insurance can represent up to a third of the cost of your credit. Since the Lemoine law, you can switch whenever you like — and the saving often runs into thousands of euros.",
+      "What the Lemoine law allows"
+    ],
+    "blocs": 10
+  },
+  {
+    "slug": "non-resident",
+    "title": "Investing in France from abroad: the non-resident’s guide",
+    "description": "Expatriate or non-resident, financing a property in France is entirely possible — but the process differs from a resident’s. Here’s what changes and…",
+    "avant": ["Home", "BUY-TO-LET", "5 min read"],
+    "apres": [
+      "Yves Monnier",
+      "Buy-to-let property financing · 28 May 2026",
+      "Expatriate or non-resident, financing a property in France is entirely possible — but the process differs from a resident’s. Here’s what changes and how to prepare for it.",
+      "A narrower banking market"
+    ],
+    "blocs": 10
+  },
+  {
+    "slug": "primo",
+    "title": "First-time buyer with a small deposit: the levers that really exist",
+    "description": "A limited deposit doesn’t doom your project. Between assisted loans and fee financing, several schemes let you buy your home…",
+    "avant": ["Home", "PRIMARY RESIDENCE", "5 min read"],
+    "apres": [
+      "Valentin Boura-Defranoux",
+      "PEAK FUNDING · 19 June 2026",
+      "A limited deposit doesn’t doom your project. Between assisted loans and fee financing, several schemes let you buy your primary residence sooner than expected.",
+      "The interest-free loan (PTZ)"
+    ],
+    "blocs": 10
+  },
+  {
+    "slug": "sci",
+    "title": "SCI under income tax or corporate tax: what it changes for your financing",
+    "description": "The SCI is a holding tool, not a tax magic wand. Yet the choice between income tax and corporate tax has direct…",
+    "avant": ["Home", "BUY-TO-LET", "5 min read"],
+    "apres": [
+      "Yves Monnier",
+      "Buy-to-let property financing · 26 June 2026",
+      "The SCI is a holding tool, not a tax magic wand. Yet the choice between income tax and corporate tax has direct consequences for your financing and your cash flow.",
+      "The SCI, first a holding structure"
+    ],
+    "blocs": 12
+  },
+  {
+    "slug": "taux",
+    "title": "Where do mortgage rates stand? Our reading of the market",
+    "description": "After two years of major turbulence, the credit market has found a form of stability. Here’s what that means concretely if you have a…",
+    "avant": ["Home", "RATES & MARKET", "4 min read"],
+    "apres": [
+      "Valentin Boura-Defranoux",
+      "PEAK FUNDING · 1 July 2026",
+      "After two years of major turbulence, the credit market has found a form of stability. Here’s what that means concretely if you have a project.",
+      "Rates stabilised around 3.4 to 3.5%"
+    ],
+    "blocs": 11
+  }
+]

@@ -1,15 +1,20 @@
 ---
+import { langCourante } from '../i18n';
 interface Props { headings: { id: string; title: string }[] }
 const { headings } = Astro.props;
+const lang = langCourante(Astro.currentLocale);
+const tx = lang === 'en'
+  ? { aria: 'Contents', titre: 'On this page', haut: 'Back to top ↑', ariaMobile: 'Contents (mobile)' }
+  : { aria: 'Sommaire', titre: 'Dans cette page', haut: 'Retour en haut ↑', ariaMobile: 'Sommaire mobile' };
 ---
 {headings.length > 0 && <aside class="sommaire">
-  <nav aria-label="Sommaire" class="hidden border-t border-trait pt-5 lg:block">
-    <p class="eyebrow mb-4">Dans cette page</p>
+  <nav aria-label={tx.aria} class="hidden border-t border-trait pt-5 lg:block">
+    <p class="eyebrow mb-4">{tx.titre}</p>
     <ol>{headings.map(h => <li><a href={`#${h.id}`}>{h.title}</a></li>)}</ol>
-    <a href="#contenu" class="mt-6 border-t border-trait pt-4">Retour en haut ↑</a>
+    <a href="#contenu" class="mt-6 border-t border-trait pt-4">{tx.haut}</a>
   </nav>
   <details class="rounded-donnee border border-trait px-5 lg:hidden">
-    <summary class="cursor-pointer py-4 text-[14px] font-medium text-encre">Dans cette page</summary>
-    <nav aria-label="Sommaire mobile" class="pb-4"><ol>{headings.map(h => <li><a href={`#${h.id}`}>{h.title}</a></li>)}</ol></nav>
+    <summary class="cursor-pointer py-4 text-[14px] font-medium text-encre">{tx.titre}</summary>
+    <nav aria-label={tx.ariaMobile} class="pb-4"><ol>{headings.map(h => <li><a href={`#${h.id}`}>{h.title}</a></li>)}</ol></nav>
   </details>
 </aside>}

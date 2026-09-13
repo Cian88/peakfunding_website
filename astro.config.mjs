@@ -7,6 +7,11 @@ import { observatoireDevPlugin } from './src/server/observatoire.mjs';
 
 export default defineConfig({
   site: 'https://peakfunding.eu',
+  i18n: {
+    locales: ['fr', 'en'],
+    defaultLocale: 'fr',
+    routing: { prefixDefaultLocale: false },
+  },
   integrations: [react(), sitemap()],
   vite: { plugins: [tailwindcss(), observatoireDevPlugin()] },
 });

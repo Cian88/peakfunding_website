@@ -1,0 +1,56 @@
+---
+import Base from '../../../layouts/Base.astro';
+import VisuelArticle from '../../../components/VisuelArticle.astro';
+import { ASSURANCE_URL } from '../../../data/integrations';
+import articles from '../../../data/en/articles.json';
+import Sommaire from '../../../components/Sommaire.astro';
+import { documentAvecSommaire } from '../../../lib/document.mjs';
+import { dateISO, trierArticles } from '../../../lib/editorial.mjs';
+
+export function getStaticPaths() {
+  return articles.map((a) => ({ params: { slug: a.slug }, props: { article: a } }));
+}
+
+const { article } = Astro.props;
+const corps = import.meta.glob('../../../contenu-articles/en/*.html', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const html = corps[`../../../contenu-articles/en/${article.slug}.html`];
+// English article URLs live under /en/actualites/ — rewrite the raw v1-style links.
+const htmlAvecLiens = html.replace(/href=(["'])article-([a-z0-9-]+)\.html\1/g, (match, quote, slug) =>
+  articles.some(a => a.slug === slug) ? `href=${quote}/en/actualites/${slug}${quote}` : match);
+const document = documentAvecSommaire(htmlAvecLiens);
+const suggestions = trierArticles(articles).filter(a => a.slug !== article.slug).slice(0, 2);
+const categorie = article.avant[1];
+const lecture = article.avant[2];
+const auteur = article.apres[0];
+const date = (article.apres[1] || '').split(' · ').pop();
+---
+
+<Base title={`${article.title} | PEAK FUNDING`} description={article.description || article.apres[2]}>
+  <article class="contenu section">
+    <nav aria-label="Breadcrumb" class="eyebrow normal-case tracking-normal">
+      <a href="/en/" class="hover:text-encre">Home</a> <span aria-hidden="true">/</span> <a href="/en/actualites" class="hover:text-encre">Insights</a>
+    </nav>
+    <div class="mx-auto mt-10 max-w-[760px]">
+      <p class="eyebrow">{categorie} · {lecture}</p>
+      <h1 class="display mt-4 text-[36px] sm:text-[44px] lg:text-[52px]">{article.title}</h1>
+      <p class="donnee mt-6 text-[13px] text-gris">{auteur} · <time datetime={dateISO(date)}>{date}</time></p>
+      <div class="mt-10 aspect-[16/10] overflow-hidden rounded-donnee"><VisuelArticle slug={article.slug} prioritaire /></div>
+    </div>
+    <div class="lecture-grille mt-12 border-t border-trait pt-10">
+      <Sommaire headings={document.headings} />
+      <div class="min-w-0">
+      <div class="prose-pf article-content [&>h2:first-child]:mt-0" set:html={document.html} />
+      <p class="donnee mt-12 rounded-carte bg-blanc p-6 text-[12.5px] leading-relaxed text-gris">
+        A loan commits you and must be repaid. Check your repayment capacity before committing. Informative content, not personalised advice.
+      </p>
+      {article.slug === 'lemoine'
+        ? <a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="btn-cuivre mt-7">Compare my borrower insurance ↗<span class="sr-only"> (new tab)</span></a>
+        : <a href="/en/#rdv" class="btn-cuivre mt-7">Discuss my project ↗</a>}
+      </div>
+    </div>
+    <section class="mt-16 border-t border-trait pt-10" aria-labelledby="suite-lecture">
+      <div class="flex flex-wrap items-end justify-between gap-4"><h2 id="suite-lecture" class="titre">Keep reading.</h2><a href="/en/actualites" class="text-[14px] underline underline-offset-4">All insights →</a></div>
+      <ul class="mt-8 grid gap-8 md:grid-cols-2">{suggestions.map(a => <li class="border-t border-trait pt-5"><a href={`/en/actualites/${a.slug}`} class="group block"><p class="eyebrow">{a.avant[1]}</p><h3 class="sous-titre mt-3 group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3></a></li>)}</ul>
+    </section>
+  </article>
+</Base>

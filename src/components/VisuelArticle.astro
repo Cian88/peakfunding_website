@@ -1,7 +1,10 @@
 ---
-import { visuelsArticles } from '../data/visuels-articles';
+import { visuelsArticles, altArticlesEn } from '../data/visuels-articles';
+import { langCourante } from '../i18n';
 interface Props { slug: keyof typeof visuelsArticles; prioritaire?: boolean; carte?: boolean }
 const { slug, prioritaire = false, carte = false } = Astro.props;
 const image = visuelsArticles[slug];
+const lang = langCourante(Astro.currentLocale);
+const alt = lang === 'en' ? (altArticlesEn[slug] ?? image.alt) : image.alt;
 ---
-<img data-article-visual={slug} data-v1-slot={image.slot} src={`/img/article-v1-${slug}.webp`} alt={image.alt} width={image.width} height={image.height} loading={prioritaire ? 'eager' : 'lazy'} decoding="async" class:list={['h-full w-full', carte ? 'object-cover' : 'object-contain']} />
+<img data-article-visual={slug} data-v1-slot={image.slot} src={`/img/article-v1-${slug}.webp`} alt={alt} width={image.width} height={image.height} loading={prioritaire ? 'eager' : 'lazy'} decoding="async" class:list={['h-full w-full', carte ? 'object-cover' : 'object-contain']} />

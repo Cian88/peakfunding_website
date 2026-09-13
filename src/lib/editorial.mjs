@@ -3,11 +3,14 @@ export const cleTheme = value => value.toLowerCase().normalize('NFD')
   .replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 const mois = ['janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin', 'juillet', 'aout', 'septembre', 'octobre', 'novembre', 'decembre'];
+const monthsEn = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 export function dateISO(value = '') {
   const normalized = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const match = normalized.match(/(\d{1,2})(?:er)?\s+([a-z]+)\s+(\d{4})/);
-  if (!match || !mois.includes(match[2])) return '';
-  const month = String(mois.indexOf(match[2]) + 1).padStart(2, '0');
+  const match = normalized.match(/(\d{1,2})(?:er|st|nd|rd|th)?\s+([a-z]+)\s+(\d{4})/);
+  if (!match) return '';
+  const index = mois.indexOf(match[2]) >= 0 ? mois.indexOf(match[2]) : monthsEn.indexOf(match[2]);
+  if (index < 0) return '';
+  const month = String(index + 1).padStart(2, '0');
   const iso = `${match[3]}-${month}-${match[1].padStart(2, '0')}`;
   const parsed = new Date(`${iso}T00:00:00Z`);
   return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === iso ? iso : '';

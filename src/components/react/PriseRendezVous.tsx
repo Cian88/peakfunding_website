@@ -1,23 +1,20 @@
 import { useEffect, useState } from 'react';
+import { rdvTextes, type Option } from './textes-react';
+import type { Lang } from '../../i18n';
 
 /**
  * Parcours de prise de rendez-vous — architecture STRICTEMENT identique à la v1 :
  *   étape 1 (identité) → étape 2 (projet, consentement) → envoi JSON à Formspree
  *   (point de terminaison selon le courtier souhaité, repli mailto si l'envoi échoue)
  *   → étape 3 : choix du courtier et ouverture de son agenda Proton.
- * Champs, options, validations, libellés d'erreur et charge utile repris tels quels.
+ * Champs, options, validations et charge utile repris tels quels. Les VALEURS
+ * envoyées restent en français (boîte de réception homogène) ; seuls les
+ * libellés affichés suivent la langue.
  */
 const ENDPOINTS = { valentin: 'https://formspree.io/f/mykrggwk', maxime: 'https://formspree.io/f/xkjnbpod' };
 const AGENDAS = {
   valentin: 'https://calendar.proton.me/bookings#2v8n-uO99-wjViHyeCyHos1fTs0zF99J5TaGWewOXmQ=',
   maxime: 'https://calendar.proton.me/bookings#zq6TwUf8IStxgCKqi-oGLxU_L4xZHyGUPnm4UEUmOzk=',
-};
-const OPTIONS = {
-  typeProjet: ['Résidence principale', 'Investissement locatif', 'Rachat de crédit', 'Financement professionnel', 'Autre'],
-  statut: ['Primo-accédant', 'Déjà propriétaire', 'Investisseur locatif', 'Non-résident / expatrié', 'Autre'],
-  avancement: ['En recherche de bien', 'Offre en cours', 'Offre acceptée', 'Compromis signé', 'Simple renseignement'],
-  delai: ['Dès que possible', 'Sous 3 mois', 'Sous 6 mois', 'Pas encore défini'],
-  courtier: ['Peu importe', 'Valentin Boura–Defranoux', 'Maxime Pidoux'],
 };
 
 const initial = {
@@ -29,7 +26,11 @@ const initial = {
 type Form = typeof initial;
 const ok = (x: unknown) => !!x && String(x).trim() !== '';
 
-export default function PriseRendezVous() {
+export default function PriseRendezVous({ lang = 'fr' }: { lang?: Lang }) {
+  const T = rdvTextes(lang);
+  const OPTIONS: Record<'typeProjet' | 'statut' | 'avancement' | 'delai' | 'courtier', Option[]> = {
+    typeProjet: T.typeProjet, statut: T.statut, avancement: T.avancement, delai: T.delai, courtier: T.courtier,
+  };
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [f, setF] = useState<Form>(initial);
   const [err1, setErr1] = useState(false);
@@ -60,6 +61,7 @@ export default function PriseRendezVous() {
       'Localisation': f.ville, 'Avancement': f.avancement, 'Délai souhaité': f.delai,
       'Taux souhaité': f.tauxSouhaite, 'Durée souhaitée': f.dureeSouhaitee, "Montant d'emprunt souhaité": f.montantSouhaite,
       'Courtier souhaité': f.courtier, 'Message': f.message || '—',
+      'Langue du visiteur': lang.toUpperCase(),
     };
     const sendMail = () => {
       const L: [string, string][] = [['Prénom', f.prenom], ['Nom', f.nom], ['Email', f.email], ['Téléphone', f.tel], ['Type de projet', f.typeProjet], ['Statut', f.statut], ['Budget / prix du bien', f.budget], ['Apport disponible', f.apport], ['Revenus nets mensuels du foyer', f.revenus], ['Charges de prêt en cours', f.charges], ['Localisation', f.ville], ['Avancement du projet', f.avancement], ['Délai souhaité', f.delai], ['Taux souhaité', f.tauxSouhaite], ['Durée souhaitée', f.dureeSouhaitee], ["Montant d'emprunt souhaité", f.montantSouhaite], ['Courtier souhaité', f.courtier], ['Message', f.message]];
@@ -79,7 +81,7 @@ export default function PriseRendezVous() {
 
   const sel = (k: keyof typeof OPTIONS, libelle: string) => (
     <label className="grid gap-2"><span className="libelle">{libelle}</span>
-      <select className="champ appearance-none" value={f[k] as string} onChange={set(k)}>{OPTIONS[k].map((o) => <option key={o}>{o}</option>)}</select>
+      <select className="champ appearance-none" value={f[k] as string} onChange={set(k)}>{OPTIONS[k].map((o) => <option key={o.v} value={o.v}>{o.l}</option>)}</select>
     </label>
   );
   const inp = (k: keyof Form, libelle: string, placeholder: string, type = 'text') => (
@@ -92,8 +94,8 @@ export default function PriseRendezVous() {
     <div className="carte-donnee grid gap-5" id="rdv-parcours">
       <div className="grid gap-3">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <span className="eyebrow">{step === 1 ? 'Étape 1 sur 2 — Vous' : step === 2 ? 'Étape 2 sur 2 — Votre projet' : 'Merci, c’est noté.'}</span>
-          <span className="font-mono text-[12px] text-argent">{step === 2 ? 'Vos attentes de financement' : step === 1 ? '2 minutes — pour préparer au mieux notre échange.' : ''}</span>
+          <span className="eyebrow">{step === 1 ? T.etape1 : step === 2 ? T.etape2 : T.merci}</span>
+          <span className="font-mono text-[12px] text-argent">{step === 2 ? T.aparte2 : step === 1 ? T.aparte1 : ''}</span>
         </div>
         <div className="grid grid-cols-2 gap-1.5" aria-hidden="true">
           <div className="h-[3px] rounded-full bg-cuivre" /><div className={`h-[3px] rounded-full ${step >= 2 ? 'bg-cuivre' : 'bg-filet'}`} />
@@ -102,43 +104,43 @@ export default function PriseRendezVous() {
 
       {step === 1 && (
         <div className="grid gap-4">
-          <div className="grid gap-3 sm:grid-cols-2">{inp('prenom', 'Prénom', 'Prénom')}{inp('nom', 'Nom', 'Nom')}</div>
-          <div className="grid gap-3 sm:grid-cols-2">{inp('email', 'E-mail', 'vous@exemple.fr', 'email')}{inp('tel', 'Téléphone', '06 00 00 00 00', 'tel')}</div>
-          {err1 && <p className="rounded-donnee border border-cuivre/50 px-4 py-3 text-[13.5px] text-cuivre-clair">Merci de renseigner votre prénom, votre nom, votre email et votre téléphone.</p>}
-          <button type="button" className="btn-cuivre justify-self-end" onClick={nextStep}>Continuer →</button>
+          <div className="grid gap-3 sm:grid-cols-2">{inp('prenom', T.prenom, T.prenom)}{inp('nom', T.nom, T.nom)}</div>
+          <div className="grid gap-3 sm:grid-cols-2">{inp('email', T.email, T.ph_email, 'email')}{inp('tel', T.tel, T.ph_tel, 'tel')}</div>
+          {err1 && <p className="rounded-donnee border border-cuivre/50 px-4 py-3 text-[13.5px] text-cuivre-clair">{T.err1}</p>}
+          <button type="button" className="btn-cuivre justify-self-end" onClick={nextStep}>{T.continuer}</button>
         </div>
       )}
 
       {step === 2 && (
         <div className="grid gap-4">
           <div className="grid gap-3 sm:grid-cols-2">
-            {sel('typeProjet', 'Type de projet')}{sel('statut', 'Votre situation')}
-            {inp('budget', 'Budget / prix du bien', 'ex. 320 000 €')}{inp('apport', 'Apport disponible', 'ex. 40 000 €')}
-            {inp('revenus', 'Revenus nets mensuels du foyer', '€ / mois')}{inp('charges', 'Charges de prêt en cours', '€ / mois')}
-            {inp('ville', 'Localisation du bien', 'Ville')}{sel('avancement', 'Avancement du projet')}
-            {sel('delai', 'Délai souhaité')}{inp('tauxSouhaite', 'Taux souhaité', 'ex. 3,5 %')}
-            {inp('dureeSouhaitee', 'Durée souhaitée', 'ex. 25 ans')}{inp('montantSouhaite', 'Montant d’emprunt souhaité', 'ex. 300 000 €')}
-            {sel('courtier', 'Courtier souhaité')}
+            {sel('typeProjet', T.l_typeProjet)}{sel('statut', T.l_statut)}
+            {inp('budget', T.l_budget, T.ph_budget)}{inp('apport', T.l_apport, T.ph_apport)}
+            {inp('revenus', T.l_revenus, T.ph_mois)}{inp('charges', T.l_charges, T.ph_mois)}
+            {inp('ville', T.l_ville, T.ph_ville)}{sel('avancement', T.l_avancement)}
+            {sel('delai', T.l_delai)}{inp('tauxSouhaite', T.l_taux, T.ph_taux)}
+            {inp('dureeSouhaitee', T.l_duree, T.ph_duree)}{inp('montantSouhaite', T.l_montant, T.ph_montant)}
+            {sel('courtier', T.l_courtier)}
           </div>
-          <label className="grid gap-2"><span className="libelle">Un point à préciser ? <span className="font-normal text-argent">(optionnel)</span></span>
-            <textarea className="champ h-24 py-3 font-sans" value={f.message} onChange={set('message')} placeholder="Votre message" />
+          <label className="grid gap-2"><span className="libelle">{T.l_message} <span className="font-normal text-argent">{T.optionnel}</span></span>
+            <textarea className="champ h-24 py-3 font-sans" value={f.message} onChange={set('message')} placeholder={T.ph_message} />
           </label>
           <label className="flex items-start gap-3 rounded-donnee border border-filet bg-abime px-4 py-3">
             <input type="checkbox" className="mt-1 h-4 w-4 accent-[#b87b4f]" checked={f.rgpd} onChange={set('rgpd')} />
-            <span className="text-[13px] leading-relaxed text-argent">Vos informations sont transmises au cabinet pour préparer le rendez-vous. Aucune donnée n’est partagée avec des tiers.</span>
+            <span className="text-[13px] leading-relaxed text-argent">{T.consentement}</span>
           </label>
-          {err2 && <p className="rounded-donnee border border-cuivre/50 px-4 py-3 text-[13.5px] text-cuivre-clair">Merci de compléter tous les champs et de cocher la case de consentement. Seul le message est optionnel.</p>}
+          {err2 && <p className="rounded-donnee border border-cuivre/50 px-4 py-3 text-[13.5px] text-cuivre-clair">{T.err2}</p>}
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <button type="button" className="text-[14px] text-argent hover:text-etoile" onClick={() => setStep(1)}>← Étape 1</button>
-            <button type="button" className="btn-cuivre" onClick={submit}>Envoyer et choisir un créneau</button>
+            <button type="button" className="text-[14px] text-argent hover:text-etoile" onClick={() => setStep(1)}>{T.retour1}</button>
+            <button type="button" className="btn-cuivre" onClick={submit}>{T.envoyer}</button>
           </div>
         </div>
       )}
 
       {step === 3 && (
         <div className="grid gap-4">
-          <p className="text-[18px] text-etoile">Votre récapitulatif a été préparé pour le cabinet. Choisissez maintenant le créneau qui vous convient pour votre premier rendez-vous.</p>
-          <span className="eyebrow">Choisissez votre courtier :</span>
+          <p className="text-[18px] text-etoile">{T.recap}</p>
+          <span className="eyebrow">{T.choisir}</span>
           <div className="flex flex-wrap gap-2">
             <button type="button" className="btn-cuivre" onClick={() => ouvrir(AGENDAS.valentin)}>Valentin Boura–Defranoux</button>
             <button type="button" className="btn-fantome" onClick={() => ouvrir(AGENDAS.maxime)}>Maxime Pidoux</button>

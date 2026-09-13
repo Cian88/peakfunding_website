@@ -13,8 +13,11 @@ const ETOILE = 'M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2
 const GOOGLE = (
   <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.9-3c-1.1.7-2.5 1.2-4 1.2-3.1 0-5.7-2.1-6.6-4.9H1.4v3.1C3.4 21.4 7.4 24 12 24z"/><path fill="#FBBC05" d="M5.4 14.4c-.2-.7-.4-1.4-.4-2.4s.1-1.7.4-2.4V6.5H1.4C.5 8.2 0 10 0 12s.5 3.8 1.4 5.5z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.5 1.8l3.4-3.4C17.9 1.2 15.2 0 12 0 7.4 0 3.4 2.6 1.4 6.5l4 3.1C6.3 6.8 8.9 4.8 12 4.8z"/></svg>
 );
-const BBOX = { latMin: 41.3, latMax: 51.2, lngMin: -5.2, lngMax: 9.6 };
-const borne = (v: number) => Math.min(86, Math.max(14, v));
+/* Carte de France vectorielle hébergée sur le site (aucun service tiers) :
+   contours des départements + paramètres de projection, générés par
+   scripts/generer-carte-france.mjs et chargés seulement quand il y a des avis. */
+type Carte = { projection: { minLng: number; maxLat: number; cos: number; s: number; w: number; h: number }; departements: { code: string; nom: string; d: string }[] };
+const projeter = (p: Carte['projection'], lat: number, lng: number) => ({ x: (lng - p.minLng) * p.cos * p.s, y: (p.maxLat - lat) * p.s });
 const teintes = ['#8a5a3c', '#3c5a8a', '#5a8a3c', '#8a3c5a', '#3c8a7a', '#7a3c8a'];
 const teinte = (s: string) => teintes[[...s].reduce((n, c) => n + c.charCodeAt(0), 0) % teintes.length];
 
@@ -69,13 +72,21 @@ export default function MurAvis({ lang = 'fr', rdvHref }: { lang?: Lang; rdvHref
   const liste = avis ?? [];
   const total = liste.length;
 
+  const [carte, setCarte] = useState<Carte | null>(null);
+  useEffect(() => {
+    if (total === 0 || carte) return;
+    let actif = true;
+    import('../../data/france-departements.json').then((m) => { if (actif) setCarte((m.default ?? m) as Carte); }).catch(() => {});
+    return () => { actif = false; };
+  }, [total, carte]);
+
   const { moyenne, distribution, pins, colonnes, defile } = useMemo(() => {
     const moyenne = total ? liste.reduce((s, a) => s + a.note, 0) / total : 0;
     const distribution = [5, 4, 3, 2, 1].map((n) => ({ n, pct: total ? Math.round((liste.filter((a) => a.note === n).length / total) * 100) : 0 }));
-    const parVille: Record<string, { ville: string; n: number; x: number; y: number }> = {};
+    const parVille: Record<string, { ville: string; n: number; lat: number; lng: number }> = {};
     for (const a of liste) {
       if (a.lat == null || a.lng == null) continue;
-      parVille[a.ville] ??= { ville: a.ville, n: 0, x: borne(((a.lng - BBOX.lngMin) / (BBOX.lngMax - BBOX.lngMin)) * 100), y: borne(((BBOX.latMax - a.lat) / (BBOX.latMax - BBOX.latMin)) * 100) };
+      parVille[a.ville] ??= { ville: a.ville, n: 0, lat: a.lat, lng: a.lng };
       parVille[a.ville].n += 1;
     }
     const colonnes: AvisPublic[][] = [[], [], []];
@@ -139,14 +150,18 @@ export default function MurAvis({ lang = 'fr', rdvHref }: { lang?: Lang; rdvHref
               </div>
               <span className="marque"><span className="puce-verifie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true"><path d="M5 13l4 4L19 7" /></svg></span>{t.authentifies}</span>
             </div>
-            <div className="bande-carte" aria-label={t.carte_legende}>
+            <div className="carte-france">
               <span className="carte-legende">{t.carte_legende}</span>
-              {pins.map((p) => (
-                <div className="pin" key={p.ville} style={{ left: `${p.x}%`, top: `${p.y}%` }}>
-                  <span className="halo" /><span className="noyau" />
-                  <span className="lab">{p.ville} · {p.n}</span>
-                </div>
-              ))}
+              {carte && (
+                <svg viewBox={`0 0 ${carte.projection.w} ${carte.projection.h}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={t.carte_legende}>
+                  <g className="departements">{carte.departements.map((d) => <path key={d.code} d={d.d}><title>{d.nom}</title></path>)}</g>
+                  <g>{pins.map((p) => { const { x, y } = projeter(carte.projection, p.lat, p.lng); const aGauche = x > carte.projection.w * 0.66; return (
+                    <g className="pin-svg" key={p.ville} transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`}>
+                      <circle className="halo" r="14" /><circle className="noyau" r="8" />
+                      <text className="lab" x={aGauche ? -18 : 18} y="9" textAnchor={aGauche ? 'end' : 'start'}>{p.ville} · {p.n}</text>
+                    </g>); })}</g>
+                </svg>
+              )}
               <span className="carte-note">{t.carte_note}</span>
             </div>
           </div>

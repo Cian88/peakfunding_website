@@ -308,14 +308,15 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 #avis .marque { display:inline-flex; align-items:center; gap:8px; border-top:1px solid var(--color-filet); padding-top:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--color-argent); }
 #avis .puce-verifie { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(127,176,138,.15); color:#7fb08a; }
 #avis .puce-verifie svg { width:11px; height:11px; }
-#avis .bande-carte { position:relative; min-height:220px; overflow:hidden; border:1px solid var(--color-filet); border-radius:var(--radius-donnee); background:repeating-linear-gradient(90deg,transparent 0 39px,rgba(237,234,228,.04) 39px 40px),repeating-linear-gradient(0deg,transparent 0 39px,rgba(237,234,228,.04) 39px 40px),radial-gradient(60% 140% at 50% 50%,rgba(184,123,79,.10),transparent 70%),#0f1219; }
+#avis .carte-france { position:relative; min-height:360px; height:100%; overflow:hidden; border:1px solid var(--color-filet); border-radius:var(--radius-donnee); background:repeating-linear-gradient(90deg,transparent 0 39px,rgba(237,234,228,.035) 39px 40px),repeating-linear-gradient(0deg,transparent 0 39px,rgba(237,234,228,.035) 39px 40px),radial-gradient(60% 140% at 50% 50%,rgba(184,123,79,.08),transparent 70%),#0f1219; }
+#avis .carte-france svg { position:absolute; inset:36px 14px 32px; width:calc(100% - 28px); height:calc(100% - 68px); }
+#avis .carte-france .departements path { fill:rgba(237,234,228,.05); stroke:rgba(237,234,228,.18); stroke-width:1.2; vector-effect:non-scaling-stroke; transition:fill .2s; }
+#avis .carte-france .departements path:hover { fill:rgba(184,123,79,.22); }
 #avis .carte-legende { position:absolute; z-index:3; left:18px; top:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--color-argent); }
 #avis .carte-note { position:absolute; z-index:3; right:18px; bottom:12px; font-family:var(--font-mono); font-size:9.5px; color:var(--color-brume); }
-#avis .pin { position:absolute; z-index:3; width:12px; height:12px; transform:translate(-50%,-50%); }
-#avis .pin .noyau { position:absolute; inset:0; border-radius:50%; background:var(--color-cuivre-clair); box-shadow:0 0 0 3px rgba(184,123,79,.28); }
-#avis .pin .halo { position:absolute; inset:0; border-radius:50%; background:var(--color-cuivre); animation:avis-pulse 2.6s ease-out infinite; }
-#avis .pin .lab { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); font-family:var(--font-mono); font-size:10px; white-space:nowrap; color:var(--color-etoile); background:rgba(11,13,18,.9); border:1px solid var(--color-filet); padding:2px 7px; border-radius:999px; opacity:0; transition:opacity .18s; pointer-events:none; }
-#avis .pin:hover .lab { opacity:1; }
+#avis .pin-svg .noyau { fill:var(--color-cuivre-clair); stroke:rgba(184,123,79,.35); stroke-width:6; }
+#avis .pin-svg .halo { fill:var(--color-cuivre); animation:avis-pulse 2.6s ease-out infinite; transform-box:fill-box; transform-origin:center; }
+#avis .pin-svg .lab { font-family:var(--font-mono); font-size:26px; fill:var(--color-etoile); stroke:#0f1219; stroke-width:8; paint-order:stroke; }
 @keyframes avis-pulse { 0% { transform:scale(1); opacity:.5; } 70%,100% { transform:scale(3.2); opacity:0; } }
 #avis .mur { display:grid; gap:16px; grid-template-columns:1fr; }
 @media (min-width:640px) { #avis .mur { grid-template-columns:1fr 1fr; } }
@@ -341,7 +342,7 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 #avis .chip-bas { display:flex; flex-wrap:wrap; gap:6px; }
 #avis .tag { font-family:var(--font-mono); font-size:10px; color:var(--color-argent); border:1px solid var(--color-filet); border-radius:var(--radius-pill); padding:3px 9px; }
 #avis .tag.projet { color:var(--color-cuivre-clair); border-color:rgba(184,123,79,.35); }
-@media (prefers-reduced-motion:reduce) { #avis .pin .halo { display:none; } #avis .mur.defile { max-height:none; -webkit-mask-image:none; mask-image:none; } #avis .mur.defile .piste { animation:none; } #avis .mur .doublon { display:none; } }
+@media (prefers-reduced-motion:reduce) { #avis .pin-svg .halo { display:none; } #avis .mur.defile { max-height:none; -webkit-mask-image:none; mask-image:none; } #avis .mur.defile .piste { animation:none; } #avis .mur .doublon { display:none; } }
 .depot { display:grid; gap:16px; }
 .depot .etape-tete { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; }
 .depot .progression { display:grid; grid-template-columns:1fr 1fr; gap:6px; }

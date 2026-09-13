@@ -343,7 +343,9 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 #avis .tag { font-family:var(--font-mono); font-size:10px; color:var(--color-argent); border:1px solid var(--color-filet); border-radius:var(--radius-pill); padding:3px 9px; }
 #avis .tag.projet { color:var(--color-cuivre-clair); border-color:rgba(184,123,79,.35); }
 @media (prefers-reduced-motion:reduce) { #avis .pin-svg .halo { display:none; } #avis .mur.defile { max-height:none; -webkit-mask-image:none; mask-image:none; } #avis .mur.defile .piste { animation:none; } #avis .mur .doublon { display:none; } }
-.depot { display:grid; gap:16px; }
+.depot { display:grid; grid-template-columns:minmax(0,1fr); gap:16px; min-width:0; }
+.depot > *, .depot .compte, .depot .compte > * { min-width:0; }
+.depot .compte .em { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .depot .etape-tete { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; }
 .depot .progression { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
 .depot .progression span { height:3px; border-radius:999px; background:var(--color-filet); }
@@ -362,7 +364,8 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 .depot .succes .rond { width:62px; height:62px; border-radius:50%; background:rgba(127,176,138,.14); color:#7fb08a; display:grid; place-items:center; }
 .depot .succes .rond svg { width:30px; height:30px; }
 /* page privée d'invitation (InviterAvis) */
-.admin { display:grid; gap:28px; }
+.admin { display:grid; grid-template-columns:minmax(0,1fr); gap:28px; min-width:0; }
+.admin > *, .admin .compte, .admin .compte > *, .admin section, .admin form { min-width:0; }
 .admin .compte { display:flex; align-items:center; gap:10px; background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:10px 12px; }
 .admin .compte .pastille { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-weight:600; font-size:13px; color:#fff; background:#8a5a3c; flex-shrink:0; }
 .admin .tableau { overflow-x:auto; }
@@ -373,7 +376,7 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 .admin .etat.ok { color:#7fb08a; border-color:rgba(127,176,138,.4); }
 .admin .etat.attente { color:var(--color-cuivre-clair); border-color:rgba(184,123,79,.4); }
 .admin .lien { font-family:var(--font-mono); font-size:12.5px; word-break:break-all; color:var(--color-cuivre-clair); background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:10px 12px; }
-.admin pre { white-space:pre-wrap; font-family:var(--font-sans); font-size:13.5px; line-height:1.5; color:var(--color-etoile); background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:14px; margin:0; max-height:300px; overflow:auto; }
+.admin pre { white-space:pre-wrap; overflow-wrap:anywhere; font-family:var(--font-sans); font-size:13.5px; line-height:1.5; color:var(--color-etoile); background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:14px; margin:0; max-height:300px; overflow:auto; }
 .admin .mini { height:38px; padding:0 16px; font-size:13px; }
 .admin .actions { display:flex; flex-wrap:wrap; gap:6px; }
 .admin .action { display:inline-flex; align-items:center; min-height:34px; padding:0 12px; border:1px solid var(--color-filet); border-radius:var(--radius-pill); background:transparent; color:var(--color-cuivre-clair); font-family:var(--font-mono); font-size:11px; letter-spacing:.03em; white-space:nowrap; cursor:pointer; transition:border-color .15s, background .15s; }

@@ -47,6 +47,74 @@ export function expertiseUi(lang: Lang) {
   return lang === 'en' ? expUiEn : expUiFr;
 }
 
+/* ── Section « Avis clients » (mur vivant) ─────────────────────────── */
+
+const avisUiFr = {
+  eyebrow: 'Avis clients · Vérifiés',
+  titre_vide: 'La confiance se mesure dossier après dossier.',
+  titre_plein: 'Des centaines de dossiers.<br />Une note qui parle.',
+  sous: 'Chaque témoignage est déposé sur invitation par un client identifié via son compte Google, après le déblocage de son financement.',
+  avenir_titre: 'Les premiers avis vérifiés arrivent bientôt.',
+  avenir_texte: 'Nous ouvrons le dépôt d’avis à nos clients dès la mise en place du parcours sécurisé. Aucun avis anonyme, aucun avis acheté.',
+  etapes: [
+    { titre: 'Invitation', texte: 'Un lien personnel est envoyé au client après le déblocage des fonds.' },
+    { titre: 'Connexion Google', texte: 'Le client s’identifie avec son compte : seuls son prénom, son initiale et sa photo apparaissent.' },
+    { titre: 'Publication', texte: 'Note, type de projet, montant et ville rejoignent le mur après validation.' },
+  ],
+  deposer: 'Déposer un avis',
+  bientot: 'bientôt',
+  parler: 'Parlons de votre projet',
+  avis_verifies: 'avis vérifiés',
+  authentifies: 'Authentifiés par connexion Google',
+  carte_legende: 'Nos financements en France',
+  carte_note: 'Localisation à la ville, jamais l’adresse exacte.',
+  verifie: 'Vérifié',
+  astuce: 'Le mur défile — survolez pour le figer',
+  projets: {
+    'Résidence Principale': 'Résidence Principale',
+    'Appartement Locatif': 'Appartement Locatif',
+    'Immeuble Locatif': 'Immeuble Locatif',
+    'Immobilier Pro': 'Immobilier Pro',
+    'Mobilier Pro': 'Mobilier Pro',
+    'LBO/OBO': 'LBO / OBO',
+    'Restructuration de dette': 'Restructuration de dette',
+  } as Record<string, string>,
+};
+const avisUiEn: typeof avisUiFr = {
+  eyebrow: 'Client reviews · Verified',
+  titre_vide: 'Trust is measured one file at a time.',
+  titre_plein: 'Hundreds of files.<br />A rating that speaks.',
+  sous: 'Each testimonial is submitted by invitation by a client identified through their Google account, after their funds are released.',
+  avenir_titre: 'The first verified reviews are coming soon.',
+  avenir_texte: 'We are opening review submission to our clients as soon as the secure journey is live. No anonymous reviews, no paid reviews.',
+  etapes: [
+    { titre: 'Invitation', texte: 'A personal link is sent to the client once the funds are released.' },
+    { titre: 'Google sign-in', texte: 'The client signs in with their account: only their first name, initial and photo appear.' },
+    { titre: 'Publication', texte: 'Rating, project type, amount and city join the wall after validation.' },
+  ],
+  deposer: 'Leave a review',
+  bientot: 'soon',
+  parler: 'Let’s discuss your project',
+  avis_verifies: 'verified reviews',
+  authentifies: 'Authenticated via Google sign-in',
+  carte_legende: 'Our financings across France',
+  carte_note: 'City-level location, never the exact address.',
+  verifie: 'Verified',
+  astuce: 'The wall scrolls — hover to pause',
+  projets: {
+    'Résidence Principale': 'Primary residence',
+    'Appartement Locatif': 'Buy-to-let flat',
+    'Immeuble Locatif': 'Buy-to-let building',
+    'Immobilier Pro': 'Business property',
+    'Mobilier Pro': 'Business equipment',
+    'LBO/OBO': 'LBO / OBO',
+    'Restructuration de dette': 'Debt restructuring',
+  },
+};
+export function avisUi(lang: Lang) {
+  return lang === 'en' ? avisUiEn : avisUiFr;
+}
+
 const chiffresFr = [
   { valeur: 500, suffixe: '+', libelle: 'Projets financés' },
   { valeur: 95, suffixe: ' %', libelle: 'Taux d’obtention' },

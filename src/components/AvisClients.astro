@@ -1,0 +1,191 @@
+---
+/* Section « Avis clients » — direction « Mur vivant ».
+   Deux états :
+   · sans avis (aujourd'hui) : état « à venir », honnête, sans faux témoignage ;
+   · avec avis : agrégat + bande-carte à pins + mur qui défile en 3 colonnes.
+   Le dépôt d'avis (Google + lien d'invitation) sera activé avec Supabase :
+   voir docs/avis-clients-supabase.md. */
+import AvisChip from './AvisChip.astro';
+import { avis, type Avis } from '../data/avis';
+import { avisUi } from '../data/contenu';
+import { langCourante, localiser } from '../i18n';
+
+const lang = langCourante(Astro.currentLocale);
+const L = (p: string) => localiser(p, lang);
+const u = avisUi(lang);
+
+const publies = [...avis].sort((a, b) => b.date.localeCompare(a.date));
+const total = publies.length;
+const moyenne = total ? publies.reduce((s, a) => s + a.note, 0) / total : 0;
+const moyenneTexte = moyenne.toFixed(1).replace('.', lang === 'fr' ? ',' : '.');
+const distribution = [5, 4, 3, 2, 1].map((n) => ({ n, pct: total ? Math.round((publies.filter((a) => a.note === n).length / total) * 100) : 0 }));
+const pleines = Array.from({ length: 5 }, (_, i) => i < Math.round(moyenne));
+
+/* Carte : positions relatives des villes dans l'emprise de la France métropolitaine. */
+const BBOX = { latMin: 41.3, latMax: 51.2, lngMin: -5.2, lngMax: 9.6 };
+const borne = (v: number) => Math.min(86, Math.max(14, v));
+const pins = Object.values(
+  publies.reduce<Record<string, { ville: string; n: number; x: number; y: number }>>((acc, a) => {
+    if (a.lat == null || a.lng == null) return acc;
+    const cle = a.ville;
+    if (!acc[cle]) acc[cle] = { ville: a.ville, n: 0, x: borne(((a.lng - BBOX.lngMin) / (BBOX.lngMax - BBOX.lngMin)) * 100), y: borne(((BBOX.latMax - a.lat) / (BBOX.latMax - BBOX.latMin)) * 100) };
+    acc[cle].n += 1;
+    return acc;
+  }, {}),
+);
+
+/* Mur : trois colonnes ; on ne fait défiler qu'à partir de six avis. */
+const defile = total >= 6;
+const colonnes: Avis[][] = [[], [], []];
+publies.forEach((a, i) => colonnes[i % 3].push(a));
+const durees = ['52s', '64s', '58s'];
+---
+
+<section id="avis" class="sombre section-sombre scroll-mt-16 avis-section">
+  <div class="grille"></div>
+  <div class="contenu relative">
+    <div class="chapitre-filet reveal" aria-hidden="true"></div>
+
+    <div class="reveal grid gap-8 lg:grid-cols-2 lg:gap-16 lg:items-end">
+      <div>
+        <p class="eyebrow">{u.eyebrow}</p>
+        {total > 0
+          ? <h2 class="titre mt-4" set:html={u.titre_plein}></h2>
+          : <h2 class="titre mt-4">{u.titre_vide}</h2>}
+      </div>
+      <p class="corps text-[18px]">{u.sous}</p>
+    </div>
+
+    {total === 0 ? (
+      <div class="reveal carte-donnee avenir mt-14">
+        <div class="avenir-gauche">
+          <span class="etoiles-contour" aria-hidden="true">
+            {[0, 1, 2, 3, 4].map(() => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>)}
+          </span>
+          <h3 class="avenir-titre">{u.avenir_titre}</h3>
+          <p class="corps mt-3 max-w-md text-[15px]">{u.avenir_texte}</p>
+          <div class="mt-7 flex flex-wrap items-center gap-3">
+            <button type="button" class="btn-cuivre btn-bientot" disabled aria-disabled="true">{u.deposer} <span class="badge-bientot">{u.bientot}</span></button>
+            <a href={L('/#rdv')} class="btn-fantome">{u.parler} <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <ol class="avenir-etapes">
+          {u.etapes.map((e, i) => (
+            <li>
+              <span class="donnee text-[12px] text-cuivre-clair">0{i + 1}</span>
+              <h4 class="mt-2 text-[16px] font-medium text-etoile">{e.titre}</h4>
+              <p class="corps mt-1.5 text-[13.5px]">{e.texte}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    ) : (
+      <>
+      <div class="reveal mt-14 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div class="carte-donnee agregat">
+          <div class="flex items-baseline gap-4">
+            <span class="donnee agregat-note">{moyenneTexte}</span>
+            <div class="grid gap-1.5">
+              <span class="etoiles-agregat" aria-label={`${moyenneTexte}/5`}>
+                {pleines.map((p) => <svg class:list={[{ vide: !p }]} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>)}
+              </span>
+              <span class="donnee text-[12px] text-argent">{total} {u.avis_verifies}</span>
+            </div>
+          </div>
+          <div class="grid gap-1.5">
+            {distribution.map((d) => (
+              <div class="barre"><span>{d.n}★</span><span class="piste-barre"><span class="rempli" style={`transform:scaleX(${d.pct / 100})`}></span></span><span>{d.pct}%</span></div>
+            ))}
+          </div>
+          <span class="marque"><span class="puce-verifie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span>{u.authentifies}</span>
+        </div>
+        <div class="bande-carte" aria-label={u.carte_legende}>
+          <span class="carte-legende">{u.carte_legende}</span>
+          {pins.map((p) => (
+            <div class="pin" style={`left:${p.x}%;top:${p.y}%`}>
+              <span class="halo"></span><span class="noyau"></span>
+              <span class="lab">{p.ville} · {p.n}</span>
+            </div>
+          ))}
+          <span class="carte-note">{u.carte_note}</span>
+        </div>
+      </div>
+      <div class="reveal mt-8 flex flex-wrap items-center justify-between gap-4">
+        <button type="button" class="btn-cuivre btn-bientot" disabled aria-disabled="true">{u.deposer} <span class="badge-bientot">{u.bientot}</span></button>
+        {defile && <span class="donnee text-[11px] text-brume">↕ {u.astuce}</span>}
+      </div>
+      <div class:list={['mur mt-6', defile ? 'defile' : 'statique']}>
+        {colonnes.map((col, ci) => col.length > 0 && (
+          <div class="colonne">
+            <div class="piste" style={`--duree:${durees[ci]}`}>
+              {col.map((a) => <AvisChip a={a} />)}
+              {defile && <div aria-hidden="true" class="contents">{col.map((a) => <AvisChip a={a} />)}</div>}
+            </div>
+          </div>
+        ))}
+      </div>
+      </>
+    )}
+  </div>
+</section>
+
+<style>
+  .avis-section { background: radial-gradient(90% 120% at 82% -20%, rgba(184,123,79,.14), transparent 55%), var(--color-abime); }
+
+  /* — état à venir — */
+  .avenir { display: grid; gap: 36px; padding: clamp(24px, 4vw, 40px); }
+  @media (min-width: 900px) { .avenir { grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; } }
+  .etoiles-contour { display: inline-flex; gap: 6px; color: var(--color-cuivre-clair); opacity: .8; }
+  .etoiles-contour svg { width: 26px; height: 26px; }
+  .avenir-titre { margin-top: 18px; font-size: clamp(24px, 3vw, 32px); line-height: 1.15; font-weight: 300; letter-spacing: -.02em; color: var(--color-etoile); }
+  .avenir-etapes { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
+  .avenir-etapes li { border-top: 1px solid var(--color-filet); padding-top: 14px; }
+  .avenir-etapes h4 { margin: 0; }
+
+  /* bouton « bientôt » : même gabarit que le CTA, volontairement inactif */
+  .btn-bientot { gap: 10px; opacity: .55; cursor: not-allowed; }
+  .badge-bientot { font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; border: 1px solid currentColor; border-radius: var(--radius-pill); padding: 2px 8px; opacity: .85; }
+
+  /* — agrégat — */
+  .agregat { display: grid; gap: 18px; align-content: start; }
+  .agregat-note { font-size: 64px; line-height: .85; font-weight: 600; background: linear-gradient(180deg, #fff, var(--color-cuivre-clair)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .etoiles-agregat { display: inline-flex; gap: 3px; color: var(--color-cuivre-clair); }
+  .etoiles-agregat svg { width: 18px; height: 18px; }
+  .etoiles-agregat .vide { color: var(--color-filet); }
+  .barre { display: grid; grid-template-columns: 28px 1fr 34px; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; color: var(--color-argent); }
+  .piste-barre { height: 5px; border-radius: 999px; background: var(--color-filet); overflow: hidden; }
+  .rempli { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--color-cuivre-profond), var(--color-cuivre-clair)); transform-origin: left; }
+  .marque { display: inline-flex; align-items: center; gap: 8px; border-top: 1px solid var(--color-filet); padding-top: 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-argent); }
+  .puce-verifie { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(127,176,138,.15); color: #7fb08a; }
+  .puce-verifie svg { width: 11px; height: 11px; }
+
+  /* — bande-carte — */
+  .bande-carte { position: relative; min-height: 220px; overflow: hidden; border: 1px solid var(--color-filet); border-radius: var(--radius-donnee);
+    background: repeating-linear-gradient(90deg, transparent 0 39px, rgba(237,234,228,.04) 39px 40px), repeating-linear-gradient(0deg, transparent 0 39px, rgba(237,234,228,.04) 39px 40px), radial-gradient(60% 140% at 50% 50%, rgba(184,123,79,.10), transparent 70%), #0f1219; }
+  .carte-legende { position: absolute; z-index: 3; left: 18px; top: 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--color-argent); }
+  .carte-note { position: absolute; z-index: 3; right: 18px; bottom: 12px; font-family: var(--font-mono); font-size: 9.5px; color: var(--color-brume); }
+  .pin { position: absolute; z-index: 3; width: 12px; height: 12px; transform: translate(-50%, -50%); }
+  .pin .noyau { position: absolute; inset: 0; border-radius: 50%; background: var(--color-cuivre-clair); box-shadow: 0 0 0 3px rgba(184,123,79,.28); }
+  .pin .halo { position: absolute; inset: 0; border-radius: 50%; background: var(--color-cuivre); animation: avis-pulse 2.6s ease-out infinite; }
+  .pin .lab { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); font-family: var(--font-mono); font-size: 10px; white-space: nowrap; color: var(--color-etoile); background: rgba(11,13,18,.9); border: 1px solid var(--color-filet); padding: 2px 7px; border-radius: 999px; opacity: 0; transition: opacity .18s; pointer-events: none; }
+  .pin:hover .lab { opacity: 1; }
+  @keyframes avis-pulse { 0% { transform: scale(1); opacity: .5; } 70%, 100% { transform: scale(3.2); opacity: 0; } }
+
+  /* — mur — */
+  .mur { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .mur { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .mur { grid-template-columns: repeat(3, 1fr); } }
+  .mur.defile { max-height: 720px; overflow: hidden; -webkit-mask-image: linear-gradient(180deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(180deg, transparent, #000 6%, #000 94%, transparent); }
+  .colonne { overflow: hidden; }
+  .piste { display: flex; flex-direction: column; gap: 16px; }
+  .mur.defile .piste { animation: avis-defile var(--duree, 52s) linear infinite; will-change: transform; }
+  .mur.defile .colonne:hover .piste { animation-play-state: paused; }
+  @keyframes avis-defile { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pin .halo { display: none; }
+    .mur.defile { max-height: none; -webkit-mask-image: none; mask-image: none; }
+    .mur.defile .piste { animation: none; }
+    .mur.defile .contents { display: none; }
+  }
+</style>

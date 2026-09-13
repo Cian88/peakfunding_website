@@ -3,6 +3,7 @@ import Pictogramme from '../Pictogramme.astro';
 import SimulateurCapacite from '../react/SimulateurCapacite';
 import MethodeSchema from '../MethodeSchema.astro';
 import ObservatoireWidget from '../react/ObservatoireWidget';
+import AvisClients from '../AvisClients.astro';
 import { ASSURANCE_URL } from '../../data/integrations';
 import { accueil } from '../../data/contenu';
 import { langCourante, localiser } from '../../i18n';
@@ -194,6 +195,9 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
       </div>
     </div>
   </section>
+
+  <!-- ═══ 7b · Avis clients — mur vivant (état « à venir » tant que Supabase n'est pas branché) ═══ -->
+  <AvisClients />
 
   <!-- ═══ 8 · FAQ ═══ -->
   <section id="faq" class="clair accueil-clair section-sombre scroll-mt-16">

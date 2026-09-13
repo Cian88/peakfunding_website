@@ -1,8 +1,10 @@
 # Avis clients — activation du dépôt avec Supabase
 
-État actuel : la section « Avis clients » (direction *Mur vivant*) est intégrée à l'accueil FR/EN
-en **état « à venir »** — aucun avis fictif, bouton « Déposer un avis » inactif.
-Ce document décrit ce qu'il reste à faire pour ouvrir le dépôt d'avis réels.
+État (2026-09-13) : le site est **branché sur Supabase** (projet `cuzermbffitfuoknrmca`,
+constantes dans `src/data/integrations.ts`). La section d'accueil lit la vue `avis_publics`
+en direct (îlot `MurAvis`) et affiche l'état « à venir » tant qu'aucun avis n'est publié.
+Pages de dépôt sur invitation : `/avis/deposer` et `/en/avis/deposer`.
+Ce document décrit la configuration côté Supabase et le flux d'invitation.
 
 ## 1. Ce que porte Supabase (le site reste statique)
 
@@ -22,7 +24,8 @@ Ce document décrit ce qu'il reste à faire pour ouvrir le dépôt d'avis réels
      (`https://<projet>.supabase.co/auth/v1/callback`).
    - Coller *Client ID* / *Client secret* dans Supabase.
 3. **Authentication → URL configuration** : Site URL `https://peakfunding.eu`,
-   Redirect URLs `https://peakfunding.eu/avis/deposer`, `https://peakfunding.eu/en/reviews/submit`.
+   Redirect URLs `https://peakfunding.eu/**` (couvre `/avis/deposer` et `/en/avis/deposer`,
+   ainsi que `http://localhost:4321/**` pour tester en local).
 4. Exécuter le SQL du §3 dans **SQL Editor**.
 5. Me transmettre **Project URL** et **anon public key** (Settings → API). La clé *anon* est
    publique par conception ; la sécurité repose sur les règles RLS ci-dessous.

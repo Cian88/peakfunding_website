@@ -285,6 +285,81 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 .partenaire-logo { display: block; object-fit: contain; object-position: left center; }
 .partenaire-logo[data-partenaire="priveos"] { width: 180px; height: 111px; }
 .partenaire-logo[data-partenaire="edilos"] { width: 180px; height: 42px; }
+/* ── Avis clients : mur vivant (îlot React MurAvis) et page de dépôt (DeposerAvis) ── */
+#avis .avenir { display:grid; gap:36px; padding:clamp(24px,4vw,40px); }
+@media (min-width:900px) { #avis .avenir { grid-template-columns:1.1fr .9fr; gap:56px; align-items:center; } }
+#avis .etoiles-contour { display:inline-flex; gap:6px; color:var(--color-cuivre-clair); opacity:.8; }
+#avis .etoiles-contour svg { width:26px; height:26px; }
+#avis .avenir-titre { margin-top:18px; font-size:clamp(24px,3vw,32px); line-height:1.15; font-weight:300; letter-spacing:-.02em; color:var(--color-etoile); }
+#avis .avenir-etapes { display:grid; gap:18px; margin:0; padding:0; list-style:none; }
+#avis .avenir-etapes li { border-top:1px solid var(--color-filet); padding-top:14px; }
+#avis .pill-invitation { display:inline-flex; align-items:center; height:48px; padding:0 18px; border:1px solid var(--color-filet); border-radius:var(--radius-pill); font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--color-argent); }
+#avis .plein { animation:avis-entree .5s cubic-bezier(.16,1,.3,1) both; }
+@keyframes avis-entree { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+#avis .agregat { display:grid; gap:18px; align-content:start; }
+#avis .agregat-note { font-size:64px; line-height:.85; font-weight:600; background:linear-gradient(180deg,#fff,var(--color-cuivre-clair)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+#avis .etoiles { display:inline-flex; gap:3px; color:var(--color-cuivre-clair); }
+#avis .etoiles svg { width:13px; height:13px; }
+#avis .etoiles.lg svg { width:18px; height:18px; }
+#avis .etoiles .vide { color:var(--color-filet); }
+#avis .barre { display:grid; grid-template-columns:28px 1fr 34px; align-items:center; gap:10px; font-family:var(--font-mono); font-size:11px; color:var(--color-argent); }
+#avis .piste-barre { height:5px; border-radius:999px; background:var(--color-filet); overflow:hidden; }
+#avis .rempli { display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--color-cuivre-profond),var(--color-cuivre-clair)); transform-origin:left; }
+#avis .marque { display:inline-flex; align-items:center; gap:8px; border-top:1px solid var(--color-filet); padding-top:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--color-argent); }
+#avis .puce-verifie { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(127,176,138,.15); color:#7fb08a; }
+#avis .puce-verifie svg { width:11px; height:11px; }
+#avis .bande-carte { position:relative; min-height:220px; overflow:hidden; border:1px solid var(--color-filet); border-radius:var(--radius-donnee); background:repeating-linear-gradient(90deg,transparent 0 39px,rgba(237,234,228,.04) 39px 40px),repeating-linear-gradient(0deg,transparent 0 39px,rgba(237,234,228,.04) 39px 40px),radial-gradient(60% 140% at 50% 50%,rgba(184,123,79,.10),transparent 70%),#0f1219; }
+#avis .carte-legende { position:absolute; z-index:3; left:18px; top:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--color-argent); }
+#avis .carte-note { position:absolute; z-index:3; right:18px; bottom:12px; font-family:var(--font-mono); font-size:9.5px; color:var(--color-brume); }
+#avis .pin { position:absolute; z-index:3; width:12px; height:12px; transform:translate(-50%,-50%); }
+#avis .pin .noyau { position:absolute; inset:0; border-radius:50%; background:var(--color-cuivre-clair); box-shadow:0 0 0 3px rgba(184,123,79,.28); }
+#avis .pin .halo { position:absolute; inset:0; border-radius:50%; background:var(--color-cuivre); animation:avis-pulse 2.6s ease-out infinite; }
+#avis .pin .lab { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); font-family:var(--font-mono); font-size:10px; white-space:nowrap; color:var(--color-etoile); background:rgba(11,13,18,.9); border:1px solid var(--color-filet); padding:2px 7px; border-radius:999px; opacity:0; transition:opacity .18s; pointer-events:none; }
+#avis .pin:hover .lab { opacity:1; }
+@keyframes avis-pulse { 0% { transform:scale(1); opacity:.5; } 70%,100% { transform:scale(3.2); opacity:0; } }
+#avis .mur { display:grid; gap:16px; grid-template-columns:1fr; }
+@media (min-width:640px) { #avis .mur { grid-template-columns:1fr 1fr; } }
+@media (min-width:980px) { #avis .mur { grid-template-columns:repeat(3,1fr); } }
+#avis .mur.defile { max-height:720px; overflow:hidden; -webkit-mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent); mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent); }
+#avis .colonne { overflow:hidden; }
+#avis .piste { display:flex; flex-direction:column; gap:16px; }
+#avis .mur.defile .piste { animation:avis-defile var(--duree,52s) linear infinite; will-change:transform; }
+#avis .mur.defile .colonne:hover .piste { animation-play-state:paused; }
+@keyframes avis-defile { from { transform:translateY(0); } to { transform:translateY(-50%); } }
+#avis .chip { background:linear-gradient(180deg,var(--color-ardoise),#0f1219); border:1px solid var(--color-filet); border-radius:var(--radius-carte); padding:18px; display:flex; flex-direction:column; gap:11px; transition:border-color .2s; }
+#avis .chip:hover { border-color:var(--color-cuivre); }
+#avis .chip-tete { display:flex; align-items:center; gap:10px; }
+#avis .avatar { position:relative; width:38px; height:38px; border-radius:50%; flex-shrink:0; display:grid; place-items:center; font-weight:600; font-size:14px; color:#fff; }
+#avis .avatar img { width:38px; height:38px; border-radius:50%; object-fit:cover; display:block; }
+#avis .avatar .g { position:absolute; right:-2px; bottom:-2px; width:15px; height:15px; border-radius:50%; background:#fff; display:grid; place-items:center; box-shadow:0 0 0 2px var(--color-ardoise); }
+#avis .avatar .g svg { width:10px; height:10px; }
+#avis .chip-nom { font-size:14px; font-weight:500; color:var(--color-etoile); }
+#avis .chip-meta { font-family:var(--font-mono); font-size:10px; color:var(--color-argent); display:flex; align-items:center; gap:5px; margin-top:1px; }
+#avis .chip-meta .v { color:#7fb08a; display:inline-flex; align-items:center; gap:3px; }
+#avis .chip-meta .v svg { width:9px; height:9px; }
+#avis .chip-txt { font-size:13.5px; font-weight:300; color:var(--color-etoile); line-height:1.55; margin:0; }
+#avis .chip-bas { display:flex; flex-wrap:wrap; gap:6px; }
+#avis .tag { font-family:var(--font-mono); font-size:10px; color:var(--color-argent); border:1px solid var(--color-filet); border-radius:var(--radius-pill); padding:3px 9px; }
+#avis .tag.projet { color:var(--color-cuivre-clair); border-color:rgba(184,123,79,.35); }
+@media (prefers-reduced-motion:reduce) { #avis .pin .halo { display:none; } #avis .mur.defile { max-height:none; -webkit-mask-image:none; mask-image:none; } #avis .mur.defile .piste { animation:none; } #avis .mur .doublon { display:none; } }
+.depot { display:grid; gap:16px; }
+.depot .etape-tete { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px; }
+.depot .progression { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.depot .progression span { height:3px; border-radius:999px; background:var(--color-filet); }
+.depot .progression span.on { background:var(--color-cuivre); }
+.depot .btn-google { display:inline-flex; align-items:center; justify-content:center; gap:10px; width:100%; height:50px; border-radius:var(--radius-champ); background:#fff; color:#1f1f1f; font-weight:500; font-size:15px; border:0; cursor:pointer; transition:background .15s; }
+.depot .btn-google:hover { background:#f2f2f2; }
+.depot .compte { display:flex; align-items:center; gap:10px; background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:10px 12px; }
+.depot .compte img, .depot .compte .pastille { width:34px; height:34px; border-radius:50%; object-fit:cover; display:grid; place-items:center; font-weight:600; font-size:13px; color:#fff; background:#8a5a3c; flex-shrink:0; }
+.depot .etoiles-saisie { display:inline-flex; gap:4px; }
+.depot .etoiles-saisie button { background:none; border:0; padding:2px; line-height:0; color:var(--color-filet); cursor:pointer; transition:transform .12s, color .12s; }
+.depot .etoiles-saisie button svg { width:30px; height:30px; }
+.depot .etoiles-saisie button:hover { transform:scale(1.12); }
+.depot .etoiles-saisie button.on { color:var(--color-cuivre-clair); }
+.depot .erreur { color:var(--color-cuivre-clair); font-size:13.5px; border:1px solid rgba(184,123,79,.5); border-radius:var(--radius-donnee); padding:10px 14px; margin:0; }
+.depot .succes { text-align:center; display:grid; gap:14px; justify-items:center; padding-block:12px; }
+.depot .succes .rond { width:62px; height:62px; border-radius:50%; background:rgba(127,176,138,.14); color:#7fb08a; display:grid; place-items:center; }
+.depot .succes .rond svg { width:30px; height:30px; }
 .menu-voile { position: fixed; inset: 76px 0 0; z-index: 35; border: 0; background: rgba(11,13,18,.46); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .18s; }
 @media (max-width: 1279px) {
   body:has([data-menu][open]) .menu-voile { opacity: 1; visibility: visible; pointer-events: auto; }

@@ -1,0 +1,25 @@
+---
+/* Dépôt d'un avis client, sur invitation (?jeton=…). Page non reliée à la navigation. */
+import Base from '../../layouts/Base.astro';
+import DeposerAvis from '../../components/react/DeposerAvis';
+import { depotTextes } from '../../components/react/textes-avis';
+import { langCourante, localiser } from '../../i18n';
+const lang = langCourante(Astro.currentLocale);
+const T = depotTextes(lang);
+const L = (p: string) => localiser(p, lang);
+---
+
+<Base title={T.meta_titre} description={T.meta_desc}>
+  <section class="contenu section">
+    <nav aria-label="Fil d’Ariane" class="eyebrow normal-case tracking-normal"><a href={L('/')} class="hover:text-encre">{T.fil_accueil}</a> <span aria-hidden="true">/</span> {T.fil_page}</nav>
+    <div class="mx-auto mt-10 max-w-[760px]">
+      <p class="eyebrow">{T.eyebrow}</p>
+      <h1 class="display mt-3">{T.titre}</h1>
+      <p class="corps mt-5 max-w-xl text-[18px]">{T.intro}</p>
+      <div class="sombre mt-10 rounded-donnee border border-filet p-6 sm:p-8">
+        <DeposerAvis client:only="react" lang={lang} accueilHref={L('/')} />
+        <noscript><p class="corps">JavaScript est nécessaire pour déposer un avis.</p></noscript>
+      </div>
+    </div>
+  </section>
+</Base>

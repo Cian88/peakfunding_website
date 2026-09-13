@@ -375,6 +375,27 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 .admin .lien { font-family:var(--font-mono); font-size:12.5px; word-break:break-all; color:var(--color-cuivre-clair); background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:10px 12px; }
 .admin pre { white-space:pre-wrap; font-family:var(--font-sans); font-size:13.5px; line-height:1.5; color:var(--color-etoile); background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:14px; margin:0; max-height:300px; overflow:auto; }
 .admin .mini { height:38px; padding:0 16px; font-size:13px; }
+.admin .actions { display:flex; flex-wrap:wrap; gap:6px; }
+.admin .action { display:inline-flex; align-items:center; min-height:34px; padding:0 12px; border:1px solid var(--color-filet); border-radius:var(--radius-pill); background:transparent; color:var(--color-cuivre-clair); font-family:var(--font-mono); font-size:11px; letter-spacing:.03em; white-space:nowrap; cursor:pointer; transition:border-color .15s, background .15s; }
+.admin .action:hover { border-color:var(--color-cuivre); background:rgba(237,234,228,.04); }
+.admin .action.neutre { color:var(--color-argent); }
+.admin .compte .courriel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+/* mobiles : le tableau devient des cartes, chaque cellule garde son intitulé */
+@media (max-width:720px) {
+  .admin table, .admin tbody, .admin tr, .admin td { display:block; width:100%; }
+  .admin thead { display:none; }
+  .admin tr { border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:4px 12px 12px; margin-bottom:10px; background:var(--color-abime); }
+  .admin td { display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:8px 0; border-bottom:1px solid rgba(237,234,228,.06); }
+  .admin td::before { content:attr(data-label); font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--color-argent); flex-shrink:0; }
+  .admin td:first-child { word-break:break-all; }
+  .admin td:last-child { display:block; border-bottom:0; padding-top:12px; }
+  .admin td:last-child::before { display:none; }
+  .admin .action { flex:1 1 auto; justify-content:center; }
+}
+@media (max-width:480px) {
+  .admin .mini { flex:1 1 auto; justify-content:center; }
+  .admin pre { font-size:13px; max-height:240px; }
+}
 .menu-voile { position: fixed; inset: 76px 0 0; z-index: 35; border: 0; background: rgba(11,13,18,.46); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .18s; }
 @media (max-width: 1279px) {
   body:has([data-menu][open]) .menu-voile { opacity: 1; visibility: visible; pointer-events: auto; }

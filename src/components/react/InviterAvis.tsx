@@ -162,8 +162,8 @@ export default function InviterAvis() {
     <div className="admin">
       <div className="compte">
         <span className="pastille">{(user?.email ?? '?').charAt(0).toUpperCase()}</span>
-        <div className="min-w-0"><div className="text-[14px] font-medium text-etoile">Administrateur</div><div className="font-mono text-[11px] text-argent">{user?.email}</div></div>
-        <button type="button" className="ml-auto font-mono text-[11px] text-cuivre-clair underline underline-offset-4" onClick={deconnexion}>se déconnecter</button>
+        <div className="min-w-0"><div className="text-[14px] font-medium text-etoile">Administrateur</div><div className="courriel font-mono text-[11px] text-argent">{user?.email}</div></div>
+        <button type="button" className="action neutre ml-auto shrink-0" onClick={deconnexion}>Déconnexion</button>
       </div>
 
       <form className="depot" onSubmit={generer} noValidate>
@@ -203,14 +203,14 @@ export default function InviterAvis() {
             <thead><tr><th>Client</th><th>Dossier</th><th>Créée</th><th>Expire</th><th>État</th><th></th></tr></thead>
             <tbody>{invitations.map((i) => { const etat = etatDe(i); return (
               <tr key={i.jeton}>
-                <td>{i.email_client}</td><td className="text-argent">{i.dossier ?? '—'}</td><td className="donnee">{dateFr(i.cree_le)}</td><td className="donnee">{dateFr(i.expire_le)}</td>
-                <td><span className={`etat ${etat === 'utilisé' ? 'ok' : etat === 'en attente' ? 'attente' : ''}`}>{etat}</span></td>
-                <td className="whitespace-nowrap">{etat === 'en attente' && <>
-                  <button type="button" className="font-mono text-[11px] text-cuivre-clair underline underline-offset-4 mr-3" onClick={async () => signaler(await copier(lienDe('fr', i.jeton)), 'Lien FR')}>lien FR</button>
-                  <button type="button" className="font-mono text-[11px] text-cuivre-clair underline underline-offset-4 mr-3" onClick={async () => signaler(await copier(lienDe('en', i.jeton)), 'Lien EN')}>lien EN</button>
-                  <button type="button" className="font-mono text-[11px] text-argent underline underline-offset-4 mr-3" onClick={() => annuler(i.jeton)}>annuler</button></>}
-                  {etat === 'expiré' && <button type="button" className="font-mono text-[11px] text-cuivre-clair underline underline-offset-4" onClick={() => prolonger(i.jeton)}>prolonger 60 j</button>}
-                </td>
+                <td data-label="Client">{i.email_client}</td><td data-label="Dossier" className="text-argent">{i.dossier ?? '—'}</td><td data-label="Créée" className="donnee">{dateFr(i.cree_le)}</td><td data-label="Expire" className="donnee">{dateFr(i.expire_le)}</td>
+                <td data-label="État"><span className={`etat ${etat === 'utilisé' ? 'ok' : etat === 'en attente' ? 'attente' : ''}`}>{etat}</span></td>
+                <td data-label="Actions"><div className="actions">{etat === 'en attente' && <>
+                  <button type="button" className="action" onClick={async () => signaler(await copier(lienDe('fr', i.jeton)), 'Lien FR')}>Copier lien FR</button>
+                  <button type="button" className="action" onClick={async () => signaler(await copier(lienDe('en', i.jeton)), 'Lien EN')}>Copier lien EN</button>
+                  <button type="button" className="action neutre" onClick={() => annuler(i.jeton)}>Annuler</button></>}
+                  {etat === 'expiré' && <button type="button" className="action" onClick={() => prolonger(i.jeton)}>Prolonger 60 j</button>}
+                </div></td>
               </tr>); })}</tbody>
           </table></div>
         )}

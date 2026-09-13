@@ -110,7 +110,7 @@ create trigger t_marquer_invitation after insert on avis
 Modération : dans le tableau `avis` (Supabase Studio), passer `statut` de `en_attente` à `publie`
 (ou `refuse`). Seuls les avis `publie` apparaissent sur le site.
 
-## 3 bis. Page privée du cabinet — `/avis/inviter`
+## 3 bis. Page privée du cabinet — `/avis/inviter` (interface anglaise : `/en/avis/inviter`)
 
 Génère les invitations (jeton + lien + e-mail prêt), suit leur état et modère les avis.
 Accès : connexion Google + compte présent dans `administrateurs`. Exécuter une fois :

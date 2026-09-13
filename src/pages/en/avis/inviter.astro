@@ -1,0 +1,21 @@
+---
+/* Private firm page (English UI): review invitations, tracking and moderation.
+   Not indexed, not linked from the navigation. */
+import Base from '../../../layouts/Base.astro';
+import InviterAvis from '../../../components/react/InviterAvis';
+---
+
+<Base noindex title="Client review invitations | PEAK FUNDING" description="Private firm area: review invitations and moderation.">
+  <section class="contenu section">
+    <nav aria-label="Breadcrumb" class="eyebrow normal-case tracking-normal"><a href="/en/" class="hover:text-encre">Home</a> <span aria-hidden="true">/</span> Firm area</nav>
+    <div class="mx-auto mt-10 max-w-[880px]">
+      <p class="eyebrow">Firm area · Private</p>
+      <h1 class="display mt-3">Review invitations</h1>
+      <p class="corps mt-5 max-w-xl text-[18px]">Generate a client’s personal link once their funds are released, get the ready-to-send e-mail, track invitations and validate incoming reviews.</p>
+      <div class="sombre mt-8 rounded-donnee border border-filet p-4 sm:p-6 lg:p-8">
+        <InviterAvis client:only="react" lang="en" />
+        <noscript><p class="corps">JavaScript is required for this area.</p></noscript>
+      </div>
+    </div>
+  </section>
+</Base>

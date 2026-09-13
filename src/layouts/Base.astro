@@ -8,8 +8,8 @@ import Footer from '../components/Footer.astro';
 import RendezVousModal from '../components/react/RendezVousModal';
 import { langCourante, urlAutreLangue, t } from '../i18n';
 
-interface Props { title: string; description: string; heros?: boolean; image?: string; clientRouting?: boolean }
-const { title, description, heros = false, image = '/img/hero-1600.webp', clientRouting = true } = Astro.props;
+interface Props { title: string; description: string; heros?: boolean; image?: string; clientRouting?: boolean; noindex?: boolean }
+const { title, description, heros = false, image = '/img/hero-1600.webp', clientRouting = true, noindex = false } = Astro.props;
 const lang = langCourante(Astro.currentLocale);
 const tr = t(lang);
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -24,6 +24,7 @@ const autre = lang === 'fr' ? 'en' : 'fr';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang={lang} href={canonical} />
     <link rel="alternate" hreflang={autre} href={urlAutre} />

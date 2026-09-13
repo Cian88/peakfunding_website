@@ -1,0 +1,21 @@
+---
+/* Page privée du cabinet : génération des invitations à déposer un avis,
+   suivi et modération. Non indexée, non reliée à la navigation. */
+import Base from '../../layouts/Base.astro';
+import InviterAvis from '../../components/react/InviterAvis';
+---
+
+<Base noindex title="Invitations avis clients | PEAK FUNDING" description="Espace privé du cabinet : invitations à déposer un avis et modération.">
+  <section class="contenu section">
+    <nav aria-label="Fil d’Ariane" class="eyebrow normal-case tracking-normal"><a href="/" class="hover:text-encre">Accueil</a> <span aria-hidden="true">/</span> Espace cabinet</nav>
+    <div class="mx-auto mt-10 max-w-[880px]">
+      <p class="eyebrow">Espace cabinet · Privé</p>
+      <h1 class="display mt-3">Invitations à déposer un avis</h1>
+      <p class="corps mt-5 max-w-xl text-[18px]">Générez le lien personnel d’un client après le déblocage de ses fonds, récupérez l’e-mail prêt à envoyer, suivez les invitations et validez les avis reçus.</p>
+      <div class="sombre mt-10 rounded-donnee border border-filet p-6 sm:p-8">
+        <InviterAvis client:only="react" />
+        <noscript><p class="corps">JavaScript est nécessaire pour cet espace.</p></noscript>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -9,7 +9,7 @@ const T = depotTextes(lang);
 const L = (p: string) => localiser(p, lang);
 ---
 
-<Base title={T.meta_titre} description={T.meta_desc}>
+<Base noindex title={T.meta_titre} description={T.meta_desc}>
   <section class="contenu section">
     <nav aria-label="Breadcrumb" class="eyebrow normal-case tracking-normal"><a href={L('/')} class="hover:text-encre">{T.fil_accueil}</a> <span aria-hidden="true">/</span> {T.fil_page}</nav>
     <div class="mx-auto mt-10 max-w-[760px]">

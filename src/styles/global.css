@@ -361,6 +361,20 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 .depot .succes { text-align:center; display:grid; gap:14px; justify-items:center; padding-block:12px; }
 .depot .succes .rond { width:62px; height:62px; border-radius:50%; background:rgba(127,176,138,.14); color:#7fb08a; display:grid; place-items:center; }
 .depot .succes .rond svg { width:30px; height:30px; }
+/* page privée d'invitation (InviterAvis) */
+.admin { display:grid; gap:28px; }
+.admin .compte { display:flex; align-items:center; gap:10px; background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:10px 12px; }
+.admin .compte .pastille { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-weight:600; font-size:13px; color:#fff; background:#8a5a3c; flex-shrink:0; }
+.admin .tableau { overflow-x:auto; }
+.admin table { width:100%; border-collapse:collapse; font-size:13px; }
+.admin th { text-align:left; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--color-argent); padding:8px 10px; border-bottom:1px solid var(--color-filet); font-weight:500; }
+.admin td { padding:10px; border-bottom:1px solid var(--color-filet); vertical-align:top; color:var(--color-etoile); }
+.admin .etat { font-family:var(--font-mono); font-size:10.5px; border:1px solid var(--color-filet); border-radius:var(--radius-pill); padding:2px 8px; color:var(--color-argent); white-space:nowrap; }
+.admin .etat.ok { color:#7fb08a; border-color:rgba(127,176,138,.4); }
+.admin .etat.attente { color:var(--color-cuivre-clair); border-color:rgba(184,123,79,.4); }
+.admin .lien { font-family:var(--font-mono); font-size:12.5px; word-break:break-all; color:var(--color-cuivre-clair); background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:10px 12px; }
+.admin pre { white-space:pre-wrap; font-family:var(--font-sans); font-size:13.5px; line-height:1.5; color:var(--color-etoile); background:var(--color-abime); border:1px solid var(--color-filet); border-radius:var(--radius-donnee); padding:14px; margin:0; max-height:300px; overflow:auto; }
+.admin .mini { height:38px; padding:0 16px; font-size:13px; }
 .menu-voile { position: fixed; inset: 76px 0 0; z-index: 35; border: 0; background: rgba(11,13,18,.46); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .18s; }
 @media (max-width: 1279px) {
   body:has([data-menu][open]) .menu-voile { opacity: 1; visibility: visible; pointer-events: auto; }

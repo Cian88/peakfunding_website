@@ -110,6 +110,42 @@ create trigger t_marquer_invitation after insert on avis
 Modération : dans le tableau `avis` (Supabase Studio), passer `statut` de `en_attente` à `publie`
 (ou `refuse`). Seuls les avis `publie` apparaissent sur le site.
 
+## 3 bis. Page privée du cabinet — `/avis/inviter`
+
+Génère les invitations (jeton + lien + e-mail prêt), suit leur état et modère les avis.
+Accès : connexion Google + compte présent dans `administrateurs`. Exécuter une fois :
+
+```sql
+-- Comptes autorisés (adresse du compte Google utilisé pour se connecter)
+create table if not exists administrateurs (
+  email     text primary key,
+  ajoute_le timestamptz not null default now()
+);
+alter table administrateurs enable row level security;   -- aucune règle : illisible de l'extérieur
+
+-- Test d'appartenance, security definer (même raison que jeton_valide)
+create or replace function est_administrateur() returns boolean
+language sql security definer stable as $$
+  select exists (
+    select 1 from administrateurs
+    where lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+  );
+$$;
+grant execute on function est_administrateur() to authenticated;
+
+-- Droits des administrateurs
+create policy "admin_lit_invitations"    on invitations for select to authenticated using (est_administrateur());
+create policy "admin_cree_invitations"   on invitations for insert to authenticated with check (est_administrateur());
+create policy "admin_modifie_invitations" on invitations for update to authenticated using (est_administrateur()) with check (est_administrateur());
+create policy "admin_lit_avis"           on avis for select to authenticated using (est_administrateur());
+create policy "admin_modere_avis"        on avis for update to authenticated using (est_administrateur()) with check (est_administrateur());
+
+-- Vos comptes (un par ligne)
+insert into administrateurs (email) values ('compte.google.de.valentin@gmail.com'), ('compte.google.de.maxime@gmail.com');
+```
+
+Pour ajouter/retirer un administrateur ensuite : Table Editor → `administrateurs`.
+
 ## 4. Flux du lien d'invitation
 
 1. Après déblocage des fonds, le cabinet insère une ligne dans `invitations`

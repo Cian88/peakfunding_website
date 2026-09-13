@@ -1,20 +1,34 @@
 ---
 /* Section « Avis clients » — direction « Mur vivant ».
-   La coque (section, filet de chapitre) est rendue ici ; le contenu est l'îlot
-   React MurAvis : état « à venir » au rendu serveur (aucun avis fictif), puis
-   lecture en direct de Supabase. Styles dans global.css (bloc « Avis clients »).
+   Les avis publiés sont lus AU BUILD depuis la vue publique Supabase et rendus
+   côté serveur (pas de basculement de mise en page après chargement, contenu
+   visible des moteurs). L'îlot MurAvis relit ensuite la vue en direct et ne
+   met à jour l'affichage que si la liste a changé. Sans avis : état « à venir ».
    Activation et schéma : docs/avis-clients-supabase.md */
 import MurAvis from './react/MurAvis';
+import type { AvisPublic } from '../lib/supabase';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../data/integrations';
 import { langCourante, localiser } from '../i18n';
 
 const lang = langCourante(Astro.currentLocale);
 const L = (p: string) => localiser(p, lang);
+
+let initial: AvisPublic[] = [];
+try {
+  const reponse = await fetch(`${SUPABASE_URL}/rest/v1/avis_publics?select=*&order=date.desc&limit=60`, {
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+    signal: AbortSignal.timeout(8000),
+  });
+  if (reponse.ok) initial = (await reponse.json()) as AvisPublic[];
+} catch {
+  /* Réseau indisponible au build : l'îlot chargera les avis en direct. */
+}
 ---
 
 <section id="avis" class="sombre section-sombre scroll-mt-16">
   <div class="grille"></div>
   <div class="contenu relative">
     <div class="chapitre-filet reveal" aria-hidden="true"></div>
-    <MurAvis client:load lang={lang} rdvHref={L('/#rdv')} />
+    <MurAvis client:load lang={lang} rdvHref={L('/#rdv')} initial={initial} />
   </div>
 </section>

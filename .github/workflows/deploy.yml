@@ -6,6 +6,10 @@ on:
     branches: [main]
   # Permet aussi un déclenchement manuel depuis l'onglet Actions
   workflow_dispatch:
+  # Reconstruction quotidienne (06:00 UTC) : fige dans la page les avis
+  # clients publiés depuis le dernier déploiement
+  schedule:
+    - cron: '0 6 * * *'
 
 # Permissions requises pour publier sur GitHub Pages
 permissions:

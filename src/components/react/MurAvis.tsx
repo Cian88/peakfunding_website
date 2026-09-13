@@ -29,10 +29,20 @@ function Etoiles({ n, lg = false }: { n: number; lg?: boolean }) {
   );
 }
 
+/* Formatage sans Intl : le HTML rendu au build doit être identique au premier
+   rendu navigateur (sinon React re-rend l'îlot et la page bouge). */
+const MOIS = {
+  fr: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+};
+const grouper = (n: number, sep: string) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+const fmtMontant = (n: number, lang: Lang) => lang === 'fr' ? `${grouper(n, ' ')} €` : `€${grouper(n, ',')}`;
+const fmtDate = (iso: string, lang: Lang) => { const [an, mois] = iso.split('-'); const m = MOIS[lang][Number(mois) - 1] ?? ''; return lang === 'fr' ? `${m} ${an}` : `${m} ${an}`; };
+
 function Chip({ a, lang }: { a: AvisPublic; lang: Lang }) {
   const t = murTextes(lang);
-  const montant = lang === 'fr' ? `${a.montant.toLocaleString('fr-FR')} €` : `€${a.montant.toLocaleString('en-GB')}`;
-  const date = new Date(`${a.date}T00:00:00Z`).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+  const montant = fmtMontant(a.montant, lang);
+  const date = fmtDate(a.date, lang);
   return (
     <article className="chip">
       <div className="chip-tete">
@@ -56,20 +66,25 @@ function Chip({ a, lang }: { a: AvisPublic; lang: Lang }) {
   );
 }
 
-export default function MurAvis({ lang = 'fr', rdvHref }: { lang?: Lang; rdvHref: string }) {
+export default function MurAvis({ lang = 'fr', rdvHref, initial = [] }: { lang?: Lang; rdvHref: string; initial?: AvisPublic[] }) {
   const t = murTextes(lang);
-  const [avis, setAvis] = useState<AvisPublic[] | null>(null);
+  // Les avis lus au build sont rendus côté serveur ; la relecture en direct ne
+  // remplace la liste que si elle a changé, pour ne jamais déplacer la page.
+  const [avis, setAvis] = useState<AvisPublic[]>(initial);
 
   useEffect(() => {
     let actif = true;
     import('../../lib/supabase')
       .then((m) => m.chargerAvisPublics())
-      .then((rows) => { if (actif) setAvis(rows); })
-      .catch(() => { if (actif) setAvis([]); });
+      .then((rows) => {
+        if (!actif) return;
+        setAvis((courants) => rows.map((r) => r.id).join() === courants.map((r) => r.id).join() ? courants : rows);
+      })
+      .catch(() => {});
     return () => { actif = false; };
   }, []);
 
-  const liste = avis ?? [];
+  const liste = avis;
   const total = liste.length;
 
   const [carte, setCarte] = useState<Carte | null>(null);

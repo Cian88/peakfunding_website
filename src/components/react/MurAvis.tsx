@@ -95,7 +95,10 @@ export default function MurAvis({ lang = 'fr', rdvHref, initial = [] }: { lang?:
     return () => { actif = false; };
   }, [total, carte]);
 
-  const { moyenne, distribution, pins, colonnes, defile } = useMemo(() => {
+  // Mobile / tablette : 5 avis visibles, puis « Voir plus » par lots de 5.
+  const [visibles, setVisibles] = useState(5);
+
+  const { moyenne, distribution, pins, colonnes } = useMemo(() => {
     const moyenne = total ? liste.reduce((s, a) => s + a.note, 0) / total : 0;
     const distribution = [5, 4, 3, 2, 1].map((n) => ({ n, pct: total ? Math.round((liste.filter((a) => a.note === n).length / total) * 100) : 0 }));
     const parVille: Record<string, { ville: string; n: number; lat: number; lng: number }> = {};
@@ -104,13 +107,17 @@ export default function MurAvis({ lang = 'fr', rdvHref, initial = [] }: { lang?:
       parVille[a.ville] ??= { ville: a.ville, n: 0, lat: a.lat, lng: a.lng };
       parVille[a.ville].n += 1;
     }
-    const colonnes: AvisPublic[][] = [[], [], []];
-    liste.forEach((a, i) => colonnes[i % 3].push(a));
-    return { moyenne, distribution, pins: Object.values(parVille), colonnes, defile: total >= 6 };
+    // Bureau : trois colonnes. Avec peu d'avis, chaque colonne déroule toute la
+    // liste décalée d'un cran (mur vivant même à 3 avis) ; à partir de 9, on partage.
+    const colonnes: AvisPublic[][] = total >= 9
+      ? liste.reduce<AvisPublic[][]>((acc, a, i) => { acc[i % 3].push(a); return acc; }, [[], [], []])
+      : [0, 1, 2].map((ci) => liste.map((_, i) => liste[(i + ci) % total]));
+    return { moyenne, distribution, pins: Object.values(parVille), colonnes };
   }, [liste, total]);
 
   const moyenneTexte = moyenne.toFixed(1).replace('.', lang === 'fr' ? ',' : '.');
   const durees = ['52s', '64s', '58s'];
+  const decalages = ['0s', '-21s', '-9s'];
 
   return (
     <>
@@ -182,14 +189,24 @@ export default function MurAvis({ lang = 'fr', rdvHref, initial = [] }: { lang?:
           </div>
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
             <span className="pill-invitation">{t.invitation}</span>
-            {defile && <span className="donnee text-[11px] text-brume">↕ {t.astuce}</span>}
+            <span className="seulement-bureau donnee text-[11px] text-brume">↕ {t.astuce}</span>
           </div>
-          <div className={`mur mt-6${defile ? ' defile' : ''}`}>
-            {colonnes.map((col, ci) => col.length > 0 && (
+
+          {/* Mobile / tablette (et animations réduites) : liste, 5 avis puis « Voir plus » */}
+          <div className="mur-liste mt-6">
+            {liste.slice(0, visibles).map((a) => <Chip key={a.id} a={a} lang={lang} />)}
+            {visibles < total && (
+              <button type="button" className="btn-fantome voir-plus" onClick={() => setVisibles((v) => v + 5)}>{t.voir_plus} <span className="donnee text-[12px] text-argent">({total - visibles})</span></button>
+            )}
+          </div>
+
+          {/* Bureau : mur en trois colonnes, défilement autonome et désynchronisé */}
+          <div className="mur mt-6" aria-hidden="true">
+            {colonnes.map((col, ci) => (
               <div className="colonne" key={ci}>
-                <div className="piste" style={{ ['--duree' as string]: durees[ci] }}>
-                  {col.map((a) => <Chip key={a.id} a={a} lang={lang} />)}
-                  {defile && <div className="doublon contents" aria-hidden="true">{col.map((a) => <Chip key={`d-${a.id}`} a={a} lang={lang} />)}</div>}
+                <div className="piste" style={{ ['--duree' as string]: durees[ci], ['--decalage' as string]: decalages[ci] }}>
+                  {col.map((a, i) => <Chip key={`${ci}-${i}-${a.id}`} a={a} lang={lang} />)}
+                  <div className="doublon contents">{col.map((a, i) => <Chip key={`d-${ci}-${i}-${a.id}`} a={a} lang={lang} />)}</div>
                 </div>
               </div>
             ))}

@@ -43,6 +43,7 @@ const murFr = {
   carte_note: 'Localisation à la ville, jamais l’adresse exacte.',
   verifie: 'Vérifié',
   astuce: 'Le mur défile — survolez pour le figer',
+  voir_plus: 'Voir plus d’avis',
 };
 const murEn: typeof murFr = {
   eyebrow: 'Client reviews · Verified',
@@ -64,6 +65,7 @@ const murEn: typeof murFr = {
   carte_note: 'City-level location, never the exact address.',
   verifie: 'Verified',
   astuce: 'The wall scrolls — hover to pause',
+  voir_plus: 'Show more reviews',
 };
 export const murTextes = (lang: Lang) => (lang === 'en' ? murEn : murFr);
 

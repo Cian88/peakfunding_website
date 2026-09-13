@@ -318,14 +318,21 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 #avis .pin-svg .halo { fill:var(--color-cuivre); animation:avis-pulse 2.6s ease-out infinite; transform-box:fill-box; transform-origin:center; }
 #avis .pin-svg .lab { font-family:var(--font-mono); font-size:26px; fill:var(--color-etoile); stroke:#0f1219; stroke-width:8; paint-order:stroke; }
 @keyframes avis-pulse { 0% { transform:scale(1); opacity:.5; } 70%,100% { transform:scale(3.2); opacity:0; } }
-#avis .mur { display:grid; gap:16px; grid-template-columns:1fr; }
-@media (min-width:640px) { #avis .mur { grid-template-columns:1fr 1fr; } }
-@media (min-width:980px) { #avis .mur { grid-template-columns:repeat(3,1fr); } }
-#avis .mur.defile { max-height:720px; overflow:hidden; -webkit-mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent); mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent); }
+/* Mobile / tablette : liste (5 avis puis « Voir plus »). Bureau : mur défilant. Le CSS
+   choisit dès le premier affichage — les deux variantes sont dans la page, aucun saut. */
+#avis .mur-liste { display:grid; gap:16px; grid-template-columns:1fr; }
+@media (min-width:640px) { #avis .mur-liste { grid-template-columns:1fr 1fr; } }
+#avis .mur-liste .voir-plus { grid-column:1 / -1; justify-self:center; gap:10px; }
+#avis .seulement-bureau { display:none; }
+#avis .mur { display:none; gap:16px; grid-template-columns:repeat(3,1fr); max-height:720px; overflow:hidden; -webkit-mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent); mask-image:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent); }
+@media (min-width:980px) and (prefers-reduced-motion:no-preference) {
+  #avis .mur-liste { display:none; }
+  #avis .mur { display:grid; }
+  #avis .seulement-bureau { display:inline; }
+}
 #avis .colonne { overflow:hidden; }
-#avis .piste { display:flex; flex-direction:column; gap:16px; }
-#avis .mur.defile .piste { animation:avis-defile var(--duree,52s) linear infinite; will-change:transform; }
-#avis .mur.defile .colonne:hover .piste { animation-play-state:paused; }
+#avis .piste { display:flex; flex-direction:column; gap:16px; animation:avis-defile var(--duree,52s) linear infinite; animation-delay:var(--decalage,0s); will-change:transform; }
+#avis .colonne:hover .piste { animation-play-state:paused; }
 @keyframes avis-defile { from { transform:translateY(0); } to { transform:translateY(-50%); } }
 #avis .chip { background:linear-gradient(180deg,var(--color-ardoise),#0f1219); border:1px solid var(--color-filet); border-radius:var(--radius-carte); padding:18px; display:flex; flex-direction:column; gap:11px; transition:border-color .2s; }
 #avis .chip:hover { border-color:var(--color-cuivre); }
@@ -342,7 +349,7 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 #avis .chip-bas { display:flex; flex-wrap:wrap; gap:6px; }
 #avis .tag { font-family:var(--font-mono); font-size:10px; color:var(--color-argent); border:1px solid var(--color-filet); border-radius:var(--radius-pill); padding:3px 9px; }
 #avis .tag.projet { color:var(--color-cuivre-clair); border-color:rgba(184,123,79,.35); }
-@media (prefers-reduced-motion:reduce) { #avis .pin-svg .halo { display:none; } #avis .mur.defile { max-height:none; -webkit-mask-image:none; mask-image:none; } #avis .mur.defile .piste { animation:none; } #avis .mur .doublon { display:none; } }
+@media (prefers-reduced-motion:reduce) { #avis .pin-svg .halo { display:none; } }
 .depot { display:grid; grid-template-columns:minmax(0,1fr); gap:16px; min-width:0; }
 .depot > *, .depot .compte, .depot .compte > * { min-width:0; }
 .depot .compte .em { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }

@@ -1,0 +1,43 @@
+name: Déploiement GitHub Pages
+
+on:
+  # Déploie à chaque push sur la branche principale
+  push:
+    branches: [main]
+  # Permet aussi un déclenchement manuel depuis l'onglet Actions
+  workflow_dispatch:
+
+# Permissions requises pour publier sur GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un seul déploiement à la fois, sans annuler celui en cours
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Construire le site Astro
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+      - name: Installer, builder et uploader le site
+        uses: withastro/action@v3
+        # withastro/action détecte npm, exécute `npm ci` + `npm run build`
+        # et téléverse automatiquement le dossier `dist` comme artefact Pages.
+
+  deploy:
+    name: Publier sur GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Déployer l'artefact
+        id: deployment
+        uses: actions/deploy-pages@v4

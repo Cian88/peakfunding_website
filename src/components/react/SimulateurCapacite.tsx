@@ -15,7 +15,10 @@ import type { Lang } from '../../i18n';
  * assurance du 1er mois : emprunt = mensualité max / (facteur d'annuité + a),
  * avec a = taux effectif × quotité totale / 12.
  */
-const TAUX_ENDETTEMENT = 35;
+/* Règle HCSF : 35 % d'effort maximal assurance emprunteur incluse ;
+   sans assurance prise en compte, le plafond retenu est de 33 %. */
+const TAUX_ENDETTEMENT_AVEC_ASSURANCE = 35;
+const TAUX_ENDETTEMENT_SANS_ASSURANCE = 33;
 const TAUX_DEFAUT = 3.5;
 const TAUX_ASSURANCE_DEFAUT = 0.3;
 const COEF_GARANTIES = { complete: 1, minimale: 0.6 } as const;
@@ -51,7 +54,12 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
   const changerQuotite = (i: number, v: number) => setQuotites((q) => q.map((x, j) => (j === i ? v : x)));
 
   const r = useMemo(() => {
-    const endett = TAUX_ENDETTEMENT / 100;
+    const quotiteTotale = quotites.reduce((s, q) => s + q, 0);           // en %
+    const tauxEffectif = tauxAss * COEF_GARANTIES[garanties];            // % annuel
+    const a = (tauxEffectif / 100) * (quotiteTotale / 100) / 12;         // prime mensuelle par € emprunté (1er mois)
+    const avecAssurance = a > 0;
+    const plafond = avecAssurance ? TAUX_ENDETTEMENT_AVEC_ASSURANCE : TAUX_ENDETTEMENT_SANS_ASSURANCE;
+    const endett = plafond / 100;
     const loyersRetenus = projet === 'loc' ? (loyers || 0) * (ponderationLoyers / 100) : 0;
     const autresRet = (autresRevenus || 0) * (ponderation / 100);
     const revenusTotaux = (revenus || 0) + loyersRetenus + autresRet;
@@ -59,9 +67,6 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
     const t = taux / 100 / 12;
     const n = duree * 12;
     const fa = t > 0 ? t / (1 - Math.pow(1 + t, -n)) : 1 / n;            // facteur d'annuité mensuel
-    const quotiteTotale = quotites.reduce((s, q) => s + q, 0);           // en %
-    const tauxEffectif = tauxAss * COEF_GARANTIES[garanties];            // % annuel
-    const a = (tauxEffectif / 100) * (quotiteTotale / 100) / 12;         // prime mensuelle par € emprunté (1er mois)
     const emprunt = mensuMax / (fa + a);
     const mensuCredit = emprunt * fa;
     const assuranceMois = emprunt * a;
@@ -72,7 +77,7 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
     const capacite = Math.round((emprunt + (apport || 0)) / 5000) * 5000;
     const tauxEndet = revenusTotaux > 0 ? (((charges || 0) + mensuMax) / revenusTotaux) * 100 : 0;
     const resteAVivre = Math.max(0, revenusTotaux - (charges || 0) - mensuMax);
-    return { capacite, mensuMax, mensuCredit, assuranceMois, coutAssurance, coutInterets, tauxEffectif, quotiteTotale, tauxEndet: pc(tauxEndet, 1), resteAVivre };
+    return { capacite, mensuMax, mensuCredit, assuranceMois, coutAssurance, coutInterets, tauxEffectif, quotiteTotale, plafond, avecAssurance, tauxEndet: pc(tauxEndet, 1), resteAVivre };
   }, [projet, revenus, apport, loyers, duree, autresRevenus, ponderation, ponderationLoyers, charges, taux, tauxAss, modeAss, garanties, quotites, lang]);
 
   // La bordure du résultat s'allume à chaque changement (400 ms), puis s'éteint.
@@ -190,7 +195,7 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
         <span className="text-[14px] text-argent">≈ {fmt(r.mensuCredit)} {S.credit_mois} + {fmt(r.assuranceMois)} {S.assurance_mois} = <span className="text-etoile">{fmt(r.mensuMax)}</span>{S.par_mois} · {duree} {S.ans}</span>
         <span className="font-mono text-[12.5px] text-argent">{S.res_taux} <span className="text-cuivre-clair">{pc(taux)} %</span> · {S.res_interets} <span className="text-cuivre-clair">{fmt(r.coutInterets)}</span></span>
         <span className="font-mono text-[12.5px] text-argent">{S.res_assurance} <span className="text-cuivre-clair">{pc(r.tauxEffectif)} %</span> ({garanties === 'complete' ? S.g_complete : S.g_min}, {S.quotite_totale} {r.quotiteTotale} %, {modeAss === 'lineaire' ? S.lineaire_court : S.crd_court}) · {S.res_cout_assurance} <span className="text-cuivre-clair">{fmt(r.coutAssurance)}</span></span>
-        <span className="font-mono text-[12.5px] text-argent">{S.endettement} <span className="text-cuivre-clair">{r.tauxEndet} %</span> ({S.max} {TAUX_ENDETTEMENT} % HCSF) · {S.reste} <span className="text-cuivre-clair">{fmt(r.resteAVivre)}</span></span>
+        <span className="font-mono text-[12.5px] text-argent">{S.endettement} <span className="text-cuivre-clair">{r.tauxEndet} %</span> ({S.max} {r.plafond} % HCSF{r.avecAssurance ? '' : ` ${S.sans_assurance}`}) · {S.reste} <span className="text-cuivre-clair">{fmt(r.resteAVivre)}</span></span>
         <a href="#rdv" className="btn-cuivre mt-2 h-11 justify-self-start px-6 text-[14px]">{S.cta}</a>
         <span className="font-mono text-[11px] leading-relaxed text-argent">{S.avert}</span>
       </div>

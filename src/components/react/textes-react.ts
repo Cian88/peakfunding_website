@@ -220,6 +220,7 @@ export const simulateur = {
     res_interets: 'coût total des intérêts :',
     res_assurance: 'Assurance :',
     res_cout_assurance: 'coût total :',
+    sans_assurance: 'hors assurance',
   },
   en: {
     projet: 'Your project',
@@ -273,6 +274,7 @@ export const simulateur = {
     res_interets: 'total interest:',
     res_assurance: 'Insurance:',
     res_cout_assurance: 'total cost:',
+    sans_assurance: 'excluding insurance',
   },
 } as const;
 

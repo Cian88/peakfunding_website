@@ -92,7 +92,7 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
         <p class="corps max-w-md text-[17px] font-light">{u.sim_texte}</p>
       </div>
       <div class="simulator-panel surface-claire reveal mt-12">
-        <div class="simulateur-observatoire"><ObservatoireWidget client:visible /></div>
+        <div class="simulateur-observatoire"><ObservatoireWidget client:visible lang={lang} /></div>
         <SimulateurCapacite client:visible lang={lang} />
       </div>
     </div>

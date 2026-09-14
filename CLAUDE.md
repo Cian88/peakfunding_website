@@ -138,7 +138,7 @@ Sections : `.sombre` (+ `<div class="grille">`) ou `.clair`, avec `.section-somb
 
 **Mouvement** : entrées de section (`.reveal`, `.reveal-groupe`), pictogrammes qui se tracent (`.trace`), parallaxe du héros et givrage de l'en-tête sont des **animations CSS pilotées par le défilement** (`animation-timeline: view()/scroll()`), donc visibles sans JavaScript et déterministes. `src/scripts/motion.ts` ne gère que les compteurs (`[data-compte]`, logique v1) et la méthode épinglée (`[data-etape]`, `[data-onglet]`, `[data-rail]`). Tout respecte `prefers-reduced-motion`.
 
-**Contraintes dures** : `SimulateurCapacite.tsx` reproduit la mécanique v1 à l'identique (taux 3,5 %, effort 35 %, loyers ×0,7, pondération 70/90, arrondi 5 000 €) ; `PriseRendezVous.tsx` reproduit le parcours v1 (2 étapes → Formspree `mykrggwk`/`xkjnbpod` selon le courtier, repli mailto → agendas Proton). Ne pas modifier sans demande explicite.
+**Contraintes dures** : `SimulateurCapacite.tsx` reproduit la mécanique v1 (taux 3,5 %, effort 35 %, arrondi 5 000 €, autres revenus existants pondérés 70/90 %) avec une évolution demandée le 2026-09-14 : les loyers attendus du projet sont eux aussi pondérables 70 %/90 % (défaut 70 %, norme HCSF) ; `PriseRendezVous.tsx` reproduit le parcours v1 (2 étapes → Formspree `mykrggwk`/`xkjnbpod` selon le courtier, repli mailto → agendas Proton). Ne pas modifier sans demande explicite.
 
 **Vérifier une section basse** : Edge headless + ancre est brouillé par le défilement animé. Créer temporairement `public/_verif.html` (iframe même origine sur `/`, script qui met `scroll-behavior:auto` et `scrollTo` l'ancre passée en `?a=`), capturer `http://localhost:4322/_verif.html?a=simulateur`, **puis supprimer le fichier** avant tout build/déploiement.
 

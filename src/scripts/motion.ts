@@ -89,6 +89,32 @@ export function demarrerMouvement() {
     if (item.open) menus.forEach(other => { if (other !== item) other.open = false; });
     synchroniserMenu();
   }, { signal }));
+  /* Défilement animé vers une ancre : courbe expo-out, durée selon la distance,
+     interrompu par le moindre geste de l'utilisateur, instantané en mouvement réduit.
+     (Animation maîtrisée plutôt que scrollIntoView({behavior:'smooth'}), que
+     certains navigateurs n'animent pas de façon fiable.) */
+  let annulerDefilement: (() => void) | null = null;
+  const defilerVers = (cible: HTMLElement) => {
+    annulerDefilement?.();
+    const marge = parseFloat(getComputedStyle(cible).scrollMarginTop) || 0;
+    const depart = scrollY;
+    const arrivee = Math.max(0, Math.min(cible.getBoundingClientRect().top + depart - marge, document.documentElement.scrollHeight - innerHeight));
+    const distance = arrivee - depart;
+    if (Math.abs(distance) < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) { scrollTo(0, arrivee); return; }
+    const duree = Math.min(900, Math.max(450, Math.abs(distance) * 0.35));
+    const debut = performance.now();
+    let frame = 0;
+    const stop = () => { cancelAnimationFrame(frame); ['wheel', 'touchstart', 'keydown'].forEach(t => removeEventListener(t, stop)); annulerDefilement = null; };
+    ['wheel', 'touchstart', 'keydown'].forEach(t => addEventListener(t, stop, { passive: true, once: true }));
+    annulerDefilement = stop;
+    const etape = (t: number) => {
+      const p = Math.min(1, (t - debut) / duree);
+      const e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);   // expo-out, comme --ease-expo
+      scrollTo(0, depart + distance * e);
+      if (p < 1) frame = requestAnimationFrame(etape); else stop();
+    };
+    frame = requestAnimationFrame(etape);
+  };
   document.addEventListener('click', event => {
     if (!(event.target instanceof Element)) return;
     const trigger = event.target.closest<HTMLAnchorElement>('a[href$="#rdv"], [data-rdv]');
@@ -97,6 +123,21 @@ export function demarrerMouvement() {
       // The hydrated dialog acknowledges the event; a hash keeps early clicks usable.
       const unhandled = window.dispatchEvent(new CustomEvent('ouvrir-rdv', { cancelable: true, detail: trigger }));
       if (unhandled) location.hash = 'rdv';
+    }
+    // Défilement fluide réservé aux clics sur une ancre de la page courante.
+    // (Pas de scroll-behavior:smooth sur <html> : il animait aussi les
+    // restaurations de position du navigateur, d'où des glissades sans action.)
+    const ancre = trigger ? null : event.target.closest<HTMLAnchorElement>('a[href*="#"]');
+    if (ancre && event.button === 0 && !(event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)) {
+      const url = new URL(ancre.href, location.href);
+      if (url.origin === location.origin && url.pathname === location.pathname && url.hash.length > 1) {
+        const cible = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+        if (cible) {
+          event.preventDefault();
+          defilerVers(cible);
+          history.pushState(null, '', url.hash);
+        }
+      }
     }
     menus.forEach(item => { if (item.open && (!item.contains(event.target as Node) || (event.target as Element).closest('a, [data-rdv]'))) item.open = false; });
   }, { signal });

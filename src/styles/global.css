@@ -313,7 +313,19 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 #avis .puce-verifie { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(127,176,138,.15); color:#7fb08a; }
 #avis .puce-verifie svg { width:11px; height:11px; }
 #avis .carte-france { position:relative; min-height:360px; height:100%; overflow:hidden; border:1px solid var(--color-filet); border-radius:var(--radius-donnee); background:repeating-linear-gradient(90deg,transparent 0 39px,rgba(237,234,228,.035) 39px 40px),repeating-linear-gradient(0deg,transparent 0 39px,rgba(237,234,228,.035) 39px 40px),radial-gradient(60% 140% at 50% 50%,rgba(184,123,79,.08),transparent 70%),#0f1219; }
-#avis .carte-france svg { position:absolute; inset:36px 14px 32px; width:calc(100% - 28px); height:calc(100% - 68px); }
+#avis .carte-france svg { position:absolute; inset:36px 14px 32px; width:calc(100% - 28px); height:calc(100% - 68px); cursor:grab; user-select:none; outline:none; }
+/* Tactile : à l'échelle 1, un doigt fait défiler la page (touch-action pan-y posé par le
+   composant) ; le pincement zoome ; une fois agrandie, un doigt déplace la carte. */
+#avis .carte-france svg.deplacement { cursor:grabbing; }
+#avis .carte-france svg:focus-visible { box-shadow:0 0 0 2px var(--color-cuivre); border-radius:8px; }
+/* Commandes de zoom : pilules sombres, en bas à gauche, au-dessus de la carte. */
+#avis .carte-zoom { position:absolute; z-index:3; left:14px; bottom:12px; display:flex; gap:6px; }
+#avis .carte-zoom button { width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--color-filet); border-radius:999px; background:rgba(15,18,25,.85); color:var(--color-etoile); font-family:var(--font-mono); font-size:15px; line-height:1; cursor:pointer; transition:border-color .2s, background .2s; }
+#avis .carte-zoom button:hover { border-color:var(--color-cuivre); background:rgba(184,123,79,.18); }
+#avis .carte-zoom button:focus-visible { outline:2px solid var(--color-cuivre); outline-offset:2px; }
+#avis .carte-zoom button:disabled { opacity:.35; cursor:default; }
+#avis .carte-zoom svg { position:static; width:14px; height:14px; cursor:inherit; }
+#avis .carte-aide { position:absolute; z-index:3; left:18px; top:32px; font-family:var(--font-mono); font-size:9.5px; color:var(--color-brume); }
 #avis .carte-france .departements path { fill:rgba(237,234,228,.05); stroke:rgba(237,234,228,.18); stroke-width:1.2; vector-effect:non-scaling-stroke; transition:fill .2s; }
 #avis .carte-france .departements path:hover { fill:rgba(184,123,79,.22); }
 #avis .carte-legende { position:absolute; z-index:3; left:18px; top:14px; font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--color-argent); }

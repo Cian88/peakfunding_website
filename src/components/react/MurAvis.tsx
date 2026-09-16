@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent as EvClavier, type PointerEvent as EvPointeur } from 'react';
 import type { Lang } from '../../i18n';
 import type { AvisPublic } from '../../lib/supabase';
 import { murTextes, projetsLibelles } from './textes-avis';
@@ -18,6 +18,139 @@ const GOOGLE = (
    scripts/generer-carte-france.mjs et chargés seulement quand il y a des avis. */
 type Carte = { projection: { minLng: number; maxLat: number; cos: number; s: number; w: number; h: number }; departements: { code: string; nom: string; d: string }[] };
 const projeter = (p: Carte['projection'], lat: number, lng: number) => ({ x: (lng - p.minLng) * p.cos * p.s, y: (p.maxLat - lat) * p.s });
+
+/* Carte zoomable et déplaçable : glisser (souris, doigt), Ctrl + molette ou pincement,
+   boutons + / − / recentrer, clavier (flèches, +, −, 0) quand la carte a le focus.
+   La molette seule continue de faire défiler la page. Les pins gardent leur taille
+   à l'écran (échelle inverse) ; le tracé des départements ne s'épaissit pas. */
+type Pin = { ville: string; n: number; lat: number; lng: number };
+type Vue = { k: number; x: number; y: number };
+const ZOOM_MIN = 1, ZOOM_MAX = 8;
+function CarteInteractive({ carte, pins, t }: { carte: Carte; pins: Pin[]; t: ReturnType<typeof murTextes> }) {
+  const { w, h } = carte.projection;
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [vue, setVue] = useState<Vue>({ k: 1, x: 0, y: 0 });
+  const [deplacement, setDeplacement] = useState(false);
+  const pointeurs = useRef(new Map<number, { x: number; y: number }>());
+  const pince = useRef<{ dist: number; vue: Vue; centre: { x: number; y: number } } | null>(null);
+  const glisse = useRef<{ x: number; y: number; vue: Vue } | null>(null);
+  const vueRef = useRef(vue);
+  vueRef.current = vue;
+
+  // Coordonnées écran → unités du viewBox (preserveAspectRatio meet géré par la CTM).
+  const versSvg = (cx: number, cy: number) => {
+    const svg = svgRef.current;
+    const m = svg?.getScreenCTM();
+    if (!svg || !m) return { x: 0, y: 0 };
+    const p = new DOMPoint(cx, cy).matrixTransform(m.inverse());
+    return { x: p.x, y: p.y };
+  };
+  const borner = (v: Vue): Vue => {
+    const k = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, v.k));
+    // La carte agrandie ne peut pas sortir entièrement du cadre.
+    const x = Math.min(w * 0.5, Math.max(-w * k + w * 0.5, v.x));
+    const y = Math.min(h * 0.5, Math.max(-h * k + h * 0.5, v.y));
+    return { k, x, y };
+  };
+  /** Zoom d'un facteur autour d'un point exprimé en unités du viewBox (écran fixe). */
+  const zoomer = (facteur: number, centre?: { x: number; y: number }, base: Vue = vueRef.current) => {
+    const c = centre ?? { x: w / 2, y: h / 2 };
+    const k = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, base.k * facteur));
+    const r = k / base.k;
+    setVue(borner({ k, x: c.x - (c.x - base.x) * r, y: c.y - (c.y - base.y) * r }));
+  };
+  const recentrer = () => setVue({ k: 1, x: 0, y: 0 });
+
+  // La molette est interceptée seulement avec Ctrl/⌘ (le pincement du pavé tactile
+  // arrive ainsi) : un écouteur natif non passif est nécessaire pour preventDefault.
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const surMolette = (e: WheelEvent) => {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      e.preventDefault();
+      const facteur = Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0025));
+      zoomer(facteur, versSvg(e.clientX, e.clientY));
+    };
+    svg.addEventListener('wheel', surMolette, { passive: false });
+    return () => svg.removeEventListener('wheel', surMolette);
+  }, [w, h]);
+
+  const surPointeurBas = (e: EvPointeur<SVGSVGElement>) => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    pointeurs.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointeurs.current.size === 2) {
+      const [a, b] = [...pointeurs.current.values()];
+      pince.current = { dist: Math.hypot(a.x - b.x, a.y - b.y), vue: vueRef.current, centre: versSvg((a.x + b.x) / 2, (a.y + b.y) / 2) };
+      glisse.current = null;
+    } else {
+      glisse.current = { x: e.clientX, y: e.clientY, vue: vueRef.current };
+      setDeplacement(true);
+    }
+  };
+  const surPointeurMouv = (e: EvPointeur<SVGSVGElement>) => {
+    if (!pointeurs.current.has(e.pointerId)) return;
+    pointeurs.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pince.current && pointeurs.current.size >= 2) {
+      const [a, b] = [...pointeurs.current.values()];
+      const dist = Math.hypot(a.x - b.x, a.y - b.y);
+      if (dist > 0) zoomer(dist / pince.current.dist, pince.current.centre, pince.current.vue);
+      return;
+    }
+    if (!glisse.current) return;
+    const svg = svgRef.current;
+    const m = svg?.getScreenCTM();
+    if (!svg || !m) return;
+    // Déplacement écran → unités du viewBox (même échelle en x et y grâce à « meet »).
+    const dx = (e.clientX - glisse.current.x) / m.a;
+    const dy = (e.clientY - glisse.current.y) / m.d;
+    setVue(borner({ ...glisse.current.vue, x: glisse.current.vue.x + dx, y: glisse.current.vue.y + dy }));
+  };
+  const surPointeurFin = (e: EvPointeur<SVGSVGElement>) => {
+    pointeurs.current.delete(e.pointerId);
+    if (pointeurs.current.size < 2) pince.current = null;
+    if (pointeurs.current.size === 0) { glisse.current = null; setDeplacement(false); }
+    else if (pointeurs.current.size === 1) { const [p] = [...pointeurs.current.values()]; glisse.current = { x: p.x, y: p.y, vue: vueRef.current }; }
+  };
+  const surClavier = (e: EvClavier<SVGSVGElement>) => {
+    const pas = 40 / vue.k;
+    const actions: Record<string, () => void> = {
+      '+': () => zoomer(1.4), '=': () => zoomer(1.4), '-': () => zoomer(1 / 1.4), '0': recentrer,
+      ArrowLeft: () => setVue(borner({ ...vue, x: vue.x + pas })), ArrowRight: () => setVue(borner({ ...vue, x: vue.x - pas })),
+      ArrowUp: () => setVue(borner({ ...vue, y: vue.y + pas })), ArrowDown: () => setVue(borner({ ...vue, y: vue.y - pas })),
+    };
+    const action = actions[e.key];
+    if (action) { e.preventDefault(); action(); }
+  };
+
+  const inv = 1 / vue.k;
+  return (
+    <>
+      <svg ref={svgRef} viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={t.carte_legende} tabIndex={0}
+        className={deplacement ? 'deplacement' : undefined}
+        style={{ touchAction: vue.k > 1 ? 'none' : 'pan-y' }}
+        onPointerDown={surPointeurBas} onPointerMove={surPointeurMouv} onPointerUp={surPointeurFin} onPointerCancel={surPointeurFin}
+        onDoubleClick={(e) => zoomer(1.8, versSvg(e.clientX, e.clientY))} onKeyDown={surClavier}>
+        <g transform={`translate(${vue.x.toFixed(2)} ${vue.y.toFixed(2)}) scale(${vue.k.toFixed(4)})`}>
+          <g className="departements">{carte.departements.map((d) => <path key={d.code} d={d.d}><title>{d.nom}</title></path>)}</g>
+          <g>{pins.map((p) => { const { x, y } = projeter(carte.projection, p.lat, p.lng); const aGauche = x > w * 0.66; return (
+            <g className="pin-svg" key={p.ville} transform={`translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${inv.toFixed(4)})`}>
+              <circle className="halo" r="14" /><circle className="noyau" r="8" />
+              <text className="lab" x={aGauche ? -18 : 18} y="9" textAnchor={aGauche ? 'end' : 'start'}>{p.ville} · {p.n}</text>
+            </g>); })}</g>
+        </g>
+      </svg>
+      <div className="carte-zoom" role="group" aria-label={t.carte_legende}>
+        <button type="button" onClick={() => zoomer(1.6)} disabled={vue.k >= ZOOM_MAX} aria-label={t.zoom_plus} title={t.zoom_plus}>+</button>
+        <button type="button" onClick={() => zoomer(1 / 1.6)} disabled={vue.k <= ZOOM_MIN} aria-label={t.zoom_moins} title={t.zoom_moins}>−</button>
+        <button type="button" onClick={recentrer} disabled={vue.k === 1 && vue.x === 0 && vue.y === 0} aria-label={t.zoom_reset} title={t.zoom_reset}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+        </button>
+      </div>
+    </>
+  );
+}
 const teintes = ['#8a5a3c', '#3c5a8a', '#5a8a3c', '#8a3c5a', '#3c8a7a', '#7a3c8a'];
 const teinte = (s: string) => teintes[[...s].reduce((n, c) => n + c.charCodeAt(0), 0) % teintes.length];
 
@@ -174,16 +307,8 @@ export default function MurAvis({ lang = 'fr', rdvHref, initial = [] }: { lang?:
             </div>
             <div className="carte-france">
               <span className="carte-legende">{t.carte_legende}</span>
-              {carte && (
-                <svg viewBox={`0 0 ${carte.projection.w} ${carte.projection.h}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={t.carte_legende}>
-                  <g className="departements">{carte.departements.map((d) => <path key={d.code} d={d.d}><title>{d.nom}</title></path>)}</g>
-                  <g>{pins.map((p) => { const { x, y } = projeter(carte.projection, p.lat, p.lng); const aGauche = x > carte.projection.w * 0.66; return (
-                    <g className="pin-svg" key={p.ville} transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`}>
-                      <circle className="halo" r="14" /><circle className="noyau" r="8" />
-                      <text className="lab" x={aGauche ? -18 : 18} y="9" textAnchor={aGauche ? 'end' : 'start'}>{p.ville} · {p.n}</text>
-                    </g>); })}</g>
-                </svg>
-              )}
+              <span className="carte-aide">{t.carte_aide}</span>
+              {carte && <CarteInteractive carte={carte} pins={pins} t={t} />}
               <span className="carte-note">{t.carte_note}</span>
             </div>
           </div>

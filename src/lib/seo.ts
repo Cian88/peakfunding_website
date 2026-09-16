@@ -20,6 +20,9 @@ export const cabinet = {
   ape: '6619B',
   adresse: { rue: '99 avenue Achille Peretti', codePostal: '92200', ville: 'Neuilly-sur-Seine', pays: 'FR' },
   fondateur: 'Valentin Boura-Defranoux',
+  /** Profils officiels (sameAs) : permettent aux moteurs et assistants de recouper l'identité. */
+  profils: ['https://www.linkedin.com/company/peak-funding/'],
+  profilsPersonnes: { 'Valentin Boura-Defranoux': ['https://www.linkedin.com/in/valentinbd/'] } as Record<string, string[]>,
   logo: `${SITE}/img/logo-peak-funding.png`,
   image: `${SITE}/img/hero-1600.webp`,
 };
@@ -68,6 +71,7 @@ export function organisation(lang: Lang) {
     image: cabinet.image,
     description: descriptions[lang],
     email: cabinet.email,
+    sameAs: cabinet.profils,
     address: { '@type': 'PostalAddress', streetAddress: cabinet.adresse.rue, postalCode: cabinet.adresse.codePostal, addressLocality: cabinet.adresse.ville, addressCountry: cabinet.adresse.pays },
     areaServed: { '@type': 'Country', name: 'France' },
     availableLanguage: ['fr', 'en'],
@@ -76,8 +80,11 @@ export function organisation(lang: Lang) {
       { '@type': 'PropertyValue', propertyID: 'SIREN', value: cabinet.siren.replace(/\s/g, '') },
       { '@type': 'PropertyValue', propertyID: 'APE', value: cabinet.ape },
     ],
-    founder: { '@type': 'Person', name: cabinet.fondateur, jobTitle: lang === 'fr' ? 'Dirigeant' : 'Managing Partner' },
-    employee: equipe.membres.map((m) => ({ '@type': 'Person', name: m.nom.replace('–', '-'), jobTitle: m.role === 'Dirigeant' ? (lang === 'fr' ? 'Dirigeant' : 'Managing Partner') : (lang === 'fr' ? 'Courtier mandataire' : 'Associate broker') })),
+    founder: { '@type': 'Person', name: cabinet.fondateur, jobTitle: lang === 'fr' ? 'Dirigeant' : 'Managing Partner', sameAs: cabinet.profilsPersonnes[cabinet.fondateur] },
+    employee: equipe.membres.map((m) => {
+      const nom = m.nom.replace('–', '-');
+      return { '@type': 'Person', name: nom, jobTitle: m.role === 'Dirigeant' ? (lang === 'fr' ? 'Dirigeant' : 'Managing Partner') : (lang === 'fr' ? 'Courtier mandataire' : 'Associate broker'), ...(cabinet.profilsPersonnes[nom] ? { sameAs: cabinet.profilsPersonnes[nom] } : {}) };
+    }),
     knowsAbout: domaines[lang],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
@@ -148,7 +155,7 @@ export function article(opts: { url: string; titre: string; description: string;
     dateModified: opts.publie,
     inLanguage: langue(opts.lang),
     articleSection: opts.categorie,
-    author: { '@type': 'Person', name: opts.auteur, ...(auteur ? { jobTitle: auteur.role === 'Dirigeant' ? (opts.lang === 'fr' ? 'Dirigeant' : 'Managing Partner') : (opts.lang === 'fr' ? 'Courtier mandataire' : 'Associate broker'), worksFor: { '@id': ID_ORGANISATION } } : {}) },
+    author: { '@type': 'Person', name: opts.auteur, ...(auteur ? { jobTitle: auteur.role === 'Dirigeant' ? (opts.lang === 'fr' ? 'Dirigeant' : 'Managing Partner') : (opts.lang === 'fr' ? 'Courtier mandataire' : 'Associate broker'), worksFor: { '@id': ID_ORGANISATION } } : {}), ...(cabinet.profilsPersonnes[opts.auteur.replace('–', '-')] ? { sameAs: cabinet.profilsPersonnes[opts.auteur.replace('–', '-')] } : {}) },
     publisher: { '@id': ID_ORGANISATION },
   };
 }

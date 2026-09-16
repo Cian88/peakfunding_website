@@ -173,3 +173,31 @@ Pour ajouter/retirer un administrateur ensuite : Table Editor → `administrateu
   complet ne quittent jamais la base.
 - Case de consentement explicite avant publication ; droit de retrait → passer `statut='refuse'`.
 - Mentionner Supabase (sous-traitant, hébergement UE) dans la politique de confidentialité.
+
+## 7. Alerte Supabase « Security Definer View » (2026-09-16)
+
+Le linter signale `avis_publics` : une vue Postgres s'exécute par défaut avec les droits de
+son propriétaire (`security_definer`), donc en ignorant le RLS de `avis`. C'était volontaire
+(aucune règle de lecture publique sur `avis`), mais le schéma ci-dessous obtient le même
+résultat sans contourner le RLS : la vue s'exécute avec les droits du lecteur, une règle
+autorise les lignes `publie`, et les droits de colonnes interdisent `jeton` / `auteur_uid`
+au public. Le site ne change pas (`avis_publics` reste lue en REST).
+
+```sql
+alter view public.avis_publics set (security_invoker = true);
+
+create policy "lecture_avis_publies" on public.avis
+  for select to anon, authenticated using (statut = 'publie');
+
+revoke select on public.avis from anon, authenticated;
+grant select (id, prenom, initiale, photo, note, projet, montant, ville, lat, lng, texte,
+              statut, cree_le, publie_le)
+  on public.avis to anon, authenticated;
+```
+
+`statut` reste lisible : la vue et la page d'administration filtrent dessus (Postgres vérifie
+les droits sur les colonnes citées dans un `where`). Les administrateurs conservent leur
+lecture complète des lignes en attente via `admin_lit_avis` ; le dépôt (`insert` sans
+`select`) et la modération (`update`) ne sont pas affectés. Vérification :
+`select * from avis_publics` avec la clé anon renvoie les avis publiés ;
+`select jeton from avis` avec la clé anon renvoie « permission denied ».

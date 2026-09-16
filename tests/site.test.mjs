@@ -14,8 +14,9 @@ const protectedFiles = {
   'src/contenu-legal/mentions-legales.html': '4D21C573BF3EDFD789A35090D41EA07BAC3580AF9AFCA4C4BCCA40A183EC4C3A',
   'src/contenu-legal/politique-de-confidentialite.html': '8FE1D89573FB81AA7C5DEDFCBD8AF354C45DAB97FEBE4FD17B12F344EADB7CC0',
   'src/contenu-legal/cgu.html': 'B07104AAE69BD8BEA3F2822E26364AF0FF34C24B31064CE3BC4C1099233CE881',
-  'src/components/react/PriseRendezVous.tsx': '471C5216E61A7FF3AB37D167986644793386F68BC7FE7408BF8E4DD3138F61FE',
-  'src/components/react/SimulateurCapacite.tsx': 'EDF780849154159E2229C38AB2513BF8C4964CBED8D6916EF11D5789A731C901',
+  // Empreintes relevées après les évolutions demandées (bilinguisme 2026-09-13, simulateur 2026-09-14).
+  'src/components/react/PriseRendezVous.tsx': '87441D58517BD76F3D9B01B33F735A382F9F00F44416187D5033DA6C03BE79BB',
+  'src/components/react/SimulateurCapacite.tsx': 'AB27E8D442E896291DCD4F4823E4A47038224294FC548110149C1519DDB1DCA1',
 };
 
 test('Les cinq sources protégées sont identiques octet pour octet', () => {
@@ -53,10 +54,10 @@ test('Les textes légaux et les articles rendus conservent chaque mot et la ponc
     assert.equal(normalize(built('.article-content').text()), normalize(load(read(`src/contenu-articles/${article.slug}.html`), null, false).text()), article.slug);
   }
 });
-test('Les 19 pages construites ont leurs liens, images, titres et ancres', () => {
+test('Les 42 pages construites (FR + EN) ont leurs liens, images, titres et ancres', () => {
   const crawl = dir => readdirSync(dir, { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? crawl(join(dir, entry.name)) : [join(dir, entry.name)]);
   const pages = crawl('dist').filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 19);
+  assert.equal(pages.length, 42);
   const failures = [];
   for (const file of pages) {
     const $ = load(read(file));
@@ -71,7 +72,8 @@ test('Les 19 pages construites ont leurs liens, images, titres et ancres', () =>
       const value = $(node).attr(node.name === 'img' ? 'src' : 'href');
       const url = new URL(value, `https://peakfunding.eu${route}`);
       if (url.origin !== 'https://peakfunding.eu') return;
-      const target = resolve('dist', '.' + decodeURIComponent(url.pathname));
+      // La page 404 française est servie depuis dist/404.html (convention GitHub Pages), pas depuis un dossier.
+      const target = url.pathname === '/404/' ? resolve('dist', '404.html') : resolve('dist', '.' + decodeURIComponent(url.pathname));
       const destination = existsSync(target) && statSync(target).isDirectory() ? join(target, 'index.html') : target;
       if (!existsSync(destination)) { failures.push(`${route} -> ${value}`); return; }
       if (url.hash && url.hash !== '#rdv' && destination.endsWith('.html')) {

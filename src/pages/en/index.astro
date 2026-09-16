@@ -1,8 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
 import AccueilCorps from '../../components/pages/AccueilCorps.astro';
+import { accueil } from '../../data/contenu';
+import { faqPage } from '../../lib/seo';
 ---
 
-<Base heros title="PEAK FUNDING — Real estate & business financing broker" description="Independent brokerage firm in Neuilly-sur-Seine. We build your file, defend it before more than thirty banks and stay by your side until the funds are released.">
+<Base heros title="Mortgage, business financing & borrower-insurance broker | PEAK FUNDING" description="Independent brokerage firm in Neuilly-sur-Seine, working across France (ORIAS no. 24002546). Mortgages, business financing and LBO, property traders, borrower-insurance delegation (Lemoine law): more than thirty banks, free first consultation." schema={[faqPage(accueil('en').faq)]}>
   <AccueilCorps />
 </Base>

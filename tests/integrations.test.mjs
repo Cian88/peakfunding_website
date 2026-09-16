@@ -52,7 +52,7 @@ test('Annotations : cartes uniformes, méthode illustrée, héros et simulateur 
   assert.equal(home('[data-espaces] .espace-lien').length, 2);
   assert.equal(home('#simulateur form').length, 1);
   assert.equal(home('#simulateur [aria-live]').length, 1);
-  assert.match(read('src/pages/index.astro'), /min-height: 100dvh/);
+  assert.match(read('src/components/pages/AccueilCorps.astro'), /min-height: 100dvh/);
   assert.match(read('src/styles/global.css'), /grid-row:1 \/ -1/);
   assert.match(read('src/scripts/motion.ts'), /--fond-scroll/);
   assert.doesNotMatch(read('src/styles/global.css'), /data-fond-raccord/);
@@ -101,10 +101,11 @@ test('Homogénéité : une image de travail dans Mission, zones partenaires et v
 test('Accueil : ouverture et fin sombres, méthode sombre entre les sections claires', () => {
   const home = built('');
   const sections = home('main > section');
-  assert.equal(sections.filter('.clair').length, 4);
-  assert.deepEqual(sections.filter('.clair').toArray().map(node => home(node).attr('id')), ['simulateur', 'expertises', 'equipe', 'faq']);
+  // Depuis la section avis (2026-09-13), le fond reste sombre jusqu'au pied de page : FAQ et bandeau final sombres.
+  assert.equal(sections.filter('.clair').length, 3);
+  assert.deepEqual(sections.filter('.clair').toArray().map(node => home(node).attr('id')), ['simulateur', 'expertises', 'equipe']);
   const tones = sections.toArray().map(node => home(node).hasClass('clair'));
-  assert.deepEqual(tones, [false, false, false, true, true, false, true, true, false]);
+  assert.deepEqual(tones, [false, false, false, true, true, false, true, false, false, false]);
   assert.equal(tones.slice(1).filter((tone, i) => tone !== tones[i]).length, 4);
   assert.equal(home('footer.sombre').length, 1);
   assert.equal(home('#simulateur .surface-claire').length, 1);
@@ -114,7 +115,7 @@ test('Accueil : ouverture et fin sombres, méthode sombre entre les sections cla
   assert.equal(home('[data-expertise-reveal]').length, 4);
   assert.equal(home('#expertises .carte-claire').length, 0);
   assert.equal(home('#expertises .expertise-lien').length, 4);
-  assert.equal(home('.chapitre-filet[aria-hidden="true"]').length, 3);
+  assert.equal(home('.chapitre-filet[aria-hidden="true"]').length, 4); // + filet d'entrée de la section avis
 });
 
 test('CSA : valeurs exactes sans JavaScript, copie accessible indépendante du comptage', () => {

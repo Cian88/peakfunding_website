@@ -130,6 +130,20 @@ Astro 7 (sortie statique) + `@astrojs/react` + Tailwind 4 via plugin Vite (`@the
 - Menu mobile en `<details>` natif, sans script ; le bouton « Prendre rendez-vous » passe dans le menu sous 640 px.
 - `src/contenu-legal/*.html` : textes légaux **au mot près**, injectés par `Legal.astro`. Toute modification passe par le service conformité de l'utilisateur (écarts connus avec la fiche cabinet du 11/06/2026 : capital, statut, catégories ORIAS, TVA).
 
+## Référencement (moteurs et assistants IA) — lot du 2026-09-16
+
+- `src/lib/seo.ts` : source unique des faits du cabinet (ORIAS, SIREN, adresse, catalogue des quatre
+  services, descriptions FR/EN) et des fabriques JSON-LD (`organisation`, `siteWeb`, `pageWeb`,
+  `service`, `faqPage`, `article`, `listeArticles`, `filAriane`). `Base.astro` émet un graphe unique
+  `@graph` par page (organisation + site + page + `schema` de la page) ; rien sur les pages `noindex`.
+- Chaque page passe à `Base` ce qui la décrit : FAQ (accueil, expertises), `Service` (expertises),
+  `Article` + Open Graph `article` (actualités), `CollectionPage` + `ItemList` (liste), fil d'Ariane.
+- `public/llms.txt` (FR puis EN) et `public/robots.txt` (robots IA explicitement autorisés, `/avis/` fermé).
+  Sitemap : pages `/avis/` et 404 exclues, alternates fr-FR/en-GB, `lastmod` seulement sur les articles.
+- Les URL des données structurées portent la barre oblique finale, comme les canoniques et le sitemap.
+- Vérification : `npm run build` puis `npm test` (33 tests, dont `tests/seo.test.mjs`). Les empreintes
+  des sources protégées et le compte de pages (42) sont à jour dans `tests/site.test.mjs`.
+
 ## Design — direction « Altitude » (validée le 2026-09-12, remplace Titan)
 
 Mercury (héros photo plein écran, titres légers, narration au défilement) + Dovetail (grille technique, mono) + Capital (alternance sombre/cendre). Jetons dans `global.css` : `abime`, `ardoise`, `graphite`, `filet`, `etoile`, `argent`, `brume` (registre sombre) ; `cendre`, `blanc`, `encre`, `corps`, `gris`, `trait` (registre clair) ; `cuivre` / `cuivre-clair` / `cuivre-profond` = signal unique (boutons, chiffres, traits — jamais d'aplat). Geist 300–400 pour les titres, Geist Mono pour les données. Rayons : pilule 40 px, données 8 px, cartes 16 px. Aucune ombre.

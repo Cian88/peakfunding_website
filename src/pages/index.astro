@@ -1,8 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import AccueilCorps from '../components/pages/AccueilCorps.astro';
+import { accueil } from '../data/contenu';
+import { faqPage } from '../lib/seo';
 ---
 
-<Base heros title="PEAK FUNDING — Courtier en financement immobilier et professionnel" description="Cabinet de courtage indépendant à Neuilly-sur-Seine. Nous montons votre dossier, le défendons auprès de plus de trente banques et restons à vos côtés jusqu’au déblocage des fonds.">
+<Base heros title="Courtier en crédit immobilier, financement professionnel & assurance emprunteur | PEAK FUNDING" description="Cabinet de courtage indépendant à Neuilly-sur-Seine, France entière (ORIAS n° 24002546). Crédit immobilier, financement professionnel et LBO, marchands de biens, délégation d’assurance emprunteur (loi Lemoine) : plus de trente banques, premier échange gratuit." schema={[faqPage(accueil('fr').faq)]}>
   <AccueilCorps />
 </Base>

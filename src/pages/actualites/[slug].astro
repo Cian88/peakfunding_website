@@ -6,6 +6,8 @@ import articles from '../../data/articles.json';
 import Sommaire from '../../components/Sommaire.astro';
 import { documentAvecSommaire } from '../../lib/document.mjs';
 import { dateISO, trierArticles } from '../../lib/editorial.mjs';
+import { visuelsArticles } from '../../data/visuels-articles';
+import { article as schemaArticle, filAriane, SITE } from '../../lib/seo';
 
 export function getStaticPaths() {
   return articles.map((a) => ({ params: { slug: a.slug }, props: { article: a } }));
@@ -23,9 +25,16 @@ const categorie = article.avant[1];
 const lecture = article.avant[2];
 const auteur = article.apres[0];
 const date = (article.apres[1] || '').split(' · ').pop();
+const visuel = visuelsArticles[article.slug as keyof typeof visuelsArticles];
+const urlPage = `${SITE}/actualites/${article.slug}/`;
+const image = `/img/article-v1-${article.slug}.webp`;
+const schema = [
+  schemaArticle({ url: urlPage, titre: article.title, description: article.description || article.apres[2], auteur, publie: dateISO(date), image: `${SITE}${image}`, largeur: visuel.width, hauteur: visuel.height, categorie: categorie.charAt(0) + categorie.slice(1).toLowerCase(), lang: 'fr' }),
+  filAriane([{ nom: 'Accueil', url: `${SITE}/` }, { nom: 'Actualités', url: `${SITE}/actualites/` }, { nom: article.title, url: urlPage }]),
+];
 ---
 
-<Base title={`${article.title} | PEAK FUNDING`} description={article.description || article.apres[2]}>
+<Base title={`${article.title} | PEAK FUNDING`} description={article.description || article.apres[2]} image={image} publie={dateISO(date)} auteur={auteur} schema={schema}>
   <article class="contenu section">
     <nav aria-label="Fil d’Ariane" class="eyebrow normal-case tracking-normal">
       <a href="/" class="hover:text-encre">Accueil</a> <span aria-hidden="true">/</span> <a href="/actualites" class="hover:text-encre">Actualités</a>

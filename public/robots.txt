@@ -1,3 +1,35 @@
+# PEAK FUNDING — https://peakfunding.eu
+# Site public d'un cabinet de courtage en financement et assurance emprunteur (ORIAS n° 24002546).
+# Tout le contenu éditorial est ouvert aux moteurs de recherche et aux assistants IA.
+# Les pages /avis/ (dépôt et invitation d'avis clients) sont privées : noindex et exclues ci-dessous.
+
 User-agent: *
 Allow: /
+Disallow: /avis/
+Disallow: /en/avis/
+
+# Robots de recherche et de réponse des assistants IA : accès explicitement autorisé.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
+User-agent: Meta-ExternalAgent
+User-agent: Amazonbot
+User-agent: CCBot
+Allow: /
+Disallow: /avis/
+Disallow: /en/avis/
+
 Sitemap: https://peakfunding.eu/sitemap-index.xml

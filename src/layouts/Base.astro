@@ -7,14 +7,26 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import RendezVousModal from '../components/react/RendezVousModal';
 import { langCourante, urlAutreLangue, t } from '../i18n';
+import { organisation, siteWeb, pageWeb, serialiser } from '../lib/seo';
 
-interface Props { title: string; description: string; heros?: boolean; image?: string; clientRouting?: boolean; noindex?: boolean }
-const { title, description, heros = false, image = '/img/hero-1600.webp', clientRouting = true, noindex = false } = Astro.props;
+interface Props {
+  title: string; description: string; heros?: boolean; image?: string; clientRouting?: boolean; noindex?: boolean;
+  /** Données structurées propres à la page (FAQ, service, article…), ajoutées au graphe commun. */
+  schema?: object[];
+  /** Type schema.org de la page (WebPage par défaut : CollectionPage, AboutPage…). */
+  typePage?: string;
+  /** Métadonnées d'article (Open Graph) : date ISO et auteur. */
+  publie?: string; auteur?: string;
+}
+const { title, description, heros = false, image = '/img/hero-1600.webp', clientRouting = true, noindex = false, schema = [], typePage, publie, auteur } = Astro.props;
 const lang = langCourante(Astro.currentLocale);
 const tr = t(lang);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const urlAutre = new URL(urlAutreLangue(Astro.url.pathname, lang), Astro.site);
 const autre = lang === 'fr' ? 'en' : 'fr';
+const imageAbsolue = new URL(image, Astro.site).href;
+// Pages privées (noindex) : aucune donnée structurée, rien à faire lire aux moteurs.
+const graphe = noindex ? [] : [organisation(lang), siteWeb(lang), pageWeb({ url: canonical.href, titre: title, description, lang, type: typePage, image: imageAbsolue, publie }), ...schema];
 ---
 
 <!doctype html>
@@ -31,12 +43,22 @@ const autre = lang === 'fr' ? 'en' : 'fr';
     <link rel="alternate" hreflang="x-default" href={new URL(Astro.url.pathname.replace(/^\/en(?=\/|$)/, '') || '/', Astro.site)} />
     <link rel="icon" href="/img/symbole-montagne-cuivre.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#0b0d12" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={publie ? 'article' : 'website'} />
+    <meta property="og:site_name" content="PEAK FUNDING" />
     <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
+    <meta property="og:locale:alternate" content={lang === 'fr' ? 'en_GB' : 'fr_FR'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image" content={imageAbsolue} />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageAbsolue} />
+    {publie && <meta property="article:published_time" content={publie} />}
+    {auteur && <meta name="author" content={auteur} />}
+    {graphe.length > 0 && <script type="application/ld+json" is:inline set:html={serialiser(graphe)} />}
     {clientRouting && <ClientRouter />}
   </head>
   <body data-page-navigation={clientRouting ? 'spa' : 'document'} class:list={[heros ? 'bg-abime' : 'bg-cendre']}>

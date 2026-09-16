@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import VisuelArticle from '../../components/VisuelArticle.astro';
 import articles from '../../data/articles.json';
 import { cleTheme, dateArticle, dateISO, trierArticles } from '../../lib/editorial.mjs';
+import { listeArticles, filAriane, SITE } from '../../lib/seo';
 
 const liste = trierArticles(articles).map(a => ({
   slug: a.slug, titre: a.title, categorie: a.avant[1], lecture: a.avant[2],
@@ -13,7 +14,10 @@ const categories = [...new Set(liste.map(a => a.categorie))];
 const libelle = (c: string) => c.charAt(0) + c.slice(1).toLowerCase();
 ---
 
-<Base title="Actualités & conseils | PEAK FUNDING" description="Taux, montages, fiscalité, actualité des banques : nos analyses pour y voir clair, sans jargon inutile.">
+<Base title="Actualités & conseils crédit, fiscalité, assurance emprunteur | PEAK FUNDING" description="Taux, montages, fiscalité, assurance emprunteur, actualité des banques : les analyses du cabinet PEAK FUNDING pour y voir clair, sans jargon inutile." typePage="CollectionPage" schema={[
+  listeArticles({ url: `${SITE}/actualites/`, nom: 'Actualités & conseils PEAK FUNDING', articles: liste.map(a => ({ url: `${SITE}/actualites/${a.slug}/`, titre: a.titre })) }),
+  filAriane([{ nom: 'Accueil', url: `${SITE}/` }, { nom: 'Actualités', url: `${SITE}/actualites/` }]),
+]}>
   <section class="contenu section filtres">
     <div class="grid items-end gap-8 border-b border-trait pb-10 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
       <div><p class="eyebrow">Le regard du cabinet</p><h1 class="display mt-5 max-w-3xl lg:text-[56px]">Comprendre le crédit,<br />avant de signer.</h1></div>

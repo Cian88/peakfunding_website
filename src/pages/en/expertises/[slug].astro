@@ -2,13 +2,21 @@
 import Base from '../../../layouts/Base.astro';
 import ExpertiseCorps from '../../../components/pages/ExpertiseCorps.astro';
 import { expertisesEn } from '../../../data/en/expertises';
+import { accueil, faqExpertisesFor } from '../../../data/contenu';
+import { service, faqPage, filAriane, SITE } from '../../../lib/seo';
 
 export function getStaticPaths() {
   return expertisesEn.map((e) => ({ params: { slug: e.slug }, props: { e } }));
 }
 const { e } = Astro.props;
+const accroche = accueil('en').expertises.find((x) => x.slug === e.slug)?.accroche ?? '';
+const schema = [
+  service(e, 'en'),
+  faqPage(faqExpertisesFor('en')[e.slug]),
+  filAriane([{ nom: 'Home', url: `${SITE}/en/` }, { nom: `${e.nom} — ${accroche}`, url: `${SITE}/en/expertises/${e.slug}/` }]),
+];
 ---
 
-<Base title={`${e.nom} — ${e.titre} | PEAK FUNDING`} description={e.intro}>
+<Base title={`${e.nom} — ${accroche} | PEAK FUNDING`} description={e.intro} image={`/img/ambiance-${e.slug}.webp`} schema={schema}>
   <ExpertiseCorps e={e} />
 </Base>

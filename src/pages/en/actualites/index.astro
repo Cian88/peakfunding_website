@@ -3,6 +3,7 @@ import Base from '../../../layouts/Base.astro';
 import VisuelArticle from '../../../components/VisuelArticle.astro';
 import articles from '../../../data/en/articles.json';
 import { cleTheme, dateArticle, dateISO, trierArticles } from '../../../lib/editorial.mjs';
+import { listeArticles, filAriane, SITE } from '../../../lib/seo';
 
 const liste = trierArticles(articles).map(a => ({
   slug: a.slug, titre: a.title, categorie: a.avant[1], lecture: a.avant[2],
@@ -13,7 +14,10 @@ const categories = [...new Set(liste.map(a => a.categorie))];
 const libelle = (c: string) => c.charAt(0) + c.slice(1).toLowerCase();
 ---
 
-<Base title="Insights & advice | PEAK FUNDING" description="Rates, structures, taxation, banking news: our analysis to see clearly, without needless jargon.">
+<Base title="Insights on mortgages, taxation & borrower insurance | PEAK FUNDING" description="Rates, structures, taxation, borrower insurance, banking news: PEAK FUNDING’s analysis to see clearly, without needless jargon." typePage="CollectionPage" schema={[
+  listeArticles({ url: `${SITE}/en/actualites/`, nom: 'PEAK FUNDING insights & advice', articles: liste.map(a => ({ url: `${SITE}/en/actualites/${a.slug}/`, titre: a.titre })) }),
+  filAriane([{ nom: 'Home', url: `${SITE}/en/` }, { nom: 'Insights', url: `${SITE}/en/actualites/` }]),
+]}>
   <section class="contenu section filtres">
     <div class="grid items-end gap-8 border-b border-trait pb-10 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
       <div><p class="eyebrow">The firm’s view</p><h1 class="display mt-5 max-w-3xl lg:text-[56px]">Understand credit,<br />before you sign.</h1></div>

@@ -9,7 +9,11 @@ const built = route => load(read(`dist/${route ? route + '/' : ''}index.html`));
 test('Sept visuels V1 exacts, utilisés dans la liste ET dans chaque article', () => {
   const slots = JSON.parse(read('_source/site-actuel/image-slots-state.json'));
   const listing = built('actualites');
-  const images = listing('[data-article-visual]');
+  // Huit articles : les sept visuels V1 (avec emplacement d'origine) + l'illustration propre de l'article
+  // « délégation d'assurance » (2026-09-16), hors V1 donc sans data-v1-slot.
+  assert.equal(listing('[data-article-visual]').length, 8);
+  assert.equal(listing('[data-article-visual="delegation-assurance"]').attr('src'), '/img/article-v1-delegation-assurance.webp');
+  const images = listing('[data-article-visual][data-v1-slot]');
   assert.equal(images.length, 7);
   images.each((_, node) => {
     const image = listing(node);
@@ -47,7 +51,7 @@ test('Annotations : cartes uniformes, méthode illustrée, héros et simulateur 
   const home = built('');
   const listing = built('actualites');
   assert.equal(listing('.article-vedette').length, 0);
-  assert.equal(listing('.article-carte .article-image.h-\\[180px\\]').length, 7);
+  assert.equal(listing('.article-carte .article-image.h-\\[180px\\]').length, 8);
   assert.equal(home('#methode .methode-schema').length, 4);
   assert.equal(home('[data-espaces] .espace-lien').length, 2);
   assert.equal(home('#simulateur form').length, 1);

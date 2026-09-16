@@ -119,7 +119,7 @@ export const expertisesEn: Expertise[] = [
     titre: 'Borrower insurance is where your savings hide.',
     intro: 'Insurance can account for nearly a third of the cost of your loan. Thanks to the Lemoine law and insurance delegation, there is almost always a better option — without changing your loan.',
     ctaPrincipal: 'Have my insurance reviewed',
-    ctaSecondaire: { libelle: 'Understand the Lemoine law', href: '/actualites/lemoine' },
+    ctaSecondaire: { libelle: 'Understand insurance delegation', href: '/actualites/delegation-assurance' },
     pourQui: null,
     reperes: [
       { valeur: 'Up to ⅓', texte: 'of the total cost of the loan can come from borrower insurance alone.' },

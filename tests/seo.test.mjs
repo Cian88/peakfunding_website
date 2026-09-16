@@ -62,7 +62,7 @@ test('Expertises : service relié au catalogue, FAQ et fil d’Ariane ; l’assu
 });
 
 test('Articles : Article daté, auteur, image dimensionnée, Open Graph article', () => {
-  for (const lang of ['', 'en/']) for (const slug of ['lemoine', 'capacite-locatif', 'sci']) {
+  for (const lang of ['', 'en/']) for (const slug of ['lemoine', 'capacite-locatif', 'sci', 'delegation-assurance']) {
     const p = `dist/${lang}actualites/${slug}/index.html`;
     const a = graphe(p).find(x => x['@type'] === 'Article');
     assert.match(a.datePublished, /^\d{4}-\d{2}-\d{2}$/, p);
@@ -74,7 +74,7 @@ test('Articles : Article daté, auteur, image dimensionnée, Open Graph article'
   }
   for (const p of ['dist/actualites/index.html', 'dist/en/actualites/index.html']) {
     const g = graphe(p);
-    assert.equal(g.find(x => x['@type'] === 'ItemList').itemListElement.length, 7, p);
+    assert.equal(g.find(x => x['@type'] === 'ItemList').itemListElement.length, 8, p);
     assert.ok(types(g).includes('CollectionPage'), p);
   }
 });

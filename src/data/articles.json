@@ -117,5 +117,22 @@
    "Des taux stabilisés autour de 3,4 à 3,5 %"
   ],
   "blocs": 11
+ },
+ {
+  "slug": "delegation-assurance",
+  "title": "Délégation d'assurance emprunteur : comment ça marche",
+  "description": "Choisir son assurance de prêt hors de la banque est un droit, à la signature comme en cours de crédit. Conditions, étapes, pièges : le mode d'emploi complet.",
+  "avant": [
+   "Accueil",
+   "ASSURANCE EMPRUNTEUR",
+   "7 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 16 septembre 2026",
+   "Choisir son assurance de prêt hors de la banque est un droit, à la signature comme en cours de crédit. Conditions, étapes, pièges : le mode d'emploi complet.",
+   "Ce que l'on appelle « délégation »"
+  ],
+  "blocs": 26
  }
 ]

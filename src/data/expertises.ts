@@ -130,7 +130,7 @@ export const expertises: Expertise[] = [
     titre: 'L’assurance emprunteur, c’est là que se cachent vos économies.',
     intro: 'L’assurance représente parfois près d’un tiers du coût de votre crédit. Grâce à la loi Lemoine et à la délégation d’assurance, il y a presque toujours mieux à faire — sans changer votre prêt.',
     ctaPrincipal: 'Faire étudier mon assurance',
-    ctaSecondaire: { libelle: 'Comprendre la loi Lemoine', href: '/actualites/lemoine' },
+    ctaSecondaire: { libelle: 'Comprendre la délégation d’assurance', href: '/actualites/delegation-assurance' },
     pourQui: null,
     reperes: [
       { valeur: 'Jusqu’à ⅓', texte: 'du coût total du crédit peut provenir de la seule assurance emprunteur.' },

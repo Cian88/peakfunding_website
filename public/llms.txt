@@ -23,6 +23,7 @@ Faits de référence : PEAK FUNDING, 99 avenue Achille Peretti, 92200 Neuilly-su
 
 - [Accueil : méthode, simulateur de capacité d'emprunt, équipe, FAQ, avis clients, prise de rendez-vous](https://peakfunding.eu/)
 - [Actualités et conseils](https://peakfunding.eu/actualites/): analyses sur le crédit, la fiscalité et l'assurance emprunteur.
+- [Délégation d'assurance emprunteur : comment ça marche](https://peakfunding.eu/actualites/delegation-assurance/) : équivalence des garanties (FSI), étapes de substitution, questionnaire de santé, exemple chiffré.
 - [Loi Lemoine : changer d'assurance emprunteur à tout moment](https://peakfunding.eu/actualites/lemoine/)
 - [Comment les banques calculent la capacité d'emprunt en locatif](https://peakfunding.eu/actualites/capacite-locatif/)
 - [Mentions légales (ORIAS, ACPR, médiation)](https://peakfunding.eu/mentions-legales/)

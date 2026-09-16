@@ -34,7 +34,7 @@ test('Tri chronologique réel, sans mutation des données source', () => {
   assert.equal(dateISO('31 février 2026'), '');
   assert.equal(dateISO('inconnue'), '');
   const before = JSON.stringify(articles);
-  assert.deepEqual(trierArticles(articles).map(a => a.slug), ['capacite-locatif', 'taux', 'sci', 'primo', 'enchainer', 'lemoine', 'non-resident']);
+  assert.deepEqual(trierArticles(articles).map(a => a.slug), ['delegation-assurance', 'capacite-locatif', 'taux', 'sci', 'primo', 'enchainer', 'lemoine', 'non-resident']);
   assert.equal(JSON.stringify(articles), before);
 });
 test('Le sommaire ne réécrit pas le HTML source et produit des ancres uniques', () => {
@@ -54,10 +54,10 @@ test('Les textes légaux et les articles rendus conservent chaque mot et la ponc
     assert.equal(normalize(built('.article-content').text()), normalize(load(read(`src/contenu-articles/${article.slug}.html`), null, false).text()), article.slug);
   }
 });
-test('Les 42 pages construites (FR + EN) ont leurs liens, images, titres et ancres', () => {
+test('Les 44 pages construites (FR + EN) ont leurs liens, images, titres et ancres', () => {
   const crawl = dir => readdirSync(dir, { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? crawl(join(dir, entry.name)) : [join(dir, entry.name)]);
   const pages = crawl('dist').filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 42);
+  assert.equal(pages.length, 44);
   const failures = [];
   for (const file of pages) {
     const $ = load(read(file));

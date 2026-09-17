@@ -3,7 +3,6 @@
   "rate": 3.31,
   "durationMonths": 252,
   "sourceUrl": "https://lobservatoire.creditlogement.fr/publications/analyse-marche-immobilier-aout-2026/",
-  "verifiedOn": "2026-09-12",
-  "checkedAt": null,
-  "stale": true
+  "checkedAt": "2026-09-17T18:15:48.576Z",
+  "stale": false
 }

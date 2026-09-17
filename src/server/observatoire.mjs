@@ -25,8 +25,8 @@ export function extraireObservation(html, now = new Date()) {
   return data;
 }
 
-export function creerLecteur({ fetcher = fetch, clock = () => new Date() } = {}) {
-  let saved = seed, retryAt = 0, pending;
+export function creerLecteur({ fetcher = fetch, clock = () => new Date(), initialData = seed } = {}) {
+  let saved = initialData, retryAt = 0, pending;
   return async () => {
     const now = clock();
     if (now.getTime() < retryAt) return saved;

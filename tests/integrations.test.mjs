@@ -125,8 +125,10 @@ test('Accueil : ouverture et fin sombres, méthode sombre entre les sections cla
 test('CSA : valeurs exactes sans JavaScript, copie accessible indépendante du comptage', () => {
   const home = built('');
   const mesures = home('#simulateur .observatoire-mesures');
-  assert.deepEqual(mesures.find('dd > .sr-only').toArray().map(el=>home(el).text()), ['3,31 %','252 mois']);
-  assert.deepEqual(mesures.find('.observatoire-valeur[aria-hidden="true"]').toArray().map(el=>home(el).text()), ['3,31 %','252 mois']);
+  const data = JSON.parse(readFileSync('dist/api/observatoire-seed.json','utf8'));
+  const attendu = [data.rate.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' %',data.durationMonths+' mois'];
+  assert.deepEqual(mesures.find('dd > .sr-only').toArray().map(el=>home(el).text()), attendu);
+  assert.deepEqual(mesures.find('.observatoire-valeur[aria-hidden="true"]').toArray().map(el=>home(el).text()), attendu);
   assert.equal(mesures.find('[aria-live], [role="status"]').length,0);
 });
 

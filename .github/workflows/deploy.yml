@@ -10,6 +10,8 @@ on:
   # clients publiés depuis le dernier déploiement
   schedule:
     - cron: '0 6 * * *'
+    # CSA : chaque lundi à 06:17 UTC, même sans visite.
+    - cron: '17 6 * * 1'
 
 # Permissions requises pour publier sur GitHub Pages
 permissions:
@@ -23,12 +25,65 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  observatoire:
+    name: Vérifier les données de l'Observatoire
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Accord du propriétaire : enregistrer les deux JSON validés sur main.
+    permissions:
+      contents: write
+    steps:
+      - name: Récupérer la dernière copie sur main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Installer Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Tester le mécanisme d'actualisation sans réseau
+        run: node --test tests/observatoire-actualisation.test.mjs
+
+      - name: Contrôler la source et conserver la dernière donnée valide
+        env:
+          FORCE_OBSERVATOIRE: ${{ github.event.schedule == '17 6 * * 1' || github.event_name == 'workflow_dispatch' }}
+        run: |
+          if [ "$FORCE_OBSERVATOIRE" = "true" ]; then
+            node scripts/actualiser-observatoire.mjs --force
+          else
+            # Rattrapage quotidien uniquement si le dernier contrôle a expiré.
+            node scripts/actualiser-observatoire.mjs
+          fi
+
+      - name: Enregistrer uniquement les deux copies validées
+        run: |
+          git add -- public/api/observatoire.json public/api/observatoire-seed.json
+          if git diff --cached --quiet; then exit 0; fi
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'chore: vérifier les données de l’Observatoire'
+          # Jamais de force-push : tout conflit ou refus sera visible dans Actions.
+          git push origin HEAD:main
+
   build:
     name: Construire le site Astro
+    needs: observatoire
+    # Les avis restent reconstruits même en cas d'indisponibilité de la source CSA.
+    # L'échec éventuel du job Observatoire reste visible dans le bilan Actions.
+    if: always() && !cancelled()
     runs-on: ubuntu-latest
     steps:
       - name: Récupérer le code
         uses: actions/checkout@v4
+        with:
+          # Inclut le nouveau commit JSON sans attendre un second push-trigger.
+          ref: main
+          persist-credentials: false
 
       - name: Installer Node 22 (requis par Astro 7)
         uses: actions/setup-node@v4

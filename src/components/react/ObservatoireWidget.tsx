@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import initial from '../../../public/api/observatoire-seed.json';
-import { observationValide, libellePeriode } from '../../lib/observatoire.mjs';
+import { observationValide, libellePeriode, statutObservation } from '../../lib/observatoire.mjs';
 import { useMesuresAnimees } from './useMesuresAnimees';
 import type { Lang } from '../../i18n';
 
-type Observation = { period:string; rate:number; durationMonths:number; sourceUrl:string; checkedAt:string|null; stale:boolean };
+type Observation = { period:string; rate:number; durationMonths:number; sourceUrl:string; checkedAt:string|null; verifiedOn?:string; stale:boolean };
 
-/* Le site est statique (GitHub Pages) : la source à jour est le fichier
-   public/api/observatoire.json, mis à jour par commit ; à défaut, la copie
-   embarquée au build (observatoire-seed.json) reste affichée sans message d'échec. */
+/* Déploiement statique actuel : le fichier JSON doit être actualisé séparément.
+   Le rechargement navigateur ne consulte pas à lui seul la source officielle.
+   En secours, conserver la copie datée sans prétendre à un contrôle récent. */
 const SOURCE = '/api/observatoire.json';
 const MOIS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const periodeEn = (p:string) => { const m = /^(\d{4})-(\d{2})/.exec(p); return m ? `${MOIS_EN[+m[2]-1] ?? ''} ${m[1]}` : p; };
@@ -17,18 +17,17 @@ const TX = {
   fr: { titre:'Le marché du crédit', taux:'Taux moyen', duree:'Durée moyenne', mois:'mois',
         note:'Repères de marché, pas une offre de prêt. Le simulateur part d’un taux de 3,5 %, que vous pouvez ajuster ci-dessous.',
         source:'Observatoire Crédit Logement / CSA', mensuel:'Publication mensuelle', onglet:' (nouvel onglet)',
-        copie:(d:string)=>`Dernière copie vérifiée le ${d}`, verifie:(d:string)=>`Source vérifiée le ${d}`, locale:'fr-FR' },
+        locale:'fr-FR' },
   en: { titre:'The credit market', taux:'Average rate', duree:'Average term', mois:'months',
         note:'Market benchmarks, not a loan offer. The calculator starts from a 3.5% rate, which you can adjust below.',
         source:'Observatoire Crédit Logement / CSA', mensuel:'Monthly publication', onglet:' (new tab)',
-        copie:(d:string)=>`Last verified copy: ${d}`, verifie:(d:string)=>`Source verified on ${d}`, locale:'en-GB' },
+        locale:'en-GB' },
 } as const;
 
 export default function ObservatoireWidget({ lang = 'fr' }: { lang?: Lang }) {
   const T = TX[lang];
-  const dateLoc = (iso:string|null) => iso ? new Date(iso).toLocaleDateString(T.locale) : '';
   const [data,setData] = useState<Observation>(initial);
-  const [status,setStatus] = useState(T.copie(dateLoc(initial.checkedAt) || '12/09/2026'));
+  const status = statutObservation(data, lang);
   const { mesuresRef, valeurs } = useMesuresAnimees(data.rate, data.durationMonths);
   const taux = (valeur:number) => valeur.toLocaleString(T.locale,{minimumFractionDigits:2,maximumFractionDigits:2});
   useEffect(() => {
@@ -43,8 +42,8 @@ export default function ObservatoireWidget({ lang = 'fr' }: { lang?: Lang }) {
         if (!response.ok) throw new Error('indisponible');
         const fresh = await response.json();
         if (!observationValide(fresh) || fresh.period < initial.period) throw new Error('invalide');
-        if (!controller.signal.aborted) { setData(fresh); setStatus(T.verifie(dateLoc(fresh.checkedAt))); }
-      } catch { /* copie embarquée conservée, sans message d'échec */ }
+        if (!controller.signal.aborted) setData(current => fresh.period >= current.period ? fresh : {...current, stale:true});
+      } catch { if (!controller.signal.aborted) setData(current => ({...current, stale:true})); }
       finally { busy = false; }
     };
     void refresh();

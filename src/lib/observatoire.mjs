@@ -1,5 +1,25 @@
 export const OBSERVATOIRE_ORIGIN = 'https://lobservatoire.creditlogement.fr';
 export const OBSERVATOIRE_TTL = 6 * 60 * 60 * 1000;
+export const OBSERVATOIRE_SEMAINE = 7 * 24 * 60 * 60 * 1000;
+
+// Ne jamais transformer une copie de secours en contrôle automatique réussi.
+export function statutObservation(data, lang = 'fr', now = new Date()) {
+  const checked = typeof data.checkedAt === 'string' ? Date.parse(data.checkedAt) : NaN;
+  const manual = typeof data.verifiedOn === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(data.verifiedOn)
+    ? Date.parse(`${data.verifiedOn}T00:00:00Z`) : NaN;
+  const controleValide = Number.isFinite(checked) && checked <= now.getTime();
+  const stamp = controleValide ? checked : manual;
+  if (!Number.isFinite(stamp) || stamp > now.getTime()) return lang === 'en'
+    ? 'Backup data — verification date unavailable'
+    : 'Données de secours — date de vérification indisponible';
+  const date = new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'fr-FR', {timeZone:'UTC'}).format(new Date(stamp));
+  const recent = now.getTime() - stamp < OBSERVATOIRE_SEMAINE;
+  if (!data.stale && controleValide && recent) return lang === 'en'
+    ? `Source verified on ${date}` : `Source vérifiée le ${date}`;
+  return lang === 'en'
+    ? `Last verified copy: ${date}${recent ? '' : ' — update pending'}`
+    : `Dernière copie vérifiée le ${date}${recent ? '' : ' — actualisation en attente'}`;
+}
 
 export function observationValide(data, now = new Date()) {
   if (!data || !/^\d{4}-(0[1-9]|1[0-2])$/.test(data.period)) return false;

@@ -235,8 +235,7 @@
 @media (min-width:1024px) {
   .simulateur-intro { grid-template-columns:1.1fr 1fr; gap:64px; }
   .simulator-panel { padding:40px; }
-  .simulator-panel form { grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-rows:repeat(5,auto); column-gap:64px; align-items:start; }
-  .simulator-panel form:has(> label:nth-of-type(3)) { grid-template-rows:repeat(6,auto); }
+  .simulator-panel form { grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:48px; align-items:start; }
   .simulator-panel form > * { grid-column:1; min-width:0; }
   .simulator-panel form > [aria-live] { grid-column:2; grid-row:1 / -1; position:sticky; top:108px; min-height:440px; }
 }
@@ -289,6 +288,61 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 .partenaire-logo { display: block; object-fit: contain; object-position: left center; }
 .partenaire-logo[data-partenaire="priveos"] { width: 180px; height: 111px; }
 .partenaire-logo[data-partenaire="edilos"] { width: 180px; height: 42px; }
+
+/* Audit ergonomique du 16/09 : styles strictement limités au simulateur,
+   au rendez-vous et aux séquences expertises/méthode. Avis inchangés. */
+.simulateur-resume-mobile { display:none; }
+.simulateur-avance, .simulateur-details { border-top:1px solid var(--color-filet); padding-top:16px; }
+.simulateur-avance > summary, .simulateur-details > summary { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:44px; cursor:pointer; list-style:none; font-size:15px; font-weight:500; }
+.simulateur-avance > summary::-webkit-details-marker, .simulateur-details > summary::-webkit-details-marker { display:none; }
+.simulateur-avance[open] > summary > span:last-child, .simulateur-details[open] > summary > span { transform:rotate(45deg); }
+.simulateur-hypotheses { margin-top:4px; font-size:13px; line-height:1.6; color:var(--color-argent); }
+.simulateur-avance-contenu { margin-top:20px; }
+.simulateur-decomposition { display:grid; gap:10px; font-size:14px; line-height:1.5; }
+.simulateur-decomposition > div { display:flex; justify-content:space-between; gap:16px; align-items:baseline; }
+.simulateur-decomposition dt { color:var(--color-argent); }
+.simulateur-decomposition dd { font-family:var(--font-mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.simulateur-arrondi, .simulateur-avertissement { font-size:13px; line-height:1.6; color:var(--color-argent); }
+.simulateur-mensualite { display:grid; gap:8px; font-size:14px; line-height:1.5; }
+.simulateur-mensualite strong { font-family:var(--font-mono); font-size:22px; font-weight:500; }
+.simulateur-mensualite > span { color:var(--color-argent); }
+.simulateur-details .simulateur-decomposition { margin-top:16px; }
+.simulateur-details > p { margin-top:14px; font-size:13px; line-height:1.6; color:var(--color-argent); }
+.simulateur-avertissement { border-top:1px solid var(--color-filet); padding-top:16px; }
+.simulator-panel form > .simulateur-resultat { gap:16px; min-height:0; }
+.simulator-panel form > .simulateur-resultat > a { margin-block:4px; }
+@media (max-width:1023px) {
+  .simulateur-resume-mobile { display:flex; position:sticky; top:84px; z-index:12; justify-content:space-between; gap:12px; align-items:center; padding:12px 14px; border:1px solid #c4c0b8; border-radius:8px; background:#f6f5f2; color:#111; }
+  .simulateur-resume-mobile > div { display:grid; gap:2px; }
+  .simulateur-resume-mobile span, .simulateur-resume-mobile small { font-size:11px; color:#3d3f46; }
+  .simulateur-resume-mobile strong { font-family:var(--font-mono); font-size:22px; white-space:nowrap; font-weight:500; }
+  .simulateur-resume-mobile a { font-size:12px; min-height:44px; display:flex; align-items:center; text-decoration:underline; text-underline-offset:4px; }
+  #simulation-resultat { scroll-margin-top:196px; }
+  #simulateur { padding-block:64px; }
+  #simulateur .chapitre-filet { margin-bottom:28px; }
+  #simulateur .simulator-panel { margin-top:28px; }
+  .simulator-panel .champ { font-size:16px; }
+}
+@media (max-height:500px) and (max-width:1023px) { .simulateur-resume-mobile { position:static; } }
+#rdv-parcours .rdv-erreur { font-size:13px; color:#e7b890; line-height:1.5; }
+#rdv-parcours [aria-invalid="true"] { border-color:#e7b890; }
+#rdv-parcours .rdv-groupe { min-width:0; border-top:1px solid var(--color-filet); padding-top:18px; }
+#rdv-parcours .rdv-groupe legend { padding-right:12px; font-size:16px; font-weight:500; }
+#rdv-parcours .rdv-secours { display:grid; gap:14px; border:1px solid var(--color-cuivre); border-radius:8px; padding:18px; font-size:14px; line-height:1.6; }
+#rdv-parcours button:disabled { opacity:.55; cursor:wait; }
+#rdv-parcours .champ { font-size:16px; }
+#expertises, #methode { padding-block:72px; }
+#expertises .expertises-lignes { margin-top:32px; }
+#expertises .expertise-lien { padding-block:28px; }
+#methode .etape { min-height:0; padding:24px; gap:16px; }
+#methode .etape > p { font-size:20px; line-height:1.5; }
+#methode .methode-schema svg { max-height:150px; }
+#methode .etape > div:last-child { margin-top:0; padding-top:14px; }
+@media (min-width:1024px) {
+  #expertises .expertise-lien { grid-template-columns:minmax(0,.55fr) minmax(0,1.45fr); gap:56px; }
+  #methode .etape { padding:28px; }
+}
+
 /* ── Avis clients : mur vivant (îlot React MurAvis) et page de dépôt (DeposerAvis) ── */
 #avis .avenir { display:grid; gap:36px; padding:clamp(24px,4vw,40px); }
 @media (min-width:900px) { #avis .avenir { grid-template-columns:1.1fr .9fr; gap:56px; align-items:center; } }

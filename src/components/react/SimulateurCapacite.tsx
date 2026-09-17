@@ -32,6 +32,17 @@ const repartir = (n: number) => { const base = Math.floor(100 / n); const reste 
 
 export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
   const S = simulateurTextes(lang);
+  const U = lang === 'fr' ? {
+    budget:'Budget estimé, apport inclus', emprunt:'Emprunt estimé', apport:'Votre apport',
+    arrondi:'Budget arrondi à 5 000 € près, hors frais de notaire et de garantie.',
+    affiner:'Affiner les hypothèses', details:'Détail du financement',
+    resume:'Budget estimé', voir:'Voir le détail', hypothese:'Hypothèses',
+  } : {
+    budget:'Estimated budget, down payment included', emprunt:'Estimated loan', apport:'Your down payment',
+    arrondi:'Budget rounded to the nearest €5,000, excluding notary and guarantee fees.',
+    affiner:'Refine assumptions', details:'Financing breakdown',
+    resume:'Estimated budget', voir:'View breakdown', hypothese:'Assumptions',
+  };
   const pc = (v: number, d = 2) => (lang === 'fr' ? v.toFixed(d).replace('.', ',') : v.toFixed(d));
 
   const [projet, setProjet] = useState<Projet>('rp');
@@ -77,7 +88,7 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
     const capacite = Math.round((emprunt + (apport || 0)) / 5000) * 5000;
     const tauxEndet = revenusTotaux > 0 ? (((charges || 0) + mensuMax) / revenusTotaux) * 100 : 0;
     const resteAVivre = Math.max(0, revenusTotaux - (charges || 0) - mensuMax);
-    return { capacite, mensuMax, mensuCredit, assuranceMois, coutAssurance, coutInterets, tauxEffectif, quotiteTotale, plafond, avecAssurance, tauxEndet: pc(tauxEndet, 1), resteAVivre };
+    return { emprunt, capacite, mensuMax, mensuCredit, assuranceMois, coutAssurance, coutInterets, tauxEffectif, quotiteTotale, plafond, avecAssurance, tauxEndet: pc(tauxEndet, 1), resteAVivre };
   }, [projet, revenus, apport, loyers, duree, autresRevenus, ponderation, ponderationLoyers, charges, taux, tauxAss, modeAss, garanties, quotites, lang]);
 
   // La bordure du résultat s'allume à chaque changement (400 ms), puis s'éteint.
@@ -108,7 +119,12 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
   );
 
   return (
-    <form className="grid gap-5" onSubmit={(e) => e.preventDefault()} aria-labelledby="sim-titre">
+    <form className="simulateur-form grid gap-5" onSubmit={(e) => e.preventDefault()} aria-labelledby="sim-titre">
+      <div className="simulateur-resume-mobile">
+        <div><span>{U.resume}</span><strong>≈ {fmt(r.capacite)}</strong><small>{lang === 'fr' ? 'Apport inclus · estimation' : 'Down payment included · estimate'}</small></div>
+        <a href="#simulation-resultat">{U.voir} ↓</a>
+      </div>
+      <div className="simulateur-saisie grid gap-5">
       <fieldset className="grid gap-2">
         <legend className="libelle">{S.projet}</legend>
         <div className="flex flex-wrap gap-2">
@@ -133,6 +149,20 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
         </div>
       )}
 
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="grid gap-2"><span className="libelle">{S.apport}</span>
+          <span className="relative"><input className="champ pr-10" type="number" min={0} step={1000} value={apport} onChange={(e) => setApport(+e.target.value)} />{unite('€')}</span>
+        </label>
+        <label className="grid gap-2"><span className="libelle">{S.charges}</span>
+          <span className="relative"><input className="champ pr-20" type="number" min={0} step={50} value={charges} onChange={(e) => setCharges(+e.target.value)} />{unite(S.mois)}</span>
+        </label>
+      </div>
+
+      {curseur(S.duree, `${duree} ${S.ans}`, { min: 5, max: 25, step: 1, value: duree, onChange: (e) => setDuree(+e.target.value) })}
+      <p id="simulation-hypotheses" className="simulateur-hypotheses">{U.hypothese} : {pc(taux)} % · {S.res_assurance} {pc(tauxAss)} % · {S.quotite_totale} {r.quotiteTotale} %</p>
+      <details className="simulateur-avance">
+        <summary aria-describedby="simulation-hypotheses"><span>{U.affiner}</span><span aria-hidden="true">+</span></summary>
+        <div className="simulateur-avance-contenu grid gap-6">
       <div className="grid gap-2">
         <span className="libelle">{S.autres} <span className="font-normal text-argent">{S.autres_note}</span></span>
         <div className="flex flex-wrap items-center gap-2">
@@ -143,14 +173,6 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
         <label className="relative"><span className="sr-only">{S.autres_sr}</span><input className="champ pr-20" type="number" min={0} step={50} value={autresRevenus} onChange={(e) => setAutresRevenus(+e.target.value)} />{unite(S.mois)}</label>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <label className="grid gap-2"><span className="libelle">{S.apport}</span>
-          <span className="relative"><input className="champ pr-10" type="number" min={0} step={1000} value={apport} onChange={(e) => setApport(+e.target.value)} />{unite('€')}</span>
-        </label>
-        <label className="grid gap-2"><span className="libelle">{S.charges}</span>
-          <span className="relative"><input className="champ pr-20" type="number" min={0} step={50} value={charges} onChange={(e) => setCharges(+e.target.value)} />{unite(S.mois)}</span>
-        </label>
-      </div>
 
       {/* ── Le prêt ── */}
       <div className="grid gap-4 border-t border-filet pt-5">
@@ -158,7 +180,6 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
         <label className="grid gap-2"><span className="libelle">{S.emprunteurs}</span>
           <select className="champ appearance-none" value={emprunteurs} onChange={(e) => changerEmprunteurs(+e.target.value)}>{[1, 2, 3, 4, 5, 6].map((n) => <option key={n} value={n}>{n}</option>)}</select>
         </label>
-        {curseur(S.duree, `${duree} ${S.ans}`, { min: 5, max: 25, step: 1, value: duree, onChange: (e) => setDuree(+e.target.value) })}
         {curseur(S.l_taux, `${pc(taux)} %`, { min: 0, max: 15, step: 0.05, value: taux, onChange: (e) => setTaux(+e.target.value) })}
       </div>
 
@@ -189,15 +210,32 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
         </div>
       </div>
 
-      <div ref={resultat} className="grid gap-2 rounded-donnee border border-cuivre bg-abime p-6" aria-live="polite" style={{ boxShadow: '0 0 0 4px rgba(184,123,79,0.12)' }}>
-        <span className="eyebrow">{S.capacite}</span>
+        </div>
+      </details>
+      </div>
+      <div ref={resultat} id="simulation-resultat" tabIndex={-1} className="simulateur-resultat grid gap-5 rounded-donnee border border-cuivre bg-abime p-6" aria-live="polite" aria-atomic="true">
+        <span className="eyebrow">{U.budget}</span>
         <span className="font-mono text-[40px] leading-none font-medium text-etoile tabular-nums">≈ {fmt(r.capacite)}</span>
-        <span className="text-[14px] text-argent">≈ {fmt(r.mensuCredit)} {S.credit_mois} + {fmt(r.assuranceMois)} {S.assurance_mois} = <span className="text-etoile">{fmt(r.mensuMax)}</span>{S.par_mois} · {duree} {S.ans}</span>
-        <span className="font-mono text-[12.5px] text-argent">{S.res_taux} <span className="text-cuivre-clair">{pc(taux)} %</span> · {S.res_interets} <span className="text-cuivre-clair">{fmt(r.coutInterets)}</span></span>
-        <span className="font-mono text-[12.5px] text-argent">{S.res_assurance} <span className="text-cuivre-clair">{pc(r.tauxEffectif)} %</span> ({garanties === 'complete' ? S.g_complete : S.g_min}, {S.quotite_totale} {r.quotiteTotale} %, {modeAss === 'lineaire' ? S.lineaire_court : S.crd_court}) · {S.res_cout_assurance} <span className="text-cuivre-clair">{fmt(r.coutAssurance)}</span></span>
-        <span className="font-mono text-[12.5px] text-argent">{S.endettement} <span className="text-cuivre-clair">{r.tauxEndet} %</span> ({S.max} {r.plafond} % HCSF{r.avecAssurance ? '' : ` ${S.sans_assurance}`}) · {S.reste} <span className="text-cuivre-clair">{fmt(r.resteAVivre)}</span></span>
+        <dl className="simulateur-decomposition">
+          <div><dt>{U.emprunt}</dt><dd>{fmt(r.emprunt)}</dd></div>
+          <div><dt>{U.apport}</dt><dd>{fmt(apport)}</dd></div>
+        </dl>
+        <p className="simulateur-arrondi">{U.arrondi}</p>
+        <p className="simulateur-mensualite"><strong>{fmt(r.mensuMax)}{S.par_mois}</strong><span>{fmt(r.mensuCredit)} {S.credit_mois} + {fmt(r.assuranceMois)} {S.assurance_mois} · {duree} {S.ans}</span></p>
         <a href="#rdv" className="btn-cuivre mt-2 h-11 justify-self-start px-6 text-[14px]">{S.cta}</a>
-        <span className="font-mono text-[11px] leading-relaxed text-argent">{S.avert}</span>
+        <details className="simulateur-details">
+          <summary>{U.details} <span aria-hidden="true">+</span></summary>
+          <dl className="simulateur-decomposition">
+            <div><dt>{S.res_taux}</dt><dd>{pc(taux)} %</dd></div>
+            <div><dt>{S.res_interets}</dt><dd>{fmt(r.coutInterets)}</dd></div>
+            <div><dt>{S.res_cout_assurance}</dt><dd>{fmt(r.coutAssurance)}</dd></div>
+            <div><dt>{S.endettement}</dt><dd>{r.tauxEndet} %</dd></div>
+            <div><dt>{S.reste}</dt><dd>{fmt(r.resteAVivre)}</dd></div>
+          </dl>
+          <p>{S.res_assurance} {pc(r.tauxEffectif)} % · {garanties === 'complete' ? S.g_complete : S.g_min} · {S.quotite_totale} {r.quotiteTotale} % · {modeAss === 'lineaire' ? S.lineaire_court : S.crd_court}</p>
+          <p>{S.max} {r.plafond} % HCSF{r.avecAssurance ? '' : ` ${S.sans_assurance}`}</p>
+        </details>
+        <p className="simulateur-avertissement">{S.avert}</p>
       </div>
     </form>
   );

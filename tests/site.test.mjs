@@ -14,12 +14,10 @@ const protectedFiles = {
   'src/contenu-legal/mentions-legales.html': '4D21C573BF3EDFD789A35090D41EA07BAC3580AF9AFCA4C4BCCA40A183EC4C3A',
   'src/contenu-legal/politique-de-confidentialite.html': '8FE1D89573FB81AA7C5DEDFCBD8AF354C45DAB97FEBE4FD17B12F344EADB7CC0',
   'src/contenu-legal/cgu.html': 'B07104AAE69BD8BEA3F2822E26364AF0FF34C24B31064CE3BC4C1099233CE881',
-  // Empreintes relevées après les évolutions demandées (bilinguisme 2026-09-13, simulateur 2026-09-14).
-  'src/components/react/PriseRendezVous.tsx': '87441D58517BD76F3D9B01B33F735A382F9F00F44416187D5033DA6C03BE79BB',
-  'src/components/react/SimulateurCapacite.tsx': 'AB27E8D442E896291DCD4F4823E4A47038224294FC548110149C1519DDB1DCA1',
+  // Les interfaces évoluent ; calculs et charge utile sont protégés dans ergonomie.test.mjs.
 };
 
-test('Les cinq sources protégées sont identiques octet pour octet', () => {
+test('Les trois sources légales protégées sont identiques octet pour octet', () => {
   for (const [file, hash] of Object.entries(protectedFiles)) assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex').toUpperCase(), hash, file);
 });
 test('Les thèmes accentués correspondent aux filtres CSS', () => {

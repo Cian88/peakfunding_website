@@ -79,25 +79,6 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
     </div>
   </section>
 
-  <!-- ═══ 4 · Simulateur ═══ -->
-  <section id="simulateur" class="clair accueil-clair section-sombre scroll-mt-16">
-    <div class="grille"></div>
-    <div class="contenu relative">
-      <div class="chapitre-filet reveal" aria-hidden="true"></div>
-      <div class="reveal simulateur-intro">
-        <div>
-        <p class="eyebrow">{u.sim_eyebrow}</p>
-        <h2 id="sim-titre" class="titre mt-4">{u.sim_titre}</h2>
-        </div>
-        <p class="corps max-w-md text-[17px] font-light">{u.sim_texte}</p>
-      </div>
-      <div class="simulator-panel surface-claire reveal mt-12">
-        <div class="simulateur-observatoire"><ObservatoireWidget client:visible lang={lang} /></div>
-        <SimulateurCapacite client:visible lang={lang} />
-      </div>
-    </div>
-  </section>
-
   <!-- ═══ 5 · Expertises ═══ -->
   <section id="expertises" class="clair accueil-clair section-sombre scroll-mt-16">
     <div class="contenu">
@@ -123,6 +104,25 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
           </li>
         ))}
       </ul>
+    </div>
+  </section>
+
+  <!-- ═══ 4 · Simulateur ═══ -->
+  <section id="simulateur" class="clair accueil-clair section-sombre scroll-mt-16">
+    <div class="grille"></div>
+    <div class="contenu relative">
+      <div class="chapitre-filet reveal" aria-hidden="true"></div>
+      <div class="reveal simulateur-intro">
+        <div>
+        <p class="eyebrow">{u.sim_eyebrow}</p>
+        <h2 id="sim-titre" class="titre mt-4">{u.sim_titre}</h2>
+        </div>
+        <p class="corps max-w-md text-[17px] font-light">{u.sim_texte}</p>
+      </div>
+      <div class="simulator-panel surface-claire reveal mt-12">
+        <div class="simulateur-observatoire"><ObservatoireWidget client:visible lang={lang} /></div>
+        <SimulateurCapacite client:visible lang={lang} />
+      </div>
     </div>
   </section>
 

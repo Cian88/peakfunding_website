@@ -108,6 +108,9 @@ jobs:
   deploy:
     name: Publier sur GitHub Pages
     needs: build
+    # Sur un simple push, le job Observatoire est ignoré : sans condition explicite,
+    # GitHub propage ce « skipped » et ne publie rien. On publie dès que le build a réussi.
+    if: always() && !cancelled() && needs.build.result == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

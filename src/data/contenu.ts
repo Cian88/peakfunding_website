@@ -112,7 +112,7 @@ const partenairesEn = [
 const uiFr = {
   hero_eyebrow: 'Courtier indépendant · France entière',
   hero_titre: ['Votre financement, ', 'pensé dans ', 'son ensemble.'],
-  hero_texte: 'Immobilier, entreprise, patrimoine. Nous structurons votre dossier, le défendons auprès de plus de trente banques et restons à vos côtés jusqu’au déblocage des fonds.',
+  hero_texte: 'Investissement locatif, SCI, reprise d’entreprise, opérations de marchands de biens : PEAK FUNDING structure et négocie votre financement, partout en France.',
   hero_cta1: 'Parlons de votre projet',
   hero_cta2: 'Estimer ma capacité',
   hero_note: 'Un premier échange de 30 minutes, sans engagement.',
@@ -157,7 +157,7 @@ const uiFr = {
 const uiEn: typeof uiFr = {
   hero_eyebrow: 'Independent broker · Throughout France',
   hero_titre: ['Your financing, ', 'thought through ', 'as a whole.'],
-  hero_texte: 'Real estate, business, wealth. We structure your file, defend it before more than thirty banks and stay by your side until the funds are released.',
+  hero_texte: 'Buy-to-let investments, French property companies (SCI), business acquisitions and property trading projects: PEAK FUNDING structures and negotiates your financing throughout France.',
   hero_cta1: 'Let’s discuss your project',
   hero_cta2: 'Estimate my capacity',
   hero_note: 'A first 30-minute conversation, with no commitment.',

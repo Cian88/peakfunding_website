@@ -47,15 +47,15 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
     </div>
   </section>
 
-  <!-- ═══ 2 · Chiffres ═══ -->
-  <section class="sombre border-y border-filet" aria-label={u.chiffres_aria}>
+  <!-- ═══ 2 · Repères d’accompagnement ═══ -->
+  <section id="accompagnement" class="sombre border-y border-filet" aria-label={u.reperes_aria}>
     <div class="grille"></div>
-    <ul class="contenu reveal-groupe relative grid grid-cols-2 gap-x-8 gap-y-10 py-14 md:grid-cols-4">
-      {c.chiffres.map((ch) => (
-        <li class="grid gap-3.5">
-          <span class="donnee text-[48px] leading-none font-medium text-etoile lg:text-[56px]" data-compte={ch.valeur} data-suffixe={ch.suffixe}>{ch.valeur}{ch.suffixe}</span>
-          <span class="block h-px w-full bg-[linear-gradient(90deg,#b87b4f_60%,#2a2f3a_60%)]"></span>
-          <span class="eyebrow text-argent">{ch.libelle}</span>
+    <ul class="contenu reveal-groupe relative grid grid-cols-1 gap-x-8 gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+      {c.reperes.map((repere) => (
+        <li class="grid grid-rows-[1fr_auto_1fr] gap-3.5">
+          <h2 class="text-[24px] leading-[1.25] font-light tracking-tight text-balance text-etoile lg:text-[26px]">{repere.titre}</h2>
+          <span aria-hidden="true" class="block h-px w-full bg-[linear-gradient(90deg,#b87b4f_60%,#2a2f3a_60%)]"></span>
+          <p class="text-[14px] leading-relaxed text-argent">{repere.texte}</p>
         </li>
       ))}
     </ul>

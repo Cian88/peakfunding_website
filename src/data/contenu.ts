@@ -47,17 +47,17 @@ export function expertiseUi(lang: Lang) {
   return lang === 'en' ? expUiEn : expUiFr;
 }
 
-const chiffresFr = [
-  { valeur: 500, suffixe: '+', libelle: 'Projets financés' },
-  { valeur: 95, suffixe: ' %', libelle: 'Taux d’obtention' },
-  { valeur: 30, suffixe: '+', libelle: 'Partenaires bancaires' },
-  { valeur: 72, suffixe: ' h', libelle: 'Première réponse' },
+const reperesFr = [
+  { titre: 'Expertises complémentaires', texte: 'Immobilier, entreprise et assurance emprunteur.' },
+  { titre: 'Un interlocuteur dédié', texte: 'Du premier échange au déblocage des fonds.' },
+  { titre: 'Premier échange sans engagement', texte: 'Pour faire le point sur votre projet.' },
+  { titre: 'Partout en France', texte: 'Un accompagnement possible à distance.' },
 ];
-const chiffresEn = [
-  { valeur: 500, suffixe: '+', libelle: 'Financed projects' },
-  { valeur: 95, suffixe: ' %', libelle: 'Approval rate' },
-  { valeur: 30, suffixe: '+', libelle: 'Banking partners' },
-  { valeur: 72, suffixe: ' h', libelle: 'First response' },
+const reperesEn = [
+  { titre: 'Complementary expertise', texte: 'Property, business and borrower insurance.' },
+  { titre: 'A dedicated contact', texte: 'From the first conversation to the release of funds.' },
+  { titre: 'An initial conversation, no commitment', texte: 'To take stock of your project.' },
+  { titre: 'Throughout France', texte: 'Support available remotely.' },
 ];
 
 const missionEn = {
@@ -120,7 +120,7 @@ const uiFr = {
   hero_nouvel_onglet: ' (nouvel onglet)',
   hero_orias: 'ORIAS n° 24002546 · Supervision ACPR',
   hero_decouvrir: 'Découvrir nos expertises',
-  chiffres_aria: 'Nos chiffres',
+  reperes_aria: 'Votre accompagnement',
   mission_eyebrow: 'Notre mission',
   mission_titre: 'Nous ne cherchons pas un taux. Nous construisons une opération.',
   mission_alt: 'Analyse d’un dossier de financement, documents et écran de travail.',
@@ -165,7 +165,7 @@ const uiEn: typeof uiFr = {
   hero_nouvel_onglet: ' (new tab)',
   hero_orias: 'ORIAS no. 24002546 · Supervised by the ACPR',
   hero_decouvrir: 'Discover our expertise',
-  chiffres_aria: 'Our figures',
+  reperes_aria: 'Your support',
   mission_eyebrow: 'Our mission',
   mission_titre: 'We don’t chase a rate. We build a deal.',
   mission_alt: 'Reviewing a financing file — documents and a work screen.',
@@ -201,6 +201,6 @@ const uiEn: typeof uiFr = {
 
 export function accueil(lang: Lang) {
   return lang === 'en'
-    ? { ui: uiEn, chiffres: chiffresEn, mission: missionEn, expertises: expResumeEn, methode: methodeEn, equipe: equipeEn, faq: faqEn, partenaires: partenairesEn }
-    : { ui: uiFr, chiffres: chiffresFr, mission: missionFr, expertises: expResumeFr, methode: methodeFr, equipe: equipeFr, faq: faqFr, partenaires: partenairesFr };
+    ? { ui: uiEn, reperes: reperesEn, mission: missionEn, expertises: expResumeEn, methode: methodeEn, equipe: equipeEn, faq: faqEn, partenaires: partenairesEn }
+    : { ui: uiFr, reperes: reperesFr, mission: missionFr, expertises: expResumeFr, methode: methodeFr, equipe: equipeFr, faq: faqFr, partenaires: partenairesFr };
 }

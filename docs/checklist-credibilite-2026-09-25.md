@@ -7,6 +7,7 @@ Les éléments non cochés sont à valider : aucune exécution automatique n’e
 
 - [x] Préciser les spécialités dans le paragraphe d’accueil français et anglais.
 - [x] Conserver le titre, la montagne, les couleurs, la typographie, les animations et les boutons.
+- [x] Remplacer le bandeau chiffré par des repères sans statistiques annuelles, en français et en anglais.
 
 Référence : audit du site du 24 septembre et vidéo https://www.youtube.com/watch?v=NBX5SsGZX9M
 Principe Refero : préciser les situations et prestations plutôt qu’ajouter des promesses générales.
@@ -32,12 +33,12 @@ Principe Refero : préciser les situations et prestations plutôt qu’ajouter d
 - [ ] Avec accord préalable, proposer une présentation factuelle de la collaboration sur leurs supports.
 - [ ] Ajouter uniquement des liens vers des preuves authentiques et vérifiées.
 
-## 4. Équipe et indicateurs
+## 4. Équipe et engagements
 
 - [ ] Recueillir les parcours vérifiables, spécialités et profils professionnels des conseillers.
 - [ ] Préparer leurs pages et relier les articles signés.
-- [ ] Documenter les chiffres 500+, 95 %, 30+ et 72 h : définition, période, périmètre et source.
-- [ ] Reformuler ou retirer les indicateurs non documentés.
+- [x] Retirer les chiffres 500+, 95 %, 30+ et 72 h du bandeau sous l’accueil.
+- [ ] Vérifier les affirmations chiffrées encore présentes ailleurs, sans réintroduire de statistiques annuelles dans le bandeau.
 
 ## 5. Cohérence et suivi
 

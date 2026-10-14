@@ -30,8 +30,8 @@ commentaire dans la journée ; une question récurrente devient le sujet d'un gu
 
 ## Textes d'accompagnement
 
-Les posts LinkedIn définitifs, avec leur premier commentaire, sont dans 
-(copie dans Téléchargements/ADE). Ci-dessous, les textes courts pour Instagram.
+Les posts LinkedIn définitifs, avec leur premier commentaire, sont dans `posts-linkedin.txt`
+(copie dans Téléchargements/ADE, visuels 4:5 dans ADE/Post). Ci-dessous, les textes courts pour Instagram.
 
 ### 01 — Loi Lemoine
 

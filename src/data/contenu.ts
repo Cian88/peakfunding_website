@@ -29,6 +29,8 @@ const expUiFr = {
   final_insure: 'Échanger avec le cabinet',
   final_autre: 'Estimer ma capacité',
   nouvel_onglet: ' (nouvel onglet)',
+  guides_eyebrow: 'Guides',
+  guides_titre: 'Tout comprendre avant de changer d’assurance.',
 };
 const expUiEn: typeof expUiFr = {
   fil_expertises: 'Expertise',
@@ -42,6 +44,8 @@ const expUiEn: typeof expUiFr = {
   final_insure: 'Talk to the firm',
   final_autre: 'Estimate my capacity',
   nouvel_onglet: ' (new tab)',
+  guides_eyebrow: 'Guides',
+  guides_titre: 'Everything to understand before switching insurance.',
 };
 export function expertiseUi(lang: Lang) {
   return lang === 'en' ? expUiEn : expUiFr;
@@ -102,6 +106,7 @@ const faqEn = [
   { q: 'How long does it take to get an agreement?', r: 'You get a first response within 72 hours. Then allow on average 6 to 8 weeks between submitting the file and the agreement — longer when the structure is complex.' },
   { q: 'Do you work throughout France?', r: 'Yes, throughout France, including for expatriates and non-residents. All exchanges can take place remotely, by video call or by phone, with the same contact from start to finish.' },
   { q: 'Can I borrow for a rental property if I already have a loan?', r: 'Often, yes. Not every bank treats rent the same way when calculating your debt ratio. With the right institution and the right structure (SCI, deferral, term), it is common to unlock a capacity that your current bank refuses.' },
+  { q: 'Can you also reduce the cost of my loan insurance?', r: 'Yes. Whether your loan is about to be signed or already under way, we compare several insurers offering cover at least equivalent to what your bank requires (insurance delegation, Lemoine law), then handle the substitution with the bank. The review is free and without commitment; the saving frequently reaches several thousand euros over the life of the loan.' },
 ];
 
 const partenairesEn = [

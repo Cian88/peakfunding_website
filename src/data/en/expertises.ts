@@ -120,7 +120,14 @@ export const expertisesEn: Expertise[] = [
     intro: 'Insurance can account for nearly a third of the cost of your loan. Thanks to the Lemoine law and insurance delegation, there is almost always a better option — without changing your loan.',
     ctaPrincipal: 'Have my insurance reviewed',
     ctaSecondaire: { libelle: 'Understand insurance delegation', href: '/actualites/delegation-assurance' },
-    pourQui: null,
+    pourQui: {
+      titre: 'Every borrower — starting with those the bank prices badly.',
+      cibles: [
+        { titre: 'Loan already under way', texte: 'Your loan was signed with the bank’s insurance: the Lemoine law lets you switch at any time, free of charge, to a policy with equivalent cover.' },
+        { titre: 'Loan about to be signed', texte: 'You have just received an agreement in principle: it is the best moment to present a delegated policy, before the loan offer is issued.' },
+        { titre: 'Specific profiles', texte: 'Health condition, high-risk job or sport, senior borrower, non-resident: individual pricing often makes the difference.' },
+      ],
+    },
     reperes: [
       { valeur: 'Up to ⅓', texte: 'of the total cost of the loan can come from borrower insurance alone.' },
       { valeur: 'At any time', texte: 'the Lemoine law lets you cancel and switch insurance whenever you wish, free of charge.' },

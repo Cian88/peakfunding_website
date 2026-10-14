@@ -33,8 +33,14 @@ const descriptions: Record<Lang, string> = {
 };
 
 const domaines: Record<Lang, string[]> = {
-  fr: ['Courtage en crédit immobilier', 'Financement professionnel', 'Reprise d’entreprise et LBO', 'Crédit marchand de biens', 'Financement de promotion immobilière', 'Assurance emprunteur', 'Délégation d’assurance emprunteur', 'Loi Lemoine', 'Financement des non-résidents et expatriés', 'SCI et montage patrimonial'],
-  en: ['Mortgage brokerage', 'Business financing', 'Business buyouts and LBO', 'Property-trader credit lines', 'Real-estate development financing', 'Borrower insurance', 'Borrower-insurance delegation', 'Lemoine law', 'Financing for non-residents and expatriates', 'SCI and wealth structuring'],
+  fr: ['Courtage en crédit immobilier', 'Financement professionnel', 'Reprise d’entreprise et LBO', 'Crédit marchand de biens', 'Financement de promotion immobilière', 'Assurance emprunteur', 'Délégation d’assurance emprunteur', 'Loi Lemoine', 'Changement d’assurance de prêt immobilier', 'Équivalence des garanties (FSI)', 'Questionnaire de santé et droit à l’oubli', 'Convention AERAS et risque aggravé de santé', 'Assurance emprunteur des seniors', 'Assurance emprunteur des professions et sports à risque', 'Quotité d’assurance emprunteur', 'Financement des non-résidents et expatriés', 'SCI et montage patrimonial'],
+  en: ['Mortgage brokerage', 'Business financing', 'Business buyouts and LBO', 'Property-trader credit lines', 'Real-estate development financing', 'Borrower insurance', 'Borrower-insurance delegation', 'Lemoine law', 'Switching mortgage insurance in France', 'Equivalence of cover (FSI)', 'Health questionnaire and right to be forgotten', 'AERAS convention and aggravated health risk', 'Borrower insurance for seniors', 'Borrower insurance for high-risk jobs and sports', 'Borrower-insurance coverage split (quotité)', 'Financing for non-residents and expatriates', 'SCI and wealth structuring'],
+};
+
+/** Étude d'assurance emprunteur : gratuite et sans engagement, comme l'indiquent la page PEAK INSURE et les guides. */
+const etudeAssurance: Record<Lang, { nom: string; description: string }> = {
+  fr: { nom: 'Étude comparative de l’assurance emprunteur', description: 'Analyse du contrat actuel et de la FSI de la banque, mise en concurrence de plusieurs assureurs à garanties au moins équivalentes, chiffrage de l’économie sur la durée restante. Gratuite et sans engagement.' },
+  en: { nom: 'Borrower-insurance comparison review', description: 'Analysis of the current policy and the bank’s FSI, comparison of several insurers with at least equivalent cover, and the saving quantified over the remaining term. Free and without commitment.' },
 };
 
 /** Services affichés dans le catalogue de l'organisation (une entrée par pôle). */
@@ -139,6 +145,7 @@ export function service(e: Expertise, lang: Lang) {
     availableLanguage: ['fr', 'en'],
     ...(e.pourQui ? { audience: e.pourQui.cibles.map((c) => ({ '@type': 'Audience', audienceType: c.titre })) } : {}),
     hasOfferCatalog: { '@type': 'OfferCatalog', name: fiche.nom, itemListElement: e.concretement.points.map((p) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: p.titre, description: p.texte } })) },
+    ...(e.slug === 'insure' ? { offers: { '@type': 'Offer', name: etudeAssurance[lang].nom, description: etudeAssurance[lang].description, price: '0', priceCurrency: 'EUR', url: page, seller: { '@id': ID_ORGANISATION } } } : {}),
   };
 }
 

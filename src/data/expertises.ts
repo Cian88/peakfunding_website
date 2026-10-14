@@ -131,7 +131,14 @@ export const expertises: Expertise[] = [
     intro: 'L’assurance représente parfois près d’un tiers du coût de votre crédit. Grâce à la loi Lemoine et à la délégation d’assurance, il y a presque toujours mieux à faire — sans changer votre prêt.',
     ctaPrincipal: 'Faire étudier mon assurance',
     ctaSecondaire: { libelle: 'Comprendre la délégation d’assurance', href: '/actualites/delegation-assurance' },
-    pourQui: null,
+    pourQui: {
+      titre: 'Tous les emprunteurs, et d’abord ceux que la banque tarife mal.',
+      cibles: [
+        { titre: 'Prêt déjà en cours', texte: 'Votre crédit a été signé avec l’assurance de la banque : la loi Lemoine vous permet d’en changer à tout moment, sans frais, pour un contrat à garanties équivalentes.' },
+        { titre: 'Prêt sur le point d’être signé', texte: 'Vous venez d’obtenir un accord de principe : c’est le meilleur moment pour présenter une délégation, avant l’édition de l’offre de prêt.' },
+        { titre: 'Profils particuliers', texte: 'Problème de santé, métier ou sport à risque, emprunteur senior, non-résident : la tarification individuelle fait souvent la différence.' },
+      ],
+    },
     reperes: [
       { valeur: 'Jusqu’à ⅓', texte: 'du coût total du crédit peut provenir de la seule assurance emprunteur.' },
       { valeur: 'À tout moment', texte: 'la loi Lemoine permet de résilier et changer d’assurance quand vous le souhaitez, sans frais.' },

@@ -134,5 +134,250 @@
    "Ce que l'on appelle « délégation »"
   ],
   "blocs": 26
+ },
+ {
+  "slug": "economie-assurance-emprunteur",
+  "title": "Changer d'assurance emprunteur : combien pouvez-vous économiser ?",
+  "description": "Calculez vous-même l'économie d'un changement d'assurance emprunteur : méthode, trois cas chiffrés et situations où changer ne rapporte presque rien.",
+  "avant": [
+   "Accueil",
+   "ASSURANCE EMPRUNTEUR",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 octobre 2026",
+   "L'économie se calcule en une soustraction : coût restant de votre contrat actuel moins coût d'un nouveau contrat sur la même durée, à garanties équivalentes. Elle va de plusieurs dizaines de milliers d'euros en début de prêt à presque rien en fin de prêt.",
+   "Comment calculer votre économie en quatre étapes ?"
+  ],
+  "blocs": 20,
+  "faq": [
+   {
+    "q": "Combien peut-on économiser en changeant d'assurance de prêt immobilier ?",
+    "r": "Tout dépend de la durée restante, de l'âge et de la base de calcul du contrat actuel. À titre d'illustration, un couple de 32 ans assuré à 100 % chacun sur un prêt de 300 000 € qui passe d'un contrat groupe à 0,30 % à un contrat délégué à 0,10 % du capital initial économise 28 800 € sur les 24 ans restants. En fin de prêt, avec un contrat calculé sur le capital restant dû, le gain peut être quasi nul."
+   },
+   {
+    "q": "Comment calculer le coût restant de mon assurance emprunteur ?",
+    "r": "Si votre cotisation est constante (calculée sur le capital initial), multipliez-la par le nombre de mois restants. Si elle diminue (calculée sur le capital restant dû), additionnez la colonne assurance du tableau d'amortissement à partir de la prochaine échéance. L'offre de prêt indique aussi le coût total de l'assurance en euros et le TAEA."
+   },
+   {
+    "q": "Changer d'assurance emprunteur fait-il baisser le taux de mon crédit ?",
+    "r": "Non. Le taux nominal, la mensualité hors assurance et la durée du prêt restent identiques, et la banque n'a pas le droit de modifier le taux en contrepartie d'une délégation. Seul le coût total du crédit, assurance comprise, baisse du montant de l'économie réalisée."
+   },
+   {
+    "q": "Est-il intéressant de changer d'assurance emprunteur en fin de prêt ?",
+    "r": "Cela dépend surtout de la base de calcul de votre contrat actuel. Sur le capital initial, la cotisation reste constante jusqu'au bout et un changement peut encore rapporter plusieurs milliers d'euros. Sur le capital restant dû, les cotisations restantes sont déjà faibles et le gain peut être nul, surtout si un questionnaire de santé entraîne une surprime."
+   }
+  ]
+ },
+ {
+  "slug": "refus-delegation-banque",
+  "title": "Votre banque refuse votre délégation d'assurance : que faire ?",
+  "description": "Refus de délégation d'assurance emprunteur : motifs valables ou non, délai de 10 jours ouvrés, contenu du refus, corrections à apporter et recours possibles.",
+  "avant": [
+   "Accueil",
+   "ASSURANCE EMPRUNTEUR",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 octobre 2026",
+   "Votre banque ne peut refuser un contrat délégué que si un critère de sa Fiche standardisée d'information n'est pas rempli. Le refus doit être écrit, motivé, envoyé sous dix jours ouvrés et lister tous les critères manquants.",
+   "Le seul motif valable : un critère de la FSI non rempli"
+  ],
+  "blocs": 20,
+  "faq": [
+   {
+    "q": "Ma banque peut-elle refuser mon assurance emprunteur externe ?",
+    "r": "Oui, mais pour un seul motif : le contrat ne remplit pas un ou plusieurs critères d'équivalence de garanties inscrits dans sa Fiche standardisée d'information (FSI), qui en compte au maximum 11, plus ceux de la perte d'emploi si elle l'exige. Elle ne peut pas refuser un contrat parce qu'il vient d'un autre assureur, ni modifier le taux du crédit ou facturer des frais en contrepartie de son acceptation."
+   },
+   {
+    "q": "Combien de temps a la banque pour répondre à une demande de changement d'assurance emprunteur ?",
+    "r": "La banque dispose de dix jours ouvrés à compter de la réception de la demande complète. Si elle accepte, elle émet un avenant gratuit au contrat de prêt. Si elle refuse, elle doit répondre par écrit dans ce même délai, en motivant son refus."
+   },
+   {
+    "q": "Que doit contenir un refus de délégation d'assurance ?",
+    "r": "Le refus doit être écrit et motivé, et mentionner en une seule fois l'ensemble des critères de la FSI que le contrat proposé ne remplit pas. Un refus vague ou envoyé critère par critère ne respecte pas cette obligation. Le non-respect de ces règles est passible d'une amende administrative pour la banque."
+   },
+   {
+    "q": "Que faire si ma banque refuse ma délégation ou ne répond pas ?",
+    "r": "Si le refus est fondé, faites corriger le contrat (rachat d'exclusion, franchise ajustée, garantie ajoutée) et redéposez une demande complète. S'il ne l'est pas, ou en cas de silence au-delà de dix jours ouvrés, adressez une réclamation écrite à la banque, puis saisissez gratuitement le médiateur bancaire ; un signalement est aussi possible à l'ACPR via ABEIS et à la DGCCRF via SignalConso. Ne résiliez pas votre ancien contrat avant l'accord écrit de la banque."
+   }
+  ]
+ },
+ {
+  "slug": "assurance-emprunteur-sante",
+  "title": "Assurance emprunteur et santé : questionnaire, droit à l'oubli, AERAS",
+  "description": "Questionnaire supprimé jusqu'à 200 000 € et 60 ans, droit à l'oubli, risque aggravé, convention AERAS : comment assurer un prêt immobilier malgré la santé.",
+  "avant": [
+   "Accueil",
+   "ASSURANCE EMPRUNTEUR",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 octobre 2026",
+   "Un problème de santé n'empêche pas d'assurer un crédit immobilier. Questionnaire supprimé sous conditions, droit à l'oubli, convention AERAS et délégation élargissent les solutions.",
+   "Quand le questionnaire de santé est-il supprimé ?"
+  ],
+  "blocs": 24,
+  "faq": [
+   {
+    "q": "Faut-il remplir un questionnaire de santé pour une assurance de prêt immobilier ?",
+    "r": "Non, si deux conditions sont réunies : la part assurée ne dépasse pas 200 000 € par personne, tous crédits immobiliers assurés confondus, et le prêt est remboursé avant le 60e anniversaire de l'emprunteur. Cette règle s'applique depuis le 1er juin 2022 (loi Lemoine). Si l'un des deux seuils est dépassé, l'assureur peut demander un questionnaire."
+   },
+   {
+    "q": "Faut-il déclarer un ancien cancer à son assurance emprunteur ?",
+    "r": "Non, si le protocole thérapeutique est terminé depuis cinq ans, sans rechute : c'est le droit à l'oubli, qui s'applique aussi à l'hépatite virale C, quel que soit l'âge au diagnostic. L'emprunteur répond alors au questionnaire sans le mentionner, et ce n'est pas une fausse déclaration. Le délai court à partir de la fin du protocole, pas du diagnostic."
+   },
+   {
+    "q": "Que faire si l'assurance emprunteur refuse de m'assurer pour raison de santé ?",
+    "r": "Un refus peut être réexaminé dans le cadre de la convention AERAS, qui prévoit un examen à plusieurs niveaux des dossiers présentant un risque aggravé de santé. Il est aussi utile d'interroger d'autres assureurs, dont des assureurs spécialisés, car chacun tarifie le risque individuellement. Enfin, la banque peut accepter d'autres garanties selon les dossiers, comme le nantissement d'un contrat d'assurance-vie, une caution ou une hypothèque."
+   },
+   {
+    "q": "Que risque-t-on en cas de fausse déclaration de santé à l'assurance de prêt ?",
+    "r": "Une fausse déclaration intentionnelle entraîne la nullité du contrat d'assurance (article L113-8 du Code des assurances). Une erreur non intentionnelle conduit à une indemnité réduite proportionnellement (article L113-9). Dans les deux cas, la conséquence apparaît lors d'un sinistre, quand l'assurance doit jouer."
+   }
+  ]
+ },
+ {
+  "slug": "assurance-emprunteur-senior",
+  "title": "Assurance emprunteur après 55 ou 60 ans : les solutions",
+  "description": "Limites d'âge, garanties exigées d'un retraité, formalités médicales, délégation, durée et garanties alternatives : assurer son prêt immobilier après 60 ans.",
+  "avant": [
+   "Accueil",
+   "ASSURANCE EMPRUNTEUR",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 octobre 2026",
+   "Après 55 ou 60 ans, l'assurance emprunteur reste accessible, mais elle coûte plus cher et s'accompagne de limites d'âge et de formalités médicales. Garanties, délégation, base de calcul, durée et quotité permettent d'en réduire le coût.",
+   "Pourquoi l'assurance emprunteur coûte-t-elle plus cher après 55 ans ?"
+  ],
+  "blocs": 24,
+  "faq": [
+   {
+    "q": "Peut-on obtenir une assurance emprunteur après 60 ans ?",
+    "r": "Oui. Chaque contrat fixe un âge maximal à l'adhésion et des âges de fin de garantie : l'incapacité et l'invalidité s'arrêtent souvent vers 65 à 70 ans ou au départ en retraite, tandis que le décès peut être couvert jusqu'à 80 ou 90 ans selon les contrats. Le prix est plus élevé et un questionnaire de santé est presque toujours demandé, car le prêt se termine après 60 ans."
+   },
+   {
+    "q": "Un retraité doit-il prendre la garantie incapacité de travail pour son prêt immobilier ?",
+    "r": "En général non : un retraité n'a plus de revenus professionnels à protéger, et la banque exige le plus souvent le socle décès et perte totale et irréversible d'autonomie (DC/PTIA). Les garanties exigées pour le dossier figurent dans la Fiche standardisée d'information (FSI) remise par la banque. C'est ce document qu'il faut vérifier avant de choisir un contrat."
+   },
+   {
+    "q": "Peut-on changer d'assurance de prêt après 60 ans ?",
+    "r": "Oui, la loi Lemoine permet de changer d'assurance emprunteur à tout moment et sans frais, à condition que le nouveau contrat offre des garanties équivalentes. Le nouveau contrat est toutefois tarifé sur l'âge actuel, et un questionnaire de santé peut être demandé dès lors que le prêt se termine après 60 ans. Il faut comparer avant de demander la substitution et ne pas résilier l'ancien contrat avant l'accord écrit de la banque."
+   },
+   {
+    "q": "Existe-t-il des alternatives à l'assurance emprunteur pour un senior ?",
+    "r": "L'assurance emprunteur n'est pas légalement obligatoire, même si la banque l'exige en pratique pour un prêt immobilier. Selon les dossiers, la banque peut accepter d'autres garanties en complément ou à la place : nantissement d'un contrat d'assurance-vie, caution ou hypothèque. Un patrimoine existant peut ainsi compenser une couverture réduite ou une exclusion."
+   }
+  ]
+ },
+ {
+  "slug": "assurance-emprunteur-metiers-sports-risque",
+  "title": "Métier ou sport à risque : bien assurer son prêt immobilier",
+  "description": "Métier ou sport à risque : ce que regarde l'assureur, surprime, exclusion ou rachat d'exclusion, et comment assurer un prêt qui couvre votre activité.",
+  "avant": [
+   "Accueil",
+   "ASSURANCE EMPRUNTEUR",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 octobre 2026",
+   "Un métier ou un sport à risque n'empêche pas d'assurer un prêt immobilier. Selon votre activité et votre pratique, l'assureur vous couvre au tarif standard, applique une surprime ou exclut le risque concerné.",
+   "Ce que l'assureur regarde dans votre dossier"
+  ],
+  "blocs": 22,
+  "faq": [
+   {
+    "q": "Peut-on assurer un prêt immobilier quand on exerce un métier à risque ?",
+    "r": "Oui. Selon l'activité réellement exercée, l'assureur accorde une couverture standard, applique une surprime ou exclut le risque lié au métier. Les contrats délégués tarifent souvent plus finement ces situations que le contrat groupe de la banque, qui a tendance à exclure ou à surprimer fortement."
+   },
+   {
+    "q": "Qu'est-ce qu'un rachat d'exclusion en assurance emprunteur ?",
+    "r": "C'est la possibilité, prévue par certains contrats, de faire couvrir un risque exclu, comme un sport, une profession ou les affections dorsales et psychiques sans hospitalisation, en échange d'une surprime. L'activité redevient alors couverte, moyennant une cotisation plus élevée."
+   },
+   {
+    "q": "Que risque-t-on si l'on ne déclare pas un sport à risque à son assureur de prêt ?",
+    "r": "Une fausse déclaration intentionnelle entraîne la nullité du contrat (article L113-8 du Code des assurances) : l'assureur ne paie rien, même pour un sinistre sans lien avec le sport caché. Une fausse déclaration non intentionnelle conduit à une indemnité réduite proportionnellement (article L113-9)."
+   },
+   {
+    "q": "Médecin ou chirurgien : quelle garantie vérifier pour son assurance de prêt ?",
+    "r": "La façon dont l'invalidité est appréciée. De nombreux contrats ne la jugent pas au seul regard de la profession exercée, ce qui peut limiter l'indemnisation d'un praticien qui ne peut plus exercer son métier. Selon les contrats, une garantie spécifique aux professions médicales apprécie l'invalidité selon la profession exercée."
+   }
+  ]
+ },
+ {
+  "slug": "quotite-assurance-emprunteur",
+  "title": "Quotité d'assurance emprunteur : comment la répartir à deux",
+  "description": "Quotité d'assurance emprunteur : règles de 100 % à 200 %, 50/50, 100/100 ou prorata des revenus, coût chiffré et conséquences en cas de décès d'un des deux.",
+  "avant": [
+   "Accueil",
+   "ASSURANCE EMPRUNTEUR",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 octobre 2026",
+   "La quotité d'assurance emprunteur est la part du capital emprunté que couvre l'assurance de chaque emprunteur. À deux, le total doit atteindre au moins 100 % et peut aller jusqu'à 200 %, selon ce qu'exige la banque.",
+   "Qu'est-ce que la quotité d'assurance emprunteur ?"
+  ],
+  "blocs": 25,
+  "faq": [
+   {
+    "q": "Quelle quotité d'assurance emprunteur choisir à deux ?",
+    "r": "À deux, le total des quotités doit être d'au moins 100 % et peut aller jusqu'à 200 %, selon l'exigence de la banque. Le 50/50 est le moins cher, le 100/100 protège totalement le survivant pour un coût double, et une répartition au prorata des revenus (60/40 pour 3 000 € et 2 000 €) reflète la part de chacun dans le budget."
+   },
+   {
+    "q": "Une quotité à 100/100 coûte-t-elle deux fois plus cher ?",
+    "r": "Oui, à tarif égal : le coût de l'assurance est proportionnel à la quotité. À titre d'illustration, pour 300 000 € sur 25 ans à 0,12 % du capital initial, un 50/50 ou un 60/40 coûte 30 € par mois (9 000 € au total), un 100/100 coûte 60 € par mois (18 000 € au total)."
+   },
+   {
+    "q": "Que se passe-t-il si mon conjoint décède avec une quotité de 50 % ?",
+    "r": "L'assureur rembourse 50 % du capital restant dû au moment du décès. Le survivant continue de payer seul l'autre moitié des échéances. Avec une quotité de 100 % sur chaque tête, le prêt serait entièrement remboursé."
+   },
+   {
+    "q": "Peut-on modifier la quotité d'assurance en cours de prêt ?",
+    "r": "Oui, avec l'accord de la banque, qui vérifie que le total reste au moins égal à son exigence, et par un avenant. Une hausse de quotité augmente le capital assuré : l'assureur peut alors demander un nouveau questionnaire de santé."
+   }
+  ]
+ },
+ {
+  "slug": "assurance-emprunteur-investissement-locatif",
+  "title": "Assurance emprunteur en investissement locatif et en SCI",
+  "description": "Assurance de prêt locatif : garanties exigées par la banque, ITT/IPT, effet sur le cash-flow, seuil de 200 000 € tous prêts confondus et prêt en SCI.",
+  "avant": [
+   "Accueil",
+   "ASSURANCE EMPRUNTEUR",
+   "5 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 octobre 2026",
+   "Pour financer un bien locatif, la banque exige en pratique une assurance emprunteur, comme pour une résidence principale. Les garanties demandées sont souvent plus légères : le décès et la perte totale et irréversible d'autonomie suffisent fréquemment, selon la banque et sa Fiche standardisée d'information (FSI).",
+   "La banque exige-t-elle une assurance pour un investissement locatif ?"
+  ],
+  "blocs": 24,
+  "faq": [
+   {
+    "q": "La banque exige-t-elle une assurance emprunteur pour un investissement locatif ?",
+    "r": "Aucune loi ne l'impose, mais en pratique la banque exige une assurance emprunteur pour tout prêt immobilier, locatif compris. Elle peut parfois accepter d'autres garanties, comme le nantissement d'un contrat d'assurance-vie, une caution ou une hypothèque. En locatif, beaucoup de banques se limitent au décès et à la perte totale et irréversible d'autonomie (DC/PTIA) ; les garanties exactes figurent dans la Fiche standardisée d'information (FSI) de la banque."
+   },
+   {
+    "q": "Faut-il garder l'ITT et l'IPT sur un prêt locatif ?",
+    "r": "Lorsque la banque ne les exige pas, l'incapacité temporaire totale (ITT) et l'invalidité permanente totale (IPT) deviennent un choix. Les loyers ne remplacent pas toujours un salaire : si le bien ne s'autofinance pas, en cas de vacance ou d'impayés, la mensualité reste en partie payée par vos revenus d'activité. Le choix dépend de votre épargne de précaution, de la part des loyers dans le remboursement et de la franchise du contrat."
+   },
+   {
+    "q": "Le seuil de 200 000 € sans questionnaire de santé s'applique-t-il prêt par prêt ?",
+    "r": "Non. Depuis le 1er juin 2022, le questionnaire de santé est supprimé si la part assurée ne dépasse pas 200 000 € par personne, tous crédits immobiliers assurés confondus (prêts en cours et nouveau prêt additionnés), et si le remboursement se termine avant le 60e anniversaire. Un investisseur déjà assuré pour 150 000 € sur sa résidence principale qui emprunte 100 000 € pour un bien locatif atteint 250 000 € : l'assureur peut alors poser un questionnaire."
+   },
+   {
+    "q": "Qui est assuré quand une SCI emprunte, et peut-on changer d'assurance en cours de prêt ?",
+    "r": "Quand une SCI emprunte, ce sont ses associés personnes physiques qui sont assurés, et la quotité se répartit entre eux, avec un minimum de 100 % au total. L'application de la loi Lemoine à un prêt consenti à une SCI dépend de la nature du prêt et de l'offre. La délégation reste possible à la signature ; la possibilité de substitution en cours de prêt se vérifie dans l'offre et avec la banque."
+   }
+  ]
  }
 ]

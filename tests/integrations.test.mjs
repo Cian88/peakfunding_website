@@ -9,10 +9,12 @@ const built = route => load(read(`dist/${route ? route + '/' : ''}index.html`));
 test('Sept visuels V1 exacts, utilisés dans la liste ET dans chaque article', () => {
   const slots = JSON.parse(read('_source/site-actuel/image-slots-state.json'));
   const listing = built('actualites');
-  // Huit articles : les sept visuels V1 (avec emplacement d'origine) + l'illustration propre de l'article
-  // « délégation d'assurance » (2026-09-16), hors V1 donc sans data-v1-slot.
-  assert.equal(listing('[data-article-visual]').length, 8);
-  assert.equal(listing('[data-article-visual="delegation-assurance"]').attr('src'), '/img/article-v1-delegation-assurance.webp');
+  // Quinze articles : les sept visuels V1 (avec emplacement d'origine) + les illustrations propres des
+  // guides d'assurance ajoutés depuis (2026-09-16 et 2026-10-14), hors V1 donc sans data-v1-slot.
+  assert.equal(listing('[data-article-visual]').length, 15);
+  for (const slug of ['delegation-assurance', 'economie-assurance-emprunteur', 'refus-delegation-banque', 'assurance-emprunteur-sante', 'assurance-emprunteur-senior', 'assurance-emprunteur-metiers-sports-risque', 'quotite-assurance-emprunteur', 'assurance-emprunteur-investissement-locatif']) {
+    assert.equal(listing(`[data-article-visual="${slug}"]`).attr('src'), `/img/article-v1-${slug}.webp`);
+  }
   const images = listing('[data-article-visual][data-v1-slot]');
   assert.equal(images.length, 7);
   images.each((_, node) => {
@@ -35,7 +37,7 @@ test('Assurance : même simulateur V1 ouvert dans un nouvel onglet, sans fenêtr
   const url = v1('iframe[src*="magnolia.fr"]').attr('src');
   assert.ok(url);
   assert.equal(new URL(url).searchParams.get('utm_source'), '33656');
-  for (const route of ['', 'expertises/insure', 'actualites/lemoine']) {
+  for (const route of ['', 'expertises/insure', 'actualites/lemoine', 'actualites/delegation-assurance', 'actualites/refus-delegation-banque']) {
     const page = built(route);
     assert.ok(page('a[data-assurance]').length > 0, route);
     page('a[data-assurance]').each((_, node) => {
@@ -51,7 +53,7 @@ test('Annotations : cartes uniformes, méthode illustrée, héros et simulateur 
   const home = built('');
   const listing = built('actualites');
   assert.equal(listing('.article-vedette').length, 0);
-  assert.equal(listing('.article-carte .article-image.h-\\[180px\\]').length, 8);
+  assert.equal(listing('.article-carte .article-image.h-\\[180px\\]').length, 15);
   assert.equal(home('#methode .methode-schema').length, 4);
   assert.equal(home('[data-espaces] .espace-lien').length, 2);
   assert.equal(home('#simulateur form').length, 1);

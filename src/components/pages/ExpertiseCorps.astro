@@ -4,6 +4,9 @@ import { faqExpertisesFor, expertiseUi } from '../../data/contenu';
 import type { Expertise } from '../../data/expertises';
 import { ASSURANCE_URL } from '../../data/integrations';
 import { langCourante, localiser, t } from '../../i18n';
+import articlesFr from '../../data/articles.json';
+import articlesEn from '../../data/en/articles.json';
+import { cleTheme, trierArticles } from '../../lib/editorial.mjs';
 
 interface Props { e: Expertise }
 const { e } = Astro.props;
@@ -14,6 +17,8 @@ const eu = expertiseUi(lang);
 const faq = faqExpertisesFor(lang)[e.slug];
 const lienPrincipal = e.slug === 'insure' ? ASSURANCE_URL : L('/#rdv');
 const cibleBlank = e.slug === 'insure';
+// Guides of the insurance cluster, listed on PEAK INSURE so each one is one click from the service page.
+const guides = e.slug === 'insure' ? trierArticles(lang === 'en' ? articlesEn : articlesFr).filter((a) => ['assurance-emprunteur', 'borrower-insurance'].includes(cleTheme(a.avant[1]))) : [];
 ---
 
   <section class="contenu section grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
@@ -76,6 +81,18 @@ const cibleBlank = e.slug === 'insure';
       </ol>
     </div>
   </section>
+
+  {guides.length > 0 && (
+    <section class="border-t border-trait" aria-labelledby="guides-expertise">
+      <div class="contenu section">
+        <p class="eyebrow">{eu.guides_eyebrow}</p>
+        <h2 id="guides-expertise" class="titre mt-3 max-w-2xl">{eu.guides_titre}</h2>
+        <ul class="mt-10 grid gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
+          {guides.map((a) => (<li class="border-t border-trait pt-5"><a href={L(`/actualites/${a.slug}`)} class="group block"><h3 class="text-[17px] font-medium leading-snug group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3><p class="corps mt-2 text-[14.5px]">{a.description}</p></a></li>))}
+        </ul>
+      </div>
+    </section>
+  )}
 
   <section class="border-t border-trait">
     <div class="contenu section grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">

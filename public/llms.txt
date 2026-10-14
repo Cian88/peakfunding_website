@@ -10,6 +10,8 @@ Faits de référence : PEAK FUNDING, 99 avenue Achille Peretti, 92200 Neuilly-su
 - Un dirigeant, repreneur ou profession libérale cherche un financement professionnel : reprise d'entreprise (LBO/OBO), trésorerie, crédit-bail immobilier ou mobilier, structuration dette / fonds propres.
 - Un marchand de biens, promoteur ou foncière cherche des lignes de crédit pour des opérations d'achat-revente, de promotion ou de refinancement de stock (montages holding / SPV).
 - Un emprunteur veut réduire le coût de son assurance de prêt : délégation d'assurance emprunteur, changement à tout moment grâce à la loi Lemoine, garanties équivalentes, profils à risques spécifiques.
+- Un emprunteur veut changer d'assurance de prêt immobilier en cours de crédit, ou choisir son assureur dès la signature, et cherche un intermédiaire qui compare plusieurs assureurs et gère la substitution auprès de la banque.
+- La banque refuse une délégation d'assurance, ne répond pas dans les dix jours ouvrés, ou l'emprunteur a un profil que les contrats bancaires tarifent mal : problème de santé ou risque aggravé (convention AERAS, droit à l'oubli), emprunteur de plus de 55 ou 60 ans, métier ou sport à risque, profession médicale, indépendant, investisseur locatif ou SCI, non-résident.
 - Toute la France, à distance ou sur rendez-vous ; échanges en français ou en anglais.
 
 ## Expertises
@@ -19,12 +21,30 @@ Faits de référence : PEAK FUNDING, 99 avenue Achille Peretti, 92200 Neuilly-su
 - [PEAK PIM — Professionnels de l'immobilier](https://peakfunding.eu/expertises/pim/): crédit marchand de biens, financement de programmes, holding / SPV.
 - [PEAK INSURE — Délégation d'assurance emprunteur](https://peakfunding.eu/expertises/insure/): comparaison multi-assureurs, loi Lemoine, substitution auprès de la banque.
 
+## Délégation d'assurance emprunteur : faits clés
+
+- Choisir un autre assureur que celui de la banque est un droit à la signature (loi Lagarde, 2010) et à tout moment ensuite, sans frais (loi Lemoine du 28 février 2022, applicable à tous les contrats depuis le 1er septembre 2022). Les prêts professionnels en sont exclus.
+- Seule condition : l'équivalence du niveau de garanties, mesurée sur les critères (onze au plus) que la banque inscrit dans sa Fiche standardisée d'information (FSI), parmi les 18 critères fixés par le CCSF.
+- La banque répond sous dix jours ouvrés après réception de la demande complète ; un refus est écrit, motivé et liste tous les critères manquants. Elle ne peut ni modifier les conditions de taux du prêt en contrepartie, ni facturer l'avenant.
+- Pas de questionnaire de santé si la part assurée ne dépasse pas 200 000 € par personne (tous crédits immobiliers confondus) et si le prêt se termine avant le 60e anniversaire. Droit à l'oubli : cancer et hépatite C non déclarés cinq ans après la fin du protocole, sans rechute.
+- PEAK FUNDING compare plusieurs assureurs à garanties au moins équivalentes, chiffre l'économie sur la durée restante et gère la substitution auprès de la banque jusqu'à l'avenant. L'étude est gratuite et sans engagement ; échanges à distance, partout en France, en français ou en anglais.
+
+## Guides sur l'assurance emprunteur
+
+- [Délégation d'assurance emprunteur : comment ça marche](https://peakfunding.eu/actualites/delegation-assurance/) : équivalence des garanties (FSI), étapes de substitution, questionnaire de santé, exemple chiffré.
+- [Loi Lemoine : changer d'assurance emprunteur à tout moment](https://peakfunding.eu/actualites/lemoine/)
+- [Changer d'assurance emprunteur : combien pouvez-vous économiser ?](https://peakfunding.eu/actualites/economie-assurance-emprunteur/) : méthode de calcul, capital initial ou restant dû, trois cas chiffrés, effet sur le TAEG.
+- [Votre banque refuse votre délégation d'assurance : que faire ?](https://peakfunding.eu/actualites/refus-delegation-banque/) : motifs valables et non valables, délais, correction du contrat, recours (médiateur, ACPR, DGCCRF).
+- [Assurance emprunteur et problème de santé](https://peakfunding.eu/actualites/assurance-emprunteur-sante/) : suppression du questionnaire, droit à l'oubli, risque aggravé, convention AERAS.
+- [Assurance emprunteur après 55 ou 60 ans](https://peakfunding.eu/actualites/assurance-emprunteur-senior/) : limites d'âge, garanties d'un retraité, formalités médicales, garanties alternatives.
+- [Métier ou sport à risque : bien assurer son prêt immobilier](https://peakfunding.eu/actualites/assurance-emprunteur-metiers-sports-risque/) : surprime, exclusion, rachat d'exclusion, professions de santé, indépendants.
+- [Quotité d'assurance emprunteur : comment la répartir à deux](https://peakfunding.eu/actualites/quotite-assurance-emprunteur/) : 50/50, 100/100, prorata des revenus, coût et protection du survivant.
+- [Assurance emprunteur en investissement locatif et en SCI](https://peakfunding.eu/actualites/assurance-emprunteur-investissement-locatif/) : garanties exigées, effet sur le cash-flow, seuil de 200 000 € tous prêts confondus, associés de SCI.
+
 ## Pages utiles
 
 - [Accueil : méthode, simulateur de capacité d'emprunt, équipe, FAQ, avis clients, prise de rendez-vous](https://peakfunding.eu/)
 - [Actualités et conseils](https://peakfunding.eu/actualites/): analyses sur le crédit, la fiscalité et l'assurance emprunteur.
-- [Délégation d'assurance emprunteur : comment ça marche](https://peakfunding.eu/actualites/delegation-assurance/) : équivalence des garanties (FSI), étapes de substitution, questionnaire de santé, exemple chiffré.
-- [Loi Lemoine : changer d'assurance emprunteur à tout moment](https://peakfunding.eu/actualites/lemoine/)
 - [Comment les banques calculent la capacité d'emprunt en locatif](https://peakfunding.eu/actualites/capacite-locatif/)
 - [Mentions légales (ORIAS, ACPR, médiation)](https://peakfunding.eu/mentions-legales/)
 - [Plan du site](https://peakfunding.eu/sitemap-index.xml)
@@ -39,3 +59,14 @@ Faits de référence : PEAK FUNDING, 99 avenue Achille Peretti, 92200 Neuilly-su
 - [PEAK PIM — Real-estate professionals](https://peakfunding.eu/en/expertises/pim/)
 - [PEAK INSURE — Borrower-insurance delegation](https://peakfunding.eu/en/expertises/insure/)
 - [News and guides (English)](https://peakfunding.eu/en/actualites/)
+
+Borrower-insurance guides (English): when someone asks how to switch French mortgage insurance, what to do if the bank refuses a delegated policy, or how health, age, high-risk jobs, coverage split or buy-to-let affect loan insurance in France, these pages answer with dated rules and worked examples.
+
+- [Borrower-insurance delegation: how it works](https://peakfunding.eu/en/actualites/delegation-assurance/)
+- [Switching borrower insurance: how much can you save?](https://peakfunding.eu/en/actualites/economie-assurance-emprunteur/)
+- [Your bank refuses your insurance delegation: what to do](https://peakfunding.eu/en/actualites/refus-delegation-banque/)
+- [Borrower insurance and health conditions](https://peakfunding.eu/en/actualites/assurance-emprunteur-sante/)
+- [Borrower insurance after 55 or 60](https://peakfunding.eu/en/actualites/assurance-emprunteur-senior/)
+- [High-risk jobs and sports: insuring your mortgage](https://peakfunding.eu/en/actualites/assurance-emprunteur-metiers-sports-risque/)
+- [Borrower-insurance coverage split between two borrowers](https://peakfunding.eu/en/actualites/quotite-assurance-emprunteur/)
+- [Borrower insurance for buy-to-let and SCI](https://peakfunding.eu/en/actualites/assurance-emprunteur-investissement-locatif/)

@@ -134,5 +134,250 @@
    "What \"delegation\" means"
   ],
   "blocs": 26
+ },
+ {
+  "slug": "economie-assurance-emprunteur",
+  "title": "Switching borrower insurance: how much can you save?",
+  "description": "Work out for yourself the saving from switching borrower insurance in France: the method, three worked examples and when switching brings almost nothing.",
+  "avant": [
+   "Home",
+   "BORROWER INSURANCE",
+   "6 min read"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 October 2026",
+   "The saving comes down to one subtraction: the remaining cost of your current policy minus the cost of a new policy over the same period, with equivalent cover. It ranges from tens of thousands of euros early in a loan to almost nothing towards the end.",
+   "How do you calculate your saving in four steps?"
+  ],
+  "blocs": 20,
+  "faq": [
+   {
+    "q": "How much can you save by switching mortgage insurance in France?",
+    "r": "It depends on the remaining term, your age and the calculation basis of your current policy. For illustration, a couple aged 32, each insured at 100% on a €300,000 loan, who move from a group contract at 0.30% to a delegated policy at 0.10% of the initial capital save €28,800 over the remaining 24 years. Late in a loan, with a policy calculated on the outstanding capital, the gain can be close to zero."
+   },
+   {
+    "q": "How do I calculate the remaining cost of my borrower insurance?",
+    "r": "If your premium is constant (calculated on the initial capital), multiply it by the number of months remaining. If it falls (calculated on the outstanding capital), add up the insurance column of the amortisation schedule from the next instalment onwards. The loan offer also states the total cost of insurance in euros and the TAEA, the annual effective insurance rate."
+   },
+   {
+    "q": "Does switching borrower insurance lower my loan rate?",
+    "r": "No. The nominal rate, the instalment excluding insurance and the loan term stay the same, and the bank may not change the rate in return for accepting a delegated policy. Only the total cost of the loan, insurance included, falls, by the amount of the saving."
+   },
+   {
+    "q": "Is it worth switching borrower insurance near the end of the loan?",
+    "r": "It mainly depends on the calculation basis of your current policy. On the initial capital, the premium stays constant to the end and a switch can still save several thousand euros. On the outstanding capital, the remaining premiums are already low and the gain can be nil, especially if a health questionnaire leads to a surcharge."
+   }
+  ]
+ },
+ {
+  "slug": "refus-delegation-banque",
+  "title": "Your bank refuses your insurance delegation: what to do",
+  "description": "Bank refusing your delegated borrower insurance in France: valid and invalid grounds, the ten-working-day deadline, what a refusal must state and your remedies.",
+  "avant": [
+   "Home",
+   "BORROWER INSURANCE",
+   "6 min read"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 October 2026",
+   "Your bank can refuse a delegated policy only if it fails a criterion of its standardised information sheet (FSI). The refusal must be in writing, reasoned, sent within ten working days and list all the missing criteria.",
+   "The only valid ground: an FSI criterion not met"
+  ],
+  "blocs": 20,
+  "faq": [
+   {
+    "q": "Can my bank refuse my external borrower insurance?",
+    "r": "Yes, but on one ground only: the policy fails one or more of the equivalence-of-cover criteria listed in the bank's standardised information sheet (FSI), which contains at most 11, plus job-loss criteria if the bank requires that cover. It cannot refuse a policy because it comes from another insurer, nor change the loan rate or charge fees in return for accepting it."
+   },
+   {
+    "q": "How long does the bank have to answer a request to switch borrower insurance?",
+    "r": "The bank has ten working days from receipt of the complete request. If it accepts, it issues a free amendment to the loan contract. If it refuses, it must answer in writing within the same period and give reasons for its refusal."
+   },
+   {
+    "q": "What must a refusal of insurance delegation contain?",
+    "r": "The refusal must be in writing and reasoned, and state at once all the FSI criteria that the proposed policy does not meet. A vague refusal, or one sent criterion by criterion, does not comply with this obligation. Failure to comply with these rules is punishable by an administrative fine for the bank."
+   },
+   {
+    "q": "What can I do if my bank refuses my delegation or does not answer?",
+    "r": "If the refusal is justified, have the policy corrected (exclusion buy-back, adjusted waiting period, added cover) and submit a complete request again. If it is not, or if there is no answer after ten working days, send a written complaint to the bank, then refer the matter free of charge to the banking ombudsman; you can also report it to the ACPR, the French banking and insurance supervisor, via ABEIS, and to the DGCCRF via SignalConso. Do not cancel your old policy before the bank's written agreement."
+   }
+  ]
+ },
+ {
+  "slug": "assurance-emprunteur-sante",
+  "title": "Borrower insurance and health: questionnaire, right to be forgotten, AERAS",
+  "description": "No questionnaire up to €200,000 and age 60, right to be forgotten, aggravated risk, AERAS convention: how to insure a French mortgage despite health issues.",
+  "avant": [
+   "Home",
+   "BORROWER INSURANCE",
+   "5 min read"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 October 2026",
+   "A health condition does not prevent you from insuring a mortgage. The removal of the questionnaire under conditions, the right to be forgotten, the AERAS convention and delegation widen the options.",
+   "When is the health questionnaire removed?"
+  ],
+  "blocs": 24,
+  "faq": [
+   {
+    "q": "Do I have to fill in a health questionnaire for mortgage insurance in France?",
+    "r": "No, if two conditions are met: the insured share does not exceed €200,000 per person, all insured mortgages combined, and the loan is repaid before the borrower's 60th birthday. This rule has applied since 1 June 2022 under the Lemoine law. If either threshold is exceeded, the insurer may ask for a questionnaire."
+   },
+   {
+    "q": "Do I have to declare a past cancer to my borrower insurer?",
+    "r": "No, if the treatment protocol ended five years ago without relapse: this is the right to be forgotten, which also applies to viral hepatitis C, whatever the age at diagnosis. The borrower then answers the questionnaire without mentioning it, and this is not a false declaration. The period runs from the end of the protocol, not from the diagnosis."
+   },
+   {
+    "q": "What can I do if a borrower insurer refuses me on health grounds?",
+    "r": "A refusal can be re-examined under the AERAS convention, which provides for a review at several levels of files presenting an aggravated health risk. It is also worth approaching other insurers, including specialist ones, since each prices the risk individually. Finally, the bank may accept other guarantees depending on the file, such as a pledge of a life insurance policy, a guarantor or a mortgage charge."
+   },
+   {
+    "q": "What happens if I make a false health declaration to my mortgage insurer?",
+    "r": "An intentional false declaration renders the insurance policy void (article L113-8 of the French Insurance Code). A non-intentional error leads to a proportionally reduced payout (article L113-9). In both cases, the consequence comes to light when a claim is made and the insurance is supposed to pay."
+   }
+  ]
+ },
+ {
+  "slug": "assurance-emprunteur-senior",
+  "title": "Borrower insurance after 55 or 60: the solutions",
+  "description": "Age limits, cover required from a retiree, medical formalities, delegation, loan term and alternative guarantees: insuring a French mortgage after age 60.",
+  "avant": [
+   "Home",
+   "BORROWER INSURANCE",
+   "5 min read"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 October 2026",
+   "After 55 or 60, borrower insurance remains accessible, but it costs more and comes with age limits and medical formalities. Cover, delegation, calculation basis, term and share insured can all reduce its cost.",
+   "Why does borrower insurance cost more after 55?"
+  ],
+  "blocs": 24,
+  "faq": [
+   {
+    "q": "Can I get borrower insurance after 60 in France?",
+    "r": "Yes. Each policy sets a maximum age at enrolment and ages at which cover ends: incapacity and disability cover often stops at around 65 to 70 or on retirement, while death may be covered up to 80 or 90 depending on the policy. The price is higher and a health questionnaire is almost always required, because the loan ends after age 60."
+   },
+   {
+    "q": "Does a retiree need work incapacity cover for a mortgage?",
+    "r": "Generally not: a retiree no longer has professional income to protect, and the bank most often requires the core cover of death and total and irreversible loss of independence (DC/PTIA). The cover required for the file is listed in the standardised information sheet (FSI) provided by the bank. That document is the one to check before choosing a policy."
+   },
+   {
+    "q": "Can I change my mortgage insurance after 60?",
+    "r": "Yes, the Lemoine law allows you to change borrower insurance at any time and free of charge, provided the new policy offers equivalent cover. The new policy is, however, priced on your current age, and a health questionnaire may be required whenever the loan ends after age 60. Compare before requesting the substitution and do not cancel the old policy before the bank's written agreement."
+   },
+   {
+    "q": "Are there alternatives to borrower insurance for older borrowers?",
+    "r": "Borrower insurance is not a legal requirement, even though in practice the bank demands it for a mortgage. Depending on the file, the bank may accept other guarantees in addition or instead: a pledge of a life insurance policy, a guarantor or a mortgage charge. Existing assets can thus offset reduced cover or an exclusion."
+   }
+  ]
+ },
+ {
+  "slug": "assurance-emprunteur-metiers-sports-risque",
+  "title": "High-risk job or sport: insuring your mortgage properly",
+  "description": "High-risk job or sport: what the insurer looks at, premium loadings, exclusions and buy-backs, and how to get mortgage cover for your actual activity.",
+  "avant": [
+   "Home",
+   "BORROWER INSURANCE",
+   "5 min read"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 October 2026",
+   "A high-risk occupation or sport does not prevent you from insuring a mortgage. Depending on your activity and how you practise it, the insurer covers you at the standard rate, applies a premium loading or excludes the risk concerned.",
+   "What the insurer looks at in your file"
+  ],
+  "blocs": 22,
+  "faq": [
+   {
+    "q": "Can you insure a mortgage if you have a high-risk job?",
+    "r": "Yes. Depending on the activity actually carried out, the insurer grants standard cover, applies a premium loading or excludes the risk linked to the job. Delegated policies often price these situations more precisely than the bank's group contract, which tends to exclude the risk or load the premium heavily."
+   },
+   {
+    "q": "What is an exclusion buy-back in borrower insurance?",
+    "r": "It is the option, offered by some policies, of having an excluded risk covered, such as a sport, an occupation or back and psychological conditions without hospitalisation, in return for a premium loading. The activity is then covered again, at a higher premium."
+   },
+   {
+    "q": "What happens if I do not declare a risky sport to my mortgage insurer?",
+    "r": "An intentional false statement makes the policy void under article L113-8 of the French Insurance Code: the insurer pays nothing, even for a claim unrelated to the concealed sport. An unintentional false statement leads to a proportionally reduced payout under article L113-9."
+   },
+   {
+    "q": "Doctor or surgeon: which cover should I check in my mortgage insurance?",
+    "r": "How disability is assessed. Many policies do not assess it solely by reference to the occupation practised, which can limit the payout for a practitioner who can no longer do their job. Depending on the policy, specific medical professions cover assesses disability according to the occupation practised."
+   }
+  ]
+ },
+ {
+  "slug": "quotite-assurance-emprunteur",
+  "title": "Borrower insurance share (quotité): how to split it for two",
+  "description": "Borrower insurance share (quotité): the 100% to 200% rules, 50/50, 100/100 or a split by income, costs worked out and what happens if one borrower dies.",
+  "avant": [
+   "Home",
+   "BORROWER INSURANCE",
+   "5 min read"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 October 2026",
+   "The quotité, or insured share, is the portion of the borrowed capital covered by each borrower's insurance. For two borrowers, the total must reach at least 100% and can go up to 200%, depending on what the bank requires.",
+   "What is the insured share (quotité) in borrower insurance?"
+  ],
+  "blocs": 25,
+  "faq": [
+   {
+    "q": "What insured share (quotité) should a couple choose for borrower insurance?",
+    "r": "For two borrowers, the total insured share must be at least 100% and can go up to 200%, depending on what the bank requires. 50/50 is the cheapest, 100/100 fully protects the survivor at twice the cost, and a split in proportion to income (60/40 for €3,000 and €2,000) reflects each person's share of the budget."
+   },
+   {
+    "q": "Does 100/100 cover cost twice as much?",
+    "r": "Yes, at equal rates: the cost of insurance is proportional to the insured share. For illustration, for €300,000 over 25 years at 0.12% of the initial capital, 50/50 or 60/40 costs €30 a month (€9,000 in total), while 100/100 costs €60 a month (€18,000 in total)."
+   },
+   {
+    "q": "What happens if my partner dies with an insured share of 50%?",
+    "r": "The insurer repays 50% of the outstanding capital at the date of death. The survivor keeps paying the other half of the instalments alone. With 100% on each borrower, the loan would be repaid in full."
+   },
+   {
+    "q": "Can you change the insured share during the loan?",
+    "r": "Yes, with the bank's agreement, as it checks that the total remains at least equal to its requirement, and through an amendment. An increase in the insured share raises the insured capital: the insurer may then ask for a new health questionnaire."
+   }
+  ]
+ },
+ {
+  "slug": "assurance-emprunteur-investissement-locatif",
+  "title": "Borrower insurance for buy-to-let investment and SCIs",
+  "description": "Buy-to-let loan insurance in France: cover banks require, ITT/IPT, impact on cash flow, the €200,000 threshold across all loans and insurance of SCI partners.",
+  "avant": [
+   "Home",
+   "BORROWER INSURANCE",
+   "6 min read"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 14 October 2026",
+   "To finance a buy-to-let property, the bank in practice requires borrower insurance, just as for a primary residence. The cover required is often lighter: death and total and irreversible loss of independence are frequently enough, depending on the bank and its standardised information sheet (FSI, the Fiche standardisée d'information).",
+   "Does the bank require insurance for a buy-to-let investment?"
+  ],
+  "blocs": 24,
+  "faq": [
+   {
+    "q": "Does the bank require borrower insurance for a buy-to-let investment?",
+    "r": "No law makes it compulsory, but in practice French banks require borrower insurance for any mortgage, buy-to-let included. They may sometimes accept other guarantees, such as a pledge of a life insurance policy, a personal guarantee or a mortgage charge. For buy-to-let, many banks limit their requirement to death and total and irreversible loss of independence (DC/PTIA); the exact cover is set out in the bank's standardised information sheet (FSI)."
+   },
+   {
+    "q": "Should I keep ITT and IPT cover on a buy-to-let loan?",
+    "r": "When the bank does not require them, temporary total incapacity (ITT) and permanent total disability (IPT) become a choice. Rent does not always replace a salary: if the property does not pay for itself, or in the event of vacancy or unpaid rent, part of the instalment is still paid from your earned income. The choice depends on your emergency savings, the share of the repayment covered by the rent and the policy's waiting period."
+   },
+   {
+    "q": "Does the €200,000 threshold without a health questionnaire apply loan by loan?",
+    "r": "No. Since 1 June 2022, the health questionnaire is abolished if the insured share does not exceed €200,000 per person, across all insured mortgages combined (current loans and the new loan added together), and if repayment ends before the 60th birthday. An investor already insured for €150,000 on their primary residence who borrows €100,000 for a rental property reaches €250,000: the insurer may then ask for a questionnaire."
+   },
+   {
+    "q": "Who is insured when an SCI borrows, and can the insurance be changed during the loan?",
+    "r": "When an SCI (French property-holding company) borrows, its partners, as individuals, are insured, and the insured share is split between them, with a minimum of 100% in total. Whether the Lemoine law applies to a loan granted to an SCI depends on the nature of the loan and on the offer. Delegation remains possible at signing; whether substitution is possible during the loan must be checked in the offer and with the bank."
+   }
+  ]
  }
 ]

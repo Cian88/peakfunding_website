@@ -5,9 +5,9 @@ import { ASSURANCE_URL } from '../../data/integrations';
 import articles from '../../data/articles.json';
 import Sommaire from '../../components/Sommaire.astro';
 import { documentAvecSommaire } from '../../lib/document.mjs';
-import { dateISO, trierArticles } from '../../lib/editorial.mjs';
+import { cleTheme, dateISO, trierArticles } from '../../lib/editorial.mjs';
 import { visuelsArticles } from '../../data/visuels-articles';
-import { article as schemaArticle, filAriane, SITE } from '../../lib/seo';
+import { article as schemaArticle, faqPage, filAriane, SITE } from '../../lib/seo';
 
 export function getStaticPaths() {
   return articles.map((a) => ({ params: { slug: a.slug }, props: { article: a } }));
@@ -20,8 +20,12 @@ const html = corps[`../../contenu-articles/${article.slug}.html`];
 const htmlAvecLiens = html.replace(/href=(["'])article-([a-z0-9-]+)\.html\1/g, (match, quote, slug) =>
   articles.some(a => a.slug === slug) ? `href=${quote}/actualites/${slug}${quote}` : match);
 const document = documentAvecSommaire(htmlAvecLiens);
-const suggestions = trierArticles(articles).filter(a => a.slug !== article.slug).slice(0, 2);
 const categorie = article.avant[1];
+// Same theme first, so each guide links to its own cluster before the rest of the newsroom.
+const autres = trierArticles(articles).filter(a => a.slug !== article.slug);
+const suggestions = [...autres.filter(a => a.avant[1] === categorie), ...autres.filter(a => a.avant[1] !== categorie)].slice(0, 3);
+const assurance = cleTheme(categorie) === 'assurance-emprunteur';
+const faq = (article as { faq?: { q: string; r: string }[] }).faq ?? [];
 const lecture = article.avant[2];
 const auteur = article.apres[0];
 const date = (article.apres[1] || '').split(' · ').pop();
@@ -30,6 +34,7 @@ const urlPage = `${SITE}/actualites/${article.slug}/`;
 const image = `/img/article-v1-${article.slug}.webp`;
 const schema = [
   schemaArticle({ url: urlPage, titre: article.title, description: article.description || article.apres[2], auteur, publie: dateISO(date), image: `${SITE}${image}`, largeur: visuel.width, hauteur: visuel.height, categorie: categorie.charAt(0) + categorie.slice(1).toLowerCase(), lang: 'fr' }),
+  ...(faq.length ? [faqPage(faq)] : []),
   filAriane([{ nom: 'Accueil', url: `${SITE}/` }, { nom: 'Actualités', url: `${SITE}/actualites/` }, { nom: article.title, url: urlPage }]),
 ];
 ---
@@ -49,17 +54,31 @@ const schema = [
       <Sommaire headings={document.headings} />
       <div class="min-w-0">
       <div class="prose-pf article-content [&>h2:first-child]:mt-0" set:html={document.html} />
+      {faq.length > 0 && (
+        <section class="mt-14 border-t border-trait pt-10" aria-labelledby="faq-article">
+          <p class="eyebrow">Questions fréquentes</p>
+          <h2 id="faq-article" class="titre mt-3">En bref.</h2>
+          <div class="mt-6 divide-y divide-trait border-y border-trait">
+            {faq.map((q) => (
+              <details class="group py-5">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-[17px] font-medium">{q.q}<span class="donnee text-gris transition-transform group-open:rotate-45" aria-hidden="true">+</span></summary>
+                <p class="corps mt-3">{q.r}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
       <p class="donnee mt-12 rounded-carte bg-blanc p-6 text-[12.5px] leading-relaxed text-gris">
         Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager. Contenu informatif, ne constituant pas un conseil personnalisé.
       </p>
-      {article.slug === 'lemoine'
-        ? <a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="btn-cuivre mt-7">Comparer mon assurance emprunteur ↗<span class="sr-only"> (nouvel onglet)</span></a>
+      {assurance
+        ? <div class="mt-7 flex flex-wrap gap-3"><a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="btn-cuivre">Comparer mon assurance emprunteur ↗<span class="sr-only"> (nouvel onglet)</span></a><a href="/#rdv" class="btn-fantome">Faire étudier mon assurance</a></div>
         : <a href="/#rdv" class="btn-cuivre mt-7">Parler de mon projet ↗</a>}
       </div>
     </div>
     <section class="mt-16 border-t border-trait pt-10" aria-labelledby="suite-lecture">
       <div class="flex flex-wrap items-end justify-between gap-4"><h2 id="suite-lecture" class="titre">Poursuivre la réflexion.</h2><a href="/actualites" class="text-[14px] underline underline-offset-4">Toutes les analyses →</a></div>
-      <ul class="mt-8 grid gap-8 md:grid-cols-2">{suggestions.map(a => <li class="border-t border-trait pt-5"><a href={`/actualites/${a.slug}`} class="group block"><p class="eyebrow">{a.avant[1]}</p><h3 class="sous-titre mt-3 group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3></a></li>)}</ul>
+      <ul class="mt-8 grid gap-8 md:grid-cols-3">{suggestions.map(a => <li class="border-t border-trait pt-5"><a href={`/actualites/${a.slug}`} class="group block"><p class="eyebrow">{a.avant[1]}</p><h3 class="sous-titre mt-3 group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3></a></li>)}</ul>
     </section>
   </article>
 </Base>

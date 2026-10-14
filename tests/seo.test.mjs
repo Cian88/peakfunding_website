@@ -41,7 +41,7 @@ test('Chaque page publique porte la fiche du cabinet, le site et sa page ; les p
 });
 
 test('Accueil : FAQ structurée en français et en anglais', () => {
-  for (const [p, n] of [['dist/index.html', 5], ['dist/en/index.html', 5]]) {
+  for (const [p, n] of [['dist/index.html', 6], ['dist/en/index.html', 6]]) {
     const faq = graphe(p).find(x => x['@type'] === 'FAQPage');
     assert.equal(faq.mainEntity.length, n, p);
     assert.ok(faq.mainEntity.every(q => q.name && q.acceptedAnswer.text.length > 40));
@@ -62,7 +62,7 @@ test('Expertises : service relié au catalogue, FAQ et fil d’Ariane ; l’assu
 });
 
 test('Articles : Article daté, auteur, image dimensionnée, Open Graph article', () => {
-  for (const lang of ['', 'en/']) for (const slug of ['lemoine', 'capacite-locatif', 'sci', 'delegation-assurance']) {
+  for (const lang of ['', 'en/']) for (const slug of ['lemoine', 'capacite-locatif', 'sci', 'delegation-assurance', 'economie-assurance-emprunteur', 'refus-delegation-banque', 'assurance-emprunteur-sante', 'assurance-emprunteur-senior', 'assurance-emprunteur-metiers-sports-risque', 'quotite-assurance-emprunteur', 'assurance-emprunteur-investissement-locatif']) {
     const p = `dist/${lang}actualites/${slug}/index.html`;
     const a = graphe(p).find(x => x['@type'] === 'Article');
     assert.match(a.datePublished, /^\d{4}-\d{2}-\d{2}$/, p);
@@ -74,7 +74,7 @@ test('Articles : Article daté, auteur, image dimensionnée, Open Graph article'
   }
   for (const p of ['dist/actualites/index.html', 'dist/en/actualites/index.html']) {
     const g = graphe(p);
-    assert.equal(g.find(x => x['@type'] === 'ItemList').itemListElement.length, 8, p);
+    assert.equal(g.find(x => x['@type'] === 'ItemList').itemListElement.length, 15, p);
     assert.ok(types(g).includes('CollectionPage'), p);
   }
 });
@@ -97,4 +97,26 @@ test('robots.txt ouvre le site aux robots IA et ferme /avis/ ; llms.txt décrit 
   const llms = readFileSync('dist/llms.txt', 'utf8');
   assert.match(llms, /^# PEAK FUNDING/);
   for (const attendu of ['24002546', 'assurance emprunteur', 'loi Lemoine', 'LBO', 'marchands de biens', 'https://peakfunding.eu/expertises/insure/', '## English']) assert.ok(llms.includes(attendu), attendu);
+});
+
+test('Délégation d’assurance : guides avec FAQ structurée, PEAK INSURE relié aux guides, llms.txt complet', () => {
+  const guides = ['delegation-assurance', 'lemoine', 'economie-assurance-emprunteur', 'refus-delegation-banque', 'assurance-emprunteur-sante', 'assurance-emprunteur-senior', 'assurance-emprunteur-metiers-sports-risque', 'quotite-assurance-emprunteur', 'assurance-emprunteur-investissement-locatif'];
+  for (const lang of ['', 'en/']) {
+    for (const slug of guides.slice(2)) {
+      const p = `dist/${lang}actualites/${slug}/index.html`;
+      const faq = graphe(p).find(x => x['@type'] === 'FAQPage');
+      assert.ok(faq && faq.mainEntity.length >= 3, `${p} : FAQPage`);
+      assert.equal(load(html(p))('#faq-article').length, 1, `${p} : FAQ visible`);
+      assert.equal(load(html(p))('a[data-assurance]').length, 1, `${p} : comparateur`);
+    }
+    const p = `dist/${lang}expertises/insure/index.html`;
+    const service = graphe(p).find(x => x['@type'] === 'Service');
+    assert.equal(service.offers.price, '0', p);
+    assert.equal(graphe(p).find(x => x['@type'] === 'FAQPage').mainEntity.length, 8, p);
+    const liens = load(html(p))('#guides-expertise').closest('section').find('a').map((_, a) => load(html(p))(a).attr('href')).get();
+    assert.deepEqual([...liens].sort(), guides.map(s => `/${lang}actualites/${s}`).sort(), p);
+  }
+  const llms = readFileSync('dist/llms.txt', 'utf8');
+  for (const slug of guides) assert.ok(llms.includes(`https://peakfunding.eu/actualites/${slug}/`), slug);
+  assert.match(llms, /## Délégation d'assurance emprunteur : faits clés/);
 });

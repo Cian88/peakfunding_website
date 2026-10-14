@@ -10,6 +10,9 @@ export function getStaticPaths() {
 }
 const { e } = Astro.props;
 const accroche = accueil('fr').expertises.find((x) => x.slug === e.slug)?.accroche ?? '';
+// PEAK INSURE: title and description written for the queries people actually type.
+const titre = e.slug === 'insure' ? 'Changer d’assurance de prêt : délégation d’assurance emprunteur | PEAK FUNDING' : `${e.nom} — ${accroche} | PEAK FUNDING`;
+const description = e.slug === 'insure' ? 'Changer d’assurance de prêt immobilier, à la signature ou à tout moment (loi Lemoine) : comparaison multi-assureurs à garanties équivalentes, profils à risque, substitution gérée auprès de la banque. Étude gratuite.' : e.intro;
 const schema = [
   service(e, 'fr'),
   faqPage(faqExpertisesFor('fr')[e.slug]),
@@ -17,6 +20,6 @@ const schema = [
 ];
 ---
 
-<Base title={`${e.nom} — ${accroche} | PEAK FUNDING`} description={e.intro} image={`/img/ambiance-${e.slug}.webp`} schema={schema}>
+<Base title={titre} description={description} image={`/img/ambiance-${e.slug}.webp`} schema={schema}>
   <ExpertiseCorps e={e} />
 </Base>

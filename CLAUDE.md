@@ -144,6 +144,22 @@ Astro 7 (sortie statique) + `@astrojs/react` + Tailwind 4 via plugin Vite (`@the
 - Vérification : `npm run build` puis `npm test` (33 tests, dont `tests/seo.test.mjs`). Les empreintes
   des sources protégées et le compte de pages (42) sont à jour dans `tests/site.test.mjs`.
 
+### Lot délégation d'assurance — 2026-10-14
+
+- 7 guides FR + EN (hors V1) dans `src/contenu-articles/` : économie, refus de la banque, santé/AERAS,
+  seniors, métiers et sports à risque, quotité, locatif/SCI ; 9 guides « ASSURANCE EMPRUNTEUR » au total.
+  Faits réglementaires limités à ceux de la loi Lemoine/CCSF ; chiffres présentés comme illustrations.
+- `articles.json` accepte un champ `faq` : FAQ visible en fin d'article + `FAQPage` dans le graphe.
+  Les articles de catégorie assurance affichent le comparateur (`ASSURANCE_URL`) + « Faire étudier mon
+  assurance » ; « Poursuivre la réflexion » montre 3 articles, même thème d'abord.
+- PEAK INSURE : `pourQui`, 8 questions, section « Guides » (`ExpertiseCorps.astro`), titre et description
+  dédiés (« Changer d'assurance de prêt »), `offers` gratuite dans le `Service`. Accueil : 6e question.
+- Illustrations des guides générées par `scripts/generer-visuels-assurance.mjs` (SVG → WebP, palette V1),
+  remplaçables par des visuels Recraft. `llms.txt` : faits clés + liste des guides FR/EN.
+- Tests : 58 pages, 15 articles. Sur cette machine, 6 tests échouent hors de ce lot : `_source/` absent
+  (4) et empreintes calculées sur des fichiers convertis en CRLF par git (2).
+- Stratégie de communication et budget de la délégation : document Claude Docs du 2026-10-14.
+
 ## Design — direction « Altitude » (validée le 2026-09-12, remplace Titan)
 
 Mercury (héros photo plein écran, titres légers, narration au défilement) + Dovetail (grille technique, mono) + Capital (alternance sombre/cendre). Jetons dans `global.css` : `abime`, `ardoise`, `graphite`, `filet`, `etoile`, `argent`, `brume` (registre sombre) ; `cendre`, `blanc`, `encre`, `corps`, `gris`, `trait` (registre clair) ; `cuivre` / `cuivre-clair` / `cuivre-profond` = signal unique (boutons, chiffres, traits — jamais d'aplat). Geist 300–400 pour les titres, Geist Mono pour les données. Rayons : pilule 40 px, données 8 px, cartes 16 px. Aucune ombre.

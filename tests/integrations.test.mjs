@@ -58,7 +58,7 @@ test('Annotations : cartes uniformes, méthode illustrée, héros et simulateur 
   assert.equal(home('[data-espaces] .espace-lien').length, 2);
   assert.equal(home('#simulateur form').length, 1);
   assert.equal(home('#simulateur [aria-live]').length, 1);
-  assert.match(read('src/components/pages/AccueilCorps.astro'), /min-height: 100dvh/);
+  assert.match(read('src/components/PeakPitchHero.astro'), /min-height:100svh/);
   assert.match(read('src/styles/global.css'), /grid-row:1 \/ -1/);
   assert.match(read('src/scripts/motion.ts'), /--fond-scroll/);
   assert.doesNotMatch(read('src/styles/global.css'), /data-fond-raccord/);

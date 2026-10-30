@@ -1,11 +1,10 @@
 ---
 import Pictogramme from '../Pictogramme.astro';
-import PeakPitchFilm from '../PeakPitchFilm.astro';
+import PeakPitchHero from '../PeakPitchHero.astro';
 import SimulateurCapacite from '../react/SimulateurCapacite';
 import MethodeSchema from '../MethodeSchema.astro';
 import ObservatoireWidget from '../react/ObservatoireWidget';
 import AvisClients from '../AvisClients.astro';
-import { ASSURANCE_URL } from '../../data/integrations';
 import { accueil } from '../../data/contenu';
 import { langCourante, localiser } from '../../i18n';
 
@@ -16,44 +15,8 @@ const u = c.ui;
 const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') ? 'valentin' : photo.includes('yves') ? 'yves' : 'maxime'}.webp`;
 ---
 
-  <!-- ═══ 1 · Héros ═══ -->
-  <section class="sombre heros -mt-[76px] overflow-hidden">
-    <div class="pitch-hero-background" aria-hidden="true"><video data-pitch-loop muted loop playsinline preload="none" poster="/peak-pitch/peak-pitch-fond-site.jpg"><source src="/peak-pitch/peak-pitch-fond-site.mp4" type="video/mp4" /></video></div>
-    <div class="heros-voile absolute inset-0 bg-abime opacity-0"></div>
-    <div class="contenu heros-contenu relative">
-      <div class="heros-texte">
-        <p class="eyebrow heros-fondu text-cuivre-clair">{u.hero_eyebrow}</p>
-        <h1 class="display heros-titre mt-6 text-etoile">
-          {u.hero_titre.map((ligne) => <span class="ligne"><span>{ligne}</span></span>)}
-        </h1>
-        <p class="heros-fondu mt-7 max-w-[530px] text-[17px] leading-[1.6] font-light text-etoile/90">{u.hero_texte}</p>
-        <div class="heros-fondu mt-9 flex flex-wrap gap-3">
-          <a href="#rdv" class="btn-cuivre gap-4">{u.hero_cta1} <span aria-hidden="true">↗</span></a>
-          <a href="#simulateur" class="btn-fantome">{u.hero_cta2}</a>
-        </div>
-        <p class="heros-fondu mt-5 text-[13px] text-etoile/80">{u.hero_note}</p>
-        <a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="heros-fondu mt-4 inline-block text-[13px] text-etoile/90 underline decoration-etoile/40 underline-offset-4 hover:text-cuivre-clair">{u.hero_assurance}<span class="sr-only">{u.hero_nouvel_onglet}</span></a>
-      </div>
-      <figure class="pitch-hero-offer">
-        <video class="pitch-mobile-loop" data-pitch-loop muted loop playsinline preload="none" poster="/peak-pitch/peak-pitch-fond-mobile.jpg" aria-hidden="true"><source src="/peak-pitch/peak-pitch-fond-mobile.mp4" type="video/mp4" /></video>
-        <figcaption>
-          <p class="pitch-hero-eyebrow">{lang === 'fr' ? 'NOUVEAU / VOTRE PRÉPARATION BANCAIRE' : 'NEW / YOUR BANKING PRESENTATION'}</p>
-          <h2>PEAK PITCH</h2>
-          <p class="pitch-hero-promise">{lang === 'fr' ? 'Votre projet, prêt à présenter.' : 'Your project, ready to present.'}</p>
-          <div class="pitch-hero-actions"><a href={L('/peak-pitch/')} class="btn-cuivre">{lang === 'fr' ? 'Découvrir · 99 €' : 'Discover · €99'} <span aria-hidden="true">↗</span></a><button data-pitch-open class="pitch-film-trigger">{lang === 'fr' ? 'Voir le film · 22 s' : 'Watch the film · 22 s'} <span aria-hidden="true">▷</span></button></div>
-          <p class="pitch-hero-details">{lang === 'fr' ? '3 livrables · TVA non applicable · Sans abonnement' : '3 deliverables · VAT not applicable · No subscription'}</p>
-        </figcaption>
-      </figure>
-    </div>
-    <PeakPitchFilm lang={lang} />
-    <button class="pitch-motion-toggle" data-pitch-motion data-play={lang === 'fr' ? 'Reprendre l’animation' : 'Resume animation'} data-pause={lang === 'fr' ? 'Mettre l’animation en pause' : 'Pause animation'} aria-pressed="false">{lang === 'fr' ? 'Mettre l’animation en pause' : 'Pause animation'}</button>
-    <div class="contenu relative pb-7">
-      <div class="flex flex-wrap items-center justify-between gap-4 border-t border-etoile/20 pt-5">
-        <p class="font-mono text-[10px] tracking-wide text-etoile/75 sm:text-[11px]">{u.hero_orias}</p>
-        <a href="#expertises" class="flex items-center gap-4 text-[12px] text-etoile/90">{u.hero_decouvrir} <span aria-hidden="true">↓</span></a>
-      </div>
-    </div>
-  </section>
+  <!-- Le cinéma conserve la racine .heros attendue par les fondus au scroll. -->
+  <PeakPitchHero lang={lang} />
 
   <!-- ═══ 2 · Repères d’accompagnement ═══ -->
   <section id="accompagnement" class="sombre border-y border-filet" aria-label={u.reperes_aria}>
@@ -247,21 +210,6 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
   </section>
 
 <style>
-  .heros { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; padding-top: 76px; }
-  .heros-contenu { flex:1; display:grid; gap:40px; align-items:start; max-width:1760px; padding-inline:clamp(20px,5vw,96px); padding-top:clamp(36px,5vh,72px); padding-bottom:32px; }
-  .heros-texte { max-width:790px; min-width:0; }
-  @media (min-width:1024px) {
-    /* Échelle 120 % : dimensions réelles, sans transform sur les liens / boutons. */
-    .heros-texte { max-width:948px; }
-    .heros-texte .heros-titre { font-size:clamp(48px,min(7.32vw,9.6dvh),96px); margin-top:28.8px; }
-    .heros-texte > .eyebrow { font-size:14.4px; }
-    .heros-texte > p.mt-7 { max-width:636px; font-size:20.4px; margin-top:33.6px; }
-    .heros-texte > div.mt-9 { margin-top:43.2px; gap:14.4px; }
-    .heros-texte .btn-cuivre, .heros-texte .btn-fantome { height:57.6px; font-size:18px; padding-inline:28.8px; }
-    .heros-texte > p.mt-5 { margin-top:24px; font-size:15.6px; }
-    .heros-texte > a { margin-top:19.2px; font-size:15.6px; }
-  }
-  .heros-titre { font-size: clamp(40px, min(6.1vw, 8dvh), 80px); letter-spacing: -.045em; }
   .onglet { color: var(--color-argent); transition: color .25s; }
   .onglet:hover, .onglet.active { color: var(--color-etoile); }
   .onglet.active span:last-child { font-weight: 500; }
@@ -285,14 +233,5 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
     .expertise-lien { grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr); gap:72px; padding-block:48px; }
     .expertise-texte { max-width:620px; }
   }
-  @media (max-width: 639px) {
-    .heros-contenu { padding-top: 48px; padding-bottom: 40px; }
-    .heros-titre { font-size: clamp(34px, 8.9vw, 56px); }
-  }
 </style>
 
-<style>
- .heros{background:#0b0d12;position:relative}.pitch-hero-background{position:absolute;inset:90px 4% 320px 51%;pointer-events:none}.pitch-hero-background video{width:100%;height:100%;object-fit:contain;object-position:center top}.heros-contenu{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:64px;align-items:center;z-index:1}.heros-texte .heros-titre{font-size:clamp(44px,4.8vw,76px)}.heros-texte>p.mt-7{font-size:18px;max-width:560px}.heros-texte .btn-cuivre,.heros-texte .btn-fantome{font-size:15px;height:50px;padding-inline:22px}.pitch-hero-offer{min-width:0;margin:0;align-self:end;padding-bottom:24px;max-width:570px}.pitch-hero-eyebrow{font:10px var(--font-mono);color:#d9a47c;letter-spacing:.06em;margin-bottom:10px}.pitch-hero-offer h2{color:#edeae4;font-size:42px;font-weight:300;letter-spacing:-.035em;line-height:1.1;margin:0}.pitch-hero-promise{font-size:18px;color:#edeae4;margin-top:10px}.pitch-hero-actions{display:flex;align-items:center;gap:22px;margin-top:20px;flex-wrap:wrap}.pitch-hero-actions .btn-cuivre{font-size:14px;gap:22px;height:45px}.pitch-film-trigger{border:0;border-bottom:1px solid #7c808a;background:transparent;color:#edeae4;font-size:13px;padding:8px 0;display:flex;gap:16px;align-items:center}.pitch-hero-details{font-size:10px;color:#a6a9b3;margin-top:14px}.pitch-mobile-loop{display:none}.pitch-motion-toggle{position:absolute;right:clamp(20px,5vw,96px);top:92px;border:0;background:rgba(11,13,18,.75);color:#a6a9b3;padding:7px 10px;border-radius:20px;font-size:10px;z-index:2}
- @media(max-width:1000px){.pitch-hero-background{display:none}.heros-contenu{grid-template-columns:1fr;gap:16px}.pitch-hero-offer{max-width:650px;width:100%;padding-bottom:0}.pitch-mobile-loop{display:block;width:100%;max-height:440px;object-fit:contain;aspect-ratio:1}.pitch-hero-offer figcaption{padding-top:15px;border-top:1px solid #2a2f3a}.heros-texte .heros-titre{font-size:clamp(42px,7vw,68px)}.heros-texte{max-width:850px}.heros-texte>p.mt-7{max-width:650px}.heros-texte>div.mt-9{margin-top:25px}.pitch-motion-toggle{top:88px}}
- @media(max-width:640px){.heros-texte .heros-titre{font-size:42px}.heros-texte>p.mt-7{font-size:17px;margin-top:24px}.pitch-mobile-loop{max-height:340px;margin-top:5px}.pitch-hero-offer h2{font-size:36px}.pitch-hero-details{font-size:10px}.pitch-hero-actions{gap:20px}.pitch-motion-toggle{font-size:9px}.heros-contenu{padding-bottom:28px}}
-</style>

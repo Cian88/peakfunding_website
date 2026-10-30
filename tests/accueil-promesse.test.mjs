@@ -16,26 +16,30 @@ test('Accueil FR/EN : repères sans statistiques ni compteurs', () => {
     assert.deepEqual(band.find('h2').toArray().map(el => $(el).text()), titles);
     assert.equal(band.find('[data-compte]').length, 0);
     assert.doesNotMatch(band.text(), /\d|%/);
-    assert.equal($('.heros').next().attr('id'), 'accompagnement');
+    assert.equal($('.heros').nextAll('section').first().attr('id'), 'accompagnement');
   }
 });
 
-test('Accueil FR/EN : spécialités explicites, signature et actions conservées', () => {
-  for (const [file, title, description] of [
-    ['dist/index.html', 'Votre financement, pensé dans son ensemble.', 'Investissement locatif, SCI, reprise d’entreprise, opérations de marchands de biens : PEAK FUNDING structure et négocie votre financement, partout en France.'],
-    ['dist/en/index.html', 'Your financing, thought through as a whole.', 'Buy-to-let investments, French property companies (SCI), business acquisitions and property trading projects: PEAK FUNDING structures and negotiates your financing throughout France.'],
+test('Accueil FR/EN : cinéma cliquable, accès et sections du cabinet conservés', () => {
+  for (const [file, destination, title] of [
+    ['dist/index.html', '/peak-pitch/', 'PEAK PITCH — Votre projet, prêt à présenter.'],
+    ['dist/en/index.html', '/en/peak-pitch/', 'PEAK PITCH — Your project, ready to present.'],
   ]) {
     const $ = load(readFileSync(file, 'utf8'));
     const hero = $('.heros');
-    assert.equal(hero.find('h1').text().replace(/\s+/g, ' ').trim(), title);
-    assert.ok(hero.find('.heros-texte > p').toArray().some(el => $(el).text() === description));
-    assert.equal(hero.find('.pitch-hero-background video source').attr('src'), '/peak-pitch/peak-pitch-fond-site.mp4');
-    assert.equal(hero.find('[data-pitch-open]').length, 1);
-    assert.ok(hero.text().includes('PEAK PITCH'));
-    assert.equal(hero.find('.heros-photo').length, 0);
-    assert.equal(hero.find('a[href$=\"/peak-pitch/\"]').length,1);
-    assert.equal(hero.find('.btn-cuivre').attr('href'), '#rdv');
-    assert.equal(hero.find('.btn-fantome').attr('href'), '#simulateur');
+    assert.equal(hero.length, 1);
+    assert.equal(hero.find('h1').text().trim(), title);
+    const action = hero.find('a[data-pitch-discover]');
+    assert.equal(action.attr('href'), destination);
+    assert.ok(action.find('.pitch-cinema-cta').text().includes('PEAK PITCH'));
+    assert.equal(action.find('video source').attr('src'), '/peak-pitch/peak-pitch-publicite-4k-60fps.mp4');
+    assert.ok(action.find('video').is('[muted][playsinline]'));
+    assert.equal(action.find('video').attr('preload'), 'auto');
+    assert.equal(action.find('video').is('[loop], [controls]'), false);
+    assert.equal(hero.find('[data-pitch-cinema-toggle]').length, 0);
+    for (const anchor of ['#rdv', '#simulateur', '#expertises']) assert.equal(hero.find(`a[href="${anchor}"]`).length, 1);
     assert.equal(hero.find('[data-assurance]').attr('target'), '_blank');
+    for (const section of ['accompagnement','mission','expertises','simulateur','methode','equipe','faq']) assert.equal($('#'+section).length,1);
+    assert.equal(hero.find('#pitch-film-dialog').length, 0);
   }
 });

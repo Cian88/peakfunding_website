@@ -1,6 +1,14 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PeakPitchCorps from '../../components/pages/PeakPitchCorps.astro';
+import { peakPitch, PEAK_PITCH_OUVERT } from '../../data/peak-pitch';
+import { servicePeakPitch, faqPage, filAriane, SITE } from '../../lib/seo';
+
+// Indexed only once the service opens (PUBLIC_PEAK_PITCH_URL set at build time); private until then.
+const t = peakPitch('en');
+const schema = [servicePeakPitch('en'), faqPage(t.faq), filAriane([{ nom: t.libelles.accueil, url: `${SITE}/en/` }, { nom: 'PEAK PITCH', url: `${SITE}/en/peak-pitch/` }])];
 ---
-<Base title="PEAK PITCH | Prepare your banking dossier" description="Discover PEAK PITCH, the guided preparation tool for your financing dossier. Currently available in French." noindex>
- <section class="contenu section"><p class="eyebrow">PEAK PITCH</p><h1 class="titre mt-6">A clearer project.<br/>A structured banking dossier.</h1><p class="corps mt-8 max-w-2xl">The guided questionnaire, financial calculations and three deliverables are currently available in French. One project costs €99, VAT not applicable, with no subscription.</p><a href="/peak-dossier/" class="btn-cuivre mt-8" data-astro-reload>Discover PEAK PITCH in French ↗</a></section>
+
+<Base title={t.titre} description={t.description} image="/peak-pitch/peak-pitch-affiche.jpg" noindex={!PEAK_PITCH_OUVERT} schema={schema}>
+  <PeakPitchCorps />
 </Base>

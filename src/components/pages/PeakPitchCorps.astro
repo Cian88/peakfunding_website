@@ -1,0 +1,104 @@
+---
+/* Page PEAK PITCH (FR/EN) : textes, FAQ et renvois issus de src/data/peak-pitch.ts, comme les données structurées. */
+import { peakPitch, guidesPeakPitch, SERVICE_URL, SERVICE_URL_LOCAL } from '../../data/peak-pitch';
+import articlesFr from '../../data/articles.json';
+import articlesEn from '../../data/en/articles.json';
+import { langCourante, localiser } from '../../i18n';
+
+const lang = langCourante(Astro.currentLocale);
+const L = (p: string) => localiser(p, lang);
+const t = peakPitch(lang);
+const service = SERVICE_URL || (import.meta.env.DEV ? SERVICE_URL_LOCAL : '');
+const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPeakPitch as readonly string[]).includes(a.slug));
+---
+
+<div class="contenu dossier-offre">
+  <div class="offre-grid">
+    <section>
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h1 set:html={t.h1} />
+      <p class="intro">{t.intro}</p>
+      <ol>{t.livrables.map((l, i) => <li><span>{String(i + 1).padStart(2, '0')}</span><div><h2>{l.titre}</h2><p>{l.texte}</p></div></li>)}</ol>
+    </section>
+    <aside>
+      <p class="eyebrow">{t.offre.eyebrow}</p>
+      <h2>{t.offre.titre}</h2>
+      <div class="prix">99 € <small>{lang === 'fr' ? 'TVA non applicable' : 'VAT not applicable'}</small></div>
+      {t.offre.mentions.map((m) => <p>{m}</p>)}
+      <ul>{t.offre.points.map((p) => <li>{p}</li>)}</ul>
+      {service ? <a href={`${service}/paiement.html`} class="btn-cuivre" data-astro-reload>{t.offre.bouton}</a> : <p class="ouverture">{t.offre.ouverture}</p>}
+      <p class="secondaire">{t.offre.secondaire}</p>
+    </aside>
+  </div>
+
+  <section class="bloc" aria-labelledby="pitch-promesse">
+    <p class="eyebrow">{t.libelles.promesse}</p>
+    <div class="deux-colonnes">
+      {[[t.promesse.titreMain, t.promesse.main], [t.promesse.titreCabinet, t.promesse.cabinet]].map(([titre, blocs], i) => (
+        <div><h2 id={i === 0 ? 'pitch-promesse' : undefined}>{titre as string}</h2><ul class="liste">{(blocs as { titre: string; texte: string }[]).map((b) => <li><h3>{b.titre}</h3><p>{b.texte}</p></li>)}</ul></div>
+      ))}
+    </div>
+  </section>
+
+  <section class="bloc" aria-labelledby="pitch-pour-qui">
+    <p class="eyebrow">{t.libelles.pourQui}</p>
+    <ul class="grille-quatre" id="pitch-pour-qui">{t.pourQui.map((b) => <li><h3>{b.titre}</h3><p>{b.texte}</p></li>)}</ul>
+  </section>
+
+  <section class="bloc" aria-labelledby="pitch-etapes">
+    <p class="eyebrow">{t.libelles.etapes}</p>
+    <ol class="etapes" id="pitch-etapes">{t.etapes.map((b, i) => <li><span>{String(i + 1).padStart(2, '0')}</span><div><h3>{b.titre}</h3><p>{b.texte}</p></div></li>)}</ol>
+    <div class="limites"><h2>{t.libelles.limites}</h2><ul>{t.limites.map((l) => <li>{l}</li>)}</ul></div>
+  </section>
+
+  <section class="film">
+    <p class="eyebrow">{t.film.eyebrow}</p>
+    <h2>{t.film.titre}</h2>
+    <video controls playsinline preload="metadata" poster="/peak-pitch/peak-pitch-affiche.jpg" aria-label={t.film.aria}><source src="/peak-pitch/peak-pitch-publicite.mp4" type="video/mp4" /></video>
+  </section>
+
+  <section class="bloc exchange" id="peak-exchange" aria-labelledby="pitch-exchange">
+    <p class="eyebrow">{t.exchange.eyebrow}</p>
+    <h2 id="pitch-exchange">{t.exchange.titre}</h2>
+    <p class="intro">{t.exchange.texte}</p>
+    <ul class="liste-simple">{t.exchange.points.map((p) => <li>{p}</li>)}</ul>
+    <p class="prix-option">{t.exchange.prix}</p>
+  </section>
+
+  <section class="bloc" aria-labelledby="pitch-faq">
+    <p class="eyebrow">{t.libelles.faq}</p>
+    <h2 id="pitch-faq">{t.libelles.faqTitre}</h2>
+    <div class="faq">{t.faq.map((q) => <details><summary>{q.q}<span aria-hidden="true">+</span></summary><p>{q.r}</p></details>)}</div>
+  </section>
+
+  {guides.length > 0 && (
+    <section class="bloc" aria-labelledby="pitch-guides">
+      <p class="eyebrow">{t.libelles.guides}</p>
+      <ul class="guides" id="pitch-guides">{guides.map((a) => <li><a href={L(`/actualites/${a.slug}`)}><h3>{a.title} <span aria-hidden="true">↗</span></h3><p>{a.description}</p></a></li>)}</ul>
+    </section>
+  )}
+</div>
+
+<style>
+  .dossier-offre{padding-block:65px 80px}.offre-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(330px,.8fr);gap:80px;align-items:start}
+  h1{font-size:clamp(42px,4.5vw,68px);font-weight:300;line-height:1.06;letter-spacing:-.045em;margin-top:24px}
+  .intro{font-size:18px;line-height:1.6;max-width:640px;color:#6d7078;margin-top:28px}
+  ol{padding:0;list-style:none;margin-top:36px}ol li{display:grid;grid-template-columns:32px 1fr;gap:16px;padding:22px 0;border-top:1px solid #e2ded7}ol span{font:12px var(--font-mono);color:#9a6b45}ol h2,ol h3{font-size:18px;line-height:1.4}ol p{font-size:13px;line-height:1.6;color:#6d7078;margin-top:6px}
+  aside{background:#0b0d12;border-top:3px solid #b87b4f;border-radius:8px;padding:30px;color:#edeae4;position:sticky;top:100px}aside .eyebrow{color:#d9a47c}aside h2{color:#edeae4;font-size:24px;font-weight:300;margin-top:22px}
+  .prix{font:64px/1.15 var(--font-mono);letter-spacing:-3px;margin:28px 0 8px}.prix small{font:13px var(--font-sans);letter-spacing:0;color:#a6a9b3}
+  aside>p{font-size:12px;color:#a6a9b3}aside ul{list-style:none;margin:24px 0;padding:20px 0;border-block:1px solid #2a2f3a;font-size:13px}aside li{padding:6px 0}aside li:before{content:'✓';color:#d9a47c;margin-right:10px}aside .btn-cuivre{width:100%;font-size:14px}
+  .secondaire{margin-top:18px}.ouverture{border-left:2px solid #b87b4f;padding-left:15px}
+  .bloc{border-top:1px solid #e2ded7;padding-top:45px;margin-top:60px}.bloc>h2,.limites h2,.deux-colonnes h2{font-size:30px;font-weight:300;margin:18px 0 0;letter-spacing:-.02em}
+  .deux-colonnes{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:10px}
+  .liste,.grille-quatre,.guides,.liste-simple{list-style:none;padding:0}.liste li{padding:18px 0;border-bottom:1px solid #e2ded7}.liste h3,.grille-quatre h3,.etapes h3,.guides h3{font-size:17px;font-weight:500;line-height:1.4}
+  .liste p,.grille-quatre p,.guides p{font-size:14px;line-height:1.6;color:#6d7078;margin-top:6px}
+  .grille-quatre{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:22px}.grille-quatre li{border-top:2px solid #b87b4f;padding-top:16px}
+  .limites{margin-top:36px;border-left:2px solid #b87b4f;padding-left:20px}.limites ul{margin-top:14px;padding-left:18px;font-size:14px;line-height:1.7;color:#6d7078}
+  .film{border-top:1px solid #e2ded7;padding-top:45px;margin-top:60px}.film h2{font-size:30px;font-weight:300;margin:20px 0}.film video{width:100%;border-radius:8px;display:block}
+  .exchange .liste-simple{margin-top:20px;font-size:15px;line-height:1.7}.exchange .liste-simple li:before{content:'—';color:#b87b4f;margin-right:10px}.prix-option{margin-top:18px;font:15px var(--font-mono);color:#9a6b45}
+  .faq{margin-top:22px;border-top:1px solid #e2ded7}.faq details{border-bottom:1px solid #e2ded7;padding:18px 0}.faq summary{display:flex;justify-content:space-between;gap:24px;cursor:pointer;list-style:none;font-size:17px;font-weight:500}.faq summary::-webkit-details-marker{display:none}.faq summary span{font-family:var(--font-mono);color:#6d7078;transition:transform .2s}.faq details[open] summary span{transform:rotate(45deg)}.faq p{font-size:15px;line-height:1.7;color:#6d7078;margin-top:10px;max-width:860px}
+  .guides{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:22px}.guides li{border-top:1px solid #e2ded7;padding-top:16px}.guides a:hover h3{text-decoration:underline;text-underline-offset:4px}
+  @media(max-width:900px){.offre-grid{gap:32px}.grille-quatre{grid-template-columns:1fr 1fr}aside{position:static}}
+  @media(max-width:700px){.offre-grid,.deux-colonnes,.guides,.grille-quatre{grid-template-columns:1fr}.dossier-offre{padding-block:35px 55px}h1{font-size:43px}aside{padding:25px}.film h2,.bloc>h2{font-size:26px}.deux-colonnes{gap:24px}}
+  @media(prefers-reduced-motion:reduce){.faq summary span{transition:none}}
+</style>

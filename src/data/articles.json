@@ -379,5 +379,75 @@
     "r": "Quand une SCI emprunte, ce sont ses associés personnes physiques qui sont assurés, et la quotité se répartit entre eux, avec un minimum de 100 % au total. L'application de la loi Lemoine à un prêt consenti à une SCI dépend de la nature du prêt et de l'offre. La délégation reste possible à la signature ; la possibilité de substitution en cours de prêt se vérifie dans l'offre et avec la banque."
    }
   ]
+ },
+ {
+  "slug": "preparer-dossier-pret-immobilier",
+  "title": "Préparer son dossier de prêt immobilier : ce que la banque regarde vraiment",
+  "description": "Préparer et présenter son dossier de prêt immobilier : ce qu’analyse la banque (taux d’effort de 35 %, reste à vivre, apport, comptes), le cas des SCI et des indépendants, et les erreurs qui font perdre des semaines.",
+  "avant": [
+   "Accueil",
+   "DOSSIER DE FINANCEMENT",
+   "7 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 30 octobre 2026",
+   "Une banque ne décide pas sur un formulaire : elle décide sur un dossier qu'un analyste crédit doit comprendre vite. Qui emprunte, pour quel projet, combien, avec quelles ressources et quels risques. Un dossier clair, cohérent et documenté ne garantit pas un accord, mais il évite les allers-retours et permet à la banque de se prononcer sur le fond plutôt que sur les pièces qui manquent.",
+   "Ce que l'analyste crédit cherche en premier"
+  ],
+  "blocs": 20,
+  "faq": [
+   {
+    "q": "Comment préparer un dossier de prêt immobilier ?",
+    "r": "Réunissez les justificatifs de chaque emprunteur (identité, revenus, avis d’imposition, relevés de comptes, épargne, crédits en cours) et ceux du projet, puis présentez une note de synthèse : la demande, les emprunteurs, le projet et un plan de financement équilibré dont chaque chiffre se retrouve dans une pièce."
+   },
+   {
+    "q": "Quel taux d’endettement maximum pour un prêt immobilier ?",
+    "r": "Depuis le 1er janvier 2022, la décision du HCSF limite le taux d’effort à 35 % des revenus nets, assurance emprunteur comprise, et la durée à 25 ans (27 ans avec un différé lié au neuf ou à des travaux importants). Les banques peuvent déroger pour 20 % de leurs nouveaux crédits chaque trimestre."
+   },
+   {
+    "q": "Faut-il un apport pour obtenir un prêt immobilier ?",
+    "r": "La plupart des banques attendent un apport qui couvre au moins les frais : notaire (environ 7 à 8 % du prix dans l’ancien, 2 à 3 % dans le neuf), garantie et dossier. L’épargne restante après l’opération compte aussi, et l’origine de l’apport doit être justifiée."
+   },
+   {
+    "q": "Peut-on présenter soi-même son dossier à plusieurs banques ?",
+    "r": "Oui. Rien n’oblige à passer par un courtier. Présentez alors à chaque banque le même dossier, avec les mêmes chiffres : des demandes différentes d’une banque à l’autre nuisent à la crédibilité du projet."
+   }
+  ]
+ },
+ {
+  "slug": "pieces-dossier-pret-immobilier",
+  "title": "Pièces à fournir pour un prêt immobilier : particulier, SCI et société",
+  "description": "La liste des pièces d’un dossier de prêt immobilier, personne par personne et société par société : identité, revenus, avis d’imposition, comptes, épargne, crédits en cours, projet, apport, SCI et société qui emprunte.",
+  "avant": [
+   "Accueil",
+   "DOSSIER DE FINANCEMENT",
+   "6 min de lecture"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 30 octobre 2026",
+   "Un dossier de prêt immobilier se constitue personne par personne et société par société. Chaque emprunteur, co-emprunteur ou caution fournit ses propres justificatifs ; une SCI ou une société qui emprunte fournit les siens. Voici la liste habituellement demandée par les banques, à adapter à votre situation : chaque établissement peut en demander davantage.",
+   "Pour chaque emprunteur : identité et situation familiale"
+  ],
+  "blocs": 17,
+  "faq": [
+   {
+    "q": "Quelles pièces fournir pour un prêt immobilier ?",
+    "r": "Pour chaque emprunteur : pièce d’identité, justificatif de domicile, livret de famille ou contrat de mariage, trois derniers bulletins de salaire (ou bilans pour un indépendant), deux derniers avis d’imposition, relevés des trois derniers mois de tous les comptes, relevés d’épargne et tableaux des crédits en cours. Pour le projet : compromis, devis ou contrat de construction."
+   },
+   {
+    "q": "Combien de relevés de compte la banque demande-t-elle ?",
+    "r": "En général, les relevés des trois derniers mois de tous vos comptes courants, y compris ceux ouverts dans d’autres banques, ainsi que les derniers relevés d’épargne qui justifient l’apport."
+   },
+   {
+    "q": "Quels documents pour un prêt au nom d’une SCI ?",
+    "r": "Les statuts à jour, un extrait Kbis de moins de trois mois, le procès-verbal d’assemblée qui autorise l’emprunt, la répartition du capital, les derniers bilans et relevés si la SCI existe déjà, et pour chaque associé concerné ses pièces d’identité, de revenus et de patrimoine."
+   },
+   {
+    "q": "Pourquoi préparer une liste de pièces par personne ?",
+    "r": "Chaque emprunteur, caution, associé ou société fournit ses propres justificatifs. Une liste par intervenant évite d’oublier les pièces d’un co-emprunteur ou d’une société et permet à la banque de vérifier que rien ne manque."
+   }
+  ]
  }
 ]

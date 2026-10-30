@@ -7,7 +7,7 @@ import { localiser } from '../i18n';
 import type { QR } from '../data/textes';
 import type { Expertise } from '../data/expertises';
 import { equipe } from '../data/site';
-import { peakPitch, PRIX_PITCH, PRIX_EXCHANGE } from '../data/peak-pitch';
+import { peakPitch, PRIX_PITCH, PRIX_EXCHANGE, PEAK_PITCH_OUVERT } from '../data/peak-pitch';
 
 export const SITE = 'https://peakfunding.eu';
 const ID_ORGANISATION = `${SITE}/#organisation`;
@@ -98,7 +98,8 @@ export function organisation(lang: Lang) {
       name: lang === 'fr' ? 'Expertises PEAK FUNDING' : 'PEAK FUNDING services',
       itemListElement: [
         ...catalogue[lang].map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': `${url(`/expertises/${s.slug}`, lang)}#service`, name: s.nom, description: s.description, url: url(`/expertises/${s.slug}`, lang) } })),
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': `${url('/peak-pitch', lang)}#service`, name: peakPitch(lang).service.nom, description: peakPitch(lang).service.description, url: url('/peak-pitch', lang) } },
+        // PEAK PITCH n'entre au catalogue qu'à l'ouverture du service (adresse publique définie au build).
+        ...(PEAK_PITCH_OUVERT ? [{ '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': `${url('/peak-pitch', lang)}#service`, name: peakPitch(lang).service.nom, description: peakPitch(lang).service.description, url: url('/peak-pitch', lang) } }] : []),
       ],
     },
     contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: cabinet.email, availableLanguage: ['fr', 'en'], areaServed: 'FR' },

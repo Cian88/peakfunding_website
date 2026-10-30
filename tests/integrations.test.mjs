@@ -53,7 +53,7 @@ test('Annotations : cartes uniformes, méthode illustrée, héros et simulateur 
   const home = built('');
   const listing = built('actualites');
   assert.equal(listing('.article-vedette').length, 0);
-  assert.equal(listing('.article-carte .article-image.h-\\[180px\\]').length, 15);
+  assert.equal(listing('.article-carte .article-image.h-\\[180px\\]').length, 17);
   assert.equal(home('#methode .methode-schema').length, 4);
   assert.equal(home('[data-espaces] .espace-lien').length, 2);
   assert.equal(home('#simulateur form').length, 1);

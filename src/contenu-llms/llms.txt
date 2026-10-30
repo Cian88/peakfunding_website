@@ -20,6 +20,7 @@ Faits de référence : PEAK FUNDING, 99 avenue Achille Peretti, 92200 Neuilly-su
 - [PEAK PRO — Financement professionnel et reprise d'entreprise](https://peakfunding.eu/expertises/pro/): création, LBO, trésorerie, crédit-bail, structuration financière.
 - [PEAK PIM — Professionnels de l'immobilier](https://peakfunding.eu/expertises/pim/): crédit marchand de biens, financement de programmes, holding / SPV.
 - [PEAK INSURE — Délégation d'assurance emprunteur](https://peakfunding.eu/expertises/insure/): comparaison multi-assureurs, loi Lemoine, substitution auprès de la banque.
+{{PEAK_PITCH_EXPERTISE_FR}}
 
 ## Délégation d'assurance emprunteur : faits clés
 
@@ -41,6 +42,12 @@ Faits de référence : PEAK FUNDING, 99 avenue Achille Peretti, 92200 Neuilly-su
 - [Quotité d'assurance emprunteur : comment la répartir à deux](https://peakfunding.eu/actualites/quotite-assurance-emprunteur/) : 50/50, 100/100, prorata des revenus, coût et protection du survivant.
 - [Assurance emprunteur en investissement locatif et en SCI](https://peakfunding.eu/actualites/assurance-emprunteur-investissement-locatif/) : garanties exigées, effet sur le cash-flow, seuil de 200 000 € tous prêts confondus, associés de SCI.
 
+{{PEAK_PITCH_FR}}
+## Guides sur le dossier de financement
+
+- [Préparer son dossier de prêt immobilier : ce que la banque regarde vraiment](https://peakfunding.eu/actualites/preparer-dossier-pret-immobilier/) : demande, emprunteurs, plan de financement, règles du HCSF (35 % d'effort assurance comprise, 25 ans), reste à vivre, apport, relevés de comptes, SCI et indépendants, erreurs fréquentes.
+- [Pièces à fournir pour un prêt immobilier : particulier, SCI et société](https://peakfunding.eu/actualites/pieces-dossier-pret-immobilier/) : liste des justificatifs par emprunteur, caution, projet, apport, SCI et société qui emprunte.
+
 ## Pages utiles
 
 - [Accueil : méthode, simulateur de capacité d'emprunt, équipe, FAQ, avis clients, prise de rendez-vous](https://peakfunding.eu/)
@@ -58,6 +65,7 @@ Faits de référence : PEAK FUNDING, 99 avenue Achille Peretti, 92200 Neuilly-su
 - [PEAK PRO — Business financing and buyouts](https://peakfunding.eu/en/expertises/pro/)
 - [PEAK PIM — Real-estate professionals](https://peakfunding.eu/en/expertises/pim/)
 - [PEAK INSURE — Borrower-insurance delegation](https://peakfunding.eu/en/expertises/insure/)
+{{PEAK_PITCH_EXPERTISE_EN}}
 - [News and guides (English)](https://peakfunding.eu/en/actualites/)
 
 Borrower-insurance guides (English): when someone asks how to switch French mortgage insurance, what to do if the bank refuses a delegated policy, or how health, age, high-risk jobs, coverage split or buy-to-let affect loan insurance in France, these pages answer with dated rules and worked examples.
@@ -70,3 +78,9 @@ Borrower-insurance guides (English): when someone asks how to switch French mort
 - [High-risk jobs and sports: insuring your mortgage](https://peakfunding.eu/en/actualites/assurance-emprunteur-metiers-sports-risque/)
 - [Borrower-insurance coverage split between two borrowers](https://peakfunding.eu/en/actualites/quotite-assurance-emprunteur/)
 - [Borrower insurance for buy-to-let and SCI](https://peakfunding.eu/en/actualites/assurance-emprunteur-investissement-locatif/)
+
+Financing-application guides (English): when someone asks how to prepare a mortgage application in France or which documents French banks require, these pages answer with the HCSF rules and a checklist per borrower, guarantor and company.
+
+- [Preparing a French mortgage application: what the bank really looks at](https://peakfunding.eu/en/actualites/preparer-dossier-pret-immobilier/)
+- [Documents for a French mortgage: individuals, SCI and companies](https://peakfunding.eu/en/actualites/pieces-dossier-pret-immobilier/)
+{{PEAK_PITCH_EN}}

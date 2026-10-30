@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import VisuelArticle from '../../components/VisuelArticle.astro';
 import { ASSURANCE_URL } from '../../data/integrations';
+import { PEAK_PITCH_OUVERT } from '../../data/peak-pitch';
 import articles from '../../data/articles.json';
 import Sommaire from '../../components/Sommaire.astro';
 import { documentAvecSommaire } from '../../lib/document.mjs';
@@ -25,6 +26,8 @@ const categorie = article.avant[1];
 const autres = trierArticles(articles).filter(a => a.slug !== article.slug);
 const suggestions = [...autres.filter(a => a.avant[1] === categorie), ...autres.filter(a => a.avant[1] !== categorie)].slice(0, 3);
 const assurance = cleTheme(categorie) === 'assurance-emprunteur';
+// Les guides du dossier de financement renvoient vers PEAK PITCH une fois le service ouvert, sinon vers un échange.
+const dossier = PEAK_PITCH_OUVERT && cleTheme(categorie) === 'dossier-de-financement';
 const faq = (article as { faq?: { q: string; r: string }[] }).faq ?? [];
 const lecture = article.avant[2];
 const auteur = article.apres[0];
@@ -73,6 +76,8 @@ const schema = [
       </p>
       {assurance
         ? <div class="mt-7 flex flex-wrap gap-3"><a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="btn-cuivre">Comparer mon assurance emprunteur ↗<span class="sr-only"> (nouvel onglet)</span></a><a href="/#rdv" class="btn-fantome">Faire étudier mon assurance</a></div>
+        : dossier
+        ? <div class="mt-7"><p class="corps max-w-2xl">Vous préférez garder la main sur votre dossier ? PEAK PITCH vous guide pour le préparer et le présenter comme un courtier : note de synthèse, liste des pièces par intervenant et présentation bancaire.</p><div class="mt-5 flex flex-wrap gap-3"><a href="/peak-pitch/" class="btn-cuivre">Préparer mon dossier avec PEAK PITCH ↗</a><a href="/#rdv" class="btn-fantome">Parler de mon projet</a></div></div>
         : <a href="/#rdv" class="btn-cuivre mt-7">Parler de mon projet ↗</a>}
       </div>
     </div>

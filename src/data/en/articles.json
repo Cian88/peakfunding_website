@@ -379,5 +379,75 @@
     "r": "When an SCI (French property-holding company) borrows, its partners, as individuals, are insured, and the insured share is split between them, with a minimum of 100% in total. Whether the Lemoine law applies to a loan granted to an SCI depends on the nature of the loan and on the offer. Delegation remains possible at signing; whether substitution is possible during the loan must be checked in the offer and with the bank."
    }
   ]
+ },
+ {
+  "slug": "preparer-dossier-pret-immobilier",
+  "title": "Preparing a French mortgage application: what the bank really looks at",
+  "description": "How to prepare and present a mortgage application in France: what banks analyse (35% debt ratio, disposable income, down payment, accounts), SCI and self-employed cases, and the mistakes that cost weeks.",
+  "avant": [
+   "Home",
+   "FINANCING APPLICATION",
+   "7 min read"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 30 October 2026",
+   "A French bank does not decide on an application form: it decides on a file that a credit analyst has to understand quickly. Who is borrowing, for which project, how much, with what resources and what risks. A clear, consistent and documented application does not guarantee approval, but it avoids back-and-forth and lets the bank rule on substance rather than on missing documents.",
+   "What the credit analyst looks for first"
+  ],
+  "blocs": 20,
+  "faq": [
+   {
+    "q": "How do I prepare a mortgage application in France?",
+    "r": "Gather each borrower’s supporting documents (identity, income, tax notices, bank statements, savings, current loans) and those for the project, then present a summary note: the request, the borrowers, the project and a balanced financing plan whose every figure is backed by a document."
+   },
+   {
+    "q": "What is the maximum debt-to-income ratio for a French mortgage?",
+    "r": "Since 1 January 2022, the HCSF decision caps the debt ratio at 35% of net income, borrower insurance included, and the term at 25 years (27 years with a deferral linked to a new build or major works). Banks may depart from these rules for 20% of their new lending each quarter."
+   },
+   {
+    "q": "Do I need a down payment for a mortgage in France?",
+    "r": "Most banks expect a down payment covering at least the fees: notary fees (about 7 to 8% of the price for an older property, 2 to 3% for a new one), guarantee and arrangement fees. Savings left after the purchase also count, and the origin of the down payment must be documented."
+   },
+   {
+    "q": "Can I present my application to several banks myself?",
+    "r": "Yes. Nothing requires you to use a broker. Give each bank the same application with the same figures: requests that differ from one bank to another undermine the project’s credibility."
+   }
+  ]
+ },
+ {
+  "slug": "pieces-dossier-pret-immobilier",
+  "title": "Documents for a French mortgage: individuals, SCI and companies",
+  "description": "The documents needed for a mortgage application in France, person by person and company by company: identity, income, tax notices, accounts, savings, current loans, project, down payment, SCI and borrowing company.",
+  "avant": [
+   "Home",
+   "FINANCING APPLICATION",
+   "6 min read"
+  ],
+  "apres": [
+   "Valentin Boura-Defranoux",
+   "PEAK FUNDING · 30 October 2026",
+   "A French mortgage application is put together person by person and company by company. Each borrower, co-borrower or guarantor provides their own supporting documents; an SCI or a company that borrows provides its own. Here is the list banks usually ask for, to be adapted to your situation: each lender may ask for more.",
+   "For each borrower: identity and family situation"
+  ],
+  "blocs": 17,
+  "faq": [
+   {
+    "q": "Which documents are needed for a mortgage in France?",
+    "r": "For each borrower: identity document, proof of address, family record book or marriage contract, last three payslips (or accounts for the self-employed), last two tax notices, three months of statements for every account, savings statements and schedules of current loans. For the project: the sale agreement, quotes or construction contract."
+   },
+   {
+    "q": "How many bank statements do French banks ask for?",
+    "r": "Usually statements for the last three months of every current account, including accounts at other banks, plus the latest savings statements that evidence the down payment."
+   },
+   {
+    "q": "Which documents for a loan taken out by an SCI?",
+    "r": "Up-to-date articles of association, a Kbis extract less than three months old, the general-meeting minutes authorising the loan, the breakdown of capital, the latest accounts and statements if the SCI already exists, and for each partner involved their identity, income and asset documents."
+   },
+   {
+    "q": "Why prepare a checklist per person?",
+    "r": "Each borrower, guarantor, partner or company provides its own supporting documents. A checklist per party avoids forgetting a co-borrower’s or a company’s documents and lets the bank check that nothing is missing."
+   }
+  ]
  }
 ]

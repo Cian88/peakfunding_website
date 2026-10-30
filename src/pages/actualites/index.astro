@@ -55,7 +55,8 @@ const libelle = (c: string) => c.charAt(0) + c.slice(1).toLowerCase();
   .filtres:has(input[value="investissement-locatif"]:checked) li:not([data-theme="investissement-locatif"]),
   .filtres:has(input[value="residence-principale"]:checked) li:not([data-theme="residence-principale"]),
   .filtres:has(input[value="taux-marche"]:checked) li:not([data-theme="taux-marche"]),
-  .filtres:has(input[value="assurance-emprunteur"]:checked) li:not([data-theme="assurance-emprunteur"]) { display: none; }
+  .filtres:has(input[value="assurance-emprunteur"]:checked) li:not([data-theme="assurance-emprunteur"]),
+  .filtres:has(input[value="dossier-de-financement"]:checked) li:not([data-theme="dossier-de-financement"]) { display: none; }
   .article-carte { transition: border-color .18s ease; }
   .article-carte:hover { border-color: var(--color-cuivre-profond); }
   .article-carte h2 { font-size: 20px; line-height: 1.3; }

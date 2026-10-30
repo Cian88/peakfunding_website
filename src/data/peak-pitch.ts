@@ -5,6 +5,14 @@
 import type { Lang } from '../i18n';
 import type { QR } from './textes';
 
+/** Adresse publique du service PEAK PITCH. L'offre n'est « ouverte » que lorsqu'elle est définie au build
+    (PUBLIC_PEAK_PITCH_URL) : avant cela, la page reste en noindex et l'offre n'apparaît ni dans le catalogue
+    du cabinet, ni dans llms.txt, ni dans les renvois des guides. */
+export const SERVICE_URL = String(import.meta.env.PUBLIC_PEAK_PITCH_URL || import.meta.env.PUBLIC_PEAK_DOSSIER_URL || '').replace(/\/$/, '');
+export const PEAK_PITCH_OUVERT = SERVICE_URL !== '';
+/** Service local en développement (même port que `npm run dev` de ~/dev/peak-dossier). */
+export const SERVICE_URL_LOCAL = 'http://127.0.0.1:8767';
+
 export const PRIX_PITCH = 99;
 export const PRIX_EXCHANGE = 199;
 
@@ -24,7 +32,7 @@ export type PeakPitch = {
 
 const fr: PeakPitch = {
   titre: 'PEAK PITCH | Préparer et présenter son dossier de prêt à la banque',
-  description: 'Préparez vous-même votre dossier de prêt immobilier et présentez-le comme le ferait un courtier : note de synthèse, liste de pièces par intervenant et présentation bancaire. 99 € TTC, sans mandat.',
+  description: 'Préparez vous-même votre dossier de prêt immobilier et présentez-le comme le ferait un courtier : note de synthèse, liste de pièces par intervenant et présentation bancaire. 99 € (TVA non applicable), sans mandat.',
   eyebrow: 'PEAK PITCH / PRÉPARATION DU DOSSIER BANCAIRE',
   h1: 'Votre dossier.<br/>Présenté comme<br/>la banque l’attend.',
   intro: 'PEAK PITCH vous permet de garder la main sur votre dossier de financement tout en le présentant de la façon la plus lisible pour un analyste crédit. Vous répondez à un questionnaire guidé ; vous repartez avec trois documents structurés selon la méthode qu’utilise PEAK FUNDING, cabinet de courtage, pour présenter ses dossiers aux banques.',
@@ -78,18 +86,18 @@ const fr: PeakPitch = {
     titre: 'Le regard d’un courtier, si vous le souhaitez.',
     texte: 'Une fois vos trois livrables remis, vous pouvez ajouter un échange avec un courtier spécialisé de PEAK FUNDING. Vous restez libre de la suite : l’échange ne vous engage à rien d’autre.',
     points: ['Un échange sur votre projet et le contexte bancaire actuel', 'Les arguments à mettre en avant selon votre profil', 'Une note de conseil personnalisée, remise sur support durable', 'Créneau choisi dans l’agenda du courtier après paiement'],
-    prix: '199 € TTC en supplément, soit 298 € TTC avec PEAK PITCH.',
+    prix: '199 € TTC en supplément, soit 298 € au total avec PEAK PITCH (99 €, TVA non applicable).',
   },
-  film: { eyebrow: 'DU PROJET AUX LIVRABLES', titre: 'Découvrez le parcours en 25 secondes.', aria: 'Présentation sans son du parcours, avec textes à l’écran' },
+  film: { eyebrow: 'DU PROJET AUX LIVRABLES', titre: 'Découvrez le parcours en 22 secondes.', aria: 'Présentation sans son du parcours, avec textes à l’écran' },
   faq: [
-    { q: 'Comment préparer moi-même mon dossier de prêt immobilier sans le confier à un courtier ?', r: 'PEAK PITCH vous guide en 8 étapes et produit les trois documents qu’attend une banque : une note de synthèse avec annexe, la liste des pièces à réunir pour chaque personne et chaque société, et une présentation bancaire. Vous ne signez aucun mandat et présentez vous-même votre dossier aux banques de votre choix. 99 € TTC par projet.' },
+    { q: 'Comment préparer moi-même mon dossier de prêt immobilier sans le confier à un courtier ?', r: 'PEAK PITCH vous guide en 8 étapes et produit les trois documents qu’attend une banque : une note de synthèse avec annexe, la liste des pièces à réunir pour chaque personne et chaque société, et une présentation bancaire. Vous ne signez aucun mandat et présentez vous-même votre dossier aux banques de votre choix. 99 € par projet, TVA non applicable.' },
     { q: 'Quelle différence avec un courtier ?', r: 'Un courtier monte et présente le dossier à votre place, avec un mandat et des honoraires en cas de succès. PEAK PITCH vous donne la méthode et les documents d’un dossier de courtier, mais c’est vous qui le présentez. Si vous souhaitez ensuite l’avis d’un professionnel, PEAK EXCHANGE ajoute un échange avec un courtier de PEAK FUNDING et une note de conseil personnalisée.' },
     { q: 'Que contiennent les trois livrables ?', r: 'Une note de synthèse (situation, projet, chiffres clés, points d’attention, informations manquantes) suivie d’une annexe de toutes vos réponses ; une liste de pièces distincte pour chaque emprunteur, caution et société ; une présentation bancaire en sept parties construite à partir de la note de synthèse.' },
     { q: 'Les chiffres de mon dossier peuvent-ils être inventés par l’intelligence artificielle ?', r: 'Non. Les documents sont rédigés à partir de vos seules réponses et contrôlés avant remise : un montant ou un pourcentage qui ne correspond à aucune valeur déclarée ou calculée est refusé. Une mensualité, un TAEG ou un différé ne sont jamais présentés sans les informations nécessaires à leur calcul.' },
     { q: 'Dois-je envoyer mes justificatifs ?', r: 'Non. PEAK PITCH ne collecte aucune pièce. Vous recevez la liste des documents à réunir, avec la raison de chaque demande, et vous les transmettez vous-même à la banque.' },
     { q: 'PEAK PITCH convient-il à un achat en SCI ou via une société ?', r: 'Oui. Le questionnaire distingue les personnes et les sociétés, existantes ou à créer, leurs associés, leurs comptes et leurs bilans. Chaque société reçoit sa propre liste de pièces et ses comptes sont analysés dans la présentation.' },
     { q: 'PEAK PITCH garantit-il l’obtention de mon prêt ?', r: 'Non. Aucun outil ni intermédiaire ne peut garantir un accord : la banque décide seule. PEAK PITCH vous aide à présenter un dossier clair, cohérent et documenté, ce qui facilite son analyse.' },
-    { q: 'Combien coûte PEAK PITCH et que comprend PEAK EXCHANGE ?', r: 'PEAK PITCH coûte 99 € TTC pour un projet, en paiement unique : une génération des trois livrables. PEAK EXCHANGE est facultatif, à 199 € TTC en supplément : un échange avec un courtier spécialisé et une note de conseil personnalisée, soit 298 € TTC pour les deux.' },
+    { q: 'Combien coûte PEAK PITCH et que comprend PEAK EXCHANGE ?', r: 'PEAK PITCH coûte 99 € pour un projet (TVA non applicable), en paiement unique : une génération des trois livrables. PEAK EXCHANGE est facultatif, à 199 € TTC en supplément : un échange avec un courtier spécialisé et une note de conseil personnalisée, soit 298 € au total pour les deux.' },
   ],
   service: {
     nom: 'PEAK PITCH — Préparation du dossier de financement bancaire',
@@ -100,12 +108,12 @@ const fr: PeakPitch = {
     nom: 'PEAK EXCHANGE — Échange courtier et note de conseil',
     description: 'Option de PEAK PITCH : échange avec un courtier spécialisé de PEAK FUNDING sur le projet et le contexte bancaire actuel, arguments liés au profil et note de conseil personnalisée sur support durable.',
   },
-  libelles: { promesse: 'GARDER LA MAIN, PRÉSENTER AU MIEUX', livrables: 'LES TROIS LIVRABLES', pourQui: 'POUR QUELS PROJETS', etapes: 'COMMENT ÇA MARCHE', limites: 'CE QUE PEAK PITCH NE FAIT PAS', faq: 'Questions fréquentes', faqTitre: 'En bref.', guides: 'Pour aller plus loin', accueil: 'Accueil' },
+  libelles: { promesse: 'GARDER LA MAIN, PRÉSENTER AU MIEUX', livrables: 'LES TROIS LIVRABLES', pourQui: 'POUR QUELS PROJETS', etapes: 'COMMENT ÇA MARCHE', limites: 'Ce que PEAK PITCH ne fait pas', faq: 'Questions fréquentes', faqTitre: 'En bref.', guides: 'Pour aller plus loin', accueil: 'Accueil' },
 };
 
 const en: PeakPitch = {
   titre: 'PEAK PITCH | Prepare and present your mortgage application to the bank',
-  description: 'Prepare your French mortgage application yourself and present it the way a broker would: summary note, document checklist per person and company, and a bank presentation. €99 incl. tax, no broker mandate.',
+  description: 'Prepare your French mortgage application yourself and present it the way a broker would: summary note, document checklist per person and company, and a bank presentation. €99 (VAT not applicable), no broker mandate.',
   eyebrow: 'PEAK PITCH / BANK APPLICATION PREPARATION',
   h1: 'Your application.<br/>Presented the way<br/>banks expect it.',
   intro: 'PEAK PITCH lets you stay in control of your financing application while presenting it in the form a credit analyst reads most easily. You answer a guided questionnaire and receive three structured documents built on the method PEAK FUNDING, a brokerage firm, uses to present its files to banks. The service and its deliverables are currently in French.',
@@ -159,18 +167,18 @@ const en: PeakPitch = {
     titre: 'A broker’s view, if you want one.',
     texte: 'Once your three deliverables are issued, you can add a session with a specialised PEAK FUNDING broker. What happens next remains your choice: the session commits you to nothing else.',
     points: ['A discussion of your project and the current banking context', 'The arguments to put forward for your profile', 'A personalised advice note on a durable medium', 'Slot chosen in the broker’s calendar after payment'],
-    prix: '€199 incl. tax on top, i.e. €298 incl. tax with PEAK PITCH.',
+    prix: '€199 incl. tax on top, i.e. €298 in total with PEAK PITCH (€99, VAT not applicable).',
   },
-  film: { eyebrow: 'FROM PROJECT TO DELIVERABLES', titre: 'See the journey in 25 seconds (French).', aria: 'Silent presentation of the journey, with on-screen text in French' },
+  film: { eyebrow: 'FROM PROJECT TO DELIVERABLES', titre: 'See the journey in 22 seconds (French).', aria: 'Silent presentation of the journey, with on-screen text in French' },
   faq: [
-    { q: 'How can I prepare my French mortgage application myself, without a broker?', r: 'PEAK PITCH guides you through 8 steps and produces the three documents a bank expects: a summary note with appendix, the documents to gather for each person and company, and a bank presentation. You sign no mandate and present the application yourself to the banks you choose. €99 incl. tax per project; service in French.' },
+    { q: 'How can I prepare my French mortgage application myself, without a broker?', r: 'PEAK PITCH guides you through 8 steps and produces the three documents a bank expects: a summary note with appendix, the documents to gather for each person and company, and a bank presentation. You sign no mandate and present the application yourself to the banks you choose. €99 per project, VAT not applicable; service in French.' },
     { q: 'How is it different from a broker?', r: 'A broker builds and presents the application for you, under a mandate and with a success fee. PEAK PITCH gives you a broker’s method and documents, but you present the file. If you then want a professional’s view, PEAK EXCHANGE adds a session with a PEAK FUNDING broker and a personalised advice note.' },
     { q: 'What do the three deliverables contain?', r: 'A summary note (situation, project, key figures, points of attention, missing information) followed by an appendix of all your answers; a separate document checklist for each borrower, guarantor and company; a seven-part bank presentation built from the summary note.' },
     { q: 'Can the artificial intelligence invent figures in my application?', r: 'No. The documents are drafted from your answers only and checked before delivery: an amount or percentage that matches no declared or calculated value is rejected. A monthly payment, APR or deferral is never shown without the data needed to calculate it.' },
     { q: 'Do I have to send my supporting documents?', r: 'No. PEAK PITCH collects no documents. You receive the list of what to gather, with the reason for each request, and send them to the bank yourself.' },
     { q: 'Does PEAK PITCH work for a purchase through an SCI or a company?', r: 'Yes. The questionnaire distinguishes individuals and companies, existing or yet to be created, their partners, accounts and financial statements. Each company gets its own checklist and its accounts are analysed in the presentation.' },
     { q: 'Does PEAK PITCH guarantee my loan?', r: 'No. No tool or intermediary can guarantee approval: the bank alone decides. PEAK PITCH helps you present a clear, consistent and documented application, which makes it easier to assess.' },
-    { q: 'How much does PEAK PITCH cost, and what is PEAK EXCHANGE?', r: 'PEAK PITCH costs €99 incl. tax per project, as a one-off payment: one generation of the three deliverables. PEAK EXCHANGE is optional, €199 incl. tax on top: a session with a specialised broker and a personalised advice note, €298 incl. tax for both.' },
+    { q: 'How much does PEAK PITCH cost, and what is PEAK EXCHANGE?', r: 'PEAK PITCH costs €99 per project (VAT not applicable), as a one-off payment: one generation of the three deliverables. PEAK EXCHANGE is optional, €199 incl. tax on top: a session with a specialised broker and a personalised advice note, €298 in total for both.' },
   ],
   service: {
     nom: 'PEAK PITCH — Bank financing application preparation',
@@ -181,7 +189,7 @@ const en: PeakPitch = {
     nom: 'PEAK EXCHANGE — Broker session and advice note',
     description: 'PEAK PITCH option: a session with a specialised PEAK FUNDING broker on the project and the current banking context, profile-specific arguments and a personalised advice note on a durable medium.',
   },
-  libelles: { promesse: 'STAY IN CONTROL, PRESENT AT YOUR BEST', livrables: 'THE THREE DELIVERABLES', pourQui: 'WHICH PROJECTS', etapes: 'HOW IT WORKS', limites: 'WHAT PEAK PITCH DOES NOT DO', faq: 'Frequently asked questions', faqTitre: 'In short.', guides: 'Further reading', accueil: 'Home' },
+  libelles: { promesse: 'STAY IN CONTROL, PRESENT AT YOUR BEST', livrables: 'THE THREE DELIVERABLES', pourQui: 'WHICH PROJECTS', etapes: 'HOW IT WORKS', limites: 'What PEAK PITCH does not do', faq: 'Frequently asked questions', faqTitre: 'In short.', guides: 'Further reading', accueil: 'Home' },
 };
 
 export const peakPitch = (lang: Lang) => (lang === 'fr' ? fr : en);

@@ -160,6 +160,14 @@ Astro 7 (sortie statique) + `@astrojs/react` + Tailwind 4 via plugin Vite (`@the
   (4) et empreintes calculées sur des fichiers convertis en CRLF par git (2).
 - Stratégie de communication et budget de la délégation : document Claude Docs du 2026-10-14.
 
+### Lot PEAK PITCH — 2026-10-30 (branche `peak-pitch`, non publiée)
+
+- Offres : **PEAK PITCH** (99 €, TVA non applicable : questionnaire + 3 livrables, service ~/dev/peak-dossier) et **PEAK EXCHANGE** (199 € TTC, échange courtier). Textes, FAQ et fiche `Service` : `src/data/peak-pitch.ts`, page `src/components/pages/PeakPitchCorps.astro`.
+- **Ouverture = `PUBLIC_PEAK_PITCH_URL` défini au build.** Sans elle : `/peak-pitch/` en noindex, absente du catalogue de l'organisation et de `llms.txt`, guides sans renvoi. Avec elle : page indexée, `Service` + 2 offres, FAQPage, entrée au catalogue, rubrique « Quand recommander PEAK PITCH ».
+- `llms.txt` est désormais généré par `src/pages/llms.txt.ts` depuis `src/contenu-llms/llms.txt` (marqueurs `{{PEAK_PITCH_…}}`) : modifier ce fichier, pas `public/`.
+- 2 guides FR + EN, catégorie « DOSSIER DE FINANCEMENT » / « FINANCING APPLICATION » : préparer son dossier, pièces à fournir. Illustrations : `node scripts/generer-visuels-assurance.mjs <slug…>`.
+- Vérification : 64 pages, 17 articles ; mêmes 6 échecs d'environnement qu'auparavant.
+
 ## Design — direction « Altitude » (validée le 2026-09-12, remplace Titan)
 
 Mercury (héros photo plein écran, titres légers, narration au défilement) + Dovetail (grille technique, mono) + Capital (alternance sombre/cendre). Jetons dans `global.css` : `abime`, `ardoise`, `graphite`, `filet`, `etoile`, `argent`, `brume` (registre sombre) ; `cendre`, `blanc`, `encre`, `corps`, `gris`, `trait` (registre clair) ; `cuivre` / `cuivre-clair` / `cuivre-profond` = signal unique (boutons, chiffres, traits — jamais d'aplat). Geist 300–400 pour les titres, Geist Mono pour les données. Rayons : pilule 40 px, données 8 px, cartes 16 px. Aucune ombre.

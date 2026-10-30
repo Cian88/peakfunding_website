@@ -55,7 +55,8 @@ const libelle = (c: string) => c.charAt(0) + c.slice(1).toLowerCase();
   .filtres:has(input[value="buy-to-let"]:checked) li:not([data-theme="buy-to-let"]),
   .filtres:has(input[value="primary-residence"]:checked) li:not([data-theme="primary-residence"]),
   .filtres:has(input[value="rates-market"]:checked) li:not([data-theme="rates-market"]),
-  .filtres:has(input[value="borrower-insurance"]:checked) li:not([data-theme="borrower-insurance"]) { display: none; }
+  .filtres:has(input[value="borrower-insurance"]:checked) li:not([data-theme="borrower-insurance"]),
+  .filtres:has(input[value="financing-application"]:checked) li:not([data-theme="financing-application"]) { display: none; }
   .article-carte { transition: border-color .18s ease; }
   .article-carte:hover { border-color: var(--color-cuivre-profond); }
   .article-carte h2 { font-size: 20px; line-height: 1.3; }

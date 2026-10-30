@@ -17,6 +17,9 @@ export const visuelsArticles = {
   'assurance-emprunteur-metiers-sports-risque': { slot: undefined, width: 1200, height: 900, alt: 'Casque de chantier, sommet et bouclier : métiers et sports à risque — illustration.' },
   'quotite-assurance-emprunteur': { slot: undefined, width: 1200, height: 900, alt: 'Deux emprunteurs et une répartition 60 / 40 : la quotité d’assurance — illustration.' },
   'assurance-emprunteur-investissement-locatif': { slot: undefined, width: 1200, height: 900, alt: 'Immeuble, clé et bouclier : assurance de prêt en investissement locatif — illustration.' },
+  // Guides « dossier de financement » ajoutés le 2026-10-30 (hors V1), même générateur.
+  'preparer-dossier-pret-immobilier': { slot: undefined, width: 1200, height: 900, alt: 'Banque et dossier de prêt vérifié : préparer son dossier — illustration.' },
+  'pieces-dossier-pret-immobilier': { slot: undefined, width: 1200, height: 900, alt: 'Trois listes de pièces et deux emprunteurs : les justificatifs du prêt — illustration.' },
 } as const;
 
 /** English alternative text for the same article cover images. */
@@ -36,4 +39,6 @@ export const altArticlesEn: Record<keyof typeof visuelsArticles, string> = {
   'assurance-emprunteur-metiers-sports-risque': 'Hard hat, summit and shield: high-risk jobs and sports — illustration.',
   'quotite-assurance-emprunteur': 'Two borrowers and a 60/40 split: insurance coverage share — illustration.',
   'assurance-emprunteur-investissement-locatif': 'Apartment building, key and shield: loan insurance for buy-to-let — illustration.',
+  'preparer-dossier-pret-immobilier': 'Bank and checked loan file: preparing your mortgage application — illustration.',
+  'pieces-dossier-pret-immobilier': 'Three document checklists and two borrowers: mortgage supporting documents — illustration.',
 };

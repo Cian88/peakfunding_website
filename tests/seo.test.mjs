@@ -10,7 +10,7 @@ const pages = [];
 const parcourir = dir => { for (const f of readdirSync(dir)) { const p = join(dir, f); if (statSync(p).isDirectory()) parcourir(p); else if (f.endsWith('.html')) pages.push(p); } };
 if (existsSync(dist)) parcourir(dist);
 const html = p => readFileSync(p, 'utf8');
-const privee = p => /[\\/](avis|404|peak-dossier|peak-pitch)[\\/]|404\.html$/.test(p);
+const privee = p => /[\\/](avis|404|peak-pitch)[\\/]|404\.html$/.test(p);
 const graphe = p => {
   const scripts = load(html(p))('script[type="application/ld+json"]');
   assert.equal(scripts.length, 1, `${p} : un seul bloc JSON-LD attendu`);
@@ -74,7 +74,7 @@ test('Articles : Article daté, auteur, image dimensionnée, Open Graph article'
   }
   for (const p of ['dist/actualites/index.html', 'dist/en/actualites/index.html']) {
     const g = graphe(p);
-    assert.equal(g.find(x => x['@type'] === 'ItemList').itemListElement.length, 15, p);
+    assert.equal(g.find(x => x['@type'] === 'ItemList').itemListElement.length, 17, p);
     assert.ok(types(g).includes('CollectionPage'), p);
   }
 });
@@ -119,4 +119,32 @@ test('Délégation d’assurance : guides avec FAQ structurée, PEAK INSURE reli
   const llms = readFileSync('dist/llms.txt', 'utf8');
   for (const slug of guides) assert.ok(llms.includes(`https://peakfunding.eu/actualites/${slug}/`), slug);
   assert.match(llms, /## Délégation d'assurance emprunteur : faits clés/);
+});
+
+test('PEAK PITCH : page privée et absente du catalogue et de llms.txt tant que le service n’est pas ouvert', () => {
+  // Ce build est fait sans PUBLIC_PEAK_PITCH_URL : l'offre ne doit être recommandée par aucun moteur ni assistant.
+  for (const lang of ['', 'en/']) {
+    const $ = load(html(`dist/${lang}peak-pitch/index.html`));
+    assert.equal($('meta[name="robots"]').attr('content'), 'noindex, nofollow');
+    assert.equal($('script[type="application/ld+json"]').length, 0);
+    assert.equal($('.faq details').length, 8);
+    assert.equal($('#peak-exchange').length, 1);
+    assert.ok(!$.text().includes('TTC par projet') && !$.text().includes('incl. tax per project'));
+  }
+  const orga = graphe('dist/index.html').find(n => n['@id'] === 'https://peakfunding.eu/#organisation');
+  assert.ok(!JSON.stringify(orga).includes('peak-pitch'));
+  const llms = readFileSync('dist/llms.txt', 'utf8');
+  assert.ok(!llms.includes('PEAK PITCH') && !llms.includes('{{'));
+});
+
+test('Dossier de financement : deux guides FR/EN avec FAQ structurée, listés dans llms.txt', () => {
+  const guides = ['preparer-dossier-pret-immobilier', 'pieces-dossier-pret-immobilier'];
+  const llms = readFileSync('dist/llms.txt', 'utf8');
+  for (const lang of ['', 'en/']) for (const slug of guides) {
+    const p = `dist/${lang}actualites/${slug}/index.html`;
+    assert.ok(graphe(p).find(x => x['@type'] === 'FAQPage').mainEntity.length >= 4, p);
+    assert.ok(graphe(p).some(x => x['@type'] === 'Article'), p);
+    assert.ok(llms.includes(`https://peakfunding.eu/${lang}actualites/${slug}/`), p);
+    assert.equal(load(html(p))('a[href$="/peak-pitch/"]').length, 0, `${p} : aucun renvoi avant l’ouverture`);
+  }
 });

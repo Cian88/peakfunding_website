@@ -1,7 +1,8 @@
 /* Illustrations des guides « assurance emprunteur » ajoutés le 2026-10-14 (hors V1).
    Dessinées en SVG dans la palette des visuels d'origine (pêche, cuivre, crème), puis
    converties en WebP 1200 × 900 dans public/img/article-v1-<slug>.webp.
-   Usage : node scripts/generer-visuels-assurance.mjs */
+   Les deux guides « dossier de financement » du 2026-10-30 utilisent les mêmes primitives.
+   Usage : node scripts/generer-visuels-assurance.mjs [slug…]   (sans argument : toutes les illustrations) */
 import sharp from 'sharp';
 
 const W = 1200, H = 900;
@@ -180,6 +181,18 @@ const scenes = {
     ${bouclier(600, 180, 0.7)}
     ${documentPapier(600, 700, 260, 110, 0, 2)}
     ${cercleIcone(180, 300, 36, coche)}${cercleIcone(1030, 300, 36, coche)}`),
+  'preparer-dossier-pret-immobilier': decor(`
+    ${banque(860, 520, 1.15)}
+    ${documentPapier(420, 470, 300, 360, -4, 8)}
+    ${documentPapier(520, 520, 260, 300, 5, 6, `<path d="M-60 90 L-38 112 L4 66" fill="none" stroke="${c.vert}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`)}
+    ${cercleIcone(250, 280, 44, euro)}${cercleIcone(700, 230, 40, coche)}${cercleIcone(1010, 300, 36, etoile)}
+    ${pieces(230, 720, 5)}`),
+  'pieces-dossier-pret-immobilier': decor(`
+    ${documentPapier(330, 470, 230, 300, -8, 6)}
+    ${documentPapier(600, 450, 250, 330, 0, 7, `<path d="M-70 110 L-48 132 L-6 86" fill="none" stroke="${c.vert}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`)}
+    ${documentPapier(870, 480, 230, 300, 8, 6)}
+    ${personne(330, 250, 0.55, c.orange, '#7a4a33')}${personne(870, 260, 0.55, c.cuivre, '#4b3328')}
+    ${cercleIcone(600, 200, 44, coche)}${cercleIcone(1060, 640, 36, etoile)}${cercleIcone(150, 640, 36, euro)}`),
   'assurance-emprunteur-investissement-locatif': decor(`
     ${immeuble(420, 600, 1.15)}
     ${bouclier(740, 300, 1.15)}
@@ -188,7 +201,8 @@ const scenes = {
     ${cercleIcone(230, 300, 40, euro)}${cercleIcone(980, 230, 40, coche)}${cercleIcone(640, 650, 36, etoile)}`),
 };
 
-for (const [slug, svg] of Object.entries(scenes)) {
+const choisis = process.argv.slice(2);
+for (const [slug, svg] of Object.entries(scenes).filter(([slug]) => !choisis.length || choisis.includes(slug))) {
   await sharp(Buffer.from(svg)).webp({ quality: 82 }).toFile(`public/img/article-v1-${slug}.webp`);
   console.log(`public/img/article-v1-${slug}.webp`);
 }

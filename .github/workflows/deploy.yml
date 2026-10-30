@@ -96,6 +96,10 @@ jobs:
 
       - name: Builder le site
         run: npm run build
+        env:
+          # Ouverture de PEAK PITCH : renseigner la variable du dépôt PUBLIC_PEAK_PITCH_URL (Settings → Variables → Actions).
+          # Vide : page en noindex, absente du catalogue et de llms.txt. Renseignée : offre indexée et paiement accessible.
+          PUBLIC_PEAK_PITCH_URL: ${{ vars.PUBLIC_PEAK_PITCH_URL }}
 
       - name: Configurer GitHub Pages
         uses: actions/configure-pages@v5

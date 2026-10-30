@@ -7,6 +7,7 @@ import { localiser } from '../i18n';
 import type { QR } from '../data/textes';
 import type { Expertise } from '../data/expertises';
 import { equipe } from '../data/site';
+import { peakPitch, PRIX_PITCH, PRIX_EXCHANGE } from '../data/peak-pitch';
 
 export const SITE = 'https://peakfunding.eu';
 const ID_ORGANISATION = `${SITE}/#organisation`;
@@ -33,8 +34,8 @@ const descriptions: Record<Lang, string> = {
 };
 
 const domaines: Record<Lang, string[]> = {
-  fr: ['Courtage en crédit immobilier', 'Financement professionnel', 'Reprise d’entreprise et LBO', 'Crédit marchand de biens', 'Financement de promotion immobilière', 'Assurance emprunteur', 'Délégation d’assurance emprunteur', 'Loi Lemoine', 'Changement d’assurance de prêt immobilier', 'Équivalence des garanties (FSI)', 'Questionnaire de santé et droit à l’oubli', 'Convention AERAS et risque aggravé de santé', 'Assurance emprunteur des seniors', 'Assurance emprunteur des professions et sports à risque', 'Quotité d’assurance emprunteur', 'Financement des non-résidents et expatriés', 'SCI et montage patrimonial'],
-  en: ['Mortgage brokerage', 'Business financing', 'Business buyouts and LBO', 'Property-trader credit lines', 'Real-estate development financing', 'Borrower insurance', 'Borrower-insurance delegation', 'Lemoine law', 'Switching mortgage insurance in France', 'Equivalence of cover (FSI)', 'Health questionnaire and right to be forgotten', 'AERAS convention and aggravated health risk', 'Borrower insurance for seniors', 'Borrower insurance for high-risk jobs and sports', 'Borrower-insurance coverage split (quotité)', 'Financing for non-residents and expatriates', 'SCI and wealth structuring'],
+  fr: ['Courtage en crédit immobilier', 'Financement professionnel', 'Reprise d’entreprise et LBO', 'Crédit marchand de biens', 'Financement de promotion immobilière', 'Assurance emprunteur', 'Délégation d’assurance emprunteur', 'Loi Lemoine', 'Changement d’assurance de prêt immobilier', 'Équivalence des garanties (FSI)', 'Questionnaire de santé et droit à l’oubli', 'Convention AERAS et risque aggravé de santé', 'Assurance emprunteur des seniors', 'Assurance emprunteur des professions et sports à risque', 'Quotité d’assurance emprunteur', 'Financement des non-résidents et expatriés', 'SCI et montage patrimonial', 'Préparation du dossier de prêt immobilier', 'Présentation du dossier de financement à la banque', 'Pièces justificatives d’un prêt immobilier', 'Note de synthèse bancaire'],
+  en: ['Mortgage brokerage', 'Business financing', 'Business buyouts and LBO', 'Property-trader credit lines', 'Real-estate development financing', 'Borrower insurance', 'Borrower-insurance delegation', 'Lemoine law', 'Switching mortgage insurance in France', 'Equivalence of cover (FSI)', 'Health questionnaire and right to be forgotten', 'AERAS convention and aggravated health risk', 'Borrower insurance for seniors', 'Borrower insurance for high-risk jobs and sports', 'Borrower-insurance coverage split (quotité)', 'Financing for non-residents and expatriates', 'SCI and wealth structuring', 'Preparing a French mortgage application', 'Presenting a financing application to a bank', 'Mortgage supporting documents in France', 'Bank summary note'],
 };
 
 /** Étude d'assurance emprunteur : gratuite et sans engagement, comme l'indiquent la page PEAK INSURE et les guides. */
@@ -95,7 +96,10 @@ export function organisation(lang: Lang) {
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: lang === 'fr' ? 'Expertises PEAK FUNDING' : 'PEAK FUNDING services',
-      itemListElement: catalogue[lang].map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': `${url(`/expertises/${s.slug}`, lang)}#service`, name: s.nom, description: s.description, url: url(`/expertises/${s.slug}`, lang) } })),
+      itemListElement: [
+        ...catalogue[lang].map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': `${url(`/expertises/${s.slug}`, lang)}#service`, name: s.nom, description: s.description, url: url(`/expertises/${s.slug}`, lang) } })),
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': `${url('/peak-pitch', lang)}#service`, name: peakPitch(lang).service.nom, description: peakPitch(lang).service.description, url: url('/peak-pitch', lang) } },
+      ],
     },
     contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: cabinet.email, availableLanguage: ['fr', 'en'], areaServed: 'FR' },
   };
@@ -146,6 +150,30 @@ export function service(e: Expertise, lang: Lang) {
     ...(e.pourQui ? { audience: e.pourQui.cibles.map((c) => ({ '@type': 'Audience', audienceType: c.titre })) } : {}),
     hasOfferCatalog: { '@type': 'OfferCatalog', name: fiche.nom, itemListElement: e.concretement.points.map((p) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: p.titre, description: p.texte } })) },
     ...(e.slug === 'insure' ? { offers: { '@type': 'Offer', name: etudeAssurance[lang].nom, description: etudeAssurance[lang].description, price: '0', priceCurrency: 'EUR', url: page, seller: { '@id': ID_ORGANISATION } } } : {}),
+  };
+}
+
+/** PEAK PITCH, service payant en ligne, et PEAK EXCHANGE, son option ; prix publiés sur la page. */
+export function servicePeakPitch(lang: Lang) {
+  const t = peakPitch(lang), page = url('/peak-pitch', lang);
+  const offre = (id: string, nom: string, description: string, prix: number) => ({ '@type': 'Offer', '@id': `${page}#${id}`, name: nom, description, price: String(prix), priceCurrency: 'EUR', url: page, seller: { '@id': ID_ORGANISATION } });
+  return {
+    '@type': 'Service',
+    '@id': `${page}#service`,
+    name: t.service.nom,
+    alternateName: 'PEAK PITCH',
+    serviceType: t.service.nom.split(' — ')[1],
+    description: t.service.description,
+    url: page,
+    provider: { '@id': ID_ORGANISATION },
+    areaServed: { '@type': 'Country', name: 'France' },
+    availableLanguage: ['fr'],
+    audience: t.pourQui.map((c) => ({ '@type': 'Audience', audienceType: c.titre })),
+    hasOfferCatalog: { '@type': 'OfferCatalog', name: t.libelles.livrables, itemListElement: t.livrables.map((l) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: l.titre, description: l.texte } })) },
+    offers: [
+      offre('offre-pitch', 'PEAK PITCH', t.service.offre, PRIX_PITCH),
+      { ...offre('offre-exchange', 'PEAK EXCHANGE', t.serviceExchange.description, PRIX_EXCHANGE), itemOffered: { '@type': 'Service', '@id': `${page}#peak-exchange`, name: t.serviceExchange.nom, alternateName: 'PEAK EXCHANGE', description: t.serviceExchange.description, provider: { '@id': ID_ORGANISATION } } },
+    ],
   };
 }
 

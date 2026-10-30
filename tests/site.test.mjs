@@ -52,10 +52,10 @@ test('Les textes légaux et les articles rendus conservent chaque mot et la ponc
     assert.equal(normalize(built('.article-content').text()), normalize(load(read(`src/contenu-articles/${article.slug}.html`), null, false).text()), article.slug);
   }
 });
-test('Les 60 pages construites (FR + EN) ont leurs liens, images, titres et ancres', () => {
+test('Les 62 pages construites (FR + EN) ont leurs liens, images, titres et ancres', () => {
   const crawl = dir => readdirSync(dir, { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? crawl(join(dir, entry.name)) : [join(dir, entry.name)]);
   const pages = crawl('dist').filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 60);
+  assert.equal(pages.length, 62);
   const failures = [];
   for (const file of pages) {
     const $ = load(read(file));

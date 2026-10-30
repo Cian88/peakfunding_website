@@ -1,0 +1,50 @@
+---
+interface Props { lang?: string }
+const { lang = 'fr' } = Astro.props;
+const fr = lang === 'fr';
+---
+<dialog id="pitch-film-dialog" class="pitch-film-dialog" aria-labelledby="pitch-film-title">
+  <div class="pitch-film-bar"><h2 id="pitch-film-title">PEAK PITCH <span>22 {fr ? 'secondes pour découvrir le service' : 'seconds to discover the service'}</span></h2><button data-pitch-close aria-label={fr ? 'Fermer la vidéo' : 'Close video'}>✕</button></div>
+  <video id="pitch-publicite" controls playsinline preload="none" poster="/peak-pitch/peak-pitch-affiche.jpg" aria-label={fr ? 'Publicité PEAK PITCH, trois livrables pour préparer votre présentation bancaire' : 'PEAK PITCH advertisement in French'}>
+    <source src="/peak-pitch/peak-pitch-publicite.mp4" type="video/mp4" />
+  </video>
+  <p class="pitch-film-caption">{fr ? 'Film sans son. Visuels fictifs. Le financement reste soumis à la décision des banques.' : 'Silent film. Illustrative visuals. Financing remains subject to the banks’ decision.'}</p>
+</dialog>
+<script>
+  function setupPitchFilm() {
+    const dialog = document.querySelector<HTMLDialogElement>('#pitch-film-dialog');
+    const film = document.querySelector<HTMLVideoElement>('#pitch-publicite');
+    if (!dialog || !film || dialog.dataset.ready) return;
+    dialog.dataset.ready = 'true';
+    let opener: HTMLElement | null = null;
+    const loops = [...document.querySelectorAll<HTMLVideoElement>('[data-pitch-loop]')];
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const staticMode = new URLSearchParams(location.search).has('statique');
+    const toggle = document.querySelector<HTMLButtonElement>('[data-pitch-motion]');
+    let userPaused = false, heroVisible = true;
+    const sync = () => {
+      loops.forEach(v => {
+        if (userPaused || !heroVisible || reduced.matches || staticMode || document.hidden || dialog.open || !v.getClientRects().length) v.pause();
+        else v.play().catch(() => {});
+      });
+      if (toggle) { toggle.hidden = reduced.matches || staticMode; toggle.setAttribute('aria-pressed', String(userPaused)); toggle.textContent = userPaused ? toggle.dataset.play! : toggle.dataset.pause!; }
+    };
+    const open = (event: Event) => { opener = event.currentTarget as HTMLElement; dialog.showModal(); film.currentTime = 0; sync(); film.play().catch(() => {}); };
+    const close = () => dialog.close();
+    const onClosed = () => { film.pause(); opener?.focus(); sync(); };
+    document.querySelectorAll<HTMLButtonElement>('[data-pitch-open]').forEach(b => b.addEventListener('click', open));
+    dialog.querySelector('[data-pitch-close]')?.addEventListener('click', close);
+    dialog.addEventListener('close', onClosed);
+    dialog.addEventListener('click', e => { if (e.target === dialog) { const r = dialog.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) close(); } });
+    toggle?.addEventListener('click', () => { userPaused = !userPaused; sync(); });
+    document.addEventListener('visibilitychange', sync); reduced.addEventListener('change', sync); window.addEventListener('resize', sync);
+    const observer = new IntersectionObserver(entries => { entries.forEach(e => { heroVisible = e.isIntersecting; sync(); }); });
+    const hero = document.querySelector('.heros'); if (hero) observer.observe(hero);
+    sync();
+    document.addEventListener('astro:before-swap', () => { film.pause(); loops.forEach(v => v.pause()); observer.disconnect(); document.removeEventListener('visibilitychange', sync); reduced.removeEventListener('change', sync); window.removeEventListener('resize', sync); }, { once: true });
+  }
+  document.addEventListener('astro:page-load', setupPitchFilm);
+</script>
+<style>
+ .pitch-film-dialog{width:min(1180px,94vw);max-height:94dvh;margin:auto;padding:0;border:1px solid #2a2f3a;border-radius:8px;background:#0b0d12;color:#edeae4;overflow:auto}.pitch-film-dialog::backdrop{background:rgba(0,0,0,.86)}.pitch-film-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;gap:20px}.pitch-film-bar h2{font-size:15px;color:#edeae4;margin:0}.pitch-film-bar span{font-size:11px;color:#a6a9b3;margin-left:18px;font-weight:400}.pitch-film-bar button{border:1px solid #2a2f3a;background:transparent;color:#edeae4;border-radius:50%;width:36px;height:36px;flex:0 0 36px}.pitch-film-dialog video{display:block;width:100%;aspect-ratio:16/9}.pitch-film-caption{font-size:11px;line-height:1.6;color:#a6a9b3;padding:14px 20px}@media(max-width:600px){.pitch-film-bar span{display:none}.pitch-film-dialog{width:96vw}}
+</style>

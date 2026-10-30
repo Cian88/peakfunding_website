@@ -29,9 +29,11 @@ test('Accueil FR/EN : spécialités explicites, signature et actions conservées
     const hero = $('.heros');
     assert.equal(hero.find('h1').text().replace(/\s+/g, ' ').trim(), title);
     assert.ok(hero.find('.heros-texte > p').toArray().some(el => $(el).text() === description));
-    assert.equal(hero.find('video source').attr('src'), '/peak-dossier/peak-dossier-presentation.mp4');
+    assert.equal(hero.find('.pitch-hero-background video source').attr('src'), '/peak-pitch/peak-pitch-fond-site.mp4');
+    assert.equal(hero.find('[data-pitch-open]').length, 1);
+    assert.ok(hero.text().includes('PEAK PITCH'));
     assert.equal(hero.find('.heros-photo').length, 0);
-    assert.equal(hero.find('a[href$=\"/peak-dossier/\"]').length,1);
+    assert.equal(hero.find('a[href$=\"/peak-pitch/\"]').length,1);
     assert.equal(hero.find('.btn-cuivre').attr('href'), '#rdv');
     assert.equal(hero.find('.btn-fantome').attr('href'), '#simulateur');
     assert.equal(hero.find('[data-assurance]').attr('target'), '_blank');

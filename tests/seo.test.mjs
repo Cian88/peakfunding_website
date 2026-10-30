@@ -10,7 +10,7 @@ const pages = [];
 const parcourir = dir => { for (const f of readdirSync(dir)) { const p = join(dir, f); if (statSync(p).isDirectory()) parcourir(p); else if (f.endsWith('.html')) pages.push(p); } };
 if (existsSync(dist)) parcourir(dist);
 const html = p => readFileSync(p, 'utf8');
-const privee = p => /[\\/](avis|404|peak-dossier)[\\/]|404\.html$/.test(p);
+const privee = p => /[\\/](avis|404|peak-dossier|peak-pitch)[\\/]|404\.html$/.test(p);
 const graphe = p => {
   const scripts = load(html(p))('script[type="application/ld+json"]');
   assert.equal(scripts.length, 1, `${p} : un seul bloc JSON-LD attendu`);

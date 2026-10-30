@@ -13,8 +13,11 @@ const destination = localiser('/peak-pitch/', lang);
 
   <div class="pitch-cinema-stage">
     <a class="pitch-cinema-screen" data-pitch-discover href={destination} aria-label={fr ? 'Découvrir PEAK PITCH — 99 €, TVA non applicable' : 'Discover PEAK PITCH — €99, VAT not applicable'}>
-      <video data-pitch-cinema-film muted playsinline preload="auto" poster="/peak-pitch/peak-pitch-affiche-4k.jpg" aria-hidden="true" tabindex="-1">
-        <source src="/peak-pitch/peak-pitch-publicite-4k-60fps.mp4" type="video/mp4" />
+      <!-- 4K réservée aux très grands écrans ; 1080p (7,5 Mo) ailleurs. Rien n'est préchargé au-delà des métadonnées :
+           la lecture démarre quand le héros est visible, et jamais en mouvement réduit. -->
+      <video data-pitch-cinema-film muted playsinline preload="metadata" poster="/peak-pitch/peak-pitch-affiche.jpg" aria-hidden="true" tabindex="-1">
+        <source src="/peak-pitch/peak-pitch-publicite-4k-60fps.mp4" type="video/mp4" media="(min-width: 2000px)" />
+        <source src="/peak-pitch/peak-pitch-publicite.mp4" type="video/mp4" />
       </video>
       <span class="pitch-cinema-mobile-copy" aria-hidden="true">
         <span class="pitch-cinema-kicker">PEAK FUNDING / PEAK PITCH</span>

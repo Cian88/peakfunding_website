@@ -127,7 +127,7 @@ test('PEAK PITCH : page privée et absente du catalogue et de llms.txt tant que 
     const $ = load(html(`dist/${lang}peak-pitch/index.html`));
     assert.equal($('meta[name="robots"]').attr('content'), 'noindex, nofollow');
     assert.equal($('script[type="application/ld+json"]').length, 0);
-    assert.equal($('.faq details').length, 8);
+    assert.equal($('.faq details').length, 10);
     assert.equal($('#peak-exchange').length, 1);
     assert.ok(!$.text().includes('TTC par projet') && !$.text().includes('incl. tax per project'));
   }

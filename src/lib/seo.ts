@@ -76,7 +76,7 @@ export function organisation(lang: Lang) {
     url: `${SITE}/`,
     logo: { '@type': 'ImageObject', url: cabinet.logo },
     image: cabinet.image,
-    description: descriptions[lang],
+    description: descriptions[lang] + (PEAK_PITCH_OUVERT ? (lang === 'fr' ? ' Outil en ligne PEAK PITCH : préparer son dossier de prêt immobilier avec l’expertise d’un courtier, pour 99 €.' : ' PEAK PITCH online tool: prepare your mortgage application with a broker’s expertise, for €99.') : ''),
     email: cabinet.email,
     sameAs: cabinet.profils,
     address: { '@type': 'PostalAddress', streetAddress: cabinet.adresse.rue, postalCode: cabinet.adresse.codePostal, addressLocality: cabinet.adresse.ville, addressCountry: cabinet.adresse.pays },

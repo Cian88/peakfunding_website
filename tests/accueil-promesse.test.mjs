@@ -32,9 +32,12 @@ test('Accueil FR/EN : cinéma cliquable, accès et sections du cabinet conservé
     const action = hero.find('a[data-pitch-discover]');
     assert.equal(action.attr('href'), destination);
     assert.ok(action.find('.pitch-cinema-cta').text().includes('PEAK PITCH'));
-    assert.equal(action.find('video source').attr('src'), '/peak-pitch/peak-pitch-publicite-4k-60fps.mp4');
+    // 4K seulement sur très grand écran, 1080p sinon ; rien de lourd préchargé pour les mobiles.
+    const sources = action.find('video source').map((_, s) => [[$(s).attr('src'), $(s).attr('media') || '']]).get();
+    assert.deepEqual(sources, [['/peak-pitch/peak-pitch-publicite-4k-60fps.mp4', '(min-width: 2000px)'], ['/peak-pitch/peak-pitch-publicite.mp4', '']]);
     assert.ok(action.find('video').is('[muted][playsinline]'));
-    assert.equal(action.find('video').attr('preload'), 'auto');
+    assert.equal(action.find('video').attr('preload'), 'metadata');
+    assert.equal(action.find('video').attr('poster'), '/peak-pitch/peak-pitch-affiche.jpg');
     assert.equal(action.find('video').is('[loop], [controls]'), false);
     assert.equal(hero.find('[data-pitch-cinema-toggle]').length, 0);
     for (const anchor of ['#rdv', '#simulateur', '#expertises']) assert.equal(hero.find(`a[href="${anchor}"]`).length, 1);

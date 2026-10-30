@@ -17,12 +17,6 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
 
   <!-- ═══ 1 · Héros ═══ -->
   <section class="sombre heros -mt-[76px] overflow-hidden">
-    <picture>
-      <source media="(max-width: 640px)" srcset="/img/hero-mobile-1200.webp" />
-      <img src="/img/hero-1600.webp" srcset="/img/hero-1200.webp 1200w, /img/hero-1600.webp 1600w, /img/hero-2400.webp 2400w" sizes="100vw" alt="" fetchpriority="high" class="heros-photo absolute inset-0 h-full w-full object-cover object-[center_40%]" />
-    </picture>
-    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,13,18,0.76)_0%,rgba(11,13,18,0.42)_50%,rgba(11,13,18,0.08)_100%)]"></div>
-    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,13,18,0.12)_50%,rgba(11,13,18,0.9)_100%)]"></div>
     <div class="heros-voile absolute inset-0 bg-abime opacity-0"></div>
     <div class="contenu heros-contenu relative">
       <div class="heros-texte">
@@ -38,6 +32,13 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
         <p class="heros-fondu mt-5 text-[13px] text-etoile/80">{u.hero_note}</p>
         <a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="heros-fondu mt-4 inline-block text-[13px] text-etoile/90 underline decoration-etoile/40 underline-offset-4 hover:text-cuivre-clair">{u.hero_assurance}<span class="sr-only">{u.hero_nouvel_onglet}</span></a>
       </div>
+      <figure class="dossier-hero-video">
+        <div class="dossier-video-heading"><span>PEAK DOSSIER</span><span>{lang === 'fr' ? '25 secondes pour comprendre' : 'A 25-second introduction (French)'}</span></div>
+        <video id="dossier-hero-film" muted loop playsinline controls preload="metadata" poster="/peak-dossier/peak-dossier-poster.jpg" aria-label={lang === 'fr' ? 'Présentation de PEAK DOSSIER : découverte, simulation et trois livrables' : 'PEAK DOSSIER introduction in French'}>
+          <source src="/peak-dossier/peak-dossier-presentation.mp4" type="video/mp4" />
+        </video>
+        <figcaption><p>{lang === 'fr' ? 'Un projet. Trois livrables. Une vision claire.' : 'One project. Three deliverables. A clear view.'}</p><a href={L('/peak-dossier/')}>{lang === 'fr' ? 'Préparer mon dossier · 99 € TTC' : 'Prepare my dossier · €99 incl. tax'} <span aria-hidden="true">↗</span></a></figcaption>
+      </figure>
     </div>
     <div class="contenu relative pb-7">
       <div class="flex flex-wrap items-center justify-between gap-4 border-t border-etoile/20 pt-5">
@@ -281,4 +282,14 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
     .heros-contenu { padding-top: 48px; padding-bottom: 40px; }
     .heros-titre { font-size: clamp(34px, 8.9vw, 56px); }
   }
+</style>
+
+<script>
+  const setupDossierVideo=()=>{const film=document.querySelector<HTMLVideoElement>('#dossier-hero-film');if(!film)return;if(!new URLSearchParams(location.search).has('statique')&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)film.play().catch(()=>{});};
+  document.addEventListener('astro:page-load',setupDossierVideo);
+</script>
+<style>
+ .heros{background:#0b0d12}.heros-contenu{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}.heros-texte .heros-titre{font-size:clamp(44px,4.8vw,76px)}.heros-texte>p.mt-7{font-size:18px;max-width:560px}.heros-texte .btn-cuivre,.heros-texte .btn-fantome{font-size:15px;height:50px;padding-inline:22px}.dossier-hero-video{min-width:0;margin:0;border:1px solid #2a2f3a;border-radius:8px;overflow:hidden;align-self:center;background:#0b0d12}.dossier-video-heading{padding:18px;display:flex;justify-content:space-between;gap:18px;font:10px var(--font-mono);color:#a6a9b3;letter-spacing:.03em}.dossier-hero-video video{width:100%;display:block;aspect-ratio:16/9}.dossier-hero-video figcaption{border-top:1px solid #2a2f3a;padding:20px}.dossier-hero-video figcaption p{color:#edeae4;font-size:17px;margin:0 0 12px}.dossier-hero-video figcaption a{color:#d9a47c;font-size:14px;text-decoration:underline;text-underline-offset:5px}
+ @media(max-width:1000px){.heros-contenu{grid-template-columns:1fr}.dossier-hero-video{max-width:720px}.heros-texte .heros-titre{font-size:clamp(42px,7vw,68px)}.heros-texte{max-width:850px}.heros-texte>p.mt-7{max-width:650px}.heros-texte>div.mt-9{margin-top:25px}}
+ @media(max-width:640px){.heros-texte .heros-titre{font-size:42px}.heros-texte>p.mt-7{font-size:17px;margin-top:24px}.dossier-video-heading{font-size:8px;padding:13px}.dossier-hero-video figcaption{padding:17px}.dossier-hero-video figcaption p{font-size:16px}}
 </style>

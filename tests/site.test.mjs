@@ -11,13 +11,15 @@ const read = file => readFileSync(file, 'utf8');
 const articles = JSON.parse(read('src/data/articles.json'));
 const normalize = value => value.replace(/\s+/g, ' ').trim();
 const protectedFiles = {
-  'src/contenu-legal/mentions-legales.html': '4D21C573BF3EDFD789A35090D41EA07BAC3580AF9AFCA4C4BCCA40A183EC4C3A',
-  'src/contenu-legal/politique-de-confidentialite.html': '8FE1D89573FB81AA7C5DEDFCBD8AF354C45DAB97FEBE4FD17B12F344EADB7CC0',
-  'src/contenu-legal/cgu.html': 'B07104AAE69BD8BEA3F2822E26364AF0FF34C24B31064CE3BC4C1099233CE881',
+  // Textes réglementaires réécrits le 30/10/2026 (TVA, hébergement réel, médiation pour tous les clients, PEAK PITCH).
+  'src/contenu-legal/mentions-legales.html': '74EA0A826DDC3C0EC483B4CD6AA076361C4BE6D216B3CC8AE8F04ABB84E3957B',
+  'src/contenu-legal/politique-de-confidentialite.html': '9BEB010BA9CCB8110BD3BA533F4AA870432E733500421B7600F7CDA3A97EA878',
+  'src/contenu-legal/cgu.html': 'EF0A51610EFEF32E872797B5AD18E269B511B9EF35D2A0C0FC6F8F0E07CEC5CE',
+  'src/contenu-legal/conditions-de-vente.html': 'BA00DF50B1A61CF2FE7C0E70DD80C3E4365338CE40F9D04BACB216D78059B91C',
   // Les interfaces évoluent ; calculs et charge utile sont protégés dans ergonomie.test.mjs.
 };
 
-test('Les trois sources légales protégées sont identiques octet pour octet', () => {
+test('Les quatre sources légales protégées sont identiques octet pour octet', () => {
   for (const [file, hash] of Object.entries(protectedFiles)) assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex').toUpperCase(), hash, file);
 });
 test('Les thèmes accentués correspondent aux filtres CSS', () => {
@@ -52,10 +54,10 @@ test('Les textes légaux et les articles rendus conservent chaque mot et la ponc
     assert.equal(normalize(built('.article-content').text()), normalize(load(read(`src/contenu-articles/${article.slug}.html`), null, false).text()), article.slug);
   }
 });
-test('Les 64 pages construites (FR + EN) ont leurs liens, images, titres et ancres', () => {
+test('Les 66 pages construites (FR + EN) ont leurs liens, images, titres et ancres', () => {
   const crawl = dir => readdirSync(dir, { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? crawl(join(dir, entry.name)) : [join(dir, entry.name)]);
   const pages = crawl('dist').filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 64);
+  assert.equal(pages.length, 66);
   const failures = [];
   for (const file of pages) {
     const $ = load(read(file));

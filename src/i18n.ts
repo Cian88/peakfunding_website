@@ -77,6 +77,7 @@ export const ui = {
       mentions: 'Mentions légales',
       confidentialite: 'Politique de confidentialité & RGPD',
       cgu: 'Conditions générales d’utilisation',
+      cgv: 'Conditions générales de vente',
       orias:
         'PEAK FUNDING — ORIAS n° 24002546 — Sous supervision de l’ACPR, 4 place de Budapest, CS 92459, 75436 Paris Cedex 09.',
       credit:
@@ -134,6 +135,7 @@ export const ui = {
       mentions: 'Legal notice',
       confidentialite: 'Privacy policy & GDPR',
       cgu: 'Terms of use',
+      cgv: 'Terms of sale',
       orias:
         'PEAK FUNDING — ORIAS no. 24002546 — Supervised by the ACPR, 4 place de Budapest, CS 92459, 75436 Paris Cedex 09.',
       credit:

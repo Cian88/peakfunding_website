@@ -27,7 +27,7 @@ const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPe
       {t.offre.mentions.map((m) => <p>{m}</p>)}
       <ul>{t.offre.points.map((p) => <li>{p}</li>)}</ul>
       {service ? <a href={`${service}/paiement.html`} class="btn-cuivre" data-astro-reload>{t.offre.bouton}</a> : <p class="ouverture">{t.offre.ouverture}</p>}
-      <p class="secondaire">{t.offre.secondaire}</p>
+      <p class="secondaire">{t.offre.secondaire} <a href={L('/conditions-de-vente')} class="cgv">{lang === 'fr' ? 'Conditions générales de vente' : 'Terms of sale (French)'}</a></p>
     </aside>
   </div>
 
@@ -87,7 +87,7 @@ const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPe
   aside{background:#0b0d12;border-top:3px solid #b87b4f;border-radius:8px;padding:30px;color:#edeae4;position:sticky;top:100px}aside .eyebrow{color:#d9a47c}aside h2{color:#edeae4;font-size:24px;font-weight:300;margin-top:22px}
   .prix{font:64px/1.15 var(--font-mono);letter-spacing:-3px;margin:28px 0 8px}.prix small{font:13px var(--font-sans);letter-spacing:0;color:#a6a9b3}
   aside>p{font-size:12px;color:#a6a9b3}aside ul{list-style:none;margin:24px 0;padding:20px 0;border-block:1px solid #2a2f3a;font-size:13px}aside li{padding:6px 0}aside li:before{content:'✓';color:#d9a47c;margin-right:10px}aside .btn-cuivre{width:100%;font-size:14px}
-  .secondaire{margin-top:18px}.ouverture{border-left:2px solid #b87b4f;padding-left:15px}
+  .secondaire{margin-top:18px}.secondaire .cgv{color:#d9a47c;text-decoration:underline;text-underline-offset:3px}.ouverture{border-left:2px solid #b87b4f;padding-left:15px}
   .bloc{border-top:1px solid #e2ded7;padding-top:45px;margin-top:60px}.bloc>h2,.limites h2,.deux-colonnes h2{font-size:30px;font-weight:300;margin:18px 0 0;letter-spacing:-.02em}
   .deux-colonnes{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:10px}
   .liste,.grille-quatre,.guides,.liste-simple{list-style:none;padding:0}.liste li{padding:18px 0;border-bottom:1px solid #e2ded7}.liste h3,.grille-quatre h3,.etapes h3,.guides h3{font-size:17px;font-weight:500;line-height:1.4}

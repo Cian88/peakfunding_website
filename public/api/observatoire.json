@@ -1,8 +1,8 @@
 {
-  "period": "2026-09",
-  "rate": 3.4,
-  "durationMonths": 252,
-  "sourceUrl": "https://lobservatoire.creditlogement.fr/publications/analyse-marche-immobilier-septembre-2026/",
-  "checkedAt": "2026-11-02T14:53:02.411Z",
+  "period": "2026-10",
+  "rate": 3.49,
+  "durationMonths": 253,
+  "sourceUrl": "https://lobservatoire.creditlogement.fr/publications/analyse-marche-immobilier-octobre-2026/",
+  "checkedAt": "2026-11-09T15:20:37.445Z",
   "stale": false
 }

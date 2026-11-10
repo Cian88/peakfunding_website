@@ -25,7 +25,7 @@ test('Le build existe', () => { assert.ok(pages.length > 30, 'lancer `npm run bu
 test('Chaque page publique porte la fiche du cabinet, le site et sa page ; les pages privées rien', () => {
   for (const p of pages) {
     const $ = load(html(p));
-    if (privee(p)) { assert.equal($('script[type="application/ld+json"]').length, 0, p); continue; }
+    if (privee(p) || $('meta[name="robots"]').attr('content')?.includes('noindex')) { assert.equal($('script[type="application/ld+json"]').length, 0, p); continue; }
     const g = graphe(p);
     const orga = g.find(n => n['@id'] === 'https://peakfunding.eu/#organisation');
     assert.ok(orga, `${p} : organisation absente`);

@@ -87,12 +87,7 @@ export default function PriseRendezVous({ lang = 'fr' }: { lang?: Lang }) {
       'Courtier souhaité': f.courtier, 'Message': f.message || '—',
       'Langue du visiteur': lang.toUpperCase(),
     };
-    const sendMail = () => {
-      const L: [string, string][] = [['Prénom', f.prenom], ['Nom', f.nom], ['Email', f.email], ['Téléphone', f.tel], ['Type de projet', f.typeProjet], ['Statut', f.statut], ['Budget / prix du bien', f.budget], ['Apport disponible', f.apport], ['Revenus nets mensuels du foyer', f.revenus], ['Charges de prêt en cours', f.charges], ['Localisation', f.ville], ['Avancement du projet', f.avancement], ['Délai souhaité', f.delai], ['Taux souhaité', f.tauxSouhaite], ['Durée souhaitée', f.dureeSouhaitee], ["Montant d'emprunt souhaité", f.montantSouhaite], ['Courtier souhaité', f.courtier], ['Message', f.message]];
-      const body = L.map((x) => x[0] + ' : ' + (x[1] || '—')).join('\n');
-      const mail = 'mailto:' + (/Maxime/.test(f.courtier || '') ? 'mpidoux@peakfunding.eu' : 'vboura@peakfunding.eu') + '?subject=' + encodeURIComponent('Recueil de besoins — ' + (f.prenom || '') + ' ' + (f.nom || '')) + '&body=' + encodeURIComponent(body);
-      if (actif.current) setMailSecours(mail);
-    };
+    const sendMail = () => { if (actif.current) setMailSecours('retry'); };
     const endpoint = /Maxime/.test(f.courtier || '') ? ENDPOINTS.maxime : ENDPOINTS.valentin;
     try {
       const r = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data), signal:controller.signal });
@@ -173,12 +168,7 @@ export default function PriseRendezVous({ lang = 'fr' }: { lang?: Lang }) {
             <span className="text-[13px] leading-relaxed text-argent">{T.consentement}</span>
           </label>
           {erreur('rgpd')}
-          {mailSecours && <div className="rdv-secours" role="alert">
-            <p>{lang === 'fr' ? 'Le formulaire n’a pas pu être transmis. Réessayez ou envoyez votre demande par e-mail.' : 'The form could not be sent. Try again or send your request by email.'}</p>
-            <a href={mailSecours} className="btn-fantome">{lang === 'fr' ? 'Ouvrir l’e-mail prérempli' : 'Open the pre-filled email'}</a>
-            <p>{lang === 'fr' ? 'L’ouverture de votre messagerie ne confirme pas l’envoi. Envoyez l’e-mail avant de continuer.' : 'Opening your email app does not confirm delivery. Send the email before continuing.'}</p>
-            <button type="button" className="btn-fantome" onClick={() => { setMailSecours(''); setStep(3); }}>{lang === 'fr' ? 'J’ai envoyé l’e-mail — choisir un créneau' : 'I sent the email — choose a time'}</button>
-          </div>}
+          {mailSecours && <div className="rdv-secours" role="alert"><p>{lang === 'fr' ? 'Le formulaire n’a pas pu être transmis. Vos informations sont conservées à l’écran : veuillez réessayer avec le bouton ci-dessous.' : 'The form could not be sent. Your entries are still on screen: please try again using the button below.'}</p></div>}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <button disabled={envoi} type="button" className="text-[14px] text-argent hover:text-etoile" onClick={() => { setErreurs({}); setStep(1); }}>{T.retour1}</button>
             <button disabled={envoi} type="submit" className="btn-cuivre">{envoi ? (lang === 'fr' ? 'Envoi en cours…' : 'Sending…') : T.envoyer}</button>

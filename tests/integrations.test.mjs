@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { load } from 'cheerio';
 
 const read = file => readFileSync(file, 'utf8');
 const built = route => load(read(`dist/${route ? route + '/' : ''}index.html`));
 
-test('Sept visuels V1 exacts, utilisés dans la liste ET dans chaque article', () => {
+test('Sept visuels V1 exacts, utilisés dans la liste ET dans chaque article', {skip: !existsSync('_source/site-actuel/image-slots-state.json') && 'Archive V1 locale non versionnée absente ; liens et images contrôlés par site.test.mjs'}, () => {
   const slots = JSON.parse(read('_source/site-actuel/image-slots-state.json'));
   const listing = built('actualites');
   // Quinze articles : les sept visuels V1 (avec emplacement d'origine) + les illustrations propres des
@@ -33,8 +33,9 @@ test('Sept visuels V1 exacts, utilisés dans la liste ET dans chaque article', (
 });
 
 test('Assurance : même simulateur V1 ouvert dans un nouvel onglet, sans fenêtre intégrée', () => {
-  const v1 = load(read('_source/site-actuel/expertise-insure.html'));
-  const url = v1('iframe[src*="magnolia.fr"]').attr('src');
+  const archive = '_source/site-actuel/expertise-insure.html';
+  const url = 'https://www.magnolia.fr/comparer-assurance-pret-immobilier?utm_source=33656&whiteLabel=true&platform=direct';
+  if (existsSync(archive)) assert.equal(load(read(archive))('iframe[src*="magnolia.fr"]').attr('src'), url);
   assert.ok(url);
   assert.equal(new URL(url).searchParams.get('utm_source'), '33656');
   for (const route of ['', 'expertises/insure', 'actualites/lemoine', 'actualites/delegation-assurance', 'actualites/refus-delegation-banque']) {
@@ -65,13 +66,16 @@ test('Annotations : cartes uniformes, méthode illustrée, héros et simulateur 
 });
 
 test('Espaces : widget client et portail mandataire conformes à la V1', () => {
-  const v1Client = load(read('_source/site-actuel/espace-client.html'));
+  const archiveClient = '_source/site-actuel/espace-client.html';
   const client = built('espace-client');
-  assert.equal(client('[data-actelo-script]').attr('src'), v1Client('script[src*="actelo.app"]').attr('src'));
+  const clientURL = 'https://peakfunding.actelo.app/espace-client.js';
+  assert.equal(client('[data-actelo-script]').attr('src'), clientURL);
+  if (existsSync(archiveClient)) assert.equal(load(read(archiveClient))('script[src*="actelo.app"]').attr('src'), clientURL);
   assert.equal(client('#actelo-espace-client').length, 1);
   assert.equal(client('body').attr('data-page-navigation'), 'document');
-  const v1Mandataire = load(read('_source/site-actuel/espace-mandataire.html'));
-  const portal = v1Mandataire('a[href*="actelo.fr"]').attr('href');
+  const archiveMandataire = '_source/site-actuel/espace-mandataire.html';
+  const portal = 'https://peakfunding.actelo.fr/';
+  if (existsSync(archiveMandataire)) assert.equal(load(read(archiveMandataire))('a[href*="actelo.fr"]').attr('href'), portal);
   assert.equal(built('espace-mandataire')('a[href*="actelo.fr"]').attr('href'), portal);
   const home = built('');
   assert.equal(home('[data-espaces] a[href="/espace-mandataire"]').length, 1);
@@ -79,19 +83,13 @@ test('Espaces : widget client et portail mandataire conformes à la V1', () => {
   home('a[href="/espace-client"]').each((_, node) => assert.notEqual(home(node).attr('data-astro-reload'), undefined));
 });
 
-test('Formspree et agendas Proton restent présents dans le code ET le bundle livré', () => {
-  const source = read('src/components/react/PriseRendezVous.tsx');
+test('RDV : formulaire et agendas directs retirés du bundle livré, redirection de compatibilité présente', () => {
+  const base = read('src/layouts/Base.astro');
   const scripts = readdirSync('dist/_astro').filter(f => f.endsWith('.js')).map(f => read(`dist/_astro/${f}`)).join('\n');
-  for (const endpoint of ['https://formspree.io/f/mykrggwk', 'https://formspree.io/f/xkjnbpod']) {
-    assert.ok(source.includes(endpoint));
-    assert.ok(scripts.includes(endpoint));
-    assert.ok(read('_source/site-actuel/index.html').includes(endpoint));
-  }
-  assert.match(source, /fetch\(endpoint, \{ method: 'POST'/);
-  assert.match(source, /body: JSON\.stringify\(data\)/);
-  assert.match(source, /if \(!r\.ok\) sendMail\(\)/);
-  assert.ok(scripts.includes('https://calendar.proton.me/bookings'));
-  assert.match(source, /setStep\(3\)/);
+  assert.doesNotMatch(base, /import RendezVousModal|<RendezVousModal/);
+  assert.match(base, /<AncienRdvRedirect/);
+  assert.doesNotMatch(scripts, /formspree\.io\/f\/|calendar\.proton\.me\/bookings/);
+  assert.ok(scripts.includes('/peak-exchange/'));
 });
 
 test('Homogénéité : une image de travail dans Mission, zones partenaires et voile mobile', () => {
@@ -111,7 +109,7 @@ test('Accueil : ouverture et fin sombres, méthode sombre entre les sections cla
   assert.equal(sections.filter('.clair').length, 3);
   assert.deepEqual(sections.filter('.clair').toArray().map(node => home(node).attr('id')), ['expertises', 'simulateur', 'equipe']);
   const tones = sections.toArray().map(node => home(node).hasClass('clair'));
-  assert.deepEqual(tones, [false, false, false, true, true, false, true, false, false, false]);
+  assert.deepEqual(tones, [false, false, false, false, true, true, false, true, false, false, false]);
   assert.equal(tones.slice(1).filter((tone, i) => tone !== tones[i]).length, 4);
   assert.equal(home('footer.sombre').length, 1);
   assert.equal(home('#simulateur .surface-claire').length, 1);

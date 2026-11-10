@@ -7,7 +7,7 @@ const L = (p: string) => localiser(p, lang);
 const colonnes = [
   { titre: tr.footer.col_expertises, liens: [[L('/expertises/estate'), 'PEAK ESTATE'], [L('/expertises/pro'), 'PEAK PRO'], [L('/expertises/pim'), 'PEAK PIM'], [L('/expertises/insure'), 'PEAK INSURE']] },
   { titre: tr.footer.col_cabinet, liens: [[L('/#methode'), tr.footer.methode], [L('/#equipe'), tr.footer.equipe], [L('/#partenaires'), tr.footer.partenaires], [L('/actualites'), tr.footer.actualites]] },
-  { titre: tr.footer.col_espaces, liens: [[L('/espace-client'), tr.footer.client], [L('/espace-mandataire'), tr.footer.mandataire], [L('/#rdv'), tr.footer.prendre_rdv]] },
+  { titre: tr.footer.col_espaces, liens: [[L('/espace-client'), tr.footer.client], [L('/espace-mandataire'), tr.footer.mandataire], [L('/peak-exchange/'), 'RDV PEAK EXCHANGE']] },
   { titre: tr.footer.col_reglementaire, liens: [[L('/mentions-legales'), tr.footer.mentions], [L('/politique-de-confidentialite'), tr.footer.confidentialite], [L('/cgu'), tr.footer.cgu]] },
 ];
 const annee = new Date().getFullYear();
@@ -20,7 +20,7 @@ const annee = new Date().getFullYear();
       <div class="col-span-2 max-w-md md:col-span-4 lg:col-span-1 lg:max-w-xs">
         <img src="/img/logo-peak-funding-ivoire.svg" alt="PEAK FUNDING" width="150" height="27" class="h-[26px] w-auto" />
         <p class="mt-4 text-[14px] leading-relaxed text-argent">{tr.footer.accroche}</p>
-        <a href="mailto:contact@peakfunding.eu" class="mt-5 inline-block text-[14px] text-etoile underline decoration-filet underline-offset-4 hover:decoration-cuivre-clair">contact@peakfunding.eu</a>
+        <a href={L('/contact/')} class="mt-5 inline-block text-[14px] text-etoile underline decoration-filet underline-offset-4 hover:decoration-cuivre-clair">{lang === 'fr' ? 'Contact administratif' : 'Administrative contact'}</a>
       </div>
       {colonnes.map((c) => (
         <div>

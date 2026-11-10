@@ -1,5 +1,6 @@
 ---
 import Base from './Base.astro';
+import { protectPublicEmails } from '../lib/public-contact.mjs';
 import Sommaire from '../components/Sommaire.astro';
 import { documentAvecSommaire } from '../lib/document.mjs';
 import { langCourante, localiser, t } from '../i18n';
@@ -26,7 +27,7 @@ const L = (p: string) => localiser(p, lang);
     </div>
     <div class="lecture-grille mt-10">
       <Sommaire headings={headings} />
-      <div class="prose-pf legal-content min-w-0 [&>h2:first-child]:mt-0" set:html={html} />
+      <div class="prose-pf legal-content min-w-0 [&>h2:first-child]:mt-0" set:html={protectPublicEmails(html)} />
     </div>
   </article>
 </Base>

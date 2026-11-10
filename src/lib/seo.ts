@@ -14,7 +14,6 @@ const ID_SITE = `${SITE}/#site`;
 
 export const cabinet = {
   nom: 'PEAK FUNDING',
-  email: 'contact@peakfunding.eu',
   orias: '24002546',
   siren: '987 461 787',
   ape: '6619B',
@@ -28,8 +27,8 @@ export const cabinet = {
 };
 
 const descriptions: Record<Lang, string> = {
-  fr: 'Cabinet de courtage indépendant en financement (IOBSP) et en assurance emprunteur, immatriculé à l’ORIAS sous le n° 24002546 et supervisé par l’ACPR. Crédit immobilier (résidence principale, investissement locatif, SCI, non-résidents), financement professionnel (reprise d’entreprise, LBO, trésorerie, crédit-bail), lignes pour marchands de biens et promoteurs, délégation d’assurance emprunteur (loi Lemoine). Plus de trente banques partenaires, intervention dans toute la France, premier échange gratuit et sans engagement.',
-  en: 'Independent financing broker (IOBSP) and borrower-insurance intermediary registered with ORIAS under no. 24002546 and supervised by the ACPR. Mortgages (primary residence, buy-to-let, SCI, non-residents), business financing (buyouts, LBO, working capital, leasing), credit lines for property traders and developers, borrower-insurance delegation (Lemoine law). More than thirty partner banks, coverage across France, free first consultation with no obligation.',
+  fr: 'Cabinet de courtage indépendant en financement (IOBSP) et en assurance emprunteur, immatriculé à l’ORIAS sous le n° 24002546 et supervisé par l’ACPR. Crédit immobilier (résidence principale, investissement locatif, SCI, non-résidents), financement professionnel (reprise d’entreprise, LBO, trésorerie, crédit-bail), lignes pour marchands de biens et promoteurs, délégation d’assurance emprunteur (loi Lemoine). Plus de trente banques partenaires, intervention dans toute la France. PEAK EXCHANGE : échange d’analyse et note de conseil personnalisée à 299 € TTC.',
+  en: 'Independent financing broker (IOBSP) and borrower-insurance intermediary registered with ORIAS under no. 24002546 and supervised by the ACPR. Mortgages (primary residence, buy-to-let, SCI, non-residents), business financing (buyouts, LBO, working capital, leasing), credit lines for property traders and developers, borrower-insurance delegation (Lemoine law). More than thirty partner banks, coverage across France. PEAK EXCHANGE: a personal consultation and advice note for €299 incl. VAT.',
 };
 
 const domaines: Record<Lang, string[]> = {
@@ -76,7 +75,6 @@ export function organisation(lang: Lang) {
     logo: { '@type': 'ImageObject', url: cabinet.logo },
     image: cabinet.image,
     description: descriptions[lang],
-    email: cabinet.email,
     sameAs: cabinet.profils,
     address: { '@type': 'PostalAddress', streetAddress: cabinet.adresse.rue, postalCode: cabinet.adresse.codePostal, addressLocality: cabinet.adresse.ville, addressCountry: cabinet.adresse.pays },
     areaServed: { '@type': 'Country', name: 'France' },
@@ -97,7 +95,7 @@ export function organisation(lang: Lang) {
       name: lang === 'fr' ? 'Expertises PEAK FUNDING' : 'PEAK FUNDING services',
       itemListElement: catalogue[lang].map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': `${url(`/expertises/${s.slug}`, lang)}#service`, name: s.nom, description: s.description, url: url(`/expertises/${s.slug}`, lang) } })),
     },
-    contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: cabinet.email, availableLanguage: ['fr', 'en'], areaServed: 'FR' },
+    contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', url: 'https://peakfunding.eu/contact/', availableLanguage: ['fr', 'en'], areaServed: 'FR' },
   };
 }
 

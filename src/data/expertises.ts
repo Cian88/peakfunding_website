@@ -21,7 +21,7 @@ export const expertises: Expertise[] = [
     nom: 'PEAK ESTATE',
     titre: 'Financer votre immobilier, du premier achat au patrimoine.',
     intro: 'Résidence principale, investissement locatif, SCI, démembrement : nous montons le financement adapté à votre situation et à vos objectifs — et non un crédit standardisé.',
-    ctaPrincipal: 'Réserver un échange de 30 minutes',
+    ctaPrincipal: 'RDV PEAK EXCHANGE · 299 € TTC',
     ctaSecondaire: { libelle: 'Estimer ma capacité', href: '/#simulateur' },
     pourQui: {
       titre: 'Quel que soit votre profil d’emprunteur.',
@@ -44,20 +44,20 @@ export const expertises: Expertise[] = [
     comment: {
       titre: 'De votre appel au déblocage des fonds.',
       etapes: [
-        { titre: 'Audit de votre situation', texte: 'Un premier échange pour comprendre votre situation et votre projet. Gratuit, sans engagement.' },
+        { titre: 'Audit de votre situation', texte: 'PEAK EXCHANGE : analyse de votre situation et de votre projet, argumentation bancaire et note de conseil personnalisée. 299 € TTC.' },
         { titre: 'Structuration du dossier', texte: 'Choix du montage, calibrage de l’endettement, préparation d’un dossier solide pour les banques.' },
         { titre: 'Négociation bancaire', texte: 'Présentation aux banques les mieux placées et négociation des conditions, taux et assurance compris.' },
         { titre: 'Suivi jusqu’au déblocage', texte: 'Accompagnement jusqu’à la signature chez le notaire et au déblocage des fonds, puis disponibilité pour les opérations suivantes.' },
       ],
     },
-    final: { titre: 'Un projet immobilier en tête ?', texte: '30 minutes pour en parler et savoir où vous en êtes, sans engagement.', bouton: 'Réserver un échange de 30 minutes' },
+    final: { titre: 'Un projet immobilier en tête ?', texte: 'Analysez votre dossier et préparez vos arguments avec PEAK EXCHANGE. Échange et note de conseil : 299 € TTC.', bouton: 'RDV PEAK EXCHANGE · 299 € TTC' },
   },
   {
     slug: 'pro',
     nom: 'PEAK PRO',
     titre: 'Financer l’entreprise, sa reprise et son développement.',
     intro: 'Création, reprise (LBO), trésorerie, crédit-bail : nous structurons le financement professionnel qui tient la route sur la durée — dette, fonds propres et fiscalité pensés ensemble.',
-    ctaPrincipal: 'Réserver un échange de 30 minutes',
+    ctaPrincipal: 'RDV PEAK EXCHANGE · 299 € TTC',
     ctaSecondaire: { libelle: 'Voir les autres pôles', href: '/#expertises' },
     pourQui: {
       titre: 'Dirigeants, repreneurs et entreprises en croissance.',
@@ -80,20 +80,20 @@ export const expertises: Expertise[] = [
     comment: {
       titre: 'Du premier échange au décaissement.',
       etapes: [
-        { titre: 'Analyse du projet', texte: 'Compréhension de l’opération, des comptes et des objectifs. Premier échange gratuit et sans engagement.' },
+        { titre: 'Analyse du projet', texte: 'PEAK EXCHANGE : analyse de l’opération, des comptes et des objectifs, avec argumentation bancaire et note de conseil personnalisée. 299 € TTC.' },
         { titre: 'Structuration financière', texte: 'Montage juridique et financier, plan de financement et prévisionnel présentables aux établissements.' },
         { titre: 'Négociation bancaire', texte: 'Mise en concurrence des banques d’entreprise et des partenaires, négociation du taux, des garanties et des covenants.' },
         { titre: 'Closing & suivi', texte: 'Accompagnement jusqu’au décaissement, puis disponibilité pour les opérations et besoins de financement suivants.' },
       ],
     },
-    final: { titre: 'Une opération à financer ?', texte: '30 minutes pour en parler et cadrer la faisabilité, sans engagement.', bouton: 'Réserver un échange de 30 minutes' },
+    final: { titre: 'Une opération à financer ?', texte: 'Analysez votre opération et préparez vos arguments avec PEAK EXCHANGE. Échange et note de conseil : 299 € TTC.', bouton: 'RDV PEAK EXCHANGE · 299 € TTC' },
   },
   {
     slug: 'pim',
     nom: 'PEAK PIM',
     titre: 'Des lignes de financement pour des opérations qui tournent vite.',
     intro: 'Marchands de biens, promoteurs, foncières : nous mettons en place les crédits marchand de biens, le financement de programmes et les structures holding / SPV adaptés à vos cycles d’opération.',
-    ctaPrincipal: 'Réserver un échange de 30 minutes',
+    ctaPrincipal: 'RDV PEAK EXCHANGE · 299 € TTC',
     ctaSecondaire: { libelle: 'Voir les autres pôles', href: '/#expertises' },
     pourQui: {
       titre: 'Des acteurs qui financent des opérations, pas une résidence.',
@@ -122,7 +122,7 @@ export const expertises: Expertise[] = [
         { titre: 'Suivi & renouvellement', texte: 'Accompagnement jusqu’au déblocage, puis reconduction des lignes pour les opérations suivantes.' },
       ],
     },
-    final: { titre: 'Une opération à structurer ?', texte: '30 minutes pour cadrer le financement de votre prochaine opération.', bouton: 'Réserver un échange de 30 minutes' },
+    final: { titre: 'Une opération à structurer ?', texte: 'PEAK EXCHANGE : analyse et argumentation pour votre prochaine opération. Échange et note de conseil : 299 € TTC.', bouton: 'RDV PEAK EXCHANGE · 299 € TTC' },
   },
   {
     slug: 'insure',

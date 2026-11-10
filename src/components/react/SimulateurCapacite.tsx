@@ -222,7 +222,7 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
         </dl>
         <p className="simulateur-arrondi">{U.arrondi}</p>
         <p className="simulateur-mensualite"><strong>{fmt(r.mensuMax)}{S.par_mois}</strong><span>{fmt(r.mensuCredit)} {S.credit_mois} + {fmt(r.assuranceMois)} {S.assurance_mois} · {duree} {S.ans}</span></p>
-        <a href="#rdv" className="btn-cuivre mt-2 h-11 justify-self-start px-6 text-[14px]">{S.cta}</a>
+        <a href={lang === 'en' ? '/en/peak-exchange/' : '/peak-exchange/'} className="btn-cuivre mt-2 h-11 justify-self-start px-6 text-[14px]">{S.cta}</a>
         <details className="simulateur-details">
           <summary>{U.details} <span aria-hidden="true">+</span></summary>
           <dl className="simulateur-decomposition">

@@ -6,6 +6,7 @@ import { resolve, relative, join } from 'node:path';
 import { load } from 'cheerio';
 import { cleTheme, dateISO, trierArticles } from '../src/lib/editorial.mjs';
 import { documentAvecSommaire } from '../src/lib/document.mjs';
+import { protectPublicEmails } from '../src/lib/public-contact.mjs';
 
 const read = file => readFileSync(file, 'utf8');
 const articles = JSON.parse(read('src/data/articles.json'));
@@ -17,8 +18,8 @@ const protectedFiles = {
   // Les interfaces évoluent ; calculs et charge utile sont protégés dans ergonomie.test.mjs.
 };
 
-test('Les trois sources légales protégées sont identiques octet pour octet', () => {
-  for (const [file, hash] of Object.entries(protectedFiles)) assert.equal(createHash('sha256').update(readFileSync(file)).digest('hex').toUpperCase(), hash, file);
+test('Les trois sources légales protégées restent identiques hors fins de ligne Windows', () => {
+  for (const [file, hash] of Object.entries(protectedFiles)) assert.equal(createHash('sha256').update(read(file).replace(/\r\n/g, '\n')).digest('hex').toUpperCase(), hash, file);
 });
 test('Les thèmes accentués correspondent aux filtres CSS', () => {
   assert.equal(cleTheme('RÉSIDENCE PRINCIPALE'), 'residence-principale');
@@ -45,17 +46,17 @@ test('Les textes légaux et les articles rendus conservent chaque mot et la ponc
   for (const file of Object.keys(protectedFiles).filter(f => f.endsWith('.html'))) {
     const slug = file.split('/').pop().replace('.html', '');
     const built = load(read(`dist/${slug}/index.html`));
-    assert.equal(normalize(built('.legal-content').text()), normalize(load(read(file), null, false).text()), slug);
+    assert.equal(normalize(built('.legal-content').text()), normalize(load(protectPublicEmails(read(file)), null, false).text()), slug);
   }
   for (const article of articles) {
     const built = load(read(`dist/actualites/${article.slug}/index.html`));
     assert.equal(normalize(built('.article-content').text()), normalize(load(read(`src/contenu-articles/${article.slug}.html`), null, false).text()), article.slug);
   }
 });
-test('Les 58 pages construites (FR + EN) ont leurs liens, images, titres et ancres', () => {
+test('Les 64 pages construites (FR + EN) ont leurs liens, images, titres et ancres', () => {
   const crawl = dir => readdirSync(dir, { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? crawl(join(dir, entry.name)) : [join(dir, entry.name)]);
   const pages = crawl('dist').filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 58);
+  assert.equal(pages.length, 64);
   const failures = [];
   for (const file of pages) {
     const $ = load(read(file));

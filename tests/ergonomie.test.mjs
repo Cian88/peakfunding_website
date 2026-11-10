@@ -32,14 +32,14 @@ test('Envoi : attente visible, double clic ignoré, puis accès aux agendas apr�
   assert.equal(h.etat.timerNettoye, true);
 });
 
-test('Envoi : erreurs HTTP/réseau gardent le formulaire et proposent un e-mail explicite', async () => {
+test('Envoi : erreurs HTTP/réseau gardent le formulaire et permettent de réessayer sans exposer un e-mail', async () => {
   for (const fetch of [async () => ({ok:false}), async () => { throw Error('réseau indisponible'); }]) {
     const h = transmissionTest(fetch, {courtier:'Maxime Pidoux'});
     await h.submit();
     assert.equal(h.etat.step, 2);
     assert.equal(h.etat.envoi, false);
-    assert.match(h.etat.mail, /^mailto:mpidoux@peakfunding.eu\?/);
-    assert.match(decodeURIComponent(h.etat.mail), /Test Audit/);
+    assert.equal(h.etat.mail, 'retry');
+    assert.doesNotMatch(rdv, /[\w.+-]+@peakfunding\.eu|href=\{mailSecours\}/);
     assert.equal(h.etat.appels[0].url, 'https://formspree.io/f/xkjnbpod');
     await h.submit();
     assert.equal(h.etat.appels.length, 2, 'nouvel essai autorisé après échec');
@@ -56,7 +56,7 @@ test('Envoi : délai dépassé interrompu, bouton réactivé et repli disponible
   assert.equal(h.etat.appels[0].options.signal.aborted, true);
   assert.equal(h.etat.step, 2);
   assert.equal(h.etat.envoi, false);
-  assert.match(h.etat.mail, /^mailto:vboura@peakfunding.eu\?/);
+  assert.equal(h.etat.mail, 'retry');
 });
 
 test('Envoi : aucune requête si validation refusée ; aucun changement après démontage', async () => {
@@ -160,9 +160,9 @@ test('Simulateur rendu FR/EN : hypothèses visibles, contrôles avancés conserv
   }
 });
 
-test('Les composants des avis clients sont inchangés octet pour octet', () => {
+test('Les animations des avis restent identiques, seule la destination RDV change', () => {
   for (const [file, expected] of [
     ['src/components/react/MurAvis.tsx', '5fb478ad17a20fe771f3f8dea9b9d2903dc836e48e8248d1dcb86f50628dda88'],
     ['src/components/AvisClients.astro', 'afaf05a864d8823ea9b7549efe7ecfd7436b26a05a81c50b6502f8e2478e3839'],
-  ]) assert.equal(hash(readFileSync(file)),expected,file);
+  ]) assert.equal(hash(read(file).replaceAll('/peak-exchange/', '/#rdv')),expected,file);
 });

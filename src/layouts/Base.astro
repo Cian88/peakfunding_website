@@ -5,7 +5,7 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import RendezVousModal from '../components/react/RendezVousModal';
+import AncienRdvRedirect from '../components/AncienRdvRedirect.astro';
 import { langCourante, urlAutreLangue, t } from '../i18n';
 import { organisation, siteWeb, pageWeb, serialiser } from '../lib/seo';
 
@@ -68,8 +68,14 @@ const graphe = noindex ? [] : [organisation(lang), siteWeb(lang), pageWeb({ url:
     <button type="button" data-menu-voile class="menu-voile" aria-label={tr.modale.fermer} tabindex="-1"></button>
     <main id="contenu" tabindex="-1"><slot /></main>
     <Footer />
-    <RendezVousModal client:load transition:persist lang={lang} />
+    <AncienRdvRedirect />
     <script>
+      document.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('[data-protected-email]') : null;
+        if (!target) return;
+        event.preventDefault();
+        window.location.assign('mailto:' + atob(target.dataset.protectedEmail!));
+      });
       import { demarrerMouvement } from '../scripts/motion';
       const initialiser = () => { demarrerMouvement(); };
       document.addEventListener('astro:page-load', initialiser);

@@ -95,6 +95,9 @@ jobs:
         run: npm ci
 
       - name: Builder le site
+        env:
+          # À renseigner seulement après confirmation Stancer et recette du serveur.
+          PUBLIC_PEAK_EXCHANGE_URL: ${{ vars.PUBLIC_PEAK_EXCHANGE_URL }}
         run: npm run build
 
       - name: Configurer GitHub Pages

@@ -54,13 +54,13 @@ export function expertiseUi(lang: Lang) {
 const reperesFr = [
   { titre: 'Expertises complémentaires', texte: 'Immobilier, entreprise et assurance emprunteur.' },
   { titre: 'Un interlocuteur dédié', texte: 'Du premier échange au déblocage des fonds.' },
-  { titre: 'Premier échange sans engagement', texte: 'Pour faire le point sur votre projet.' },
+  { titre: 'Analyse avec PEAK EXCHANGE', texte: 'Un échange et une note de conseil, 299 € TTC.' },
   { titre: 'Partout en France', texte: 'Un accompagnement possible à distance.' },
 ];
 const reperesEn = [
   { titre: 'Complementary expertise', texte: 'Property, business and borrower insurance.' },
   { titre: 'A dedicated contact', texte: 'From the first conversation to the release of funds.' },
-  { titre: 'An initial conversation, no commitment', texte: 'To take stock of your project.' },
+  { titre: 'Analysis with PEAK EXCHANGE', texte: 'A consultation and advice note, €299 incl. VAT.' },
   { titre: 'Throughout France', texte: 'Support available remotely.' },
 ];
 
@@ -120,7 +120,7 @@ const uiFr = {
   hero_texte: 'Investissement locatif, SCI, reprise d’entreprise, opérations de marchands de biens : PEAK FUNDING structure et négocie votre financement, partout en France.',
   hero_cta1: 'Parlons de votre projet',
   hero_cta2: 'Estimer ma capacité',
-  hero_note: 'Un premier échange de 30 minutes, sans engagement.',
+  hero_note: 'PEAK EXCHANGE · 299 € TTC · échange et note de conseil personnalisée.',
   hero_assurance: 'Comparer mon assurance emprunteur ↗',
   hero_nouvel_onglet: ' (nouvel onglet)',
   hero_orias: 'ORIAS n° 24002546 · Supervision ACPR',
@@ -144,7 +144,7 @@ const uiFr = {
   equipe_eyebrow: 'L’équipe',
   equipe_titre: 'Une équipe, pas une plateforme.',
   equipe_portrait: 'Portrait de',
-  equipe_rdv: 'Prendre rendez-vous →',
+  equipe_rdv: 'RDV PEAK EXCHANGE →',
   part_eyebrow: 'Nos partenaires',
   part_titre: 'Un écosystème de confiance, autour de votre projet.',
   part_decouvrir: 'Découvrir',
@@ -154,8 +154,8 @@ const uiFr = {
   faq_cta: 'Poser ma question ↗',
   bandeau_eyebrow: 'Prendre rendez-vous',
   bandeau_titre: 'Parlons de votre projet.',
-  bandeau_texte: '30 minutes pour faire le point, sans engagement. Vous repartez avec un avis clair sur votre financement, même si vous ne travaillez pas avec nous.',
-  bandeau_cta1: 'Planifier un rendez-vous',
+  bandeau_texte: 'PEAK EXCHANGE : un échange pour analyser les points forts et faibles de votre dossier, construire vos arguments et comprendre le contexte bancaire. Une note de conseil personnalisée est incluse. 299 € TTC.',
+  bandeau_cta1: 'Réserver PEAK EXCHANGE',
   bandeau_cta2: 'Estimer ma capacité',
 };
 
@@ -165,7 +165,7 @@ const uiEn: typeof uiFr = {
   hero_texte: 'Buy-to-let investments, French property companies (SCI), business acquisitions and property trading projects: PEAK FUNDING structures and negotiates your financing throughout France.',
   hero_cta1: 'Let’s discuss your project',
   hero_cta2: 'Estimate my capacity',
-  hero_note: 'A first 30-minute conversation, with no commitment.',
+  hero_note: 'PEAK EXCHANGE · €299 incl. VAT · consultation and personalised advice note.',
   hero_assurance: 'Compare my borrower insurance ↗',
   hero_nouvel_onglet: ' (new tab)',
   hero_orias: 'ORIAS no. 24002546 · Supervised by the ACPR',
@@ -189,7 +189,7 @@ const uiEn: typeof uiFr = {
   equipe_eyebrow: 'The team',
   equipe_titre: 'A team, not a platform.',
   equipe_portrait: 'Portrait of',
-  equipe_rdv: 'Book a meeting →',
+  equipe_rdv: 'Book PEAK EXCHANGE →',
   part_eyebrow: 'Our partners',
   part_titre: 'A trusted ecosystem around your project.',
   part_decouvrir: 'Discover',
@@ -199,8 +199,8 @@ const uiEn: typeof uiFr = {
   faq_cta: 'Ask my question ↗',
   bandeau_eyebrow: 'Book a meeting',
   bandeau_titre: 'Let’s discuss your project.',
-  bandeau_texte: '30 minutes to take stock, with no commitment. You leave with a clear view of your financing, even if you don’t work with us.',
-  bandeau_cta1: 'Schedule a meeting',
+  bandeau_texte: 'PEAK EXCHANGE: a consultation to assess your strengths and weaknesses, prepare your arguments and understand the banking context. Includes a personalised advice note. €299 incl. VAT.',
+  bandeau_cta1: 'Book PEAK EXCHANGE',
   bandeau_cta2: 'Estimate my capacity',
 };
 

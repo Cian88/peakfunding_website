@@ -44,7 +44,7 @@ const actualitesActif = Astro.url.pathname.replace(/^\/en/, '').startsWith('/act
           <p class="mt-3 border-t border-filet px-3 pt-3 pb-1 text-[11px] text-argent">{tr.espaces.pied}</p>
         </nav>
       </details>
-      <a href={L('/#rdv')} class="btn-cuivre hidden h-10 gap-3 px-5 text-[13px] sm:inline-flex">{tr.cta_entete} <span aria-hidden="true">↗</span></a>
+      <a href={L('/peak-exchange/')} class="btn-cuivre hidden h-10 gap-3 px-5 text-[13px] sm:inline-flex">{lang === 'fr' ? 'RDV PEAK EXCHANGE' : 'Book PEAK EXCHANGE'} <span aria-hidden="true">↗</span></a>
       <a href={urlAutre} data-astro-reload hreflang={autre} class="bascule-langue flex h-10 items-center gap-2 rounded-pill border border-etoile/20 px-3 text-[12px] text-etoile/85 hover:text-etoile" aria-label={`${tr.choisir_langue} — ${drapeaux[autre].libelle}`} title={drapeaux[autre].libelle}>
         <Drapeau lang={autre} class="h-[15px] w-auto rounded-[2px]" />
         <span class="font-mono tracking-wide">{drapeaux[autre].code}</span>
@@ -58,7 +58,7 @@ const actualitesActif = Astro.url.pathname.replace(/^\/en/, '').startsWith('/act
             {liens.map(l => <li><a href={l.href} class="block rounded-donnee px-4 py-3 text-[16px] hover:bg-graphite">{l.libelle}</a></li>)}
             <li class="mt-2 border-t border-filet pt-2"><a href={L('/espace-client')} data-astro-reload class="block rounded-donnee px-4 py-3 text-[15px] hover:bg-graphite">{tr.espaces.client}</a></li>
             <li><a href={L('/espace-mandataire')} class="block rounded-donnee px-4 py-3 text-[15px] hover:bg-graphite">{tr.espaces.mandataire}</a></li>
-            <li><a href={L('/#rdv')} class="btn-cuivre mt-2 w-full">{tr.cta_entete} ↗</a></li>
+            <li><a href={L('/peak-exchange/')} class="btn-cuivre mt-2 w-full">{lang === 'fr' ? 'RDV PEAK EXCHANGE' : 'Book PEAK EXCHANGE'} ↗</a></li>
           </ul>
         </nav>
       </details>

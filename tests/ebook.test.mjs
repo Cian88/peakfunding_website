@@ -12,14 +12,14 @@ test('Livre : titre, édition, prix, couverture et chapitres localisés',()=>{
   assert.match($('main').text(),/24[,.]90/);assert.match($('main').text(),new RegExp(pages+' pages|'+pages+'pages'));
   assert.equal($('.book-stage img').attr('src'),`/img/ebook/couverture-${lang}.webp`);
   assert.equal($('[data-ebook-buy]').length,0,'vente non activée');assert.ok($('[data-ebook-buy-disabled]').length>0);
-  const graph=JSON.parse($('script[type="application/ld+json"]').html())['@graph'];const book=graph.find(n=>n['@type']==='Book');assert.equal(book.inLanguage,lang);assert.equal(book.numberOfPages,pages);assert.equal(book.offers.price,'24.90');
+  const graph=JSON.parse($('script[type="application/ld+json"]').html())['@graph'];const book=graph.find(n=>n['@type']==='Book');assert.equal(book.inLanguage,lang);assert.equal(book.numberOfPages,pages);assert.equal(book.offers.price,'24.90');assert.equal(book.offers.seller['@id'],'https://peakfunding.eu/#organisation');assert.match($('main').text(),/PEAK FUNDING/);assert.match($('main').text(),/Stancer/);
   const home=load(read(`dist/${prefix}index.html`));assert.ok(home(`a[href="/${prefix}livre/"]`).length>=4);assert.equal(home('#livre .teaser-cover img').length,1);
  }
 });
-test('Stripe : domaine officiel, langue et livraison protégée requis avant activation',()=>{
- const env={PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_STRIPE_LINK_FR:'https://buy.stripe.com/test_fr',PUBLIC_EBOOK_STRIPE_LINK_EN:'https://buy.stripe.com/test_en',PUBLIC_EBOOK_DELIVERY_URL:'https://livres.example.test/'};
- assert.equal(ebookCheckoutURL(env,'fr'),env.PUBLIC_EBOOK_STRIPE_LINK_FR);assert.equal(ebookCheckoutURL(env,'en'),env.PUBLIC_EBOOK_STRIPE_LINK_EN);
- for(const patch of [{PUBLIC_EBOOK_SALES_ENABLED:'false'},{PUBLIC_EBOOK_DELIVERY_URL:''},{PUBLIC_EBOOK_DELIVERY_URL:'http://example.test'},{PUBLIC_EBOOK_STRIPE_LINK_FR:'https://buy.stripe.com.evil.test/pay'},{PUBLIC_EBOOK_STRIPE_LINK_FR:'javascript:alert(1)'},{PUBLIC_EBOOK_STRIPE_LINK_FR:'https://user:pass@buy.stripe.com/pay'}])assert.equal(ebookCheckoutURL({...env,...patch},'fr'),null);
+test('Stancer : activation explicite et URL du service protégée requises',()=>{
+ const env={PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_SERVICE_URL:'https://livres.example.test'};
+ assert.equal(ebookCheckoutURL(env,'fr'),'https://livres.example.test/ebook-paiement.html?edition=fr');assert.equal(ebookCheckoutURL(env,'en'),'https://livres.example.test/ebook-payment.html?edition=en');
+ for(const patch of [{PUBLIC_EBOOK_SALES_ENABLED:'false'},{PUBLIC_EBOOK_SERVICE_URL:''},{PUBLIC_EBOOK_SERVICE_URL:'http://example.test'},{PUBLIC_EBOOK_SERVICE_URL:'javascript:alert(1)'},{PUBLIC_EBOOK_SERVICE_URL:'https://user:pass@example.test/pay'}])assert.equal(ebookCheckoutURL({...env,...patch},'fr'),null);
 });
 test('Extraits : aucun lien mort, seuls les PDF explicitement importés peuvent être publics',()=>{
  const assets=JSON.parse(read('src/data/ebook-assets.json'));

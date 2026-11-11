@@ -1,11 +1,9 @@
 // Aucune vente avant activation explicite ET raccordement de la livraison privée.
 export function ebookCheckoutURL(env, lang) {
   if (env.PUBLIC_EBOOK_SALES_ENABLED !== 'true') return null;
-  const raw = lang === 'fr' ? env.PUBLIC_EBOOK_STRIPE_LINK_FR : env.PUBLIC_EBOOK_STRIPE_LINK_EN;
   try {
-    const payment = new URL(raw || ''), delivery = new URL(env.PUBLIC_EBOOK_DELIVERY_URL || '');
-    if (payment.protocol !== 'https:' || payment.hostname !== 'buy.stripe.com' || payment.username || payment.password || payment.port || !payment.pathname.slice(1)) return null;
-    if (delivery.protocol !== 'https:' || delivery.username || delivery.password || delivery.port) return null;
-    return payment.href;
+    const service = new URL(env.PUBLIC_EBOOK_SERVICE_URL || '');
+    if (service.protocol !== 'https:' || service.username || service.password || service.port || service.hash || service.search) return null;
+    return service.href.replace(/\/$/, '') + (lang === 'en' ? '/ebook-payment.html?edition=en' : '/ebook-paiement.html?edition=fr');
   } catch { return null; }
 }

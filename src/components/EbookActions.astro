@@ -1,0 +1,14 @@
+---
+import type { Lang } from '../i18n';
+import { checkoutURL, excerptURL, ebookPrice } from '../data/ebook';
+interface Props { lang: Lang; compact?: boolean }
+const {lang, compact = false} = Astro.props;
+const en = lang === 'en', checkout = checkoutURL(lang), sample = excerptURL(lang);
+---
+<div class:list={['ebook-actions', {compact}]}>
+  {checkout ? <a href={checkout} data-astro-reload data-ebook-buy class="btn-cuivre">{en ? `Buy the ebook · ${ebookPrice(lang)}` : `Acheter l’ebook · ${ebookPrice(lang)}`} <span aria-hidden="true">↗</span></a> : <button type="button" disabled class="btn-cuivre" data-ebook-buy-disabled>{en ? `Ebook · ${ebookPrice(lang)} · coming soon` : `Ebook · ${ebookPrice(lang)} · prochainement`}</button>}
+  {sample ? <a href={sample} download data-ebook-excerpt class="ebook-sample">{en ? 'Download the free extract' : 'Télécharger l’extrait gratuit'} <span aria-hidden="true">↓</span><small>PDF · {en ? 'English' : 'Français'}</small></a> : <span class="ebook-sample pending">{en ? 'Free extract coming soon' : 'Extrait gratuit prochainement'}<small>PDF · {en ? 'English' : 'Français'}</small></span>}
+</div>
+<style>
+ .ebook-actions{display:flex;flex-wrap:wrap;align-items:center;gap:22px}.ebook-actions .btn-cuivre{font-size:14px;gap:16px;line-height:1.4;text-align:center;min-height:52px;height:auto;padding-block:15px}.ebook-actions button:disabled{opacity:.65;cursor:default}.ebook-sample{font-size:14px;line-height:1.45;text-decoration:underline;text-underline-offset:4px}.ebook-sample small{display:block;font:10px/1.5 var(--font-mono,monospace);opacity:.7;margin-top:5px;text-decoration:none}.ebook-sample.pending{opacity:.7;text-decoration:none}.compact{gap:16px}.compact .btn-cuivre{font-size:13px}@media(max-width:520px){.ebook-actions{align-items:flex-start;flex-direction:column}.ebook-actions .btn-cuivre{width:100%}}
+</style>

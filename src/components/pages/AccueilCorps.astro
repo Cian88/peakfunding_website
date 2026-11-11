@@ -1,6 +1,7 @@
 ---
 import { exchangeCredit } from '../../data/peak-exchange';
 import Pictogramme from '../Pictogramme.astro';
+import EbookTeaser from '../EbookTeaser.astro';
 import SimulateurCapacite from '../react/SimulateurCapacite';
 import MethodeSchema from '../MethodeSchema.astro';
 import ObservatoireWidget from '../react/ObservatoireWidget';
@@ -200,6 +201,7 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
   </section>
 
   <!-- ═══ 7b · Avis clients — mur vivant (état « à venir » tant que Supabase n'est pas branché) ═══ -->
+  <EbookTeaser />
   <AvisClients />
 
   <!-- ═══ 8 · FAQ ═══ -->

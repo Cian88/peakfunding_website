@@ -5,6 +5,7 @@ _source/
 .env
 .env.*
 !.env.example
+private/ebook/
 .DS_Store
 Thumbs.db
 *.log

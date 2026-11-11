@@ -14,6 +14,7 @@ const liens = [
   { href: L('/#simulateur'), libelle: tr.nav.simulateur },
   { href: L('/#equipe'), libelle: tr.nav.cabinet },
   { href: L('/actualites'), libelle: tr.nav.analyses },
+  { href: L('/livre/'), libelle: lang === 'fr' ? 'Le livre' : 'The book' },
 ];
 const actualitesActif = Astro.url.pathname.replace(/^\/en/, '').startsWith('/actualites');
 ---

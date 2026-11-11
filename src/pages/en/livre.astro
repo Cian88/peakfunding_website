@@ -1,0 +1,8 @@
+---
+import Base from '../../layouts/Base.astro';
+import Corps from '../../components/pages/EbookCorps.astro';
+import {ebook, EBOOK_AUTHOR, checkoutURL} from '../../data/ebook';
+const b=ebook('en');
+const schema={'@type':'Book',name:b.title,alternativeHeadline:b.subtitle,inLanguage:'en',bookFormat:'https://schema.org/EBook',encodingFormat:'application/pdf',numberOfPages:b.pages,author:{'@type':'Person',name:EBOOK_AUTHOR},image:'https://peakfunding.eu/img/ebook/couverture-en.webp',offers:{'@type':'Offer',price:'24.90',priceCurrency:'EUR',availability:checkoutURL('en')?'https://schema.org/InStock':'https://schema.org/PreOrder',url:'https://peakfunding.eu/en/livre/'}};
+---
+<Base title="Financing Your Project in France — Ebook | PEAK FUNDING" description="Valentin Boura Defranoux’s practical guide to French mortgages, rental investment, SCIs, holding companies and specialist finance. 26 chapters, 78 pages. €24.90 PDF." image="/img/ebook/couverture-en.webp" schema={[schema]}><Corps /></Base>

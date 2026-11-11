@@ -1,0 +1,8 @@
+---
+import Base from '../layouts/Base.astro';
+import Corps from '../components/pages/EbookCorps.astro';
+import {ebook, EBOOK_AUTHOR, checkoutURL} from '../data/ebook';
+const b=ebook('fr');
+const schema={'@type':'Book',name:b.title,alternativeHeadline:b.subtitle,inLanguage:'fr',bookFormat:'https://schema.org/EBook',encodingFormat:'application/pdf',numberOfPages:b.pages,author:{'@type':'Person',name:EBOOK_AUTHOR},image:'https://peakfunding.eu/img/ebook/couverture-fr.webp',offers:{'@type':'Offer',price:'24.90',priceCurrency:'EUR',availability:checkoutURL('fr')?'https://schema.org/InStock':'https://schema.org/PreOrder',url:'https://peakfunding.eu/livre/'}};
+---
+<Base title="Financer son projet en France — Ebook | PEAK FUNDING" description="Le guide de Valentin Boura Defranoux : crédit immobilier, locatif, SCI, holding et financements spécialisés. 26 chapitres, 80 pages. PDF à 24,90 €." image="/img/ebook/couverture-fr.webp" schema={[schema]}><Corps /></Base>

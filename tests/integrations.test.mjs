@@ -106,10 +106,10 @@ test('Accueil : ouverture et fin sombres, méthode sombre entre les sections cla
   const home = built('');
   const sections = home('main > section');
   // Depuis la section avis (2026-09-13), le fond reste sombre jusqu'au pied de page : FAQ et bandeau final sombres.
-  assert.equal(sections.filter('.clair').length, 3);
-  assert.deepEqual(sections.filter('.clair').toArray().map(node => home(node).attr('id')), ['expertises', 'simulateur', 'equipe']);
+  assert.equal(sections.filter('.clair').length, 4);
+  assert.deepEqual(sections.filter('.clair').toArray().map(node => home(node).attr('id')), ['expertises', 'simulateur', 'equipe', 'livre']);
   const tones = sections.toArray().map(node => home(node).hasClass('clair'));
-  assert.deepEqual(tones, [false, false, false, false, true, true, false, true, false, false, false]);
+  assert.deepEqual(tones, [false, false, false, false, true, true, false, true, true, false, false, false]);
   assert.equal(tones.slice(1).filter((tone, i) => tone !== tones[i]).length, 4);
   assert.equal(home('footer.sombre').length, 1);
   assert.equal(home('#simulateur .surface-claire').length, 1);

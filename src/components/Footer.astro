@@ -6,7 +6,7 @@ const tr = t(lang);
 const L = (p: string) => localiser(p, lang);
 const colonnes = [
   { titre: tr.footer.col_expertises, liens: [[L('/expertises/estate'), 'PEAK ESTATE'], [L('/expertises/pro'), 'PEAK PRO'], [L('/expertises/pim'), 'PEAK PIM'], [L('/expertises/insure'), 'PEAK INSURE']] },
-  { titre: tr.footer.col_cabinet, liens: [[L('/#methode'), tr.footer.methode], [L('/#equipe'), tr.footer.equipe], [L('/#partenaires'), tr.footer.partenaires], [L('/actualites'), tr.footer.actualites]] },
+  { titre: tr.footer.col_cabinet, liens: [[L('/#methode'), tr.footer.methode], [L('/#equipe'), tr.footer.equipe], [L('/#partenaires'), tr.footer.partenaires], [L('/actualites'), tr.footer.actualites], [L('/livre/'), lang === 'fr' ? 'Le livre' : 'The book']] },
   { titre: tr.footer.col_espaces, liens: [[L('/espace-client'), tr.footer.client], [L('/espace-mandataire'), tr.footer.mandataire], [L('/peak-exchange/'), 'RDV PEAK EXCHANGE']] },
   { titre: tr.footer.col_reglementaire, liens: [[L('/mentions-legales'), tr.footer.mentions], [L('/politique-de-confidentialite'), tr.footer.confidentialite], [L('/cgu'), tr.footer.cgu]] },
 ];

@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import PeakPitchCorps from '../components/pages/PeakPitchCorps.astro';
+import { peakPitch, PEAK_PITCH_OUVERT } from '../data/peak-pitch';
+import { faqPage, filAriane, SITE } from '../lib/seo';
+
+// Indexée seulement à l'ouverture du service (PUBLIC_PEAK_PITCH_URL défini au build) ; jusque-là, page privée.
+const t = peakPitch('fr');
+const schema = [ faqPage(t.faq), filAriane([{ nom: t.libelles.accueil, url: `${SITE}/` }, { nom: 'PEAK PITCH', url: `${SITE}/peak-pitch/` }])];
+---
+
+<Base title={t.titre} description={t.description} image="/peak-pitch/pitch-hero-poster.jpg" noindex={!PEAK_PITCH_OUVERT} schema={schema}>
+  <PeakPitchCorps />
+</Base>

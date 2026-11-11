@@ -1,6 +1,6 @@
 # Livre numérique — préparation du lancement
 
-État au 11 novembre 2026. **Ne pas publier ni ouvrir les ventes sans accord de Valentin.**
+État au 11 novembre 2026. Le lot consolidé est désormais dans `C:/Users/valen/dev/peakfunding-preview`, branche `codex/services-preview` ; voir `clone-services.md`. **Ne pas publier ni ouvrir les ventes sans accord de Valentin.**
 
 ## Offre et vendeur
 
@@ -44,6 +44,7 @@ Serveur : worktree `C:/Users/valen/dev/peak-ebook-checkout`, branche `codex/eboo
 Variables publiques du site :
 
 ```text
+PUBLIC_STANCER_READY=false
 PUBLIC_EBOOK_SALES_ENABLED=false
 PUBLIC_EBOOK_SERVICE_URL=
 ```

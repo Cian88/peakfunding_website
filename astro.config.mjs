@@ -18,7 +18,7 @@ export default defineConfig({
     react(),
     sitemap({
       // Pages privées ou techniques : jamais dans le plan du site (elles portent déjà noindex).
-      filter: (page) => !/\/(avis|404|conditions-peak-exchange|conditions-ebook)(\/|$)/.test(new URL(page).pathname),
+      filter: (page) => !/\/(avis|404|conditions-peak-exchange|conditions-ebook|conditions-peak-pitch|peak-pitch)(\/|$)/.test(new URL(page).pathname),
       i18n: { defaultLocale: 'fr', locales: { fr: 'fr-FR', en: 'en-GB' } },
       changefreq: 'weekly',
       // Date de dernière modification uniquement là où elle est connue : la date de l'article.

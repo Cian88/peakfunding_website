@@ -82,7 +82,7 @@ export function demarrerMouvement() {
   }, { signal });
 
   const menu = document.querySelector<HTMLDetailsElement>('[data-menu]');
-  const menus = [...document.querySelectorAll<HTMLDetailsElement>('[data-menu], [data-espaces]')];
+  const menus = [...document.querySelectorAll<HTMLDetailsElement>('[data-menu], [data-espaces], [data-services]')];
   const arrierePlan = [...document.querySelectorAll<HTMLElement>('#contenu, body > footer')];
   const synchroniserMenu = () => arrierePlan.forEach(el => { el.inert = !!menu?.open && innerWidth < 1280; });
   menus.forEach(item => item.addEventListener('toggle', () => {

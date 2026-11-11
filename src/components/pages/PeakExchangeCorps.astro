@@ -1,10 +1,11 @@
 ---
 import { langCourante, localiser } from '../../i18n';
 import { exchangeCredit } from '../../data/peak-exchange';
+import {stancerServiceURL} from '../../lib/services-checkout.mjs';
 const en = langCourante(Astro.currentLocale) === 'en';
 const L = (p: string) => localiser(p, en ? 'en' : 'fr');
-const service = import.meta.env.PUBLIC_PEAK_EXCHANGE_URL?.replace(/\/$/, '');
-const checkout = service ? `${service}/exchange-paiement.html` : import.meta.env.DEV ? 'http://127.0.0.1:8767/exchange-paiement.html' : null;
+const service = stancerServiceURL(import.meta.env,'exchange');
+const checkout = service ? `${service}/exchange-paiement.html` : null;
 const angles = en ? [
   ['01', 'Understand your position', 'Identify the strengths of your income, assets, company and project, together with the weaknesses a lender may question.'],
   ['02', 'Build your arguments', 'Turn your actual circumstances into clear, supported arguments. Anticipate objections and identify the information that needs explaining.'],

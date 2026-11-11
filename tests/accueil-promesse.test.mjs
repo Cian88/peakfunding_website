@@ -17,7 +17,7 @@ test('Accueil FR/EN : repères sans statistiques ni compteurs', () => {
     assert.equal(band.find('[data-compte]').length, 0);
     assert.doesNotMatch(band.text(), /\b(?:500|95|72)\b|%/);
     assert.match(band.text(), /299/);
-    assert.equal($('.heros').next().attr('id'), 'accompagnement');
+    assert.equal($('.heros').nextAll('section').first().attr('id'), 'accompagnement');
   }
 });
 
@@ -28,6 +28,12 @@ test('Accueil FR/EN : spécialités explicites, signature et actions conservées
   ]) {
     const $ = load(readFileSync(file, 'utf8'));
     const hero = $('.heros');
+    if(hero.is('[data-pitch-cinema]')){
+      assert.match(hero.find('h1').text(),/PEAK PITCH/);
+      const video=hero.find('video');assert.equal(video.length,1);assert.notEqual(video.attr('autoplay'),undefined);assert.notEqual(video.attr('muted'),undefined);assert.equal(video.attr('loop'),undefined);
+      assert.equal(hero.find('[data-pitch-discover]').attr('href'),file.includes('/en/')?'/en/peak-pitch/':'/peak-pitch/');
+      assert.equal(hero.find('[data-assurance]').attr('target'),'_blank');continue;
+    }
     assert.equal(hero.find('h1').text().replace(/\s+/g, ' ').trim(), title);
     assert.ok(hero.find('.heros-texte > p').toArray().some(el => $(el).text() === description));
     assert.equal(hero.find('.heros-photo').attr('src'), '/img/hero-1600.webp');

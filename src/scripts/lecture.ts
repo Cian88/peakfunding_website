@@ -4,27 +4,28 @@ export function demarrerLecture(){
   disposer?.();
   const root=document.documentElement;
   const dock=document.querySelector<HTMLElement>('[data-reading-progress]');
-  const path=dock?.querySelector<SVGPathElement>('[data-reading-path]');
-  const trace=dock?.querySelector<SVGPathElement>('[data-reading-trace]');
-  const point=dock?.querySelector<SVGGElement>('[data-reading-point]');
+  const trace=dock?.querySelector<HTMLElement>('[data-reading-trace]');
   const range=dock?.querySelector<HTMLInputElement>('[data-reading-position]');
-  const percent=dock?.querySelector<HTMLElement>('[data-reading-percent]');
-  if(!dock||!path||!trace||!point||!range||!percent||typeof path.getTotalLength!=='function')return;
+  if(!dock||!trace||!range)return;
+  const label=dock.querySelector<HTMLElement>('[data-reading-section]');
+  const sections=[...document.querySelectorAll<HTMLElement>('main > section')].map(node=>({node,name:node.querySelector('h1,h2')?.textContent?.replace(/\s+/g,' ').trim()})).filter(section=>section.name);
   const controller=new AbortController(),{signal}=controller;
-  const en=document.documentElement.lang==='en',total=path.getTotalLength();
-  let frame=0,last=-1;
+  const en=document.documentElement.lang==='en';
+  let frame=0,last='';
   const update=()=>{
     frame=0;
     const length=Math.max(0,root.scrollHeight-innerHeight);
     const p=length>1?Math.min(1,Math.max(0,scrollY/length)):0;
     dock.hidden=length<=1;
     root.classList.toggle('lecture-personnalisee',length>1);
-    trace.style.strokeDashoffset=String(1-p);
-    const at=path.getPointAtLength(total*p);
-    point.setAttribute('transform',`translate(${at.x} ${at.y})`);
+    trace.style.transform=`translateY(${Math.max(0,dock.clientHeight-trace.offsetHeight)*p}px)`;
+    let section=document.querySelector('main h1')?.textContent?.replace(/\s+/g,' ').trim()||(en?'Reading':'Lecture');
+    for(const item of sections)if(item.node.getBoundingClientRect().top<=innerHeight*.42)section=item.name!;
+    if(label)label.textContent=section;
     range.value=String(Math.round(p*1000));
     const value=Math.round(p*100);
-    if(value!==last){percent.textContent=String(value).padStart(2,'0')+' %';range.setAttribute('aria-valuetext',en?`${value}% of the page`:`${value} % de la page`);last=value;}
+    const description=(en?`${value}% of the page`:`${value} % de la page`)+' · '+section;
+    if(description!==last){range.setAttribute('aria-valuetext',description);last=description;}
   };
   const schedule=()=>{if(!frame)frame=requestAnimationFrame(update);};
   range.addEventListener('input',()=>{

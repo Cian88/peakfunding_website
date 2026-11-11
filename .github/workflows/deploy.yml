@@ -75,7 +75,7 @@ jobs:
     needs: observatoire
     # Les avis restent reconstruits même en cas d'indisponibilité de la source CSA.
     # L'échec éventuel du job Observatoire reste visible dans le bilan Actions.
-    if: always() && !cancelled()
+    if: github.ref == 'refs/heads/main' && always() && !cancelled()
     runs-on: ubuntu-latest
     steps:
       - name: Récupérer le code
@@ -97,6 +97,10 @@ jobs:
       - name: Builder le site
         env:
           # À renseigner seulement après confirmation Stancer et recette du serveur.
+          PUBLIC_STANCER_READY: ${{ vars.PUBLIC_STANCER_READY }}
+          PUBLIC_PEAK_PITCH_ENABLED: ${{ vars.PUBLIC_PEAK_PITCH_ENABLED }}
+          PUBLIC_PEAK_PITCH_URL: ${{ vars.PUBLIC_PEAK_PITCH_URL }}
+          PUBLIC_PEAK_PITCH_HERO: ${{ vars.PUBLIC_PEAK_PITCH_HERO }}
           PUBLIC_PEAK_EXCHANGE_URL: ${{ vars.PUBLIC_PEAK_EXCHANGE_URL }}
           PUBLIC_EBOOK_SALES_ENABLED: ${{ vars.PUBLIC_EBOOK_SALES_ENABLED }}
           PUBLIC_EBOOK_SERVICE_URL: ${{ vars.PUBLIC_EBOOK_SERVICE_URL }}
@@ -115,7 +119,7 @@ jobs:
     needs: build
     # Sur un simple push, le job Observatoire est ignoré : sans condition explicite,
     # GitHub propage ce « skipped » et ne publie rien. On publie dès que le build a réussi.
-    if: always() && !cancelled() && needs.build.result == 'success'
+    if: github.ref == 'refs/heads/main' && always() && !cancelled() && needs.build.result == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

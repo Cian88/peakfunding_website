@@ -17,9 +17,9 @@ test('Livre : titre, édition, prix, couverture et chapitres localisés',()=>{
  }
 });
 test('Stancer : activation explicite et URL du service protégée requises',()=>{
- const env={PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_SERVICE_URL:'https://livres.example.test'};
+ const env={PUBLIC_STANCER_READY:'true',PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_SERVICE_URL:'https://livres.example.test'};
  assert.equal(ebookCheckoutURL(env,'fr'),'https://livres.example.test/ebook-paiement.html?edition=fr');assert.equal(ebookCheckoutURL(env,'en'),'https://livres.example.test/ebook-payment.html?edition=en');
- for(const patch of [{PUBLIC_EBOOK_SALES_ENABLED:'false'},{PUBLIC_EBOOK_SERVICE_URL:''},{PUBLIC_EBOOK_SERVICE_URL:'http://example.test'},{PUBLIC_EBOOK_SERVICE_URL:'javascript:alert(1)'},{PUBLIC_EBOOK_SERVICE_URL:'https://user:pass@example.test/pay'}])assert.equal(ebookCheckoutURL({...env,...patch},'fr'),null);
+ for(const patch of [{PUBLIC_STANCER_READY:'false'},{PUBLIC_EBOOK_SALES_ENABLED:'false'},{PUBLIC_EBOOK_SERVICE_URL:''},{PUBLIC_EBOOK_SERVICE_URL:'http://example.test'},{PUBLIC_EBOOK_SERVICE_URL:'javascript:alert(1)'},{PUBLIC_EBOOK_SERVICE_URL:'https://user:pass@example.test/pay'}])assert.equal(ebookCheckoutURL({...env,...patch},'fr'),null);
 });
 test('Extraits : aucun lien mort, seuls les PDF explicitement importés peuvent être publics',()=>{
  const assets=JSON.parse(read('src/data/ebook-assets.json'));

@@ -8,6 +8,7 @@ import { faqAccueil as faqFr, partenaires as partenairesFr, faqExpertises as faq
 import { expertises as expertisesFrData } from './expertises';
 import { expertisesEn } from './en/expertises';
 import { faqExpertisesEn } from './en/textes';
+import { exchangeCredit, exchangeFirstConsultation, exchangeFreedom } from './peak-exchange';
 import type { Lang } from '../i18n';
 
 export function expertisesFor(lang: Lang) {
@@ -101,7 +102,7 @@ const equipeEn = {
 };
 
 const faqEn = [
-  { q: 'How much does your service cost?', r: 'The first conversation and the eligibility review cost you nothing. Our fees are stated from the outset and are only due if the financing succeeds, when the funds are released.' },
+  { q: 'How much does your service cost?', r: `${exchangeFirstConsultation.en} ${exchangeFreedom.en} ${exchangeCredit.en} Brokerage fees are disclosed from the outset and are due when the funds are released if the financing succeeds.` },
   { q: 'My bank has already refused my file — is that final?', r: 'No, and it is a common case. Criteria vary significantly from one bank to another: a file refused by one may be accepted by another, especially once reworked. We rebuild the structure and target the institutions suited to your profile.' },
   { q: 'How long does it take to get an agreement?', r: 'You get a first response within 72 hours. Then allow on average 6 to 8 weeks between submitting the file and the agreement — longer when the structure is complex.' },
   { q: 'Do you work throughout France?', r: 'Yes, throughout France, including for expatriates and non-residents. All exchanges can take place remotely, by video call or by phone, with the same contact from start to finish.' },

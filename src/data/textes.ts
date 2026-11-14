@@ -1,9 +1,11 @@
-/* Questions fréquentes et partenaires, repris mot pour mot de la v1. */
+/* Questions fréquentes et partenaires. */
+
+import { exchangeCredit, exchangeFirstConsultation, exchangeFreedom } from './peak-exchange';
 
 export type QR = { q: string; r: string };
 
 export const faqAccueil: QR[] = [
-  { q: 'Combien coûte votre intervention ?', r: 'Le premier échange et l’étude de solvabilité ne vous coûtent rien. Nos honoraires sont annoncés dès le départ et ne sont dus que si le financement aboutit, au déblocage des fonds.' },
+  { q: 'Combien coûte votre intervention ?', r: `${exchangeFirstConsultation.fr} ${exchangeFreedom.fr} ${exchangeCredit.fr} Les honoraires de courtage sont annoncés dès le départ et sont dus au déblocage des fonds si le financement aboutit.` },
   { q: 'Mon dossier a déjà été refusé par ma banque, est-ce rédhibitoire ?', r: 'Non, et le cas est fréquent. Les critères varient sensiblement d’une banque à l’autre : un dossier refusé par l’une peut être accepté par une autre, en particulier après avoir été retravaillé. Nous reprenons le montage et ciblons les établissements adaptés à votre profil.' },
   { q: 'Quels délais pour obtenir un accord ?', r: 'Vous obtenez une première réponse sous 72 heures. Comptez ensuite en moyenne 6 à 8 semaines entre le dépôt du dossier et l’accord, davantage lorsque le montage est complexe.' },
   { q: 'Travaillez-vous partout en France ?', r: 'Oui, partout en France, y compris pour les expatriés et les non-résidents. L’ensemble des échanges peut se dérouler à distance, en visioconférence ou par téléphone, avec le même interlocuteur du début à la fin.' },

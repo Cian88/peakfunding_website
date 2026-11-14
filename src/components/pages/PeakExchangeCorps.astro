@@ -1,6 +1,6 @@
 ---
 import { langCourante, localiser } from '../../i18n';
-import { exchangeCredit } from '../../data/peak-exchange';
+import { exchangeCredit, exchangeFreedom } from '../../data/peak-exchange';
 import {stancerServiceURL} from '../../lib/services-checkout.mjs';
 const en = langCourante(Astro.currentLocale) === 'en';
 const L = (p: string) => localiser(p, en ? 'en' : 'fr');
@@ -23,7 +23,7 @@ const angles = en ? [
       <p class="eyebrow text-cuivre-clair">PEAK EXCHANGE · {en ? 'A personal perspective on your financing' : 'Un regard professionnel sur votre financement'}</p>
       <h1>{en ? 'Your application.' : 'Votre dossier.'}<br /><span>{en ? 'The right arguments.' : 'Les bons arguments.'}</span></h1>
       <p class="exchange-lead">{en ? 'An individual consultation with Valentin Boura–Defranoux to understand your strengths, address your weaknesses and prepare your conversation with a bank.' : 'Un échange individuel avec Valentin Boura–Defranoux pour comprendre vos points forts, traiter vos points faibles et préparer votre argumentation face aux banques.'}</p>
-      <div class="exchange-price"><strong>299 €</strong><span>{en ? 'incl. VAT · one payment' : 'TTC · paiement unique'}<br />{en ? 'Consultation + personalised advice note' : 'Échange + note de conseil personnalisée'}</span></div>
+      <div class="exchange-price"><strong>299 €</strong><span>{en ? 'incl. VAT · one payment' : 'TTC · paiement unique'}<br />{en ? 'First consultation and comprehensive advice note' : 'Premier échange et note de conseil exhaustive'}</span></div>
       <p class="exchange-credit"><strong>{en ? 'Deducted from your brokerage fees' : 'Déduit de vos honoraires de courtage'}</strong><span>{exchangeCredit[en ? 'en' : 'fr']}</span></p>
       {checkout ? <a href={checkout} data-astro-reload class="btn-cuivre">{en ? 'Book PEAK EXCHANGE' : 'Prendre RDV via PEAK EXCHANGE'} <span aria-hidden="true">↗</span></a> : <a href="#reservation" class="btn-cuivre">{en ? 'Booking opens soon' : 'Réservations prochainement'} <span aria-hidden="true">↓</span></a>}
       <p class="exchange-small">{en ? 'Payment confirmation unlocks the booking calendar.' : 'Le paiement confirmé donne accès au choix de votre créneau.'}</p>
@@ -39,7 +39,7 @@ const angles = en ? [
   <div class="exchange-angles">{angles.map(([n, title, text]) => <article><span class="donnee">{n}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
 </section>
 <section class="exchange-note">
-  <div class="contenu exchange-note-grid"><div><p class="eyebrow">{en ? 'After the consultation' : 'À l’issue de l’échange'}</p><h2>{en ? 'Advice you can\ncome back to.' : 'Une note de conseil.\nDes arguments à garder.'}</h2></div><div><p>{en ? 'You receive a personalised advice note bringing together the analysis of your profile, the points discussed and the arguments relevant to your project.' : 'Vous recevez une note de conseil personnalisée qui reprend l’analyse de votre profil, les points abordés et les arguments adaptés à votre projet.'}</p><ul><li>{en ? 'Your strengths and the points to clarify' : 'Vos points forts et les éléments à éclaircir'}</li><li>{en ? 'Arguments supported by your actual circumstances' : 'Les arguments appuyés sur votre situation réelle'}</li><li>{en ? 'Contextual factors and suggested next steps' : 'Les éléments de contexte et les pistes d’action discutées'}</li></ul></div></div>
+  <div class="contenu exchange-note-grid"><div><p class="eyebrow">{en ? 'After the consultation' : 'À l’issue de l’échange'}</p><h2>{en ? 'Advice you can\ncome back to.' : 'Une note de conseil.\nDes arguments à garder.'}</h2></div><div><p>{en ? 'You receive a comprehensive, personalised advice note with the analysis of your profile, the points discussed and the arguments relevant to your project.' : 'Vous recevez une note de conseil exhaustive et personnalisée qui reprend l’analyse de votre profil, les points abordés et les arguments adaptés à votre projet.'}</p><ul><li>{en ? 'Your strengths and the points to clarify' : 'Vos points forts et les éléments à éclaircir'}</li><li>{en ? 'Arguments supported by your actual circumstances' : 'Les arguments appuyés sur votre situation réelle'}</li><li>{en ? 'Contextual factors and suggested next steps' : 'Les éléments de contexte et les pistes d’action discutées'}</li></ul><p>{exchangeFreedom[en ? 'en' : 'fr']}</p></div></div>
 </section>
 <section class="contenu section" id="reservation">
   <div class="exchange-section-head"><p class="eyebrow">{en ? 'Your booking' : 'Votre rendez-vous'}</p><h2>{en ? 'A clear process,\nfrom payment to advice.' : 'Un parcours simple,\ndu paiement au conseil.'}</h2></div>

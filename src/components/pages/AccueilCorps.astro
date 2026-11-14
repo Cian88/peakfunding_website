@@ -1,5 +1,5 @@
 ---
-import { exchangeCredit } from '../../data/peak-exchange';
+import { exchangeCredit, exchangeFirstConsultation } from '../../data/peak-exchange';
 import Pictogramme from '../Pictogramme.astro';
 import EbookTeaser from '../EbookTeaser.astro';
 import PeakPitchHero from '../PeakPitchHero.astro';
@@ -67,7 +67,7 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
     </ul>
   </section>
 
-  <section class="sombre border-b border-filet" aria-label="PEAK EXCHANGE"><div class="contenu flex flex-col items-start justify-between gap-7 py-12 md:flex-row md:items-center"><div class="max-w-2xl"><p class="eyebrow text-cuivre-clair">PEAK EXCHANGE · 299 € TTC</p><h2 class="mt-4 text-[28px] leading-tight font-light tracking-tight text-etoile">{lang === 'fr' ? 'Votre dossier mérite les bons arguments.' : 'Your application deserves the right arguments.'}</h2><p class="mt-3 text-[15px] leading-relaxed text-argent">{lang === 'fr' ? 'Un échange individuel pour analyser vos points forts et faibles, comprendre le contexte bancaire et repartir avec une note de conseil personnalisée.' : 'A personal consultation to assess your strengths and weaknesses, understand the banking context and receive a tailored advice note.'}</p></div><a href={L('/peak-exchange/')} class="btn-cuivre shrink-0 gap-4">{lang === 'fr' ? 'Prendre RDV' : 'Book a consultation'} ↗</a></div></section>
+  <section class="sombre border-b border-filet" aria-label="PEAK EXCHANGE"><div class="contenu flex flex-col items-start justify-between gap-7 py-12 md:flex-row md:items-center"><div class="max-w-2xl"><p class="eyebrow text-cuivre-clair">PEAK EXCHANGE · 299 € TTC</p><h2 class="mt-4 text-[28px] leading-tight font-light tracking-tight text-etoile">{lang === 'fr' ? 'Votre dossier mérite les bons arguments.' : 'Your application deserves the right arguments.'}</h2><p class="mt-3 text-[15px] leading-relaxed text-argent">{exchangeFirstConsultation[lang]}</p></div><a href={L('/peak-exchange/')} class="btn-cuivre shrink-0 gap-4">{lang === 'fr' ? 'Prendre RDV' : 'Book a consultation'} ↗</a></div></section>
 
   <!-- ═══ 3 · Mission ═══ -->
   <section id="mission" class="sombre section-sombre">

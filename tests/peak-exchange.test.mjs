@@ -23,7 +23,8 @@ test('RDV : aucune page livrée ne mène à l’ancien formulaire ou à un agend
   if(!file.endsWith('.html'))continue;
   const $=load(text);
   assert.equal($('a[href$="#rdv"],button[data-rdv],dialog.rdv-dialog,form#rdv-parcours').length,0,file);
-  assert.doesNotMatch($('body').text(),/premier échange gratuit|free first consultation|free 30-minute/i,file);
+  const publishedCopy = `${$('body').text()} ${$('meta[name="description"]').attr('content') ?? ''}`;
+  assert.doesNotMatch(publishedCopy,/premier échange gratuit|free first consultation|free 30-minute|ne vous coûtent rien|eligibility review cost you nothing/i,file);
  }
  assert.equal(rdvDestination('/'),'/peak-exchange/');assert.equal(rdvDestination('/actualites/sci/'),'/peak-exchange/');assert.equal(rdvDestination('/en/actualites/sci/'),'/en/peak-exchange/');
  assert.equal(isLegacyRdvHash('#RDV'),true);assert.equal(isLegacyRdvHash('#simulateur'),false);
@@ -32,7 +33,11 @@ test('EXCHANGE : déduction conditionnelle expliquée sur l’offre, l’accueil
  for(const prefix of ['','en/']){
   const offer=load(read(`dist/${prefix}peak-exchange/index.html`));
   const credit=offer('.exchange-credit').text();assert.match(credit,/299/);assert.match(credit,prefix?/deducted/i:/déduits/);assert.match(credit,prefix?/agrees to support|viable/:/accepte|défendable/);
-  assert.match(load(read(`dist/${prefix}index.html`))('main').text(),prefix?/brokerage fees/:/honoraires de courtage/);
+  const home = load(read(`dist/${prefix}index.html`));
+  const faq = home('main details').filter((_, item) => /Combien coûte votre intervention|How much does your service cost/.test(home(item).find('summary').text()));
+  assert.match(faq.text(), /PEAK EXCHANGE.*299/);
+  assert.match(faq.text(), prefix ? /comprehensive.*on your own.*another brokerage firm.*deducted.*funds are released/ : /note de conseil exhaustive.*poursuivre votre projet seul.*autre cabinet de courtage.*déduits.*déblocage des fonds/);
+  assert.match(offer('.exchange-note').text(), prefix ? /another brokerage firm/ : /autre cabinet de courtage/);
  }
  assert.match(load(read('dist/conditions-peak-exchange/index.html'))('main').text(),/défendable/);
 });

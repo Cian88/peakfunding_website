@@ -156,7 +156,7 @@ const teinte = (s: string) => teintes[[...s].reduce((n, c) => n + c.charCodeAt(0
 
 function Etoiles({ n, lg = false }: { n: number; lg?: boolean }) {
   return (
-    <span className={`etoiles${lg ? ' lg' : ''}`} aria-label={`${n}/5`}>
+    <span className={`etoiles${lg ? ' lg' : ''}`} role="img" aria-label={`${n}/5`}>
       {[1, 2, 3, 4, 5].map((i) => <svg key={i} className={i <= Math.round(n) ? '' : 'vide'} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={ETOILE} /></svg>)}
     </span>
   );

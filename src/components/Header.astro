@@ -48,7 +48,7 @@ const actualitesActif = Astro.url.pathname.replace(/^\/en/, '').startsWith('/act
         </nav>
       </details>
       <a href={L('/peak-exchange/')} class="btn-cuivre hidden h-10 gap-3 px-5 text-[13px] sm:inline-flex">{lang === 'fr' ? 'RDV PEAK EXCHANGE' : 'Book PEAK EXCHANGE'} <span aria-hidden="true">↗</span></a>
-      <a href={urlAutre} data-astro-reload hreflang={autre} class="bascule-langue flex h-10 items-center gap-2 rounded-pill border border-etoile/20 px-3 text-[12px] text-etoile/85 hover:text-etoile" aria-label={`${tr.choisir_langue} — ${drapeaux[autre].libelle}`} title={drapeaux[autre].libelle}>
+      <a href={urlAutre} data-astro-reload hreflang={autre} class="bascule-langue flex h-10 items-center gap-2 rounded-pill border border-etoile/20 px-3 text-[12px] text-etoile/85 hover:text-etoile" aria-label={`${drapeaux[autre].code} — ${tr.choisir_langue} · ${drapeaux[autre].libelle}`} title={drapeaux[autre].libelle}>
         <Drapeau lang={autre} class="h-[15px] w-auto rounded-[2px]" />
         <span class="font-mono tracking-wide">{drapeaux[autre].code}</span>
       </a>

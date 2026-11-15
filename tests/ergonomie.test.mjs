@@ -164,5 +164,5 @@ test('Les animations des avis restent identiques, seule la destination RDV chang
   for (const [file, expected] of [
     ['src/components/react/MurAvis.tsx', '5fb478ad17a20fe771f3f8dea9b9d2903dc836e48e8248d1dcb86f50628dda88'],
     ['src/components/AvisClients.astro', 'afaf05a864d8823ea9b7549efe7ecfd7436b26a05a81c50b6502f8e2478e3839'],
-  ]) assert.equal(hash(read(file).replaceAll('/peak-exchange/', '/#rdv')),expected,file);
+  ]) assert.equal(hash(read(file).replaceAll('/peak-exchange/', '/#rdv').replace('role="img" aria-label={`${n}/5`}', 'aria-label={`${n}/5`}')),expected,file);
 });

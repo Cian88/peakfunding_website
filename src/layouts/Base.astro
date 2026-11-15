@@ -72,12 +72,6 @@ const graphe = noindex ? [] : [organisation(lang), siteWeb(lang), pageWeb({ url:
     <ProgressionLecture />
     <AncienRdvRedirect />
     <script>
-      document.addEventListener('click', (event) => {
-        const target = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('[data-protected-email]') : null;
-        if (!target) return;
-        event.preventDefault();
-        window.location.assign('mailto:' + atob(target.dataset.protectedEmail!));
-      });
       import { demarrerMouvement } from '../scripts/motion';
       import { demarrerLecture } from '../scripts/lecture';
       const initialiser = () => { demarrerMouvement(); demarrerLecture(); };

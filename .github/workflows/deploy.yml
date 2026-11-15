@@ -104,6 +104,7 @@ jobs:
           PUBLIC_PEAK_EXCHANGE_URL: ${{ vars.PUBLIC_PEAK_EXCHANGE_URL }}
           PUBLIC_EBOOK_SALES_ENABLED: ${{ vars.PUBLIC_EBOOK_SALES_ENABLED }}
           PUBLIC_EBOOK_SERVICE_URL: ${{ vars.PUBLIC_EBOOK_SERVICE_URL }}
+          PUBLIC_ADMIN_CONTACT_FORM: ${{ vars.PUBLIC_ADMIN_CONTACT_FORM }}
         run: npm run build
 
       - name: Configurer GitHub Pages

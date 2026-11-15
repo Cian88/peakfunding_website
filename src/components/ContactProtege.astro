@@ -1,4 +1,23 @@
 ---
-import { administrativeEmail } from '../lib/public-contact.mjs';
+import { langCourante } from '../i18n';
+const en = langCourante(Astro.currentLocale) === 'en';
+const endpoint = import.meta.env.PUBLIC_ADMIN_CONTACT_FORM || '';
+const available = /^https:\/\/formspree\.io\/f\/[A-Za-z0-9]+$/.test(endpoint);
 ---
-<a href="#administratif" data-protected-email={administrativeEmail} class="btn-fantome">Contacter le cabinet par courriel administratif ↗</a>
+{available && (
+  <form action={endpoint} method="post" class="admin-form">
+    <label>{en ? 'Your email' : 'Votre e-mail'}<input type="email" name="email" required maxlength="254" autocomplete="email" /></label>
+    <label>{en ? 'Order reference (optional)' : 'Référence de commande (facultative)'}<input name="reference" maxlength="40" /></label>
+    <label>{en ? 'Your request' : 'Votre demande'}<textarea name="message" required maxlength="2400" rows="5"></textarea></label>
+    <p>{en ? 'Please keep bank details and financial documents out of your message.' : 'Évitez d’inclure des coordonnées bancaires ou des documents financiers dans votre message.'}</p>
+    <button type="submit" class="btn-cuivre">{en ? 'Send my request' : 'Envoyer ma demande'}</button>
+  </form>
+)}
+<p class="admin-post">{en ? 'By post' : 'Par courrier'}<br />PEAK FUNDING · 99 avenue Achille Peretti · 92200 Neuilly-sur-Seine</p>
+<style>
+  .admin-form{max-width:560px;display:grid;gap:14px}
+  .admin-form label{display:grid;gap:5px;font-size:14px;font-weight:500}
+  .admin-form input,.admin-form textarea{min-height:44px;border:1px solid #908579;border-radius:8px;padding:10px 12px;background:white;color:#111}
+  .admin-form p,.admin-post{font-size:13px;line-height:1.65}
+  .admin-form button{justify-self:start}.admin-post{margin-top:16px}
+</style>

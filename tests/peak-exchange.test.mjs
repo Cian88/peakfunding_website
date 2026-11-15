@@ -44,9 +44,9 @@ test('EXCHANGE : déduction conditionnelle expliquée sur l’offre, l’accueil
 test('Contact : aucun e-mail du cabinet en clair dans les pages, JS et JSON-LD distribués',()=>{
  const crawl=p=>readdirSync(p,{withFileTypes:true}).flatMap(f=>f.isDirectory()?crawl(p+'/'+f.name):[p+'/'+f.name]);
  for(const file of crawl('dist').filter(p=>/\.(html|js|json|txt)$/.test(p)))assert.doesNotMatch(read(file),/[\w.+-]+@peakfunding\.eu/i,file);
- const $=load(read('dist/mentions-legales/index.html'));assert.ok($('[data-protected-email]').length>=2);assert.ok($('a[href="/contact/#administratif"]').length>=2);
+ const $=load(read('dist/mentions-legales/index.html'));assert.equal($('[data-protected-email]').length,0);assert.ok($('a[href="/contact/#administratif"]').length>=2);
 });
 test('Contact : transformation conserve les autres adresses et enlève le mailto public du cabinet',()=>{
  const html=protectPublicEmails('<p>contact@peakfunding.eu</p><a href="mailto:contact@peakfunding.eu">contact@peakfunding.eu</a><p>mediateur@example.test</p>');
- assert.doesNotMatch(html,/@peakfunding\.eu|mailto:/);assert.match(html,/mediateur@example.test/);assert.equal(load(html)('[data-protected-email]').length,2);
+ assert.doesNotMatch(html,/@peakfunding\.eu|mailto:/);assert.match(html,/mediateur@example.test/);assert.equal(load(html)('a[href="/contact/#administratif"]').length,2);
 });

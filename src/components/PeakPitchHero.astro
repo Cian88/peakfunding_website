@@ -12,10 +12,9 @@ const destination = localiser('/peak-pitch/', lang);
   <p class="sr-only">{fr ? 'Préparez votre dossier bancaire : note de synthèse et annexe exhaustive, liste des documents par personne et société, présentation bancaire. 99 €, TVA non applicable. Le financement reste soumis à l’accord des banques.' : 'Prepare your banking dossier: summary and comprehensive appendix, document lists for each person and company, and a banking presentation. €99, VAT not applicable. Financing remains subject to approval by the banks. The film is in French.'}</p>
 
   <div class="pitch-cinema-stage">
-    <a class="pitch-cinema-screen" data-pitch-discover href={destination} aria-label={fr ? 'Découvrir PEAK PITCH — 99 €, TVA non applicable' : 'Discover PEAK PITCH — €99, VAT not applicable'}>
-      <!-- 4K réservée aux très grands écrans ; 1080p (7,5 Mo) ailleurs. Rien n'est préchargé au-delà des métadonnées :
-           la lecture démarre quand le héros est visible, et jamais en mouvement réduit. -->
-      <video data-pitch-cinema-film autoplay muted playsinline preload="metadata" poster="/peak-pitch/pitch-hero-poster.jpg" aria-hidden="true" tabindex="-1">
+    <div class="pitch-cinema-screen">
+      <!-- Le contrôleur démarre automatiquement le film selon la préférence de mouvement. -->
+      <video data-pitch-cinema-film muted playsinline preload="none" poster="/peak-pitch/pitch-hero-poster.jpg" aria-hidden="true" tabindex="-1">
         <source src="/peak-pitch/pitch-hero-uhd.mp4" type="video/mp4" media="(min-width: 2000px)" />
         <source src="/peak-pitch/pitch-hero-hd.mp4" type="video/mp4" />
       </video>
@@ -24,15 +23,21 @@ const destination = localiser('/peak-pitch/', lang);
         <span class="pitch-cinema-mobile-title">{fr ? 'Votre projet, prêt à présenter.' : 'Your project, ready to present.'}</span>
         <span class="pitch-cinema-mobile-price">99 € <small>{fr ? 'TVA non applicable · Paiement unique' : 'VAT not applicable · One payment'}</small></span>
       </span>
-      <span class="pitch-cinema-cta"><span>{fr ? 'Découvrir PEAK PITCH' : 'Discover PEAK PITCH'}</span><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M5 23 23 5M5 5h18v18" stroke="currentColor" stroke-width="1.4" /></svg></span>
-    </a>
+      <a class="pitch-cinema-cta" data-pitch-discover href={destination}><span>{fr ? 'Découvrir PEAK PITCH' : 'Discover PEAK PITCH'}</span><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M5 23 23 5M5 5h18v18" stroke="currentColor" stroke-width="1.4" /></svg></a>
+    </div>
+    <button class="pitch-cinema-pause" data-pitch-pause type="button" hidden
+      aria-label={fr ? 'Mettre la vidéo en pause' : 'Pause the video'}
+      data-pause={fr ? 'Mettre la vidéo en pause' : 'Pause the video'}
+      data-resume={fr ? 'Reprendre la vidéo' : 'Resume the video'}>
+      <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path class="pause-icon" d="M6 4h2.5v12H6zm5.5 0H14v12h-2.5z"/><path class="resume-icon" d="m7 4 10 6-10 6z"/></svg>
+    </button>
   </div>
 
   <div class="pitch-cinema-footer">
     <p>{fr ? 'Courtier indépendant · France entière' : 'Independent broker · Throughout France'}<span>ORIAS n° 24002546 · {fr ? 'Supervision ACPR' : 'ACPR supervision'}</span></p>
     <nav aria-label={fr ? 'Poursuivre sur le site' : 'Continue on the website'}>
-      <a href={localiser('/peak-exchange/',lang)}>{fr ? 'Parlons de votre projet' : 'Talk about your project'} ↗</a>
-      <a href="#simulateur">{fr ? 'Simulateur' : 'Simulator'} ↗</a>
+      <a href={localiser('/peak-exchange/',lang)}>{fr ? 'RDV PEAK EXCHANGE' : 'Book PEAK EXCHANGE'} ↗</a>
+      <a href="#simulateur">{fr ? 'Estimer mon budget' : 'Estimate my budget'} ↗</a>
       <a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener">{fr ? 'Assurance emprunteur' : 'Borrower insurance'} ↗</a>
       <a href="#expertises">{fr ? 'Le cabinet & ses expertises' : 'Our firm & expertise'} ↓</a>
     </nav>
@@ -46,7 +51,8 @@ const destination = localiser('/peak-pitch/', lang);
     disposeCinema?.();
     const root = document.querySelector<HTMLElement>('[data-pitch-cinema]');
     const video = root?.querySelector<HTMLVideoElement>('[data-pitch-cinema-film]');
-    if (!root || !video) return;
+    const pause = root?.querySelector<HTMLButtonElement>('[data-pitch-pause]');
+    if (!root || !video || !pause) return;
     const controller = new AbortController();
     const { signal } = controller;
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
@@ -55,6 +61,7 @@ const destination = localiser('/peak-pitch/', lang);
     let finished = false;
     let failed = false;
     let visible = true;
+    let userPaused = false;
     video.muted = true;
     // Mesure locale de lecture pour le contrôle des exports, sans télémétrie réseau.
     const measurePlayback = () => {
@@ -65,22 +72,31 @@ const destination = localiser('/peak-pitch/', lang);
       }
     };
     const synchronize = () => {
-      const shouldPause = finished || failed || preference.matches || staticMode || !visible || document.hidden || menus.some(menu => menu.open) || !!document.querySelector('dialog[open]');
+      pause.hidden = finished || failed || preference.matches || staticMode;
+      pause.classList.toggle('is-paused', userPaused);
+      pause.setAttribute('aria-label', (userPaused ? pause.dataset.resume : pause.dataset.pause) || '');
+      const shouldPause = userPaused || finished || failed || preference.matches || staticMode || !visible || document.hidden || menus.some(menu => menu.open) || !!document.querySelector('dialog[open]');
       if (shouldPause) video.pause();
       else video.play().catch(() => {});
     };
+    pause.addEventListener('click', () => { userPaused = !userPaused; synchronize(); }, { signal });
     preference.addEventListener('change', synchronize, { signal });
     document.addEventListener('visibilitychange', synchronize, { signal });
     menus.forEach(menu => menu.addEventListener('toggle', synchronize, { signal }));
     // Sans boucle : conserver la dernière image, y compris après un menu ou un retour au héros.
     video.addEventListener('timeupdate', measurePlayback, { signal });
-    video.addEventListener('ended', () => { finished = true; video.pause(); measurePlayback(); }, { signal });
+    video.addEventListener('ended', () => {
+      if (document.activeElement === pause) root.querySelector<HTMLAnchorElement>('[data-pitch-discover]')?.focus({preventScroll:true});
+      finished = true;
+      synchronize();
+      measurePlayback();
+    }, { signal });
     video.addEventListener('error', () => { failed = true; synchronize(); }, { signal });
     const observer = new IntersectionObserver(entries => {
       visible = entries.some(entry => entry.isIntersecting);
       synchronize();
     }, { threshold: 0 });
-    observer.observe(root);
+    observer.observe(video);
     // Observe seulement l'ouverture des fenêtres ; ne touche ni au menu ni à la modale de RDV.
     const modalObserver = new MutationObserver(synchronize);
     modalObserver.observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });
@@ -93,15 +109,21 @@ const destination = localiser('/peak-pitch/', lang);
 
 <style>
   .pitch-cinema{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:100svh;margin-top:-76px;padding-top:76px;background:#0b0d12;color:#edeae4;isolation:isolate}
-  .pitch-cinema-stage{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;width:100%}
+  .pitch-cinema-stage{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;width:100%;margin-inline:auto;container-type:inline-size}
+  .pitch-cinema-pause{position:absolute;top:12px;right:12px;display:grid;place-items:center;width:44px;height:44px;color:#edeae4;background:#0b0d12e6;border:1px solid #a6a9b3;border-radius:50%}
+  .pitch-cinema-pause[hidden],.pitch-cinema-pause .resume-icon,.pitch-cinema-pause.is-paused .pause-icon{display:none}
+  .pitch-cinema-pause.is-paused .resume-icon{display:block}
+  .pitch-cinema-pause svg{width:18px;height:18px}
+  @media(min-width:768px){
+    .pitch-cinema-stage{max-width:calc(max(175px,100svh - 146px) * 16 / 9)}
+  }
   .pitch-cinema-screen{display:block;position:relative;width:100%;aspect-ratio:16/9;color:#0b0d12;outline-offset:-3px}
   .pitch-cinema-screen video{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
   /* Un vrai lien recouvre exactement le bouton filmé, quelle que soit la taille de l'écran. */
-  .pitch-cinema-cta{position:absolute;left:5%;top:72.407407%;width:28.854167%;height:7.222222%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 1.7%;border-radius:999px;background:#d9a47c;color:#0b0d12;font-size:clamp(10px,1.12vw,22px);font-weight:500;line-height:1;text-transform:uppercase;white-space:nowrap;transition:background .18s}
+  .pitch-cinema-cta{position:absolute;left:5%;top:72.407407%;width:28.854167%;height:7.222222%;min-height:32px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 1.7%;border-radius:999px;background:#d9a47c;color:#0b0d12;font-size:clamp(9px,1.12cqw,22px);font-weight:500;line-height:1;text-transform:uppercase;white-space:nowrap;transition:background .18s}
   .pitch-cinema-cta svg{flex:0 0 auto;width:7%;height:auto;max-width:30px}
-  .pitch-cinema-screen:hover .pitch-cinema-cta{background:#e7b890}
-  .pitch-cinema-screen:focus-visible{outline:none}
-  .pitch-cinema-screen:focus-visible .pitch-cinema-cta{outline:3px solid #edeae4;outline-offset:4px}
+  .pitch-cinema-cta:hover{background:#e7b890}
+  .pitch-cinema-cta:focus-visible{outline:3px solid #edeae4;outline-offset:4px}
   .pitch-cinema-footer{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:68px;margin:0 clamp(20px,4vw,76px);border-top:1px solid #2a2f3a;font-size:11px;color:#a6a9b3}
   .pitch-cinema-footer p{margin:0;line-height:1.6}
   .pitch-cinema-footer p span{display:block;font-size:10px}
@@ -111,18 +133,19 @@ const destination = localiser('/peak-pitch/', lang);
   .pitch-cinema-mobile-copy{display:none}
   @media(max-width:767px){
     .pitch-cinema{justify-content:flex-start}
-    .pitch-cinema-stage{flex:1;align-items:center;padding-top:48px}
+    .pitch-cinema-stage{align-items:center;padding-top:0}.pitch-cinema-pause{top:8px;right:8px}
     .pitch-cinema-screen{width:100%;aspect-ratio:auto}
     .pitch-cinema-screen video{height:auto;aspect-ratio:16/9}
-    .pitch-cinema-mobile-copy{display:flex;flex-direction:column;gap:16px;padding:24px 24px 20px;color:#edeae4}
+    .pitch-cinema-mobile-copy{display:flex;flex-direction:column;gap:10px;padding:17px 24px 14px;color:#edeae4}
     .pitch-cinema-kicker{font:10px var(--font-mono);letter-spacing:.07em;color:#d9a47c}
     .pitch-cinema-mobile-title{font-size:clamp(30px,8vw,42px);font-weight:300;line-height:1.08;letter-spacing:-.035em;max-width:380px}
     .pitch-cinema-mobile-price{display:flex;align-items:center;gap:16px;font:32px var(--font-sans);font-weight:300;color:#d9a47c}
     .pitch-cinema-mobile-price small{max-width:170px;font:11px/1.6 var(--font-sans);color:#a6a9b3}
-    .pitch-cinema-cta{position:static;width:auto;height:52px;margin:0 24px 30px;padding:0 24px;font-size:14px;gap:18px}
+    .pitch-cinema-cta{position:static;width:auto;height:52px;margin:0 24px 17px;padding:0 24px;font-size:14px;gap:18px}
+    .pitch-cinema-cta::before{content:'';position:absolute;left:5%;top:40.73cqw;width:28.85%;height:max(24px,4.06cqw)}
     .pitch-cinema-cta svg{width:23px}
-    .pitch-cinema-footer{display:block;margin:0 24px;padding:16px 0 18px;font-size:11px}
-    .pitch-cinema-footer nav{gap:2px 22px;margin-top:8px}
+    .pitch-cinema-footer{display:flex;flex-direction:column-reverse;align-items:flex-start;gap:10px;margin:0 24px;padding:3px 0 12px;font-size:11px}
+    .pitch-cinema-footer nav{gap:2px 18px}
     .pitch-cinema-footer a{min-height:36px}
   }
   @media(prefers-reduced-motion:reduce){.pitch-cinema-cta,.pitch-cinema-footer a{transition:none}}

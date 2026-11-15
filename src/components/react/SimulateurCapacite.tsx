@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useId } from 'react';
 import { simulateurTextes } from './textes-react';
 import type { Lang } from '../../i18n';
 
@@ -29,6 +29,32 @@ type Projet = 'rp' | 'loc';
 const fmt = (n: number) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
 /** Répartit 100 % de quotité entre n emprunteurs (le minimum exigé par les banques). */
 const repartir = (n: number) => { const base = Math.floor(100 / n); const reste = 100 - base * n; return Array.from({ length: n }, (_, i) => base + (i < reste ? 1 : 0)); };
+
+function Montant({ value, onValue, label, unit, lang }: {
+  value: number; onValue: (value: number) => void; label: string; unit: string; lang: Lang;
+}) {
+  const id = useId();
+  const [invalid, setInvalid] = useState(false);
+  return (
+    <label className="grid gap-2">
+      <span className="libelle">{label}</span>
+      <span className="relative">
+        <input className="champ pr-20" type="number" inputMode="decimal" min={0} step="any" defaultValue={value}
+          aria-invalid={invalid || undefined} aria-describedby={invalid ? id : undefined}
+          onChange={({ currentTarget: field }) => {
+            const amount = field.valueAsNumber;
+            const valid = Number.isFinite(amount) && amount >= 0;
+            setInvalid(!valid);
+            if (valid) onValue(amount);
+          }} />
+        <span aria-hidden="true" className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 font-mono text-[12px] text-argent">{unit}</span>
+      </span>
+      {invalid && <span id={id} role="status" className="text-sm">{lang === 'fr'
+        ? 'Saisissez un montant positif ou nul. La dernière valeur valide est conservée.'
+        : 'Enter a non-negative amount. The last valid value is kept.'}</span>}
+    </label>
+  );
+}
 
 export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
   const S = simulateurTextes(lang);
@@ -104,7 +130,6 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
     `inline-flex h-10 items-center rounded-pill px-5 text-[14px] font-medium transition-colors ${actif ? 'bg-etoile text-abime' : 'border border-filet text-etoile hover:bg-graphite'}`;
   const petite = (actif: boolean) =>
     `inline-flex h-8 items-center rounded-pill px-3.5 text-[13px] font-medium transition-colors ${actif ? 'bg-etoile text-abime' : 'border border-filet text-etoile hover:bg-graphite'}`;
-  const unite = (txt: string) => <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 font-mono text-[12px] text-argent">{txt}</span>;
   const curseur = (libelle: string, valeur: string, props: React.InputHTMLAttributes<HTMLInputElement>, note?: string) => (
     <label className="grid gap-3">
       <span className="flex flex-wrap justify-between gap-2"><span className="libelle">{libelle} {note && <span className="font-normal text-argent">{note}</span>}</span><span className="font-mono text-[13px] text-cuivre-clair tabular-nums">{valeur}</span></span>
@@ -133,9 +158,7 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
         </div>
       </fieldset>
 
-      <label className="grid gap-2"><span className="libelle">{S.revenus}</span>
-        <span className="relative"><input className="champ pr-20" type="number" min={0} step={100} value={revenus} onChange={(e) => setRevenus(+e.target.value)} />{unite(S.mois)}</span>
-      </label>
+      <Montant label={S.revenus} value={revenus} onValue={setRevenus} unit={S.mois} lang={lang} />
 
       {projet === 'loc' && (
         <div className="grid gap-2">
@@ -145,17 +168,13 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
             <button type="button" className={petite(ponderationLoyers === 90)} aria-pressed={ponderationLoyers === 90} onClick={() => setPonderationLoyers(90)}>90 %</button>
             <span className="font-mono text-[11.5px] text-argent">{S.retenus} {ponderationLoyers} % {S.loyers_norme}</span>
           </div>
-          <label className="relative"><span className="sr-only">{S.loyers}</span><input className="champ pr-20" type="number" min={0} step={50} value={loyers} onChange={(e) => setLoyers(+e.target.value)} />{unite(S.mois)}</label>
+          <Montant label={S.loyers} value={loyers} onValue={setLoyers} unit={S.mois} lang={lang} />
         </div>
       )}
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="grid gap-2"><span className="libelle">{S.apport}</span>
-          <span className="relative"><input className="champ pr-10" type="number" min={0} step={1000} value={apport} onChange={(e) => setApport(+e.target.value)} />{unite('€')}</span>
-        </label>
-        <label className="grid gap-2"><span className="libelle">{S.charges}</span>
-          <span className="relative"><input className="champ pr-20" type="number" min={0} step={50} value={charges} onChange={(e) => setCharges(+e.target.value)} />{unite(S.mois)}</span>
-        </label>
+        <Montant label={S.apport} value={apport} onValue={setApport} unit={'€'} lang={lang} />
+        <Montant label={S.charges} value={charges} onValue={setCharges} unit={S.mois} lang={lang} />
       </div>
 
       {curseur(S.duree, `${duree} ${S.ans}`, { min: 5, max: 25, step: 1, value: duree, onChange: (e) => setDuree(+e.target.value) })}
@@ -170,7 +189,7 @@ export default function SimulateurCapacite({ lang = 'fr' }: { lang?: Lang }) {
           <button type="button" className={petite(ponderation === 90)} aria-pressed={ponderation === 90} onClick={() => setPonderation(90)}>90 %</button>
           <span className="font-mono text-[11.5px] text-argent">{S.retenus} {ponderation} %</span>
         </div>
-        <label className="relative"><span className="sr-only">{S.autres_sr}</span><input className="champ pr-20" type="number" min={0} step={50} value={autresRevenus} onChange={(e) => setAutresRevenus(+e.target.value)} />{unite(S.mois)}</label>
+        <Montant label={S.autres_sr} value={autresRevenus} onValue={setAutresRevenus} unit={S.mois} lang={lang} />
       </div>
 
 

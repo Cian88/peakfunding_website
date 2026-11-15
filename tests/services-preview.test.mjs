@@ -36,11 +36,11 @@ test('Accueil vidéo : fichier propre, lecture automatique sans boucle, découve
  for(const prefix of ['', 'en/']){
   const html=load(read('dist/'+prefix+'index.html'));const hero=html('[data-pitch-cinema]');
   if(!hero.length)continue; // La vidéo est un réglage explicite du clone local.
-  const film=hero.find('video');assert.notEqual(film.attr('autoplay'),undefined);assert.notEqual(film.attr('muted'),undefined);assert.equal(film.attr('controls'),undefined);assert.equal(film.attr('loop'),undefined);
+  const film=hero.find('video');assert.equal(film.attr('autoplay'),undefined);assert.equal(hero.find('[data-pitch-pause]').length,1);assert.notEqual(film.attr('muted'),undefined);assert.equal(film.attr('controls'),undefined);assert.equal(film.attr('loop'),undefined);
   assert.equal(film.attr('poster'),'/peak-pitch/pitch-hero-poster.jpg');
   assert.equal(hero.find('[data-pitch-discover]').attr('href'),`/${prefix}peak-pitch/`);
   assert.ok(hero.find(`a[href="/${prefix}peak-exchange/"]`).length);
   assert.equal(hero.find('a[href="#rdv"],.heros-photo').length,0);
  }
- const source=read('src/components/PeakPitchHero.astro');assert.match(source,/finished = true; video\.pause/);assert.ok(source.includes('header [data-services]'));
+ const source=read('src/components/PeakPitchHero.astro');assert.match(source,/finished = true;\s+synchronize/);assert.ok(source.includes('header [data-services]'));
 });

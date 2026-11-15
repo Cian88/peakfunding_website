@@ -18,11 +18,11 @@
   --color-blanc: #ffffff;
   --color-encre: #111111;
   --color-corps: #3d3f46;
-  --color-gris: #6d7078;
+  --color-gris: #62656d;
   --color-trait: #e2ded7;
   --color-cuivre: #b87b4f;
   --color-cuivre-clair: #d9a47c;
-  --color-cuivre-profond: #9a6b45;
+  --color-cuivre-profond: #825333;
 
   --font-sans: "Geist Variable", "Geist", "Inter", system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
@@ -258,8 +258,8 @@
 /* Surfaces are independent of the canvas, so fields, photos and cards never invert. */
 .fond-scroll :is(.carte-donnee, .simulator-panel, .carte-claire) {
   --color-etoile:#edeae4; --color-argent:#a6a9b3; --color-filet:#2a2f3a;
-  --color-encre:#111111; --color-corps:#3d3f46; --color-gris:#6d7078; --color-trait:#e2ded7;
-  --color-cuivre-clair:#d9a47c; --color-cuivre-profond:#9a6b45;
+  --color-encre:#111111; --color-corps:#3d3f46; --color-gris:#62656d; --color-trait:#e2ded7;
+  --color-cuivre-clair:#d9a47c; --color-cuivre-profond:#825333;
 }
 .fond-scroll > section:not(.heros) .btn-fantome { border-color:var(--color-filet); }
 .fond-scroll > section:not(.heros) .btn-cuivre { background:#9a6b45; color:#fff; }

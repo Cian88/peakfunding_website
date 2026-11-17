@@ -6,8 +6,8 @@
 
 - Tous les accès à l’ancien formulaire, y compris simulateur, expertises, articles, avis, équipe, navigation et pages 404 FR/EN, rejoignent `/peak-exchange/` ou `/en/peak-exchange/`.
 - Les favoris `#rdv` et l’ancien événement `ouvrir-rdv` sont redirigés ; le formulaire et les agendas gratuits ne sont plus chargés dans le bundle du site.
-- PEAK EXCHANGE : 299 € TTC, échange d’analyse et d’argumentation bancaire, puis note de conseil personnalisée. Service autonome.
-- Conditions commerciales : si le client confie son financement au cabinet et que le cabinet accepte de l’accompagner, sous réserve que le dossier soit défendable, les 299 € TTC réglés sont déduits des honoraires de courtage. Cette disposition figure sur l’offre, l’accueil, les conditions préparatoires, le paiement et la confirmation de commande.
+- PEAK EXCHANGE : 299 € TTC, échange d’analyse et d’argumentation bancaire, puis note de conseil personnalisée. Service autonome.
+- Conditions commerciales : si le client confie son financement au cabinet et que le cabinet accepte de l’accompagner, sous réserve que le dossier soit défendable, les 299 € TTC réglés sont déduits des honoraires de courtage. Cette disposition figure sur l’offre, l’accueil, les conditions préparatoires, le paiement et la confirmation de commande.
 - La déduction sera portée sur le décompte d’honoraires du cabinet ; aucune réduction automatique ni facture de courtage n’est créée par le site. Les factures restent établies depuis Qonto.
 - Coordonnées administratives protégées à l’affichage ; adresse retirée du footer, JSON-LD, repli du formulaire et `llms.txt`. Le contact légal reste accessible sur la page Contact. Les personnes qui connaissent déjà l’adresse peuvent toujours écrire.
 - Les comparateurs d’assurance externes et les espaces Actelo conservent leurs destinations. Le code de mouvement global et le composant animé des avis sont conservés.
@@ -31,7 +31,7 @@ Serveur : dépôt `C:/Users/valen/dev/peak-dossier`, routes `/api/exchange/`, pa
 3. Vérifier le serveur hébergé : l’ancienne erreur 500 du Worker doit être résolue ou le serveur doit être disponible ailleurs. La seule validation du compte Stancer ne suffit pas à rendre un serveur indisponible opérationnel.
 4. Refaire `npm run build` et `npm test` sur les deux dépôts. Le test d’empreinte des visuels V1 exige une archive locale non versionnée ; s’il est omis pour absence de l’archive, ce résultat doit être déclaré. Les URL d’assurance/Actelo, les pages et les images restent contrôlées sans cette archive.
 5. Recette visuelle ordinateur/mobile : boutons, langue, ancien `#rdv`, menu, fondus, avis, prix et déduction. La précédente vérification d’Edge a été interrompue par Computer Use : ne pas la déclarer complète.
-6. Recette Stancer autorisée : une commande 299 €, confirmation par API serveur, absence d’agenda avant paiement, accès après confirmation, reprise sans double débit. Les tests automatisés utilisent un prestataire factice ; aucun paiement réel n’a été effectué.
+6. Recette Stancer autorisée : une commande 299 €, confirmation par API serveur, absence d’agenda avant paiement, accès après confirmation, reprise sans double débit. Les tests automatisés utilisent un prestataire factice ; aucun paiement réel n’a été effectué.
 7. Commiter les changements des deux dépôts avant publication. Vérifier ce qui entre dans `main`, préserver les changements parallèles et ne pas embarquer le lancement PEAK PITCH par accident.
 8. Après publication autorisée : vérifier les pages publiques et leur contenu, les anciennes destinations RDV, la disponibilité du serveur, l’absence d’e-mail du cabinet en clair dans HTML/JS/JSON-LD/llms et de lien privé d’agenda. Conserver un statut Git propre et renseigner les commits publiés dans Obsidian.
 

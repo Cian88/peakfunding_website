@@ -41,12 +41,31 @@ test('EXCHANGE : déduction conditionnelle expliquée sur l’offre, l’accueil
  }
  assert.match(load(read('dist/conditions-peak-exchange/index.html'))('main').text(),/défendable/);
 });
-test('Contact : aucun e-mail du cabinet en clair dans les pages, JS et JSON-LD distribués',()=>{
+test('Contact : e-mails du cabinet réservés aux trois occurrences juridiques FR/EN',()=>{
  const crawl=p=>readdirSync(p,{withFileTypes:true}).flatMap(f=>f.isDirectory()?crawl(p+'/'+f.name):[p+'/'+f.name]);
- for(const file of crawl('dist').filter(p=>/\.(html|js|json|txt)$/.test(p)))assert.doesNotMatch(read(file),/[\w.+-]+@peakfunding\.eu/i,file);
- const $=load(read('dist/mentions-legales/index.html'));assert.equal($('[data-protected-email]').length,0);assert.ok($('a[href="/contact/#administratif"]').length>=2);
+ for(const file of crawl('dist').filter(p=>/\.(html|js|json|txt)$/.test(p))){
+  const text=read(file),legal=/\/(?:en\/)?(?:mentions-legales|politique-de-confidentialite)\/index\.html$/.test(file);
+  if(!legal){assert.doesNotMatch(text,/[\w.+-]+@peakfunding\.eu/i,file);continue;}
+  const $=load(text),emails=$('[data-legal-email]');
+  assert.equal(emails.length,file.includes('mentions-legales')?2:1,file);
+  emails.each((_,node)=>assert.equal($(node).text(),'contact@peakfunding.eu'));
+  assert.equal($('a[href^="mailto:"][href*="@peakfunding.eu"]').length,0);
+  assert.equal((text.match(/contact@peakfunding\.eu/g)||[]).length,emails.length,file);
+ }
+ for(const slug of ['mentions-legales','politique-de-confidentialite']){
+  const $=load(read('dist/en/'+slug+'/index.html'));
+  $('.legal-content a[href^="/"]').each((_,a)=>assert.match($(a).attr('href'),/^\/en\//));
+  assert.equal($('.legal-content a[href="/en/contact/#administratif"]').text(),slug==='politique-de-confidentialite'?'Contact the firm':'');
+ }
 });
 test('Contact : transformation conserve les autres adresses et enlève le mailto public du cabinet',()=>{
  const html=protectPublicEmails('<p>contact@peakfunding.eu</p><a href="mailto:contact@peakfunding.eu">contact@peakfunding.eu</a><p>mediateur@example.test</p>');
  assert.doesNotMatch(html,/@peakfunding\.eu|mailto:/);assert.match(html,/mediateur@example.test/);assert.equal(load(html)('a[href="/contact/#administratif"]').length,2);
+});
+
+test('Contact : exception juridique explicite conservée, remplacement localisé en anglais',()=>{
+ const legal='<span data-legal-email>contact@peakfunding.eu</span>';
+ const html=protectPublicEmails(legal+' contact@peakfunding.eu','en');
+ const $=load(html);assert.equal($('[data-legal-email]').text(),'contact@peakfunding.eu');
+ assert.equal($('a').attr('href'),'/en/contact/#administratif');assert.equal($('a').text(),'Contact the firm');
 });

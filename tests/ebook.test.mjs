@@ -12,7 +12,7 @@ test('Livre : titre, édition, prix, couverture et chapitres localisés',()=>{
   assert.match($('main').text(),/24[,.]90/);assert.match($('main').text(),new RegExp(pages+' pages|'+pages+'pages'));
   assert.equal($('.book-stage img').attr('src'),`/img/ebook/couverture-${lang}.webp`);
   assert.equal($('[data-ebook-buy]').length,0,'vente non activée');assert.ok($('[data-ebook-buy-disabled]').length>0);
-  const graph=JSON.parse($('script[type="application/ld+json"]').html())['@graph'];const book=graph.find(n=>n['@type']==='Book');assert.equal(book.inLanguage,lang);assert.equal(book.numberOfPages,pages);assert.equal(book.offers.price,'24.90');assert.equal(book.offers.seller['@id'],'https://peakfunding.eu/#organisation');assert.match($('main').text(),/PEAK FUNDING/);assert.match($('main').text(),/Stancer/);
+  assert.equal($('script[type="application/ld+json"]').length,0,'vente fermée : aucun graphe commercial');assert.match($('meta[name="robots"]').attr('content'),/noindex/);assert.match($('main').text(),/PEAK FUNDING/);assert.match($('main').text(),/Stancer/);
   const home=load(read(`dist/${prefix}index.html`));assert.ok(home(`a[href="/${prefix}livre/"]`).length>=4);assert.equal(home('#livre .teaser-cover img').length,1);
  }
 });

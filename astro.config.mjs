@@ -1,11 +1,15 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { loadEnv } from 'vite';
+import { salesIndexable } from './src/lib/sales-indexing.mjs';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { observatoireDevPlugin } from './src/server/observatoire.mjs';
 import { dateArticle, dateISO } from './src/lib/editorial.mjs';
 import articles from './src/data/articles.json' with { type: 'json' };
+
+const salesEnv = loadEnv(process.env.NODE_ENV || 'production', process.cwd(), 'PUBLIC_');
 
 export default defineConfig({
   site: 'https://peakfunding.eu',
@@ -18,7 +22,7 @@ export default defineConfig({
     react(),
     sitemap({
       // Pages privées ou techniques : jamais dans le plan du site (elles portent déjà noindex).
-      filter: (page) => !/\/(avis|404|conditions-peak-exchange|conditions-ebook|conditions-peak-pitch|peak-pitch)(\/|$)/.test(new URL(page).pathname),
+      filter: (page) => salesIndexable(new URL(page).pathname, salesEnv) && !/\/(avis|404|conditions-peak-exchange|conditions-ebook|conditions-peak-pitch|peak-pitch)(\/|$)/.test(new URL(page).pathname),
       i18n: { defaultLocale: 'fr', locales: { fr: 'fr-FR', en: 'en-GB' } },
       changefreq: 'weekly',
       // Date de dernière modification uniquement là où elle est connue : la date de l'article.

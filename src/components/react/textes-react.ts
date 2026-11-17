@@ -83,7 +83,7 @@ export const rdv = {
     ] as Option[],
     courtier: [
       { v: 'Peu importe', l: 'Peu importe' },
-      { v: 'Valentin Boura–Defranoux', l: 'Valentin Boura–Defranoux' },
+      { v: 'Valentin Boura–Defranoux', l: 'Valentin Boura–Defranoux' },
       { v: 'Maxime Pidoux', l: 'Maxime Pidoux' },
     ] as Option[],
   },
@@ -161,7 +161,7 @@ export const rdv = {
     ] as Option[],
     courtier: [
       { v: 'Peu importe', l: 'No preference' },
-      { v: 'Valentin Boura–Defranoux', l: 'Valentin Boura–Defranoux' },
+      { v: 'Valentin Boura–Defranoux', l: 'Valentin Boura–Defranoux' },
       { v: 'Maxime Pidoux', l: 'Maxime Pidoux' },
     ] as Option[],
   },

@@ -7,15 +7,15 @@ Le clone local est dans `C:/Users/valen/dev/peakfunding-preview`, branche `codex
 ## Modifications réunies
 
 - Menu **Nos services** immédiatement avant **Vos espaces**, regroupant livre, PEAK PITCH et PEAK EXCHANGE. Déclinaison mobile, fermeture au clic extérieur et par Échap, un seul menu ouvert.
-- Livre vendu par PEAK FUNDING à 24,90 €, auteur Valentin Boura Defranoux, extraits FR/EN gratuits, livres complets hors du site public.
-- PEAK PITCH à 99 €, TVA non applicable, trois livrables et une génération par projet. Reprise de la page existante, sans ancienne option EXCHANGE à 199 €.
-- PEAK EXCHANGE autonome à 299 € TTC, déduction conditionnelle des honoraires de courtage conservée.
+- Livre vendu par PEAK FUNDING à 24,90 €, auteur Valentin Boura–Defranoux, extraits FR/EN gratuits, livres complets hors du site public.
+- PEAK PITCH à 99 €, TVA non applicable, trois livrables et une génération par projet. Reprise de la page existante, sans ancienne option EXCHANGE.
+- PEAK EXCHANGE autonome à 299 € TTC, déduction conditionnelle des honoraires de courtage conservée.
 - Ouvertures livre et EXCHANGE sous le menu en plein écran ; conditions du livre discrètes dans la conclusion sombre.
-- Ancienne courbe latérale refusée par Valentin et retirée. Proposition de **signet de dossier**, petite encoche cuivre mobile au bord de l’écran ; titre de rubrique seulement au survol ou au focus. Voir `navigation-lecture.md`.
+- Barre de défilement native rétablie. Le signet de lecture reste disponible dans son composant, sans montage global : proposition non validée par Valentin.
 
 ## Vidéo d’accueil
 
-La vidéo est reprise de la production locale existante, avec photographie fixe, titrage natif, fondus de 1,15 s, 22 secondes à 60 images/s. Les deux nouvelles éditions HD et UHD et l’affiche sont dans `public/peak-pitch/pitch-hero-*`. L’ancienne ligne « En option : PEAK EXCHANGE · 199 € TTC » a été retirée lors de la recomposition des plans. Aucun faux remplacement de prix par-dessus le film.
+La vidéo est reprise de la production locale existante, avec photographie fixe, titrage natif, fondus de 1,15 s, 22 secondes à 60 images/s. Les deux nouvelles éditions HD et UHD et l’affiche sont dans `public/peak-pitch/pitch-hero-*`. L’ancienne ligne d’option PEAK EXCHANGE a été retirée lors de la recomposition des plans. Aucun faux remplacement de prix par-dessus le film.
 
 La lecture est automatique, muette, sans boucle ; la fin conserve la dernière image et le lien Découvrir PEAK PITCH. Le contrôleur respecte le mouvement réduit, la visibilité de l’onglet, les menus et la navigation Astro. La racine `.heros` est conservée pour les transitions de fond du site. La page PEAK PITCH utilise le même film nettoyé.
 
@@ -41,3 +41,7 @@ Avant ouverture : confirmation explicite de Valentin, compte Stancer opérationn
 ## Vérifications
 
 72 pages FR/EN construites. 70 tests réussis, zéro échec, un comparatif historique omis faute d’archive V1. Vérifications des liens, des contenus protégés, des accès fermés, du menu et du contrôleur de défilement. Aucun appel Claude, paiement, rendez-vous ou e-mail réel. L’accès navigateur disponible auparavant était indisponible ; la recette visuelle réelle reste une étape avant publication.
+
+## Corrections de revue du 17 novembre 2026
+
+Travail poursuivi sur le VPS, dans /home/valentin/dev/peakfunding-preview, branche codex/services-preview, à partir de 52f32ae. Aucun push, déploiement ni rebase. Les ventes restent fermées. Voir corrections-revue-2026-11-17.md pour la recette et les décisions.

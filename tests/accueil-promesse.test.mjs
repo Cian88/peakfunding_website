@@ -29,7 +29,8 @@ test('Accueil FR/EN : spécialités explicites, signature et actions conservées
     const $ = load(readFileSync(file, 'utf8'));
     const hero = $('.heros');
     if(hero.is('[data-pitch-cinema]')){
-      assert.match(hero.find('h1').text(),/PEAK PITCH/);
+      assert.match(hero.find('h1').text(),/courtage|brokerage/);
+      assert.equal(hero.find('h1.sr-only').length,0);assert.match(hero.find('h2').text(),/PEAK PITCH/);
       const video=hero.find('video');assert.equal(video.length,1);assert.equal(video.attr('autoplay'),undefined);assert.notEqual(video.attr('muted'),undefined);assert.equal(video.attr('loop'),undefined);
       assert.equal(hero.find('[data-pitch-discover]').attr('href'),file.includes('/en/')?'/en/peak-pitch/':'/peak-pitch/');
       assert.equal(hero.find('[data-assurance]').attr('target'),'_blank');continue;

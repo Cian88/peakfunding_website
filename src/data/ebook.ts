@@ -3,7 +3,7 @@ import assets from './ebook-assets.json';
 import { ebookCheckoutURL } from '../lib/ebook-checkout.mjs';
 
 export const EBOOK_PRICE = 24.90;
-export const EBOOK_AUTHOR = 'Valentin Boura Defranoux';
+export const EBOOK_AUTHOR = 'Valentin Boura–Defranoux';
 export const EBOOK_PUBLICATION = 'Novembre 2026';
 export const ebookPrice = (lang: Lang) => new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', {style:'currency',currency:'EUR'}).format(EBOOK_PRICE);
 export const checkoutURL = (lang: Lang): string | null => ebookCheckoutURL(import.meta.env, lang);

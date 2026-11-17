@@ -6,7 +6,7 @@ import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import AncienRdvRedirect from '../components/AncienRdvRedirect.astro';
-import ProgressionLecture from '../components/ProgressionLecture.astro';
+import { salesIndexable } from '../lib/sales-indexing.mjs';
 import { langCourante, urlAutreLangue, t } from '../i18n';
 import { organisation, siteWeb, pageWeb, serialiser } from '../lib/seo';
 
@@ -19,7 +19,8 @@ interface Props {
   /** Métadonnées d'article (Open Graph) : date ISO et auteur. */
   publie?: string; auteur?: string;
 }
-const { title, description, heros = false, image = '/img/hero-1600.webp', clientRouting = true, noindex = false, schema = [], typePage, publie, auteur } = Astro.props;
+const { title, description, heros = false, image = '/img/hero-1600.webp', clientRouting = true, noindex: requestedNoindex = false, schema = [], typePage, publie, auteur } = Astro.props;
+const noindex = requestedNoindex || !salesIndexable(Astro.url.pathname, import.meta.env);
 const lang = langCourante(Astro.currentLocale);
 const tr = t(lang);
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -69,12 +70,10 @@ const graphe = noindex ? [] : [organisation(lang), siteWeb(lang), pageWeb({ url:
     <button type="button" data-menu-voile class="menu-voile" aria-label={tr.modale.fermer} tabindex="-1"></button>
     <main id="contenu" tabindex="-1"><slot /></main>
     <Footer />
-    <ProgressionLecture />
     <AncienRdvRedirect />
     <script>
       import { demarrerMouvement } from '../scripts/motion';
-      import { demarrerLecture } from '../scripts/lecture';
-      const initialiser = () => { demarrerMouvement(); demarrerLecture(); };
+      const initialiser = () => { demarrerMouvement(); };
       document.addEventListener('astro:page-load', initialiser);
       if (document.body.dataset.pageNavigation === 'document') initialiser();
     </script>

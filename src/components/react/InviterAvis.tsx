@@ -14,7 +14,7 @@ type Etape = 'chargement' | 'auth' | 'refuse' | 'ok';
 type Invitation = { jeton: string; email_client: string; dossier: string | null; cree_le: string; expire_le: string; utilise_le: string | null };
 type AvisAttente = { id: string; prenom: string; initiale: string; note: number; projet: string; montant: number; ville: string; texte: string; cree_le: string };
 
-const COURTIERS = ['Valentin Boura–Defranoux', 'Maxime Pidoux'];
+const COURTIERS = ['Valentin Boura–Defranoux', 'Maxime Pidoux'];
 const SITE = 'https://peakfunding.eu';
 
 const UI = {

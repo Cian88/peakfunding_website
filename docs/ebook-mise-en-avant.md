@@ -4,7 +4,7 @@
 
 ## Offre et vendeur
 
-PEAK FUNDING, SIREN 987 461 787, vend le livre ; Valentin Boura Defranoux est l’auteur. Prix affiché : **24,90 €**, paiement unique, une édition PDF française ou anglaise au choix par achat, sans abonnement. **Stancer** remplace le choix initial de Stripe.
+PEAK FUNDING, SIREN 987 461 787, vend le livre ; Valentin Boura–Defranoux est l’auteur. Prix affiché : **24,90 €**, paiement unique, une édition PDF française ou anglaise au choix par achat, sans abonnement. **Stancer** remplace le choix initial de Stripe.
 
 Le traitement fiscal du livre reste à confirmer pour la facturation Qonto ; ne pas reprendre automatiquement celui des autres prestations. Le serveur conserve `vatTreatment: to_confirm`.
 

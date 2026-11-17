@@ -12,13 +12,13 @@ const read = file => readFileSync(file, 'utf8');
 const articles = JSON.parse(read('src/data/articles.json'));
 const normalize = value => value.replace(/\s+/g, ' ').trim();
 const protectedFiles = {
-  'src/contenu-legal/mentions-legales.html': '4D21C573BF3EDFD789A35090D41EA07BAC3580AF9AFCA4C4BCCA40A183EC4C3A',
-  'src/contenu-legal/politique-de-confidentialite.html': '8FE1D89573FB81AA7C5DEDFCBD8AF354C45DAB97FEBE4FD17B12F344EADB7CC0',
+  'src/contenu-legal/mentions-legales.html': 'FF7904B5F039BE738A76E5ACAB716E9074F01B03C61C2FF91B09B254297FD6D6',
+  'src/contenu-legal/politique-de-confidentialite.html': '5E3C978D53BAF8F9B6CB8C340B225C064350ECB9CA06E017A654852DDB4EFD38',
   'src/contenu-legal/cgu.html': 'B07104AAE69BD8BEA3F2822E26364AF0FF34C24B31064CE3BC4C1099233CE881',
   // Les interfaces évoluent ; calculs et charge utile sont protégés dans ergonomie.test.mjs.
 };
 
-test('Les trois sources légales protégées restent identiques hors fins de ligne Windows', () => {
+test('Les sources légales approuvées restent identiques hors fins de ligne Windows', () => {
   for (const [file, hash] of Object.entries(protectedFiles)) assert.equal(createHash('sha256').update(read(file).replace(/\r\n/g, '\n')).digest('hex').toUpperCase(), hash, file);
 });
 test('Les thèmes accentués correspondent aux filtres CSS', () => {

@@ -27,7 +27,7 @@ const expUiFr = {
   etape: 'Étape',
   faq_eyebrow: 'Questions fréquentes',
   faq_titre: 'Ce qu’on nous demande souvent.',
-  final_insure: 'Échanger avec le cabinet',
+  final_insure: 'Consulter les guides assurance',
   final_autre: 'Estimer ma capacité',
   nouvel_onglet: ' (nouvel onglet)',
   guides_eyebrow: 'Guides',
@@ -42,7 +42,7 @@ const expUiEn: typeof expUiFr = {
   etape: 'Step',
   faq_eyebrow: 'Frequently asked',
   faq_titre: 'What we’re often asked.',
-  final_insure: 'Talk to the firm',
+  final_insure: 'Read the insurance guides',
   final_autre: 'Estimate my capacity',
   nouvel_onglet: ' (new tab)',
   guides_eyebrow: 'Guides',
@@ -55,7 +55,7 @@ export function expertiseUi(lang: Lang) {
 const reperesFr = [
   { titre: 'Expertises complémentaires', texte: 'Immobilier, entreprise et assurance emprunteur.' },
   { titre: 'Un interlocuteur dédié', texte: 'Du premier échange au déblocage des fonds.' },
-  { titre: 'Analyse avec PEAK EXCHANGE', texte: 'Un échange et une note de conseil, 299 € TTC.' },
+  { titre: 'Analyse avec PEAK EXCHANGE', texte: 'Un échange et une note de conseil, 299 € TTC.' },
   { titre: 'Partout en France', texte: 'Un accompagnement possible à distance.' },
 ];
 const reperesEn = [
@@ -121,7 +121,7 @@ const uiFr = {
   hero_texte: 'Investissement locatif, SCI, reprise d’entreprise, opérations de marchands de biens : PEAK FUNDING structure et négocie votre financement, partout en France.',
   hero_cta1: 'Parlons de votre projet',
   hero_cta2: 'Estimer ma capacité',
-  hero_note: 'PEAK EXCHANGE · 299 € TTC · échange et note de conseil personnalisée.',
+  hero_note: 'PEAK EXCHANGE · 299 € TTC · échange et note de conseil personnalisée.',
   hero_assurance: 'Comparer mon assurance emprunteur ↗',
   hero_nouvel_onglet: ' (nouvel onglet)',
   hero_orias: 'ORIAS n° 24002546 · Supervision ACPR',
@@ -155,7 +155,7 @@ const uiFr = {
   faq_cta: 'Poser ma question ↗',
   bandeau_eyebrow: 'Prendre rendez-vous',
   bandeau_titre: 'Parlons de votre projet.',
-  bandeau_texte: 'PEAK EXCHANGE : un échange pour analyser les points forts et faibles de votre dossier, construire vos arguments et comprendre le contexte bancaire. Une note de conseil personnalisée est incluse. 299 € TTC.',
+  bandeau_texte: 'PEAK EXCHANGE : un échange pour analyser les points forts et faibles de votre dossier, construire vos arguments et comprendre le contexte bancaire. Une note de conseil personnalisée est incluse. 299 € TTC.',
   bandeau_cta1: 'Réserver PEAK EXCHANGE',
   bandeau_cta2: 'Estimer ma capacité',
 };

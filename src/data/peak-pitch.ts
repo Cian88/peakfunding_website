@@ -1,4 +1,4 @@
-/** PEAK PITCH : préparation autonome du dossier bancaire, 99 €.
+/** PEAK PITCH : préparation autonome du dossier bancaire, 99 €.
     Source unique des textes de la page, de sa FAQ et de ses données structurées :
     les moteurs et assistants IA lisent exactement ce que lit le visiteur.
     Chaque affirmation décrit ce que fait réellement le module PEAK DOSSIER (~/dev/peak-dossier). */
@@ -28,10 +28,10 @@ export type PeakPitch = {
 
 const fr: PeakPitch = {
   titre: 'PEAK PITCH | L’outil pour préparer son dossier de prêt immobilier comme un courtier',
-  description: 'PEAK PITCH, l’outil innovant de PEAK FUNDING : préparez votre dossier de prêt immobilier avec l’expertise d’un cabinet de courtage et mettez toutes les chances de votre côté auprès des banques. 99 € (TVA non applicable), sans mandat.',
+  description: 'PEAK PITCH, l’outil innovant de PEAK FUNDING : préparez votre dossier de prêt immobilier avec l’expertise d’un cabinet de courtage et mettez toutes les chances de votre côté auprès des banques. 99 € (TVA non applicable), sans mandat.',
   eyebrow: 'PEAK PITCH / PRÉPARATION DU DOSSIER BANCAIRE',
   h1: 'Votre dossier.<br/>Présenté comme<br/>la banque l’attend.',
-  intro: 'PEAK PITCH est un outil innovant conçu par PEAK FUNDING, cabinet de courtage, pour les porteurs d’un projet immobilier qui veulent mettre toutes les chances de leur côté auprès des banques. Vous gardez la main sur votre dossier ; l’outil y applique l’expertise métier du cabinet, la façon dont ses courtiers structurent et présentent un dossier à un comité de crédit, et vous remet trois documents prêts à présenter. Pour 99 €, une fraction du coût d’un accompagnement complet.',
+  intro: 'PEAK PITCH est un outil innovant conçu par PEAK FUNDING, cabinet de courtage, pour les porteurs d’un projet immobilier qui veulent mettre toutes les chances de leur côté auprès des banques. Vous gardez la main sur votre dossier ; l’outil y applique l’expertise métier du cabinet, la façon dont ses courtiers structurent et présentent un dossier à un comité de crédit, et vous remet trois documents prêts à présenter. Pour 99 €, une fraction du coût d’un accompagnement complet.',
   promesse: {
     titreMain: 'Vous gardez la main',
     main: [
@@ -44,7 +44,7 @@ const fr: PeakPitch = {
       { titre: 'La structure d’un dossier de courtier', texte: 'Les livrables reprennent l’ordre de lecture d’un comité de crédit : la demande, les emprunteurs, le bien, les revenus, le plan de financement, l’analyse, la synthèse.' },
       { titre: 'Des chiffres cohérents et sourcés', texte: 'Le budget, l’apport et le prêt demandé sont rapprochés. Chaque chiffre est indiqué comme déclaré, calculé ou issu du simulateur, et rien n’est inventé : sans les informations nécessaires, une mensualité ou un TAEG n’est pas affiché.' },
       { titre: 'Une pièce par personne et par société', texte: 'Chaque emprunteur, co-emprunteur, caution ou société concernée reçoit sa propre liste selon son rôle, son statut professionnel et la situation de la société, existante ou à créer.' },
-      { titre: 'Une expertise métier, à un coût accessible', texte: 'La méthode de travail des courtiers PEAK FUNDING, appliquée à votre projet pour 99 € : sans honoraires de succès, sans abonnement, sans rendez-vous à caler.' },
+      { titre: 'Une expertise métier, à un coût accessible', texte: 'La méthode de travail des courtiers PEAK FUNDING, appliquée à votre projet pour 99 € : sans honoraires de succès, sans abonnement, sans rendez-vous à caler.' },
     ],
   },
   livrables: [
@@ -80,8 +80,8 @@ const fr: PeakPitch = {
   },
   film: { eyebrow: 'DU PROJET AUX LIVRABLES', titre: 'Découvrez le parcours en 22 secondes.', aria: 'Présentation sans son du parcours, avec textes à l’écran' },
   faq: [
-    { q: 'Comment maximiser ses chances d’obtenir un prêt immobilier ?', r: 'Une banque se prononce plus facilement sur un dossier clair, cohérent et complet : une demande précise, un plan de financement équilibré, des revenus et des charges justifiés, les pièces de chaque emprunteur et de chaque société réunies. PEAK PITCH, l’outil de PEAK FUNDING, applique cette méthode de courtier à votre projet et vous remet les trois documents qui la mettent en forme, pour 99 €. Aucun outil ne garantit un accord : la décision reste celle de la banque.' },
-    { q: 'Comment préparer moi-même mon dossier de prêt immobilier sans le confier à un courtier ?', r: 'PEAK PITCH vous guide en 8 étapes et produit les trois documents qu’attend une banque : une note de synthèse avec annexe, la liste des pièces à réunir pour chaque personne et chaque société, et une présentation bancaire. Vous ne signez aucun mandat et présentez vous-même votre dossier aux banques de votre choix. 99 € par projet, TVA non applicable.' },
+    { q: 'Comment maximiser ses chances d’obtenir un prêt immobilier ?', r: 'Une banque se prononce plus facilement sur un dossier clair, cohérent et complet : une demande précise, un plan de financement équilibré, des revenus et des charges justifiés, les pièces de chaque emprunteur et de chaque société réunies. PEAK PITCH, l’outil de PEAK FUNDING, applique cette méthode de courtier à votre projet et vous remet les trois documents qui la mettent en forme, pour 99 €. Aucun outil ne garantit un accord : la décision reste celle de la banque.' },
+    { q: 'Comment préparer moi-même mon dossier de prêt immobilier sans le confier à un courtier ?', r: 'PEAK PITCH vous guide en 8 étapes et produit les trois documents qu’attend une banque : une note de synthèse avec annexe, la liste des pièces à réunir pour chaque personne et chaque société, et une présentation bancaire. Vous ne signez aucun mandat et présentez vous-même votre dossier aux banques de votre choix. 99 € par projet, TVA non applicable.' },
     { q: 'Que contiennent les trois livrables ?', r: 'Une note de synthèse (situation, projet, chiffres clés) suivie d’une annexe de toutes vos réponses ; une liste de pièces distincte pour chaque emprunteur, caution et société ; une présentation bancaire en sept parties construite à partir de la note de synthèse.' },
     { q: 'Les chiffres de mon dossier peuvent-ils être inventés par l’intelligence artificielle ?', r: 'Non. Les documents sont rédigés à partir de vos seules réponses et contrôlés avant remise : un montant ou un pourcentage qui ne correspond à aucune valeur déclarée ou calculée est refusé. Une mensualité, un TAEG ou un différé ne sont jamais présentés sans les informations nécessaires à leur calcul.' },
     { q: 'Dois-je envoyer mes justificatifs ?', r: 'Non. PEAK PITCH ne collecte aucune pièce. Vous recevez la liste des documents à réunir, avec la raison de chaque demande, et vous les transmettez vous-même à la banque.' },

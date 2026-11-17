@@ -38,7 +38,7 @@ const libelle = (c: string) => c.charAt(0) + c.slice(1).toLowerCase();
             <p class="eyebrow leading-relaxed">{a.categorie} <span class="text-gris">· {a.lecture}</span></p>
             <h2 class="sous-titre mt-3 group-hover:underline underline-offset-4">{a.titre}</h2>
             <p class="corps mt-4 text-[15px]">{a.extrait}</p>
-            <div class="mt-auto flex items-end justify-between gap-4 pt-7"><p class="text-[12px] leading-relaxed text-gris">{a.auteur}<br /><time datetime={a.iso} class="font-mono">{a.date}</time></p><span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-trait text-encre transition-colors group-hover:border-cuivre-profond group-hover:bg-cuivre-profond group-hover:text-white" aria-hidden="true">↗</span></div>
+            <div class="mt-auto flex items-end justify-between gap-4 pt-7"><p class="text-[12px] leading-relaxed text-gris"><span class="whitespace-nowrap">{a.auteur}</span><br /><time datetime={a.iso} class="font-mono">{a.date}</time></p><span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-trait text-encre transition-colors group-hover:border-cuivre-profond group-hover:bg-cuivre-profond group-hover:text-white" aria-hidden="true">↗</span></div>
           </div>
         </a>
       </li>)}

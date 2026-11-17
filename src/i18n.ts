@@ -23,6 +23,7 @@ export function localiser(chemin: string, lang: Lang): string {
 
 /** URL équivalente dans l'autre langue, à partir du chemin courant. */
 export function urlAutreLangue(pathname: string, lang: Lang): string {
+  if (/^\/(?:en\/)?404(?:\/|\.html)?$/.test(pathname)) return lang === 'en' ? '/404.html' : '/en/404/';
   if (lang === 'fr') {
     return pathname === '/' ? '/en/' : '/en' + pathname;
   }

@@ -18,10 +18,10 @@ export const cabinet = {
   siren: '987 461 787',
   ape: '6619B',
   adresse: { rue: '99 avenue Achille Peretti', codePostal: '92200', ville: 'Neuilly-sur-Seine', pays: 'FR' },
-  fondateur: 'Valentin Boura–Defranoux',
+  fondateur: 'Valentin Boura--Defranoux',
   /** Profils officiels (sameAs) : permettent aux moteurs et assistants de recouper l'identité. */
   profils: ['https://www.linkedin.com/company/peak-funding/'],
-  profilsPersonnes: { 'Valentin Boura–Defranoux': ['https://www.linkedin.com/in/valentinbd/'] } as Record<string, string[]>,
+  profilsPersonnes: { 'Valentin Boura--Defranoux': ['https://www.linkedin.com/in/valentinbd/'] } as Record<string, string[]>,
   logo: `${SITE}/img/logo-peak-funding.png`,
   image: `${SITE}/img/hero-1600.webp`,
 };

@@ -4,8 +4,8 @@ import {readFileSync,readdirSync,existsSync} from 'node:fs';
 import {load} from 'cheerio';
 import {salesIndexable} from '../src/lib/sales-indexing.mjs';
 const read=p=>readFileSync(p,'utf8');
-const routes=['/livre/','/peak-exchange/','/contact/','/en/livre/','/en/peak-exchange/','/en/contact/'];
-const open={PUBLIC_STANCER_READY:'true',PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_SERVICE_URL:'https://books.example.test',PUBLIC_PEAK_EXCHANGE_URL:'https://consult.example.test'};
+const routes=['/peak-pitch/','/en/peak-pitch/','/livre/','/peak-exchange/','/contact/','/en/livre/','/en/peak-exchange/','/en/contact/'];
+const open={PUBLIC_PEAK_PITCH_ENABLED:'true',PUBLIC_PEAK_PITCH_URL:'https://pitch.example.test',PUBLIC_STANCER_READY:'true',PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_SERVICE_URL:'https://books.example.test',PUBLIC_PEAK_EXCHANGE_URL:'https://consult.example.test'};
 test('Indexation : chaque vente reste fermée sans activation et URL valide',()=>{
  for(const route of routes){
   for(const env of [{},{...open,PUBLIC_STANCER_READY:'false'}])assert.equal(salesIndexable(route,env),false,route);
@@ -17,14 +17,17 @@ test('Indexation : chaque vente reste fermée sans activation et URL valide',()=
   assert.equal(salesIndexable(route,{...open,PUBLIC_EBOOK_SERVICE_URL:'http://unsafe.test'}),false);
   assert.equal(salesIndexable(route,{...open,PUBLIC_PEAK_EXCHANGE_URL:''}),true);
  }
- for(const route of routes.filter(r=>!r.includes('livre'))){
+ for(const route of routes.filter(r=>!r.includes('livre')&&!r.includes('peak-pitch'))){
   assert.equal(salesIndexable(route,{...open,PUBLIC_PEAK_EXCHANGE_URL:''}),false);
   assert.equal(salesIndexable(route,{...open,PUBLIC_PEAK_EXCHANGE_URL:'https://user:pass@unsafe.test'}),false);
   assert.equal(salesIndexable(route,{...open,PUBLIC_EBOOK_SALES_ENABLED:'false'}),true);
  }
+ for(const route of routes.filter(r=>r.includes('peak-pitch'))){
+  for(const env of [{...open,PUBLIC_PEAK_PITCH_ENABLED:'false'},{...open,PUBLIC_PEAK_PITCH_URL:''},{...open,PUBLIC_PEAK_PITCH_URL:'http://unsafe.test'}])assert.equal(salesIndexable(route,env),false);
+ }
  assert.equal(salesIndexable('/expertises/insure/',{}),true);
 });
-test('Build fermé : six pages noindex, absentes du sitemap, sans PreOrder',()=>{
+test('Build fermé : huit pages noindex, absentes du sitemap, sans PreOrder',()=>{
  const sitemap=read('dist/sitemap-0.xml');
  for(const route of routes){
   const html=read('dist'+route+'index.html'),$=load(html);
@@ -46,7 +49,8 @@ test('Lecture : aucun signet global, composants RDV morts supprimés et titre du
   assert.equal($('[data-reading-progress]').length,0);
   assert.equal($('[data-pitch-cinema] h1.sr-only').length,0);
  }
- assert.ok(existsSync('src/components/ProgressionLecture.astro'));
+ assert.ok(!existsSync('src/components/ProgressionLecture.astro'));
+ assert.ok(!existsSync('src/scripts/lecture.ts'));
  assert.ok(!existsSync('src/components/react/PriseRendezVous.tsx'));
  assert.ok(!existsSync('src/components/react/RendezVousModal.tsx'));
 });
@@ -67,6 +71,6 @@ test('Données structurées : contactPoint localisé et nom du dirigeant harmoni
   const $=load(read('dist/'+prefix+'index.html')),graph=JSON.parse($('script[type="application/ld+json"]').html())['@graph'];
   const org=graph.find(n=>n['@id']==='https://peakfunding.eu/#organisation');
   assert.equal(org.contactPoint.url,'https://peakfunding.eu/'+prefix+'contact/');
-  assert.equal(org.founder.name,'Valentin\u00a0Boura–Defranoux');
+  assert.equal(org.founder.name,'Valentin Boura--Defranoux');
  }
 });

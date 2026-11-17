@@ -22,7 +22,7 @@ const angles = en ? [
     <div class="exchange-copy">
       <p class="eyebrow text-cuivre-clair">PEAK EXCHANGE · {en ? 'A personal perspective on your financing' : 'Un regard professionnel sur votre financement'}</p>
       <h1>{en ? 'Your application.' : 'Votre dossier.'}<br /><span>{en ? 'The right arguments.' : 'Les bons arguments.'}</span></h1>
-      <p class="exchange-lead">{en ? 'An individual consultation with ' : 'Un échange individuel avec '}<span class="whitespace-nowrap">Valentin Boura–Defranoux</span>{en ? ' to understand your strengths, address your weaknesses and prepare your conversation with a bank.' : ' pour comprendre vos points forts, traiter vos points faibles et préparer votre argumentation face aux banques.'}</p>
+      <p class="exchange-lead">{en ? 'An individual consultation with ' : 'Un échange individuel avec '}<span class="whitespace-nowrap">Valentin Boura--Defranoux</span>{en ? ' to understand your strengths, address your weaknesses and prepare your conversation with a bank.' : ' pour comprendre vos points forts, traiter vos points faibles et préparer votre argumentation face aux banques.'}</p>
       <div class="exchange-price"><strong>299&nbsp;€</strong><span>{en ? 'incl. VAT · one payment' : 'TTC · paiement unique'}<br />{en ? 'First consultation and comprehensive advice note' : 'Premier échange et note de conseil exhaustive'}</span></div>
       {checkout ? <a href={checkout} data-astro-reload class="btn-cuivre">{en ? 'Book PEAK EXCHANGE' : 'Prendre RDV via PEAK EXCHANGE'} <span aria-hidden="true">↗</span></a> : <a href="#reservation" class="btn-cuivre">{en ? 'Booking opens soon' : 'Réservations prochainement'} <span aria-hidden="true">↓</span></a>}
       {en && <p class="exchange-small">The checkout form is currently in French. The payment return is available in English.</p>}
@@ -30,8 +30,8 @@ const angles = en ? [
       <p class="exchange-credit"><strong>{en ? 'Deducted from your brokerage fees' : 'Déduit de vos honoraires de courtage'}</strong><span>{exchangeCredit[en ? 'en' : 'fr']}</span></p>
     </div>
     <figure class="exchange-portrait">
-      <img src="/img/portrait-valentin.webp" alt="Valentin Boura–Defranoux" width="640" height="800" fetchpriority="high" />
-      <figcaption><strong>Valentin Boura–Defranoux</strong><span>{en ? 'Founder · Independent financing broker' : 'Dirigeant · Courtier indépendant en financement'}</span><small>PEAK FUNDING · ORIAS 24002546</small></figcaption>
+      <img src="/img/portrait-valentin.webp" alt="Valentin Boura--Defranoux" width="640" height="800" fetchpriority="high" />
+      <figcaption><strong><span class="whitespace-nowrap">Valentin Boura--Defranoux</span></strong><span>{en ? 'Founder · Independent financing broker' : 'Dirigeant · Courtier indépendant en financement'}</span><small>PEAK FUNDING · ORIAS 24002546</small></figcaption>
     </figure>
   </div>
 </section>

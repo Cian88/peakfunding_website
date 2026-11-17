@@ -7,7 +7,7 @@ Le clone local est dans `C:/Users/valen/dev/peakfunding-preview`, branche `codex
 ## Modifications réunies
 
 - Menu **Nos services** immédiatement avant **Vos espaces**, regroupant livre, PEAK PITCH et PEAK EXCHANGE. Déclinaison mobile, fermeture au clic extérieur et par Échap, un seul menu ouvert.
-- Livre vendu par PEAK FUNDING à 24,90 €, auteur Valentin Boura–Defranoux, extraits FR/EN gratuits, livres complets hors du site public.
+- Livre vendu par PEAK FUNDING à 24,90 €, auteur Valentin Boura--Defranoux, extraits FR/EN gratuits, livres complets hors du site public.
 - PEAK PITCH à 99 €, TVA non applicable, trois livrables et une génération par projet. Reprise de la page existante, sans ancienne option EXCHANGE.
 - PEAK EXCHANGE autonome à 299 € TTC, déduction conditionnelle des honoraires de courtage conservée.
 - Ouvertures livre et EXCHANGE sous le menu en plein écran ; conditions du livre discrètes dans la conclusion sombre.

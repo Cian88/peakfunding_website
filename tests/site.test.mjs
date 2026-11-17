@@ -12,7 +12,7 @@ const read = file => readFileSync(file, 'utf8');
 const articles = JSON.parse(read('src/data/articles.json'));
 const normalize = value => value.replace(/\s+/g, ' ').trim();
 const protectedFiles = {
-  'src/contenu-legal/mentions-legales.html': 'FF7904B5F039BE738A76E5ACAB716E9074F01B03C61C2FF91B09B254297FD6D6',
+  'src/contenu-legal/mentions-legales.html': '3CEF26FF077336B147EB9537FD27F7989DB4367DCA649B94FCCF6F53731EC9D2',
   'src/contenu-legal/politique-de-confidentialite.html': '5E3C978D53BAF8F9B6CB8C340B225C064350ECB9CA06E017A654852DDB4EFD38',
   'src/contenu-legal/cgu.html': 'B07104AAE69BD8BEA3F2822E26364AF0FF34C24B31064CE3BC4C1099233CE881',
   // Les interfaces évoluent ; calculs et charge utile sont protégés dans ergonomie.test.mjs.

@@ -13,3 +13,7 @@ Le contrôleur `lecture.ts` est indépendant des fondus historiques. Il se netto
 Les ouvertures livre et EXCHANGE conservent leur hauteur minimale de fenêtre moins les 77 px du menu et du filet, et leur centrage vertical. Le contenu peut grandir plutôt qu’être coupé sur écran court. Les conditions du livre restent dans le bloc sombre final.
 
 Les tests du contrôleur passent. Le moteur d’accès navigateur était indisponible : rendu du signet, glisser réel et formats ordinateur/mobile restent à contrôler avant publication. Aucun changement de calcul, d’API Claude ou du serveur de paiement.
+
+## Retrait du 17 novembre 2026
+
+Le signet et la courbe ne sont plus présents. Les sources `ProgressionLecture.astro`, `lecture.ts` et leurs tests ont été supprimés après vérification de l’absence d’import. Les descriptions précédentes sont historiques.

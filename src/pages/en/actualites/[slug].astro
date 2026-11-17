@@ -47,7 +47,7 @@ const schema = [
     <div class="mx-auto mt-10 max-w-[760px]">
       <p class="eyebrow">{categorie} · {lecture}</p>
       <h1 class="display mt-4 text-[36px] sm:text-[44px] lg:text-[52px]">{article.title}</h1>
-      <p class="donnee mt-6 text-[13px] text-gris">{auteur} · <time datetime={dateISO(date)}>{date}</time></p>
+      <p class="donnee mt-6 text-[13px] text-gris"><span class="whitespace-nowrap">{auteur}</span> · <time datetime={dateISO(date)}>{date}</time></p>
       <div class="mt-10 aspect-[16/10] overflow-hidden rounded-donnee"><VisuelArticle slug={article.slug} prioritaire /></div>
     </div>
     <div class="lecture-grille mt-12 border-t border-trait pt-10">

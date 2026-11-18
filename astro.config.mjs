@@ -29,5 +29,29 @@ export default defineConfig({
       },
     }),
   ],
+  // Politique de sécurité du contenu, émise en <meta> (GitHub Pages ne permet pas d'en-têtes).
+  // Astro y ajoute l'empreinte de chacun de ses scripts et styles intégrés.
+  // Toute nouvelle intégration tierce doit être déclarée ici (voir docs/securite.md).
+  security: {
+    csp: {
+      algorithm: 'SHA-256',
+      directives: [
+        "default-src 'self'",
+        "base-uri 'self'",
+        "object-src 'none'",
+        "form-action 'self' https://formspree.io",
+        // Avatars Google des avis ; images de l'espace client Actelo.
+        "img-src 'self' data: https://*.googleusercontent.com https://peakfunding.actelo.app",
+        "font-src 'self' https://peakfunding.actelo.app",
+        "media-src 'self'",
+        // Avis (Supabase), géocodage des villes (Nominatim), widget Actelo et son suivi d'erreurs.
+        "connect-src 'self' https://cuzermbffitfuoknrmca.supabase.co wss://cuzermbffitfuoknrmca.supabase.co https://nominatim.openstreetmap.org https://peakfunding.actelo.app https://*.ingest.sentry.io",
+        "frame-src https://peakfunding.actelo.app",
+        'upgrade-insecure-requests',
+      ],
+      scriptDirective: { resources: ["'self'", 'https://peakfunding.actelo.app'] },
+      styleDirective: { resources: ["'self'", 'https://peakfunding.actelo.app', { resource: "'unsafe-inline'", kind: 'attribute' }] },
+    },
+  },
   vite: { plugins: [tailwindcss(), observatoireDevPlugin()] },
 });

@@ -10,6 +10,11 @@ const L = (p: string) => localiser(p, lang);
 const t = peakPitch(lang);
 const service = SERVICE_URL;
 const accord = lang === 'fr' ? 'Le financement reste soumis à l’accord des banques.' : 'Financing remains subject to approval by the banks.';
+const tva = lang === 'fr' ? 'TVA non applicable' : 'VAT not applicable';
+function conditionsPrix(texte: string) {
+  if (!/99\s*€|€\s*99/.test(texte)) return '';
+  return texte.toLowerCase().includes(tva.toLowerCase()) ? accord : `${tva}. ${accord}`;
+}
 const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPeakPitch as readonly string[]).includes(a.slug));
 ---
 
@@ -43,7 +48,7 @@ const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPe
     <p class="legende">{t.libelles.promesse}</p>
     <div class="deux-colonnes">
       {[[t.promesse.titreMain, t.promesse.main], [t.promesse.titreCabinet, t.promesse.cabinet]].map(([titre, blocs], i) => (
-        <div><h2 id={i === 0 ? 'pitch-promesse' : undefined}>{titre as string}</h2><ul class="liste">{(blocs as { titre: string; texte: string }[]).map((b) => <li><h3>{b.titre}</h3><p>{b.texte}</p></li>)}</ul></div>
+        <div><h2 id={i === 0 ? 'pitch-promesse' : undefined}>{titre as string}</h2><ul class="liste">{(blocs as { titre: string; texte: string }[]).map((b) => <li><h3>{b.titre}</h3><p>{b.texte}</p>{conditionsPrix(b.texte) && <small>{conditionsPrix(b.texte)}</small>}</li>)}</ul></div>
       ))}
     </div>
   </section>
@@ -69,7 +74,7 @@ const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPe
   <section class="bloc" aria-labelledby="pitch-faq">
     <p class="legende">{t.libelles.faq}</p>
     <h2 id="pitch-faq">{t.libelles.faqTitre}</h2>
-    <div class="faq">{t.faq.map((q) => <details><summary>{q.q}<span aria-hidden="true">+</span></summary><p>{q.r}</p></details>)}</div>
+    <div class="faq">{t.faq.map((q) => <details><summary>{q.q}<span aria-hidden="true">+</span></summary><p>{q.r}</p>{conditionsPrix(q.r) && <small>{conditionsPrix(q.r)}</small>}</details>)}</div>
   </section>
 
   {guides.length > 0 && (

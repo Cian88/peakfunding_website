@@ -1,0 +1,79 @@
+---
+import { murTextes, projetsLibelles } from "../react/textes-avis";
+import type { AvisPublic } from "../../lib/supabase";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "../../data/integrations";
+import { langCourante } from "../../i18n";
+
+const lang = langCourante(Astro.currentLocale);
+
+const t = murTextes(lang);
+const projets: Record<string, string> = projetsLibelles[lang];
+const monnaie = new Intl.NumberFormat(lang, {
+  style: "currency",
+  currency: "EUR",
+  maximumFractionDigits: 0,
+});
+const date = new Intl.DateTimeFormat(lang, {
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+let initial: AvisPublic[] = [];
+try {
+  const reponse = await fetch(
+    `${SUPABASE_URL}/rest/v1/avis_publics?select=*&order=date.desc&limit=60`,
+    {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      signal: AbortSignal.timeout(8000),
+    },
+  );
+  if (reponse.ok) initial = (await reponse.json()) as AvisPublic[];
+} catch {
+  /* Une indisponibilité de la source laisse la rubrique vide. */
+}
+const moyenne = initial.length
+  ? initial.reduce((total, a) => total + a.note, 0) / initial.length
+  : 0;
+---
+
+<section id="avis" class="paper chapter reviews">
+  <p class="kicker">
+    {initial.length
+      ? moyenne.toLocaleString(lang, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }) +
+        "/5 · " +
+        initial.length +
+        " " +
+        t.avis_verifies
+      : t.invitation}
+  </p>
+  <h2>{lang === "fr" ? "Avis clients" : "Client reviews"}</h2>
+  <p class="review-intro">{t.sous}</p>
+  {initial.length ? (
+    <div class="reviews-list">
+      {initial.map((a) => (
+        <blockquote>
+          <p lang="fr">{a.texte}</p>
+          <cite>
+            {a.prenom} {a.initiale} · {a.note}/5 · {a.ville}
+          </cite>
+          <small>
+            {projets[a.projet] ?? a.projet} · {monnaie.format(a.montant)} ·{" "}
+            <time datetime={a.date}>{date.format(new Date(a.date))}</time>
+          </small>
+        </blockquote>
+      ))}
+    </div>
+  ) : (
+    <p>
+      {lang === "fr"
+        ? "Les témoignages seront affichés ici dès leur publication."
+        : "Client reviews will appear here as they are published."}
+    </p>
+  )}
+</section>

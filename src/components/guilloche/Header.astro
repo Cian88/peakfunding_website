@@ -1,0 +1,89 @@
+---
+import { langCourante, localiser } from "../../i18n";
+import { services } from "../../data/services";
+const lang = langCourante(Astro.currentLocale),
+  fr = lang === "fr";
+const L = (path: string) => localiser(path, lang);
+const links = [
+  ["#expertises", fr ? "Expertises" : "Expertise"],
+  ["#methode", fr ? "Méthode" : "Method"],
+  ["#equipe", fr ? "Le cabinet" : "The firm"],
+  ["#analyses", fr ? "Analyses" : "Insights"],
+];
+const espaces = [
+  ["/espace-client", fr ? "Espace client" : "Client area"],
+  ["/espace-mandataire", fr ? "Espace mandataire" : "Agent portal"],
+];
+---
+
+<header class="mast">
+  <a href={L("/")} class="brand">
+    <img
+      src="/img/logo-peak-funding-ivoire.svg"
+      alt="PEAK FUNDING"
+      width="158"
+      height="34"
+    />
+  </a>
+  <nav class="wide">
+    {links.map(([href, label]) => (
+      <a href={href}>{label}</a>
+    ))}
+  </nav>
+  <div class="access">
+    <a class="locale" href={fr ? "/en/" : "/"} lang={fr ? "en" : "fr"}>
+      {fr ? "EN" : "FR"}
+    </a>
+    <details class="nav-drop" data-services name="nav">
+      <summary>{fr ? "Services" : "Services"}</summary>
+      <nav>
+        {services(lang).map((s) => (
+          <a href={L(s.path)}>{s.name}</a>
+        ))}
+      </nav>
+    </details>
+    <details class="nav-drop" data-espaces name="nav">
+      <summary>{fr ? "Vos espaces" : "Your portals"}</summary>
+      <nav>
+        {espaces.map(([p, label]) => (
+          <a data-astro-reload href={L(p)}>
+            {label}
+          </a>
+        ))}
+      </nav>
+    </details>
+  </div>
+  <details class="compact" data-menu name="nav">
+    <summary>Menu</summary>
+    <nav>
+      {links.map(([href, label]) => (
+        <a href={href}>{label}</a>
+      ))}
+      <div data-services-mobile>
+        {services(lang).map((s) => (
+          <a href={L(s.path)}>{s.name}</a>
+        ))}
+      </div>
+      {espaces.map(([p, label]) => (
+        <a data-astro-reload href={L(p)}>
+          {label}
+        </a>
+      ))}
+    </nav>
+  </details>
+</header>
+<script>
+  const menus = document.querySelectorAll<HTMLDetailsElement>(".mast details");
+  for (const menu of menus) {
+    menu.addEventListener("click", (event) => {
+      if (event.target instanceof Element && event.target.closest("a"))
+        menu.open = false;
+    });
+    menu.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menu.open) {
+        menu.open = false;
+        menu.querySelector("summary")?.focus();
+      }
+    });
+  }
+</script>

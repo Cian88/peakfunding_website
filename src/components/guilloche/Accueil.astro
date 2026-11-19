@@ -1,0 +1,358 @@
+---
+import { accueil } from "../../data/contenu";
+import {
+  exchangeCredit,
+  exchangeFirstConsultation,
+} from "../../data/peak-exchange";
+import { PRIX_PITCH } from "../../data/peak-pitch";
+import { ASSURANCE_URL } from "../../data/integrations";
+import { langCourante, localiser } from "../../i18n";
+import Simulateur from "../react/SimulateurCapacite";
+import EbookTeaser from "../EbookTeaser.astro";
+import Avis from "./Avis.astro";
+import frArticles from "../../data/articles.json";
+import enArticles from "../../data/en/articles.json";
+import { trierArticles } from "../../lib/editorial.mjs";
+import observation from "../../../public/api/observatoire.json";
+import { statutObservation } from "../../lib/observatoire.mjs";
+const lang = langCourante(Astro.currentLocale),
+  fr = lang === "fr",
+  c = accueil(lang),
+  u = c.ui;
+const L = (p: string) => localiser(p, lang);
+const txt = (a: string, b: string) => (fr ? a : b);
+const articles = trierArticles(fr ? frArticles : enArticles).slice(0, 3);
+const periode = new Intl.DateTimeFormat(lang, {
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+}).format(new Date(observation.period + "-01T12:00Z"));
+---
+
+<section class="front">
+  <div class="frame">
+    <div class="opening">
+      <p class="kicker">
+        <i></i>
+        {u.hero_eyebrow}
+      </p>
+      <h1>
+        <small>{txt("Courtage en", "Brokerage in")}</small>
+        <span>{txt("Financement", "Financing")}</span>
+        <em>{txt("& assurance", "& borrower")}</em>
+        <span>{txt("emprunteur.", "insurance.")}</span>
+      </h1>
+      <p class="lede">{u.hero_texte}</p>
+      <div class="actions">
+        <a class="gold-button" href="#simulateur">
+          {u.hero_cta2} <b>↗</b>
+        </a>
+        <a class="secondary" href={L("/peak-exchange/")}>
+          PEAK EXCHANGE ↗
+        </a>
+      </div>
+    </div>
+    <figure class="seal">
+      <div class="medal">
+        <img
+          class="plate"
+          src="/img/guilloche.svg"
+          width="600"
+          height="600"
+          alt=""
+        />
+        <svg class="incision" viewBox="0 0 600 600" aria-hidden="true">
+          <circle cx="300" cy="300" r="290" pathLength="1" />
+          <circle cx="300" cy="300" r="146" pathLength="1" />
+        </svg>
+        <img
+          class="cameo"
+          src="/img/cabinet-bureau.webp"
+          width="1600"
+          height="1000"
+          alt=""
+        />
+      </div>
+      <figcaption>
+        PEAK FUNDING <i>◆</i> NEUILLY-SUR-SEINE
+      </figcaption>
+    </figure>
+  </div>
+  <div class="folio">
+    <span>{u.hero_orias}</span>
+    <a href="#expertises">{u.hero_decouvrir} ↓</a>
+  </div>
+</section>
+
+<section id="expertises" class="paper chapter">
+  <p class="kicker">
+    I <i></i> {u.exp_eyebrow}
+  </p>
+  <h2>{u.exp_titre}</h2>
+  <div class="poles">
+    {c.expertises.map((x, i) => (
+      <a href={L("/expertises/" + x.slug)}>
+        <div class="p-photo">
+          <img
+            class="expertise-image"
+            src={"/img/ambiance-" + x.slug + ".webp"}
+            alt=""
+            loading="lazy"
+          />
+        </div>
+        <small>
+          0{i + 1} <i></i> {x.nom}
+        </small>
+        <h3>{x.accroche}</h3>
+        <p>{x.texte}</p>
+        <span class="secondary">
+          {u.exp_decouvrir} {x.nom} ↗
+        </span>
+      </a>
+    ))}
+  </div>
+  <a
+    class="secondary"
+    data-assurance
+    href={ASSURANCE_URL}
+    target="_blank"
+    rel="noopener"
+  >
+    {u.hero_assurance}
+    <span class="sr-only">{u.hero_nouvel_onglet}</span>
+  </a>
+</section>
+<section id="mission" class="ink chapter">
+  <p class="kicker">
+    II <i></i> {u.mission_eyebrow}
+  </p>
+  <h2>{u.mission_titre}</h2>
+  <p class="intro">{c.mission.intro}</p>
+  <div class="principles">
+    {c.mission.cartes.map((m) => (
+      <article>
+        <h3>{m.titre}</h3>
+        <p>{m.texte}</p>
+      </article>
+    ))}
+  </div>
+</section>
+<figure class="panorama">
+  <img
+    src="/img/cabinet-travail.webp"
+    alt={u.mission_alt}
+    loading="lazy"
+    width="1600"
+    height="1000"
+  />
+</figure>
+<section id="methode" class="paper chapter">
+  <p class="kicker">
+    III <i></i> {u.methode_eyebrow}
+  </p>
+  <h2 set:html={u.methode_titre} />
+  <p class="intro">{u.methode_texte}</p>
+  <ol class="method">
+    {c.methode.map((m, i) => (
+      <li id={"etape-" + (i + 1)}>
+        <span class="numeral">0{i + 1}</span>
+        <h3>{m.titre}</h3>
+        <p>{m.texte}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+<section id="simulateur" class="ink chapter">
+  <p class="kicker">
+    IV <i></i> {u.sim_eyebrow}
+  </p>
+  <h2 id="sim-titre">{u.sim_titre}</h2>
+  <p class="intro">{u.sim_texte}</p>
+  <noscript>
+    <p>
+      {txt(
+        "Activez JavaScript pour modifier cette simulation.",
+        "Enable JavaScript to change this estimate.",
+      )}
+    </p>
+  </noscript>
+  <div class="instrument">
+    <Simulateur client:visible lang={lang} />
+  </div>
+</section>
+<section class="paper chapter market" id="observatoire">
+  <p class="kicker">
+    {txt("Publication mensuelle", "Monthly publication")} <i></i>{" "}
+    <time datetime={observation.period}>{periode}</time>
+  </p>
+  <h2>{txt("L’Observatoire", "Market observatory")}</h2>
+  <dl>
+    <div>
+      <dt>{txt("Taux moyen", "Average rate")}</dt>
+      <dd>
+        {observation.rate.toLocaleString(lang, { minimumFractionDigits: 2 })} %
+      </dd>
+    </div>
+    <div>
+      <dt>{txt("Durée moyenne", "Average term")}</dt>
+      <dd>
+        {observation.durationMonths} <em>{txt("mois", "months")}</em>
+      </dd>
+    </div>
+  </dl>
+  <p>
+    {txt(
+      "Repères de marché, pas une offre de prêt. Le simulateur part d’un taux ajustable de 3,5 %.",
+      "Market benchmarks, not a loan offer. The calculator starts with an adjustable rate of 3.5%.",
+    )}
+  </p>
+  <a class="secondary" href={observation.sourceUrl}>
+    Observatoire Crédit Logement / CSA ↗
+  </a>
+  <p>
+    <small>{statutObservation(observation, lang)}</small>
+  </p>
+</section>
+<section id="equipe" class="paper chapter team">
+  <p class="kicker">
+    V <i></i> {u.equipe_eyebrow}
+  </p>
+  <h2>{u.equipe_titre}</h2>
+  <p class="intro">{c.equipe.intro}</p>
+  <div class="trio">
+    {c.equipe.membres.map((m) => (
+      <article>
+        <img
+          src={
+            "/img/portrait-" +
+            (m.photo.includes("valentin")
+              ? "valentin"
+              : m.photo.includes("yves")
+                ? "yves"
+                : "maxime") +
+            ".webp"
+          }
+          alt={u.equipe_portrait + " " + m.nom}
+          loading="lazy"
+        />
+        <small>{m.role}</small>
+        <h3>{m.nom}</h3>
+        <p>{m.domaine}</p>
+      </article>
+    ))}
+  </div>
+  <div id="partenaires">
+    <h2>{u.part_titre}</h2>
+    <div class="partners">
+      {c.partenaires.map((p) => (
+        <article>
+          <img
+            src={"/img/" + p.nom.toLowerCase() + "-logo.svg"}
+            alt={p.nom}
+            data-partenaire={p.nom.toLowerCase()}
+            loading="lazy"
+          />
+          <p>{p.texte}</p>
+          <a class="secondary" href={p.url}>
+            {u.part_decouvrir} {p.nom} ↗
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+<section class="ink chapter offers">
+  <p class="kicker">
+    VI <i></i> {txt("Accompagnement", "Services")}
+  </p>
+  <h2>{txt("Préparer votre dossier.", "Preparing your application.")}</h2>
+  <div class="partners">
+    <article>
+      <h3>PEAK PITCH</h3>
+      <p>
+        {txt(
+          "Préparation autonome du dossier bancaire, avec trois documents PDF.",
+          "Prepare your own loan application with three PDF documents.",
+        )}
+      </p>
+      <strong>{PRIX_PITCH} €</strong>
+      <p>
+        {txt(
+          "TVA non applicable. Le financement reste soumis à l’accord des banques.",
+          "VAT not applicable. Financing remains subject to lender approval.",
+        )}
+      </p>
+      <a class="secondary" href={L("/peak-pitch/")}>
+        {txt("Présentation", "Overview")} ↗
+      </a>
+    </article>
+    <article>
+      <h3>PEAK EXCHANGE</h3>
+      <p>{exchangeFirstConsultation[lang]}</p>
+      <p>{exchangeCredit[lang]}</p>
+      <a class="secondary" href={L("/peak-exchange/")}>
+        {txt("Présentation", "Overview")} ↗
+      </a>
+    </article>
+  </div>
+</section>
+<EbookTeaser />
+<Avis />
+<section class="paper chapter" id="analyses">
+  <p class="kicker">
+    VII <i></i> {txt("Publications", "Publications")}
+  </p>
+  <h2>{txt("Les analyses du cabinet", "Insights from the firm")}</h2>
+  <div class="trio">
+    {articles.map((a) => (
+      <a href={L("/actualites/" + a.slug)}>
+        <small>{a.avant[1]}</small>
+        <h3>{a.title}</h3>
+        <p>
+          {a.apres[0]} · {a.avant[2]}
+        </p>
+      </a>
+    ))}
+  </div>
+  <a class="secondary" href={L("/actualites/")}>
+    {txt("Toutes les analyses", "All insights")} ↗
+  </a>
+</section>
+<section id="faq" class="paper chapter faq">
+  <p class="kicker">
+    VIII <i></i> FAQ
+  </p>
+  <h2>{u.faq_titre}</h2>
+  <p class="intro">{u.faq_texte}</p>
+  {c.faq.map((q) => (
+    <details>
+      <summary>{q.q}</summary>
+      <p>{q.r}</p>
+    </details>
+  ))}
+</section>
+<section
+  id="accompagnement"
+  aria-label={u.reperes_aria}
+  class="ink chapter closing"
+>
+  <img
+    src="/img/guilloche.svg"
+    alt=""
+    width="120"
+    height="120"
+    loading="lazy"
+  />
+  <h2>{u.bandeau_titre}</h2>
+  <div class="principles">
+    {c.reperes.map((r) => (
+      <article>
+        <h3>{r.titre}</h3>
+        <p>{r.texte}</p>
+      </article>
+    ))}
+  </div>
+  <a class="gold-button" href="#simulateur">
+    {u.hero_cta2} ↗
+  </a>
+</section>

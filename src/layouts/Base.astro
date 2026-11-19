@@ -1,6 +1,4 @@
 ---
-import '@fontsource-variable/geist';
-import '@fontsource-variable/geist-mono';
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
@@ -19,7 +17,7 @@ interface Props {
   /** Métadonnées d'article (Open Graph) : date ISO et auteur. */
   publie?: string; auteur?: string;
 }
-const { title, description, heros = false, image = '/img/hero-1600.webp', clientRouting = true, noindex: requestedNoindex = false, schema = [], typePage, publie, auteur } = Astro.props;
+const { title, description, image = '/img/releve-partage.jpg', clientRouting = true, noindex: requestedNoindex = false, schema = [], typePage, publie, auteur } = Astro.props;
 const noindex = requestedNoindex || !salesIndexable(Astro.url.pathname, import.meta.env);
 const lang = langCourante(Astro.currentLocale);
 const tr = t(lang);
@@ -44,8 +42,8 @@ const graphe = noindex ? [] : [organisation(lang), siteWeb(lang), pageWeb({ url:
     <link rel="alternate" hreflang={lang} href={canonical} />
     <link rel="alternate" hreflang={autre} href={urlAutre} />
     <link rel="alternate" hreflang="x-default" href={new URL(Astro.url.pathname.replace(/^\/en(?=\/|$)/, '') || '/', Astro.site)} />
-    <link rel="icon" href="/img/symbole-montagne-cuivre.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#0b0d12" />
+    <link rel="icon" href="/img/repere.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f7f8f4" />
     <meta name="msvalidate.01" content="966E6AF270B080BF25E862AAC71EB78B" />
     <meta property="og:type" content={publie ? 'article' : 'website'} />
     <meta property="og:site_name" content="PEAK FUNDING" />
@@ -65,9 +63,9 @@ const graphe = noindex ? [] : [organisation(lang), siteWeb(lang), pageWeb({ url:
     {graphe.length > 0 && <script type="application/ld+json" is:inline set:html={serialiser(graphe)} />}
     {clientRouting && <ClientRouter />}
   </head>
-  <body data-page-navigation={clientRouting ? 'spa' : 'document'} class:list={[heros ? 'bg-abime' : 'bg-cendre']}>
-    <a href="#contenu" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-pill focus:bg-cuivre focus:px-4 focus:py-2 focus:text-white">{tr.aller_contenu}</a>
-    <Header heros={heros} />
+  <body data-page-navigation={clientRouting ? 'spa' : 'document'}>
+    <a href="#contenu" class="skip">{tr.aller_contenu}</a>
+    <Header />
     <button type="button" data-menu-voile class="menu-voile" aria-label={tr.modale.fermer} tabindex="-1"></button>
     <main id="contenu" tabindex="-1"><slot /></main>
     <Footer />

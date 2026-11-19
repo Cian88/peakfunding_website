@@ -23,7 +23,7 @@ export const cabinet = {
   profils: ['https://www.linkedin.com/company/peak-funding/'],
   profilsPersonnes: { 'Valentin Boura--Defranoux': ['https://www.linkedin.com/in/valentinbd/'] } as Record<string, string[]>,
   logo: `${SITE}/img/logo-peak-funding.png`,
-  image: `${SITE}/img/hero-1600.webp`,
+  image: `${SITE}/img/releve-partage.jpg`,
 };
 
 const descriptions: Record<Lang, string> = {

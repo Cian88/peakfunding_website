@@ -1,0 +1,120 @@
+---
+import initial from '../../public/api/observatoire-seed.json';
+import { statutObservation } from '../lib/observatoire.mjs';
+import type { Lang } from '../i18n';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const en = lang === 'en',
+  locale = en ? 'en-GB' : 'fr-FR';
+const period = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
+  new Date(initial.period + '-01T12:00:00Z'),
+);
+const valeurs = [
+  {
+    nom: en ? 'Average rate' : 'Taux moyen',
+    nombre: initial.rate.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+    unite: '%',
+  },
+  {
+    nom: en ? 'Average term' : 'Durée moyenne',
+    nombre: initial.durationMonths,
+    unite: en ? 'months' : 'mois',
+  },
+];
+---
+
+<releve-mensuel lang={lang}>
+  <aside class="observatoire-widget" aria-label={en ? 'The credit market' : 'Le marché du crédit'}>
+    <div class="observatoire-entete">
+      <span class="notation">{en ? 'The credit market' : 'Le marché du crédit'}</span>
+      <time datetime={initial.period}>{period}</time>
+    </div>
+    <dl class="observatoire-mesures">
+      {valeurs.map((v) => (
+        <div>
+          <dt>{v.nom}</dt>
+          <dd>
+            <span class="sr-only">
+              {v.nombre} {v.unite}
+            </span>
+            <span class="observatoire-valeur" aria-hidden="true">
+              <span data-nombre>{v.nombre}</span>
+              <span class="observatoire-unite"> {v.unite}</span>
+            </span>
+          </dd>
+        </div>
+      ))}
+    </dl>
+    <p class="observatoire-note">
+      {en
+        ? 'Market benchmarks. Calculator assumptions can be adjusted independently.'
+        : 'Repères de marché. Vous pouvez ajuster séparément les hypothèses du simulateur.'}
+    </p>
+    <div class="observatoire-source">
+      <a href={initial.sourceUrl}>Observatoire Crédit Logement / CSA ↗</a>
+      <p>{en ? 'Monthly publication' : 'Publication mensuelle'}</p>
+      <p role="status">{statutObservation(initial, lang)}</p>
+    </div>
+  </aside>
+</releve-mensuel>
+<script>
+  import initial from '../../public/api/observatoire-seed.json';
+  import { observationValide, statutObservation } from '../lib/observatoire.mjs';
+  class ReleveMensuel extends HTMLElement {
+    private controller?: AbortController;
+    private interval?: number;
+    connectedCallback() {
+      const controller = new AbortController();
+      this.controller = controller;
+      let last = 0,
+        data = initial;
+      const refresh = async () => {
+        if (document.hidden || Date.now() - last < 3600000) return;
+        last = Date.now();
+        const lang = this.lang === 'en' ? 'en' : 'fr';
+        const locale = lang === 'en' ? 'en-GB' : 'fr-FR';
+        try {
+          const response = await fetch('/api/observatoire.json', {
+            cache: 'no-store',
+            credentials: 'omit',
+            signal: AbortSignal.any([controller.signal, AbortSignal.timeout(12000)]),
+          });
+          if (!response.ok) throw Error();
+          const fresh = await response.json();
+          if (!observationValide(fresh) || fresh.period < data.period) throw Error();
+          data = fresh;
+          const time = this.querySelector('time')!;
+          time.dateTime = data.period;
+          time.textContent = new Intl.DateTimeFormat(locale, {
+            month: 'long',
+            year: 'numeric',
+            timeZone: 'UTC',
+          }).format(new Date(data.period + '-01T12:00:00Z'));
+          const numbers = [
+            data.rate.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            String(data.durationMonths),
+          ];
+          this.querySelectorAll('dd').forEach((dd, i) => {
+            dd.querySelector('[data-nombre]')!.textContent = numbers[i];
+            dd.querySelector('.sr-only')!.textContent = dd.querySelector('.observatoire-valeur')!.textContent;
+          });
+          this.querySelector('a')!.href = data.sourceUrl;
+        } catch {
+          if (controller.signal.aborted) return;
+          data = { ...data, stale: true };
+        }
+        this.querySelector('[role=status]')!.textContent = statutObservation(data, lang);
+      };
+      void refresh();
+      this.interval = window.setInterval(refresh, 3600000);
+      document.addEventListener('visibilitychange', refresh, { signal: controller.signal });
+    }
+    disconnectedCallback() {
+      this.controller?.abort();
+      clearInterval(this.interval);
+    }
+  }
+  if (!customElements.get('releve-mensuel')) customElements.define('releve-mensuel', ReleveMensuel);
+</script>

@@ -151,6 +151,10 @@
 .book-audiences h3,.exchange-angles h3,.book-contents h2,.book-closing h2 { margin-block:20px 12px; }
 .sample-row { margin-top:28px; }
 .sample-row a { justify-self:start; }
+@media(min-width:801px) and (max-width:1100px) {
+  .resume-analyse { grid-template-columns:minmax(0,1fr); }
+  .resume-analyse>div { grid-area:auto; padding-top:8px; }
+}
 @media(max-width:800px) {
   .plan-entete,.offre-grid,.book-hero-grid,.exchange-intro,.tete-article,.contact-colonnes,.portail,.erreur-feuille { grid-template-columns:minmax(0,1fr); }
   .planche svg { height:clamp(160px,42vw,280px); flex:none; }

@@ -50,19 +50,15 @@ test('Assurance : même simulateur V1 ouvert dans un nouvel onglet, sans fenêtr
   }
 });
 
-test('Annotations : cartes uniformes, méthode illustrée, héros et simulateur responsive', () => {
+test('Index des analyses, quatre étapes de méthode, espaces et instrument de calcul', () => {
   const home = built('');
   const listing = built('actualites');
-  assert.equal(listing('.article-vedette').length, 0);
-  assert.equal(listing('.article-carte .article-image.h-\\[180px\\]').length, 15);
-  assert.equal(home('#methode .methode-schema').length, 4);
-  assert.equal(home('[data-espaces] .espace-lien').length, 2);
+  assert.equal(listing('.entree-analyse[data-theme] .vignette-analyse img').length, 15);
+  assert.equal(home('#methode [data-waypoint]').length, 4);
+  assert.equal(home('#methode [data-etape]').length, 4);
+  assert.equal(home('[data-espaces] a').length, 2);
   assert.equal(home('#simulateur form').length, 1);
   assert.equal(home('#simulateur [aria-live]').length, 1);
-  assert.match(read('src/components/pages/AccueilCorps.astro'), /min-height: 100dvh/);
-  assert.match(read('src/styles/global.css'), /grid-row:1 \/ -1/);
-  assert.match(read('src/scripts/motion.ts'), /--fond-scroll/);
-  assert.doesNotMatch(read('src/styles/global.css'), /data-fond-raccord/);
 });
 
 test('Espaces : widget client et portail mandataire conformes à la V1', () => {
@@ -92,34 +88,27 @@ test('RDV : formulaire et agendas directs retirés du bundle livré, redirection
   assert.ok(scripts.includes('/peak-exchange/'));
 });
 
-test('Homogénéité : une image de travail dans Mission, zones partenaires et voile mobile', () => {
+test('Planche topographique, portraits, partenaires et navigation mobile', () => {
   const home = built('');
-  assert.equal(home('#mission img').length, 1);
-  assert.equal(home('#mission img').attr('src'), '/img/cabinet-travail.webp');
-  assert.equal(home('.partenaire-marque').length, 2);
+  assert.equal(home('.atlas-cover figure img').attr('src'), '/cartographie/relief.svg');
+  assert.equal(home('.atlas-cover use').attr('href'), '/cartographie/relief.svg#courbe-repere');
+  assert.equal(home('#equipe .portraits img').length, 3);
+  assert.equal(home('.partenaire-marque img').length, 2);
   assert.equal(home('[data-menu-voile]').length, 1);
-  assert.match(read('src/styles/global.css'), /backdrop-filter: blur\(10px\)/);
   assert.match(read('src/scripts/motion.ts'), /el\.inert = !!menu\?\.open/);
 });
 
-test('Accueil : ouverture et fin sombres, méthode sombre entre les sections claires', () => {
-  const home = built('');
-  const sections = home('main > section');
-  // Depuis la section avis (2026-09-13), le fond reste sombre jusqu'au pied de page : FAQ et bandeau final sombres.
-  assert.equal(sections.filter('.clair').length, 4);
-  assert.deepEqual(sections.filter('.clair').toArray().map(node => home(node).attr('id')), ['expertises', 'simulateur', 'equipe', 'livre']);
-  const tones = sections.toArray().map(node => home(node).hasClass('clair'));
-  assert.deepEqual(tones, [false, false, false, false, true, true, false, true, true, false, false, false]);
-  assert.equal(tones.slice(1).filter((tone, i) => tone !== tones[i]).length, 4);
-  assert.equal(home('footer.sombre').length, 1);
-  assert.equal(home('#simulateur .surface-claire').length, 1);
-  assert.equal(home('#methode .surface-claire').length, 0);
-  assert.equal(home('.heros .observatoire-widget').length, 0);
-  assert.equal(home('#simulateur .simulator-panel .observatoire-widget').length, 1);
-  assert.equal(home('[data-expertise-reveal]').length, 4);
-  assert.equal(home('#expertises .carte-claire').length, 0);
-  assert.equal(home('#expertises .expertise-lien').length, 4);
-  assert.equal(home('.chapitre-filet[aria-hidden="true"]').length, 4); // + filet d'entrée de la section avis
+test('Le Relevé : index des quatre pôles, méthode, calcul et observation mensuelle séparée', () => {
+  for (const prefix of ['', 'en']) {
+    const home = built(prefix);
+    assert.equal(home('.atlas-cover video,.atlas-cover .observatoire-widget').length, 0);
+    assert.deepEqual(home('#expertises [data-expertise-reveal] a').toArray().map(a => home(a).attr('href')),
+      ['estate','pro','pim','insure'].map(slug => `${prefix ? '/en' : ''}/expertises/${slug}`));
+    assert.equal(home('#simulateur .simulator-panel form').length, 1);
+    assert.equal(home('#simulateur .simulator-panel .observatoire-widget').length, 0);
+    assert.equal(home('#simulateur .market-reading .observatoire-widget').length, 1);
+    assert.equal(home('footer.colophon').length, 1);
+  }
 });
 
 test('CSA : valeurs exactes sans JavaScript, copie accessible indépendante du comptage', () => {
@@ -132,10 +121,9 @@ test('CSA : valeurs exactes sans JavaScript, copie accessible indépendante du c
   assert.equal(mesures.find('[aria-live], [role="status"]').length,0);
 });
 
-test('Les quatre expertises conservent leurs images sans filtre ni voile coloré', () => {
-  const home = built('');
+test('Chaque fiche expertise conserve son image métier sans filtre ni voile coloré', () => {
   for (const slug of ['estate', 'pro', 'pim', 'insure']) {
-    for (const page of [home, built(`expertises/${slug}`)]) {
+    for (const page of [built(`expertises/${slug}`), built(`en/expertises/${slug}`)]) {
       const image = page(`img[src="/img/ambiance-${slug}.webp"]`);
       assert.equal(image.length, 1);
       assert.doesNotMatch(image.attr('class'), /visuel-biton|visuel-traits-cuivre|grayscale|sepia/);

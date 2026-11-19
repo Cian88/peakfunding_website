@@ -17,29 +17,23 @@ test('Accueil FR/EN : repères sans statistiques ni compteurs', () => {
     assert.equal(band.find('[data-compte]').length, 0);
     assert.doesNotMatch(band.text(), /\b(?:500|95|72)\b|%/);
     assert.match(band.text(), /299/);
-    assert.equal($('.heros').nextAll('section').first().attr('id'), 'accompagnement');
+    assert.ok(band.find('a[href="#simulateur"]').length);
   }
 });
 
-test('Accueil FR/EN : spécialités explicites, signature et actions conservées', () => {
-  for (const [file, title, description] of [
-    ['dist/index.html', 'Votre financement, pensé dans son ensemble.', 'Investissement locatif, SCI, reprise d’entreprise, opérations de marchands de biens : PEAK FUNDING structure et négocie votre financement, partout en France.'],
-    ['dist/en/index.html', 'Your financing, thought through as a whole.', 'Buy-to-let investments, French property companies (SCI), business acquisitions and property trading projects: PEAK FUNDING structures and negotiates your financing throughout France.'],
+test('Accueil FR/EN : le courtage, les publics et les deux parcours sont explicites', () => {
+  for (const [prefix, title, audience] of [
+    ['', 'Financement & assurance emprunteur.', /particuliers.*dirigeants.*investisseurs/],
+    ['en/', 'Financing & borrower insurance.', /individuals.*business owners.*investors/],
   ]) {
-    const $ = load(readFileSync(file, 'utf8'));
-    const hero = $('.heros');
-    if(hero.is('[data-pitch-cinema]')){
-      assert.match(hero.find('h1').text(),/courtage|brokerage/);
-      assert.equal(hero.find('h1.sr-only').length,0);assert.match(hero.find('h2').text(),/PEAK PITCH/);
-      const video=hero.find('video');assert.equal(video.length,1);assert.equal(video.attr('autoplay'),undefined);assert.notEqual(video.attr('muted'),undefined);assert.equal(video.attr('loop'),undefined);
-      assert.equal(hero.find('[data-pitch-discover]').attr('href'),file.includes('/en/')?'/en/peak-pitch/':'/peak-pitch/');
-      assert.equal(hero.find('[data-assurance]').attr('target'),'_blank');continue;
-    }
+    const $ = load(readFileSync(`dist/${prefix}index.html`, 'utf8'));
+    const hero = $('.atlas-cover');
     assert.equal(hero.find('h1').text().replace(/\s+/g, ' ').trim(), title);
-    assert.ok(hero.find('.heros-texte > p').toArray().some(el => $(el).text() === description));
-    assert.equal(hero.find('.heros-photo').attr('src'), '/img/hero-1600.webp');
-    assert.equal(hero.find('.btn-cuivre').attr('href'), file.includes('/en/') ? '/en/peak-exchange/' : '/peak-exchange/');
-    assert.equal(hero.find('.btn-fantome').attr('href'), '#simulateur');
-    assert.equal(hero.find('[data-assurance]').attr('target'), '_blank');
+    assert.match(hero.find('.cover-lead').text(), audience);
+    assert.equal(hero.find('.cover-actions a').first().attr('href'), '#simulateur');
+    assert.equal(hero.find('.cover-actions a').last().attr('href'), `/${prefix}peak-exchange/`);
+    assert.match(hero.text(), /ORIAS.*24002546.*ACPR/);
+    assert.equal(hero.find('.map-body img').attr('src'), '/cartographie/relief.svg');
+    assert.equal($('#expertises [data-assurance]').attr('target'), '_blank');
   }
 });

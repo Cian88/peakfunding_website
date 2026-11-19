@@ -61,7 +61,7 @@ const stations = stages.map((stage, i) => {
           </svg>
           <line class="baseline" x1="7%" x2="94%" y1="80.88%" y2="80.88%"/>
           {stations.map((s, i) => (
-            <a class="station" data-waypoint href={'#etape-' + (i+1)} aria-label={(en ? 'Stage ' : 'Étape ') + (i+1) + ' · ' + s.titre}>
+            <a class="station" data-waypoint href={'#etape-' + (i+1)} aria-label={'0' + (i + 1) + ' ' + s.distance + ' m · ' + s.titre}>
               <line class="station-guide" x1={s.position} x2={s.position} y1={s.height} y2="84%"/>
               <circle class="station-hit" cx={s.position} cy={s.height} r="23"/>
               <circle class="station-dot" cx={s.position} cy={s.height} r="5"/>

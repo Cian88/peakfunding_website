@@ -1,0 +1,15 @@
+---
+interface Props { offre: 'pitch' | 'exchange' | 'livre' }
+const fenetres = { pitch:'144 196 390 52', exchange:'285 404 390 52', livre:'355 133 390 52' };
+---
+<div class="marge-relief">
+  <svg viewBox={fenetres[Astro.props.offre]} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <use href="/cartographie/relief.svg#courbes-terrain" />
+  </svg>
+  <small>Source IGN · RGE ALTI® · 19.11.2026</small>
+</div>
+<style>
+  .marge-relief { border-block:1px solid var(--rule); position:relative; background:#eeefe7; }
+  .marge-relief svg { display:block; width:100%; height:clamp(38px,4vw,64px); overflow:hidden; }
+  .marge-relief small { position:absolute; right:4px; bottom:3px; background:var(--paper); color:var(--muted); padding:1px 4px; font:500 .57rem/1.3 var(--mono); }
+</style>

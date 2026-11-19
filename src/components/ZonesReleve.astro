@@ -1,0 +1,123 @@
+---
+import PlanExpertise from './PlanExpertise.astro';
+import { langCourante, localiser } from '../i18n';
+import { ASSURANCE_URL } from '../data/integrations';
+import { accueil } from '../data/contenu';
+
+const lang = langCourante(Astro.currentLocale);
+const en = lang === 'en';
+const ui = accueil(lang).ui;
+const texte = (fr: string, english: string) => en ? english : fr;
+const zones = [
+  {
+    slug:'estate', nom:'PEAK ESTATE', titre:texte('Financement immobilier','Property financing'),
+    public:texte('Pour les particuliers et les investisseurs','For homebuyers and investors'),
+    description:texte('Résidence principale, investissement locatif ou SCI. Nous étudions vos revenus et votre patrimoine pour structurer la demande de prêt.', 'A main home, a rental investment or an SCI. We review your income and assets to structure the loan application.'),
+  },
+  {
+    slug:'pro', nom:'PEAK PRO', titre:texte('Financement professionnel','Business financing'),
+    public:texte('Pour les dirigeants et les repreneurs','For business owners and buyers'),
+    description:texte('Création, reprise, équipement ou trésorerie. Nous préparons le financement au regard de votre bilan et des besoins de votre entreprise.', 'Setting up, acquiring, equipping or funding a business. We structure financing around your balance sheet and operating needs.'),
+  },
+  {
+    slug:'pim', nom:'PEAK PIM', titre:texte('Opérations immobilières','Property transactions'),
+    public:texte('Pour les marchands de biens, promoteurs et foncières','For property traders, developers and investment companies'),
+    description:texte('Acquisition, travaux, revente. Nous examinons le calendrier de l’opération et les garanties pour préparer la présentation aux banques.', 'Acquisition, construction and resale. We review the project timetable and guarantees to prepare the case for lenders.'),
+  },
+  {
+    slug:'insure', nom:'PEAK INSURE', titre:texte('Assurance emprunteur','Borrower insurance'),
+    public:texte('Pour les emprunteurs immobiliers','For mortgage borrowers'),
+    description:texte('À la signature ou en cours de prêt, nous comparons les contrats à garanties équivalentes et suivons la substitution auprès de la banque.', 'When you sign or during the life of a loan, we compare equivalent cover and follow up with the bank when you switch insurers.'),
+  },
+] as const;
+---
+<section id="expertises" class="zones-releve frame" aria-labelledby="zones-titre">
+  <header class="zones-tete">
+    <p class="chapter-label">01 / {texte('Expertises','Expertise')}</p>
+    <h2 id="zones-titre">{texte('Quatre pôles d’expertise.','Four areas of expertise.')}</h2>
+    <nav aria-label={texte('Accès aux quatre expertises','Jump to a division')}>
+      {zones.map(zone=><a href={`#zone-${zone.slug}`}>{zone.nom}</a>)}
+    </nav>
+  </header>
+  <ol class="zones-cahier">
+    {zones.map((zone, index) => (
+      <li id={`zone-${zone.slug}`} class:list={['zone-page', { inverse:index % 2 === 1 }]}>
+        <article class="zone-scene" aria-labelledby={`titre-${zone.slug}`}>
+          <div class="zone-cartouche">
+            <p class="zone-indexation"><span>0{index+1} / 04</span><b>{zone.nom}</b></p>
+            <h3 id={`titre-${zone.slug}`}>{zone.titre}</h3>
+            <p class="zone-public">{zone.public}</p>
+            <p class="zone-description">{zone.description}</p>
+            <p data-expertise-reveal><a class="zone-consulter" href={localiser(`/expertises/${zone.slug}`, lang)}>
+              {texte('Découvrir','Explore')} {zone.nom} <span aria-hidden="true">↗</span>
+            </a></p>
+          {zone.slug === 'insure' && <a class="zone-comparateur" data-assurance href={ASSURANCE_URL} target="_blank" rel="noopener">
+            {ui.hero_assurance.replace(' ↗', '')} <span aria-hidden="true">↗</span><span class="sr-only">{ui.hero_nouvel_onglet}</span>
+          </a>}
+          </div>
+          <PlanExpertise lang={lang} slug={zone.slug} panorama />
+        </article>
+      </li>
+    ))}
+  </ol>
+</section>
+<style>
+  .zones-releve { padding-block:clamp(36px,5vw,90px); }
+  .zones-tete { padding-bottom:clamp(20px,2vw,36px); }
+  .zones-tete h2 { margin:24px 0; max-width:19ch; font-size:clamp(2.3rem,5vw,5rem); font-weight:650; line-height:1.08; letter-spacing:.005em; }
+  .zones-tete nav { display:flex; flex-wrap:wrap; gap:0 clamp(16px,3vw,42px); }
+  .zones-tete nav a { display:inline-flex; align-items:center; min-height:44px; font:500 .74rem var(--mono); }
+  .zones-tete nav a::after { content:'↓'; margin-left:9px; color:var(--signal); }
+  .zones-tete nav a:hover,.zone-consulter:hover,.zone-comparateur:hover { text-decoration:underline; text-underline-offset:4px; }
+  .zones-cahier { list-style:none; padding:0; margin:0; }
+  .zone-page { border-top:1px solid var(--ink); scroll-margin-top:90px; }
+  .zone-scene { position:relative; display:grid; grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr); align-items:center; column-gap:clamp(32px,5vw,94px); row-gap:16px; padding-block:clamp(28px,3.6vw,58px); background:var(--paper); }
+  .zone-indexation { display:flex; gap:14px; align-items:center; margin:0 0 clamp(22px,3vw,48px); font:500 .78rem/1.5 var(--mono); color:var(--ink); }
+  .zone-indexation span { border-left:3px solid var(--signal); padding-left:9px; color:var(--signal); }
+  .zone-indexation b { font-weight:600; }
+  .zone-cartouche h3 { font-size:clamp(2.4rem,4.5vw,5.2rem); font-weight:600; letter-spacing:.005em; line-height:1.1; overflow-wrap:break-word; }
+  .zone-public { margin:clamp(18px,2.3vw,36px) 0 8px; font-size:clamp(1rem,1.3vw,1.32rem); line-height:1.4; font-weight:600; }
+  .zone-description { max-width:49ch; font-size:clamp(1rem,1.15vw,1.2rem); line-height:1.55; color:var(--muted); }
+  .zone-consulter,.zone-comparateur { display:inline-flex; gap:12px; align-items:center; min-height:44px; width:fit-content; font-size:.9rem; font-weight:650; }
+  .zone-consulter { border-bottom:1px solid var(--ink); margin-top:clamp(14px,2vw,28px); }
+  .zone-consulter span,.zone-comparateur>span:first-of-type { color:var(--signal); }
+  .zone-comparateur { grid-column:1/-1; }
+  @media(min-width:1040px) {
+    .zone-page { border:0; margin-bottom:clamp(24px,2vw,40px); }
+    .zone-scene { display:grid; grid-template:1fr / minmax(0,1fr); padding:0; }
+    .zone-scene :global(.extrait-relief),.zone-cartouche { grid-area:1 / 1; }
+    .zone-cartouche { z-index:1; justify-self:start; align-self:center; width:43%; margin:64px 3.5%; padding:clamp(24px,3vw,50px); background:var(--paper); border:1px solid var(--ink); }
+    .inverse .zone-cartouche { justify-self:end; }
+    .zone-indexation { margin-bottom:clamp(22px,2.4vw,36px); }
+    .zone-cartouche h3 { font-size:clamp(2.1rem,3.8vw,4.6rem); line-height:1.08; }
+    .zone-cartouche .zone-comparateur { display:flex; margin-top:8px; }
+    .zone-description { font-size:clamp(1rem,1.1vw,1.15rem); }
+  }
+  @media (min-width:1040px) and (min-height:650px) and (prefers-reduced-motion:no-preference) {
+    :global(html.mouvement:not([data-static])) .zone-page { view-timeline-name:--passage; }
+    :global(html.mouvement:not([data-static])) .zone-cartouche { position:sticky; top:clamp(92px,16svh,176px); align-self:start; margin-block:clamp(88px,10svh,160px); }
+    @supports (animation-timeline:view()) {
+      :global(html.mouvement:not([data-static])) .zone-page :global(.grand-format .releve-mobile) {
+        animation:recaler linear both; animation-timeline:--passage; animation-range:entry 5% exit 90%;
+      }
+      :global(html.mouvement:not([data-static])) .zone-page :global(.grand-format .ligne-de-cote) {
+        stroke-dasharray:1; animation:pointer linear both; animation-timeline:--passage; animation-range:entry 12% entry 75%;
+      }
+      :global(html.mouvement:not([data-static])) .zone-cartouche h3::after {
+        content:''; display:block; width:56px; height:3px; margin-top:14px; background:var(--signal); transform-origin:left;
+        animation:indication linear both; animation-timeline:--passage; animation-range:entry 20% entry 75%;
+      }
+      @keyframes recaler { from { transform:translate(-26px,13px); } to { transform:translate(26px,-13px); } }
+      @keyframes pointer { from { stroke-dashoffset:1; } to { stroke-dashoffset:0; } }
+      @keyframes indication { from { transform:scaleX(.1); } to { transform:scaleX(1); } }
+    }
+  }
+  @media(max-width:820px) {
+    .zone-scene { grid-template-columns:minmax(0,1fr); gap:22px; }
+    .zone-indexation { margin-bottom:16px; }
+    .zone-cartouche h3 { font-size:clamp(2rem,7vw,3.5rem); letter-spacing:0; }
+    .zone-public { margin-top:16px; }
+    .zone-scene :global(.extrait-relief) { max-width:620px; }
+    .zone-comparateur { grid-column:auto; }
+  }
+</style>

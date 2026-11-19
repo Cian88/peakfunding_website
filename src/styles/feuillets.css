@@ -5,15 +5,18 @@
   --secondaire: var(--muted);
   --filet: var(--rule);
   --trame: var(--wash);
+  --approche-titre:.008em;
+  --approche-rubrique:.008em;
+  letter-spacing:.006em;
   color: var(--encre);
   background: var(--papier);
   line-height: 1.55;
 }
-.feuillet :where(h1,h2,h3) { color:var(--encre); text-wrap:balance; }
+.feuillet :where(h1,h2,h3) { color:var(--encre); text-wrap:balance; letter-spacing:var(--approche-rubrique); }
 .feuillet :where(.cadre-page,.espace-large) { width:min(100%, 1740px); margin-inline:auto; padding-inline:var(--gutter); }
 .feuillet .respiration { padding-block:clamp(44px,6vw,100px); }
-.feuillet h1 { font-size:clamp(2.45rem,5.6vw,5.6rem); line-height:1; letter-spacing:-.058em; font-weight:650; overflow-wrap:break-word; }
-.feuillet .titre-rubrique,.feuillet :is(.book-heading,.exchange-section-head,.exchange-note-grid,.book-closing,.book-contents) h2 { font-size:clamp(2rem,3.8vw,3.8rem); letter-spacing:-.05em; line-height:1.06; font-weight:600; }
+.feuillet h1 { font-size:clamp(2.45rem,5.6vw,5.6rem); line-height:1.07; letter-spacing:var(--approche-titre); font-weight:650; overflow-wrap:break-word; }
+.feuillet .titre-rubrique,.feuillet :is(.book-heading,.exchange-section-head,.exchange-note-grid,.book-closing,.book-contents) h2 { font-size:clamp(2rem,3.8vw,3.8rem); letter-spacing:var(--approche-rubrique); line-height:1.12; font-weight:600; }
 .feuillet .titre-entree { font-size:clamp(1.3rem,2vw,1.8rem); line-height:1.16; font-weight:600; }
 .feuillet .legende,.feuillet .chemin,.feuillet .chiffres { font-family:var(--font-mono,monospace); font-variant-numeric:tabular-nums; }
 .feuillet .legende,.feuillet .chemin { font-size:.72rem; letter-spacing:.07em; color:var(--secondaire); }
@@ -36,18 +39,13 @@
 .plan-texte h1 { margin:20px 0; font-size:clamp(2.35rem,4.65vw,5rem); }
 .chapeau { font-size:clamp(1rem,1.3vw,1.2rem); color:var(--secondaire); max-width:57ch; }
 .plan-actions { margin-top:28px; display:flex; flex-wrap:wrap; gap:10px; }
-.planche { align-self:stretch; display:flex; flex-direction:column; background:var(--trame); border:1px solid var(--filet); }
-.planche-index,.planche figcaption { padding:13px 18px; font-family:var(--font-mono,monospace); }
-.planche-index { display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--filet); text-transform:uppercase; font-size:10px; letter-spacing:.07em; }
-.planche svg { width:100%; flex:1; min-height:0; }
-.planche figcaption { border-top:1px solid var(--filet); font-size:.76rem; }
 .illustration-metier { width:100%; max-height:290px; margin-top:26px; object-fit:cover; }
 .fiche-point { padding:22px 0; border-top:1px solid var(--filet); }
 .feuillet .entete-document { margin-block:40px; padding-bottom:28px; border-bottom:1px solid var(--filet); max-width:1050px; }
 .feuillet .grille-document { display:grid; grid-template-columns:minmax(0,1fr); gap:34px; }
 .feuillet .texte-document { max-width:78ch; overflow-wrap:anywhere; }
 .feuillet .texte-document h1 { margin-bottom:28px; }
-.feuillet .texte-document h2 { font-size:clamp(1.6rem,2.5vw,2.4rem); line-height:1.1; margin:44px 0 18px; font-weight:650; letter-spacing:-.035em; }
+.feuillet .texte-document h2 { font-size:clamp(1.6rem,2.5vw,2.4rem); line-height:1.1; margin:44px 0 18px; font-weight:650; letter-spacing:var(--approche-rubrique); }
 .feuillet .texte-document h3 { margin:28px 0 14px; font-weight:650; font-size:1.2rem; }
 .feuillet .texte-document :is(p,li) { font-size:1.03rem; line-height:1.7; margin-bottom:1em; }
 .feuillet .texte-document a,.feuillet .sommaire a:hover { text-decoration:underline; text-underline-offset:.2em; }
@@ -78,7 +76,7 @@
 .contact-colonnes #administratif,.portail>div+div { border-top:2px solid var(--encre); padding:24px; background:var(--trame); margin-top:0; }
 .portail h1 { font-size:clamp(2.45rem,4.5vw,4.8rem); }
 .erreur-feuille { align-items:center; }
-.erreur-feuille>b { font:600 clamp(6rem,16vw,17rem)/1 var(--font-mono,monospace); letter-spacing:-.12em; color:var(--signal); }
+.erreur-feuille>b { font:600 clamp(6rem,16vw,17rem)/1 var(--font-mono,monospace); letter-spacing:0; color:var(--signal); }
 .feuillet .espace-large { max-width:1840px; }
 .feuillet .espace-large h1 { font-size:clamp(2.45rem,5vw,4.8rem); }
 @media(min-width:1024px) {
@@ -118,7 +116,7 @@
 .contents-parts ol { padding:18px 0 0 42px; list-style:decimal; }
 .contents-parts li { padding:4px 0; }
 .exchange-price,.book-price { display:flex; align-items:center; gap:22px; margin:24px 0; padding-block:14px; border-block:1px solid var(--filet); }
-.exchange-price strong,.book-price strong { font-size:clamp(1.75rem,2.9vw,3.2rem); line-height:1.1; letter-spacing:-.045em; white-space:nowrap; }
+.exchange-price strong,.book-price strong { font-size:clamp(1.75rem,2.9vw,3.2rem); line-height:1.1; letter-spacing:0; white-space:nowrap; }
 .exchange-price span,.book-price span,.exchange-small,.book-seller,.exchange-disclaimer,.book-disclaimer,.book-prelaunch,.book-legal { font-size:.81rem; color:var(--secondaire); }
 .exchange-small,.book-seller,.exchange-disclaimer,.exchange-credit-final,.exchange-links,.book-about p,.book-about h3 { margin-top:18px; }
 .exchange-credit { margin-top:22px; padding-left:16px; border-left:2px solid var(--signal); }
@@ -157,8 +155,6 @@
 }
 @media(max-width:800px) {
   .plan-entete,.offre-grid,.book-hero-grid,.exchange-intro,.tete-article,.contact-colonnes,.portail,.erreur-feuille { grid-template-columns:minmax(0,1fr); }
-  .planche svg { height:clamp(160px,42vw,280px); flex:none; }
-  .planche { max-width:500px; width:100%; }
   .book-stage,.exchange-portrait { width:min(100%,360px); justify-self:start; }
   .resume-analyse,.feuillet .exchange-section-head,.feuillet .book-heading { grid-template-columns:minmax(0,1fr); }
   .resume-analyse>div { grid-area:auto; }
@@ -175,3 +171,11 @@
 }
 
 @media (scripting:none) { .cadre-actelo { display:none; } }
+
+/* Les moyens et grands corps conservent le crénage de Manrope. */
+@media(min-width:768px) { .feuillet { --approche-titre:0em; --approche-rubrique:0em; } }
+@media(min-width:1280px) { .feuillet { --approche-titre:.005em; --approche-rubrique:0em; } }
+
+.offre-grid aside .marge-relief { margin-bottom:24px; }
+.book-stage .marge-relief { margin-bottom:clamp(16px,2vw,28px); }
+.exchange-portrait .marge-relief { border-bottom:0; }

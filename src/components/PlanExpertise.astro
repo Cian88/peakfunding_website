@@ -1,47 +1,88 @@
 ---
 import type { Expertise } from '../data/expertises';
-interface Props { slug: Expertise['slug']; nom: string; lang: 'fr' | 'en' }
-const { slug, nom, lang } = Astro.props;
-const fiches = {
-  estate: ['01', 'Immobilier', 'Property'],
-  pro: ['02', 'Entreprises', 'Business'],
-  pim: ['03', 'Professionnels de l’immobilier', 'Property professionals'],
-  insure: ['04', 'Assurance emprunteur', 'Borrower insurance'],
-};
-const [numero, fr, en] = fiches[slug];
----
-<figure class="planche">
-  <div class="planche-index"><span>{lang === 'fr' ? 'Pôle' : 'Division'} {numero} / 04</span><span>{nom}</span></div>
-  <svg viewBox="0 0 400 290" fill="none" aria-hidden="true" stroke-linejoin="round">
-    <defs><pattern id="carroyage" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M0 4V0h4" stroke="#80918b" stroke-width=".8"/></pattern></defs>
-    <rect width="400" height="290" fill="url(#carroyage)"/>
-    <g stroke="#1d353b" stroke-width="1.6" fill="#edf0e8">
-      {slug === 'estate' && <>
-        <path d="m76 149 37-44 47 85v63l-84-42z"/>
-        <path d="m160 190 132-66v63l-132 66z"/>
-        <path d="m113 105 132-66 47 85-132 66z"/>
-        <path d="m70 150 43-51 49 89 136-68" fill="none"/>
-        <path d="m113 99 132-66 53 87" fill="none"/>
-        <path d="m93 219 0-49 25 12v50z" fill="#bf4326"/>
-        <path d="m127 179 19 9v22l-19-9z"/>
-        {[0,1,2].map(i => <g transform={`translate(${i * 35} ${i * -17.5})`}>
-          <path d="m179 192 22-11v28l-22 11z"/><path d="m190 187 0 28"/>
-        </g>)}
-        <path d="m70 222-11 6m88 32-11 6m-72-39 79 39m23-8 0 10m130-74v9m-130 62 130-65" fill="none" stroke="#80918b" stroke-width=".9"/>
+import terrain from '../../scripts/relief/puy-de-dome.json';
 
-      </>}
-      {slug === 'pro' && <>
-        <path d="m64 177 114-57 149 75-116 58z"/><path d="m64 177 147 76v16L64 193z"/><path d="m211 253 116-58v16l-116 58z"/>
-        {[0,1,2].map(i=><g transform={`translate(${i*44} ${i*22})`}><path d="m82 160 0-63 43-26 0 24 50-24v64z"/><path d="m82 97 42 21 43-26-42-21z"/><path d="m82 97 42 21v64l-42-21z"/><path d="m124 118 43-26v66l-43 24z"/></g>)}<path d="m188 180 18 9v26l-18-9z" fill="#bf4326"/>
-      </>}
-      {slug === 'pim' && <>
-        <path d="m48 189 136-67 169 83-137 67z"/>
-        {[[177,67,66],[111,128,54],[215,148,55]].map(([x,y,h],i)=><g transform={`translate(${x} ${y})`}><path d="m-42 0 46-23 44 22L2 22z"/><path d={`m-42 0 44 22v${h}l-44-22z`}/><path d={`m2 22 46-23v${h}l-46 23z`} fill={i===1?'#bf4326':undefined}/>{[16,32,48].map(v=><path d={`m-42 ${v} 44 22 46-23`}/>)}</g>)}
-      </>}
-      {slug === 'insure' && <>
-        {[0,1,2].map(i=><g transform={`translate(${i*11} ${-i*8})`}><path d="m115 88 72-29 73 28v57c0 47-33 77-73 100-39-17-72-54-72-101z"/></g>)}<path d="m158 90 51-20 51 19v41c0 34-23 58-51 77-28-18-51-40-51-75z" stroke-dasharray="4 4"/><path d="m178 132 20 13 40-37" stroke="#bf4326" stroke-width="6" fill="none"/>
-      </>}
-    </g>
-  </svg>
-  <figcaption>{lang === 'fr' ? fr : en}</figcaption>
+interface Props { slug: Expertise['slug']; lang: 'fr' | 'en'; panorama?: boolean }
+const { slug, lang, panorama = false } = Astro.props;
+// Fenêtres d'une carte de 2 880 × 2 304 m. Chaque repère correspond à un nœud du modèle IGN.
+const extraits = {
+  estate: { numero:'01', origine:[240,45], largeur:325, col:46, ligne:19, fr:'Versant nord', en:'North slope' },
+  pro:    { numero:'02', origine:[80,195], largeur:390, col:27, ligne:39, fr:'Versant ouest', en:'West slope' },
+  pim:    { numero:'03', origine:[222,346], largeur:360, col:45, ligne:54, fr:'Versant sud', en:'South slope' },
+  insure: { numero:'04', origine:[440,202], largeur:350, col:68, ligne:37, fr:'Versant est', en:'East slope' },
+};
+const plan = extraits[slug];
+const ligneMax = terrain.z_m.length - 1, colMax = terrain.z_m[0].length - 1;
+const longitude = terrain.origin[0] + plan.col / colMax * (terrain.last[0] - terrain.origin[0]);
+const latitude = terrain.origin[1] + plan.ligne / ligneMax * (terrain.last[1] - terrain.origin[1]);
+const terrainX = plan.col / colMax * 800, terrainY = plan.ligne / ligneMax * 640;
+const formatNombre = (v: number, decimales: number) => v.toLocaleString(lang, {
+  minimumFractionDigits:decimales, maximumFractionDigits:decimales, useGrouping:false,
+});
+const lieu = lang === 'fr' ? plan.fr : plan.en;
+const formats = [{ largeur:560, hauteur:350, zoom:560 / plan.largeur, x:plan.origine[0], y:plan.origine[1] }];
+if (panorama) {
+  const zoom = 1000 / plan.largeur;
+  const repereGauche = slug === 'pro' || slug === 'insure';
+  const x = Math.min(800 - plan.largeur - 8, Math.max(8, terrainX - (repereGauche ? 268 : 712) / zoom));
+  formats.push({ largeur:1000, hauteur:610, zoom, x, y:terrainY - 304 / zoom });
+}
+---
+<figure class:list={['extrait-relief', { panoramique:panorama }]} aria-label={`Puy de Dôme · ${lieu}`}>
+  <div class="entete-extrait">
+    <span>{lang === 'fr' ? 'Feuille' : 'Sheet'} {plan.numero}</span>
+    <span>Puy de Dôme <i aria-hidden="true">/</i> {lieu}</span>
+  </div>
+  {formats.map(({largeur, hauteur, zoom, x, y},i) => {
+    const pointX = (terrainX - x) * zoom, pointY = (terrainY - y) * zoom;
+    const coteAGauche = i === 1 && (slug === 'pro' || slug === 'insure');
+    const echelle = 100 / (terrain.grid_m * colMax / 800) * zoom;
+    return <svg viewBox={`0 0 ${largeur} ${hauteur}`} class:list={['champ-relief', { 'grand-format':i === 1 }]} aria-hidden="true">
+      <g class="releve-mobile">
+        <g transform={`scale(${zoom}) translate(${-x} ${-y})`}>
+          <use href="/cartographie/relief.svg#courbes-terrain" />
+        </g>
+        <g transform={`translate(${pointX} ${pointY})`}>
+          <path class="ligne-de-cote" pathLength="1" d={coteAGauche ? 'm0 0-28-37h-88' : 'm0 0 28-37h88'} fill="none" stroke="#ae3219" stroke-width="1.5"/>
+          <circle r="6" fill="#b73b1c" stroke="#fff" stroke-width="2"/>
+          <text x={coteAGauche ? -34 : 34} text-anchor={coteAGauche ? 'end' : 'start'} y="-44" class="cote-extrait">{formatNombre(terrain.z_m[plan.ligne][plan.col], 0)} m</text>
+        </g>
+      </g>
+      <g fill="none" stroke="#76817b" stroke-width=".7">
+        {Array.from({length:Math.floor((largeur-1)/70)},(_,n)=><path d={`M${(n+1)*70} 0v8m0 ${hauteur-16}v8`}/>)}
+        {Array.from({length:Math.floor((hauteur-1)/70)},(_,n)=><path d={`M0 ${(n+1)*70}h8m${largeur-16} 0h8`}/>)}
+      </g>
+      <g transform="translate(24 20)">
+        <path d="M0 24 6 3l6 21-6-4z" fill="#172b32" stroke="#f7f8f4" stroke-width=".7"/>
+        <text x="16" y="16">N</text>
+      </g>
+      <g transform={`translate(20 ${hauteur-28})`}>
+        <path d={`M0 -5v5h${echelle}v-5`} fill="none" stroke="#172b32" stroke-width="1.5"/>
+        <text y="16">100 m</text>
+      </g>
+    </svg>;
+  })}
+  <figcaption>
+    <span>{formatNombre(latitude, 4)}° N <i aria-hidden="true">/</i> {formatNombre(longitude, 4)}° E</span>
+    <span>Source IGN · RGE ALTI® · 19.11.2026</span>
+  </figcaption>
 </figure>
+<style>
+  .extrait-relief { margin:0; width:100%; align-self:center; border:1px solid var(--rule); background:#eeefe7; color:var(--ink); }
+  .entete-extrait,.extrait-relief figcaption { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:12px clamp(10px,1.3vw,20px); font:500 clamp(.62rem,.7vw,.8rem)/1.4 var(--mono); background:var(--paper); }
+  .entete-extrait { text-transform:uppercase; letter-spacing:.05em; border-bottom:1px solid var(--rule); }
+  .extrait-relief figcaption { border-top:1px solid var(--rule); color:var(--muted); }
+  .extrait-relief i { font-style:normal; color:var(--signal); padding-inline:.18em; }
+  .champ-relief { display:block; width:100%; height:auto; overflow:hidden; }
+  .champ-relief text { font:13px var(--mono); fill:#172b32; stroke:#eeefe7; stroke-width:5px; stroke-linejoin:round; paint-order:stroke; }
+  .champ-relief .cote-extrait { font-size:18px; font-weight:600; }
+  .champ-relief.grand-format { display:none; }
+  @media(min-width:1040px) {
+    .panoramique { display:grid; align-self:stretch; grid-template-rows:auto 1fr auto; }
+    .panoramique .champ-relief { display:none; }
+    .panoramique .grand-format { display:block; align-self:center; }
+  }
+  @media(max-width:400px) {
+    .entete-extrait,.extrait-relief figcaption { font-size:.62rem; }
+  }
+</style>

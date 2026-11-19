@@ -1,4 +1,5 @@
 ---
+import MargeRelief from '../MargeRelief.astro';
 import { langCourante, localiser } from '../../i18n';
 import { exchangeCredit, exchangeFreedom } from '../../data/peak-exchange';
 import {stancerServiceURL} from '../../lib/services-checkout.mjs';
@@ -30,6 +31,8 @@ const angles = en ? [
       <p class="exchange-credit"><strong>{en ? 'Deducted from your brokerage fees' : 'Déduit de vos honoraires de courtage'}</strong><span>{exchangeCredit[en ? 'en' : 'fr']}</span></p>
     </div>
     <figure class="exchange-portrait">
+      <MargeRelief offre="exchange" />
+
       <img src="/img/portrait-valentin.webp" alt="Valentin Boura--Defranoux" width="640" height="800" fetchpriority="high" />
       <figcaption><strong><span class="whitespace-nowrap">Valentin Boura--Defranoux</span></strong><span>{en ? 'Founder · Independent financing broker' : 'Dirigeant · Courtier indépendant en financement'}</span><small>PEAK FUNDING · ORIAS 24002546</small></figcaption>
     </figure>

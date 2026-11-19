@@ -727,8 +727,33 @@ select:focus-visible {
 }
 .nav-drop summary,
 .compact summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   cursor: pointer;
+  list-style: none;
   padding: 7px 0;
+}
+.nav-drop summary::-webkit-details-marker,
+.compact summary::-webkit-details-marker {
+  display: none;
+}
+.nav-drop summary::after,
+.compact summary::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-right: 1px solid var(--gold);
+  border-bottom: 1px solid var(--gold);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.3s ease;
+}
+.nav-drop[open] summary::after,
+.compact[open] summary::after {
+  transform: translateY(1px) rotate(225deg);
+}
+.font-mono {
+  font-family: Manrope, Arial, sans-serif;
 }
 .nav-drop nav,
 .compact nav {

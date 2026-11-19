@@ -128,6 +128,41 @@ def simplify(points, tolerance=.38):
     return simplify(points[:index+1], tolerance)[:-1] + simplify(points[index:], tolerance)
 
 
+def outside_cartouches(line, boxes):
+    """Cut out label rectangles before exposing the animated path as an SVG fragment."""
+    commands = []
+    last = None
+    for (ax, ay), (bx, by) in zip(line, line[1:]):
+        dx, dy = bx - ax, by - ay
+        visible = [(0., 1.)]
+        for left, top, right, bottom in boxes:
+            lo, hi = 0., 1.
+            for origin, delta, low, high in ((ax, dx, left, right), (ay, dy, top, bottom)):
+                if delta == 0:
+                    if not low <= origin <= high:
+                        hi = -1.
+                    continue
+                t0, t1 = sorted(((low - origin) / delta, (high - origin) / delta))
+                lo, hi = max(lo, t0), min(hi, t1)
+            if hi <= lo:
+                continue
+            pieces = []
+            for first, final in visible:
+                if first < lo:
+                    pieces.append((first, min(lo, final)))
+                if final > hi:
+                    pieces.append((max(first, hi), final))
+            visible = pieces
+        for first, final in visible:
+            begin = (round(ax + first * dx, 1), round(ay + first * dy, 1))
+            end = (round(ax + final * dx, 1), round(ay + final * dy, 1))
+            if last != begin:
+                commands.append(f'M{begin[0]:g},{begin[1]:g}')
+            commands.append(f'{end[0]:g},{end[1]:g}')
+            last = end
+    return ' '.join(commands)
+
+
 def render(data):
     grid = data['z_m']
     paper = '#f0f1eb'
@@ -135,6 +170,10 @@ def render(data):
     signal = '#bb3e22'
     paths, labels = [], []
     principal = None
+    summit_x = -WEST * WIDTH / (STEP * (COLS - 1))
+    summit_y = NORTH * HEIGHT / (STEP * (ROWS - 1))
+    reserved = [(summit_x + 48, summit_y - 92, summit_x + 220, summit_y - 20),
+                (724, 14, 777, 88), (15, 585, 190, 634)]
     occupied = [(490, 304), (532, 284), (600, 270), (73, 592), (750, 65)]
     for level in range(750, 1501, INTERVAL):
         major = level % 75 == 0
@@ -147,7 +186,7 @@ def render(data):
             if line[0] == line[-1]:
                 d += 'Z'
             if level == 1200 and principal is None:
-                principal = d
+                principal = line
             paths.append(f'<path d="{d}" stroke="{("#827d6c" if major else "#aca898")}" stroke-width="{1.6 if major else .85}"/>')
             if major and len(line) > 22:
                 for i in range(len(line)//3, len(line)-2):
@@ -158,31 +197,39 @@ def render(data):
                         continue
                     angle = math.degrees(math.atan2(line[i+1][1]-line[i-1][1], line[i+1][0]-line[i-1][0]))
                     angle = (angle + 90) % 180 - 90
-                    labels.append(f'<text transform="translate({x:.1f} {y:.1f}) rotate({angle:.0f})" text-anchor="middle">{level}</text>')
+                    # Pad the animated path's cutout for these rotated, opaque cartouches.
+                    radians = math.radians(angle)
+                    rx = 25 * abs(math.cos(radians)) + 12 * abs(math.sin(radians))
+                    ry = 25 * abs(math.sin(radians)) + 12 * abs(math.cos(radians))
+                    reserved.append((x-rx, y-ry, x+rx, y+ry))
+                    labels.append(f'<g transform="translate({x:.1f} {y:.1f}) rotate({angle:.0f})">'
+                                  f'<rect x="-21" y="-9" width="42" height="18" fill="{paper}"/>'
+                                  f'<text text-anchor="middle" y="4">{level}</text></g>')
                     occupied.append((x, y))
                     break
     scale_px = 500 * WIDTH / (STEP * (COLS - 1))
-    summit_x = -WEST * WIDTH / (STEP * (COLS - 1))
-    summit_y = NORTH * HEIGHT / (STEP * (ROWS - 1))
     crosses = ''.join(f'M{x-4} {y}h8m-4 -4v8' for x in range(40,800,120) for y in range(40,640,120))
     lines = ''.join(paths)
     figures = ''.join(labels)
+    principal_path = outside_cartouches(principal, reserved)
+    contours = f'<g id="courbes-terrain" fill="none" stroke-linejoin="round" stroke-linecap="round">{lines}</g>'
     ASSET.write_text(f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640">
 <title>Puy de Dôme · Chaîne des Puys</title>
 <desc>Courbes de niveau tous les 15 mètres. Source IGN, RGE ALTI®, extraction du {data['retrieved']}, Licence Ouverte 2.0. https://www.data.gouv.fr/datasets/rge-alti-r</desc>
-<defs><path id="courbe-repere" pathLength="1" d="{principal}"/></defs>
+<defs><path id="courbe-repere" pathLength="1" d="{principal_path}"/></defs>
 <rect width="800" height="640" fill="{paper}"/>
-<g fill="none" stroke-linejoin="round" stroke-linecap="round">{lines}</g>
+{contours}
 <path d="{crosses}" stroke="#858a81" stroke-width=".8" opacity=".7"/>
-<g fill="{ink}" stroke="{paper}" paint-order="stroke" stroke-width="6" font-family="monospace" font-size="10" letter-spacing="1.3">{figures}</g>
+<g fill="{ink}" font-family="monospace" font-size="13" letter-spacing="1">{figures}</g>
 <g transform="translate({summit_x:.1f} {summit_y:.1f})">
 <circle r="9" fill="{paper}" stroke="{signal}" stroke-width="1.4"/><circle r="3.4" fill="{signal}"/>
-<path d="M8 -6l48 -47h131" fill="none" stroke="{signal}" stroke-width="1.2"/>
-<rect x="56" y="-83" width="132" height="29" fill="{paper}"/>
-<text x="60" y="-62" font-family="Arial,sans-serif" font-size="20" font-weight="bold" letter-spacing="-.5" fill="{ink}">Puy de Dôme</text>
-<text x="60" y="-35" fill="{ink}" font-family="monospace" font-size="13" letter-spacing="1" stroke="{paper}" stroke-width="6" paint-order="stroke">1 465 m</text>
+<rect x="49" y="-89" width="162" height="66" fill="{paper}"/>
+<path d="M7 -6l42 -42h162" fill="none" stroke="{signal}" stroke-width="1.6"/>
+<text x="58" y="-59" font-family="Arial,sans-serif" font-size="22" font-weight="bold" letter-spacing="-.5" fill="{ink}">Puy de Dôme</text>
+<text x="58" y="-30" fill="{ink}" font-family="monospace" font-size="15" letter-spacing="1">1 465 m</text>
 </g>
-<g transform="translate(751 30)" fill="{ink}" stroke="{paper}" paint-order="stroke" stroke-width="4">
+<g transform="translate(751 30)" fill="{ink}">
+<rect x="-17" y="-9" width="34" height="62" fill="{paper}"/>
 <text x="0" y="10" text-anchor="middle" font-family="monospace" font-size="14">N</text>
 <path d="M0 19l7 28 -7 -7 -7 7z"/><path d="M0 21v18l5 5z" fill="{paper}" stroke="none"/>
 </g>

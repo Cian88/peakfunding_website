@@ -1,0 +1,221 @@
+---
+import { accueil } from '../data/contenu';
+import type { Lang } from '../i18n';
+import terrain from '../../scripts/relief/puy-de-dome.json';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const format = new Intl.NumberFormat(en ? 'en-GB' : 'fr-FR');
+const stages = accueil(lang).methode;
+// West-to-east grid line through the summit marker. Station spacing is 512 m.
+const levels = terrain.z_m[38].slice(0, 49);
+const x = (index: number) => 62 + index * (490 / 48);
+const y = (altitude: number) => 202 - (altitude - 950) * .307;
+const coords = levels.map((altitude, i) => [x(i), y(altitude)]);
+const profile = 'M' + coords.map(([cx, cy]) => cx.toFixed(2) + ',' + cy.toFixed(2)).join(' ');
+const lengths = [0];
+for (let i = 1; i < coords.length; i++) {
+  lengths.push(lengths[i - 1] + Math.hypot(coords[i][0] - coords[i-1][0], coords[i][1] - coords[i-1][1]));
+}
+const stations = stages.map((stage, i) => {
+  const index = i * 16;
+  const [, cy] = coords[index];
+  return { ...stage, position: (12.5 + i * 25) + '%', height: cy / 251 * 100 + '%', fraction: lengths[index] / lengths[lengths.length - 1],
+    distance: format.format(index * terrain.grid_m), elevation: format.format(Math.round(levels[index])) };
+});
+---
+<section id="methode" class="chapter wash" aria-labelledby="method-title">
+  <div class="frame">
+    <div class="chapter-label">02 / {en ? 'Method' : 'Méthode'}</div>
+    <h2 id="method-title">{en ? 'Your application, step by step.' : 'Votre dossier, étape par étape.'}</h2>
+    <profil-releve>
+      <figure class="section-chart">
+        <figcaption>
+          <span class="section-name">
+            <span class="notation">{en ? 'West–east section' : 'Coupe ouest–est'}</span>
+            <strong>Puy de Dôme</strong>
+          </span>
+          <span class="section-range" aria-label={en ? 'Start and end elevations' : 'Altitudes de départ et d’arrivée'}>
+            {stations[0].elevation} <span aria-hidden="true">→</span> {stations[3].elevation} <small>m</small>
+          </span>
+        </figcaption>
+        <svg class="profile-panorama" role="group" aria-labelledby="profile-desc">
+          <title id="profile-desc">{en ? 'West–east terrain section with four links to the steps below' : 'Coupe du relief d’ouest en est, avec quatre liens vers les étapes du dossier'}</title>
+          {[1000, 1200, 1400].map(z => (
+            <g class="level">
+              <line x1="7%" x2="94%" y1={y(z)/251*100+'%'} y2={y(z)/251*100+'%'}/>
+              <text x="6%" y={y(z)/251*100+'%'} text-anchor="end" dy="4">{format.format(z)}</text>
+            </g>
+          ))}
+          <text class="axis-unit" x="6%" y="7%" text-anchor="end">m</text>
+          <svg x="12.5%" width="75%" height="100%" viewBox="62 0 490 251" preserveAspectRatio="none" overflow="visible" aria-hidden="true">
+            <defs>
+              <pattern id="section-hatching" patternUnits="userSpaceOnUse" width="5" height="5">
+                <path d="M-1 1l2 -2M0 5l5 -5M4 6l2 -2" fill="none" stroke="#b6c0b6" stroke-width=".65" vector-effect="non-scaling-stroke" />
+              </pattern>
+            </defs>
+            <path d={profile + ' V203 H62Z'} fill="url(#section-hatching)" />
+            <path d={profile} class="section-line" vector-effect="non-scaling-stroke" />
+            <path d={profile} class="section-trace" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" />
+          </svg>
+          <line class="baseline" x1="7%" x2="94%" y1="80.88%" y2="80.88%"/>
+          {stations.map((s, i) => (
+            <a class="station" data-waypoint href={'#etape-' + (i+1)} aria-label={(en ? 'Stage ' : 'Étape ') + (i+1) + ' · ' + s.titre}>
+              <line class="station-guide" x1={s.position} x2={s.position} y1={s.height} y2="84%"/>
+              <circle class="station-hit" cx={s.position} cy={s.height} r="23"/>
+              <circle class="station-dot" cx={s.position} cy={s.height} r="5"/>
+              <text class="station-no" x={s.position} y={s.height} dy="-13" text-anchor="middle">0{i + 1}</text>
+              <text class="station-distance" x={s.position} y="94%" text-anchor="middle">{s.distance} m</text>
+            </a>
+          ))}
+        </svg>
+        <div class="chart-credit">
+          <span>{en ? 'Ground elevation' : 'Altitude du terrain'}</span>
+          <a href="https://www.data.gouv.fr/datasets/rge-alti-r">IGN · RGE ALTI®</a>
+        </div>
+      </figure>
+      <ol class="station-list">
+        {stations.map((stage, i) => (
+          <li id={'etape-' + (i + 1)} tabindex="-1" data-etape data-length={stage.fraction.toFixed(6)}>
+            <div class="station-meta">
+              <span class="notation">{en ? 'Stage' : 'Étape'} 0{i + 1}</span>
+              <span>{stage.distance} m <span aria-hidden="true">/</span> {en ? 'Elev.' : 'Alt.'} {stage.elevation} m</span>
+            </div>
+            <h3>{stage.titre}</h3>
+            <p>{stage.texte}</p>
+          </li>
+        ))}
+      </ol>
+    </profil-releve>
+  </div>
+</section>
+<style>
+  #method-title { max-width: 20ch; margin-bottom: clamp(27px, 4vw, 60px); }
+  profil-releve { display:block; }
+  .section-chart { background: var(--paper); border-block: 1px solid var(--ink); }
+  .section-chart figcaption, .chart-credit, .station-meta { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  .section-chart figcaption { padding:15px clamp(12px, 2vw, 32px); }
+  .section-name { display:grid; gap:3px; }
+  .section-range { font:clamp(18px,2.9vw,48px)/1.1 var(--mono); color:var(--ink); white-space:nowrap; }
+  .section-range span { color:var(--signal); }
+  .section-range small { font-size:.55em; }
+  .section-chart strong { font-size:clamp(16px,1.4vw,22px); }
+  .profile-panorama { display:block; width:100%; height:clamp(230px,19vw,350px); }
+  .profile-panorama text { font:clamp(11px,.9vw,16px) var(--mono); fill:var(--muted); }
+  .level line { stroke:var(--rule); stroke-dasharray:3 5; }
+  .section-line, .section-trace { fill:none; stroke-linejoin:round; }
+  .section-line { stroke:var(--ink); stroke-width:2; }
+  .section-trace { stroke:var(--signal); stroke-width:3; }
+  .baseline { stroke:var(--ink); }
+  .station-guide { stroke:var(--muted); stroke-width:.8; stroke-dasharray:2 4; }
+  .station { pointer-events:bounding-box; }
+  .station-dot { stroke:var(--ink); stroke-width:1.75; fill:var(--paper); }
+  .station-hit { fill:transparent; }
+  .station:focus-visible { outline:0; }
+  .station:focus-visible .station-hit { stroke:var(--signal); stroke-width:3; }
+  .station:hover .station-dot, .station.is-current .station-dot { fill:var(--signal); stroke:var(--signal); }
+  .profile-panorama .station-no { fill:var(--ink); font-size:clamp(13px,1.2vw,20px); font-weight:bold; }
+  .chart-credit { padding:10px clamp(12px, 2vw, 32px); border-top:1px solid var(--rule); font:11px var(--mono); color:var(--muted); }
+  .chart-credit a { text-decoration:underline; text-underline-offset:3px; }
+  .station-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .station-list li { position:relative; min-width:0; padding:clamp(20px,2.2vw,36px) clamp(13px,1.4vw,24px) 22px; border-right:1px solid var(--rule); }
+  .station-list li:first-child { border-left:1px solid var(--rule); }
+  .station-list li.is-current:before, .station-list li:target:before { content:""; position:absolute; inset:0 0 auto; height:3px; background:var(--signal); }
+  .station-meta { font:11px var(--mono); color:var(--muted); flex-wrap:wrap; gap:4px 8px; }
+  .station-meta .notation { color:var(--signal); }
+  .station-list h3 { font-size:clamp(20px,1.9vw,34px); line-height:1.14; margin-top:18px; }
+  .station-list p { margin-top:12px; max-width:52ch; }
+  @media (min-width:761px) and (max-width:1100px) {
+    .station-meta { flex-direction:column; }
+    .station-list p { font-size:15px; }
+  }
+  @media(max-width:760px) {
+    .profile-panorama { height:clamp(180px,48vw,240px); }
+    .profile-panorama text { font-size:10px; }
+    .level text, .axis-unit { transform:translateX(12px); }
+    .station-list { display:block; }
+    .station-list li, .station-list li:first-child { border:0; border-bottom:1px solid var(--rule); padding:22px 0; }
+    .station-list h3 { margin-top:12px; }
+    .chart-credit { font-size:10px; }
+  }
+</style>
+<script>
+  class ProfilReleve extends HTMLElement {
+    private dispose?: () => void;
+
+    connectedCallback() {
+      const stages = [...this.querySelectorAll<HTMLElement>('[data-etape]')];
+      const markers = [...this.querySelectorAll('[data-waypoint]')];
+      const line = this.querySelector('.section-trace');
+      if (!line || !stages.length) return;
+      const fractions = stages.map(el => Number(el.dataset.length));
+      const controller = new AbortController();
+      const { signal } = controller;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+      const fixed = new URLSearchParams(location.search).has('statique');
+      let frame = 0;
+      let visible = true;
+      // A selected station remains active through the anchor jump. The next
+      // deliberate scroll hands control back to the section's reading position.
+      let selected: number | undefined;
+      const update = () => {
+        frame = 0;
+        const cursor = innerHeight * .55;
+        const positions = stages.map(stage => stage.getBoundingClientRect().top);
+        if (positions[0] === positions[1]) {
+          // Desktop stations share one row. Distribute their positions along
+          // the profile and narrative together as they cross the viewport.
+          const bounds = this.getBoundingClientRect();
+          positions.forEach((_, i) => { positions[i] = bounds.top + bounds.height * (.12 + .74 * i / (stages.length - 1)); });
+        }
+        let index = 0;
+        while (index + 1 < stages.length && positions[index + 1] <= cursor) index++;
+        let progress = 0;
+        const next = Math.min(index + 1, stages.length - 1);
+        if (next !== index) {
+          progress = Math.max(0, Math.min(1, (cursor - positions[index]) / (positions[next] - positions[index])));
+        }
+        let fraction = fractions[index] + progress * (fractions[next] - fractions[index]);
+        if (selected !== undefined) {
+          index = selected;
+          fraction = fractions[index];
+        }
+        line.setAttribute('stroke-dashoffset', fixed || reduced.matches ? '0' : (1-fraction).toFixed(4));
+        markers.forEach((marker, i) => {
+          marker.classList.toggle('is-current', i === index);
+          if (i === index) marker.setAttribute('aria-current', 'step');
+          else marker.removeAttribute('aria-current');
+        });
+        stages.forEach((stage, i) => stage.classList.toggle('is-current', i === index));
+      };
+      const queue = () => { if (visible && !frame) frame = requestAnimationFrame(update); };
+      const selectHash = () => {
+        const index = stages.findIndex(stage => '#' + stage.id === location.hash);
+        selected = index >= 0 ? index : undefined;
+        queue();
+      };
+      window.addEventListener('hashchange', selectHash, { signal });
+      markers.forEach((marker, i) => marker.addEventListener('click', () => { selected = i; queue(); }, { signal }));
+      const resume = () => { selected = undefined; queue(); };
+      window.addEventListener('wheel', resume, { passive: true, signal });
+      window.addEventListener('touchmove', resume, { passive: true, signal });
+      window.addEventListener('keydown', e => {
+        if (['PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End', ' '].includes(e.key)) resume();
+      }, { signal });
+      selectHash();
+      const observer = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        queue();
+      });
+      observer.observe(this);
+      window.addEventListener('scroll', queue, { passive: true, signal });
+      window.addEventListener('resize', queue, { signal });
+      reduced.addEventListener('change', queue, { signal });
+      queue();
+      this.dispose = () => { controller.abort(); observer.disconnect(); cancelAnimationFrame(frame); };
+    }
+    disconnectedCallback() { this.dispose?.(); }
+  }
+  if (!customElements.get('profil-releve')) customElements.define('profil-releve', ProfilReleve);
+</script>

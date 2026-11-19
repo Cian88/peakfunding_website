@@ -11,3 +11,20 @@ Le script échantillonne 6 643 altitudes sur une grille régulière de 32 m. Il 
 Depuis la racine du dépôt, exécuter `python3 scripts/relief/terrain.py`. La bibliothèque standard Python suffit. La commande lit le cache versionné et écrit `public/cartographie/relief.svg`. Le build Astro et le navigateur servent le SVG local.
 
 L'option explicite `--fetch` renouvelle le cache auprès de la Géoplateforme en 73 requêtes successives de 91 points, espacées d'au moins 300 ms. Le script contrôle chaque ligne et remplace le cache à la fin de l'extraction. [Géoservice altimétrique IGN](https://geoservices.ign.fr/services-geoplateforme-altimetrie)
+
+## Coupe de la méthode
+
+La figure de méthode suit le parallèle de latitude 45,7724° N, du bord ouest de la feuille au repère du sommet. Le composant utilise à la compilation les 49 premières mesures de la ligne 38 (index à partir de zéro). La distance est la projection horizontale, mesurée d'ouest en est. Le graphique emploie deux échelles indépendantes pour la distance et l'altitude.
+
+| Repère | Distance | Altitude échantillonnée |
+| --- | ---: | ---: |
+| 01 | 0 m | 979,61 m |
+| 02 | 512 m | 1 051,38 m |
+| 03 | 1 024 m | 1 293,99 m |
+| 04 | 1 536 m | 1 462,64 m |
+
+La coupe prend ses valeurs dans le même cache que les isolignes. La ligne sombre, les quatre repères et leurs cotes restent visibles dans le HTML statique. Au défilement, une ligne vermillon suit le profil entre les étapes du dossier. Le mouvement réduit ou le paramètre `?statique` présente le tracé en entier.
+
+Le groupe SVG `#courbes-terrain` fournit des extraits de la même carte aux pages expertise. Le trajet `#courbe-repere` du héros interrompt ses segments à l'entrée des cartouches. Les cotes et le nom du sommet s'impriment sur le papier opaque de la carte.
+
+L’aperçu social 1 200 × 630 px reprend la carte, le cartouche du sommet, les coordonnées et le crédit. La commande `node scripts/relief/partage.mjs` le régénère après la carte.

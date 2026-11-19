@@ -1,0 +1,282 @@
+---
+/* Prototype : couverture de l'accueil avec une animation native (HTML/CSS) de PEAK PITCH.
+   Activée par PUBLIC_PEAK_PITCH_HERO=motion. Le film PEAK PITCH reste disponible avec la valeur true.
+   L'état de base du CSS est l'image finale : sans animation, mouvement réduit ou ?statique, on voit
+   directement les trois livrables. Les montants sont un exemple illustratif cohérent. */
+import { localiser } from '../i18n';
+import { ASSURANCE_URL } from '../data/integrations';
+interface Props { lang?: 'fr' | 'en' }
+const { lang = 'fr' } = Astro.props;
+const fr = lang === 'fr';
+const L = (p: string) => localiser(p, lang);
+const t = fr ? {
+  eyebrow: 'Courtier indépendant · France entière',
+  h1: 'Cabinet de courtage en financement et assurance emprunteur.',
+  texte: 'Investissement locatif, SCI, reprise d’entreprise, opérations de marchands de biens : PEAK FUNDING structure et négocie votre financement, partout en France.',
+  cta1: 'Estimer ma capacité', cta2: 'Le cabinet & ses expertises',
+  scene: 'PEAK PITCH · DOSSIER DE FINANCEMENT', exemple: 'EXEMPLE ILLUSTRATIF', etape: 'ÉTAPE',
+  questionnaire: 'Questionnaire guidé',
+  reponses: [['Projet', 'Investissement locatif'], ['Emprunteurs', '2'], ['Revenus nets mensuels', '4 300 €'], ['Apport personnel', '45 000 €'], ['Structure', 'SCI à créer']],
+  chiffresTitre: 'Vos chiffres, rapprochés',
+  chiffres: [['Budget total', '329 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Capacité estimée', '300 000 €', 'SIMULATEUR']],
+  pres: { n: '03 · PRÉSENTATION BANCAIRE', titre: 'Présentation bancaire', parties: ['La demande', 'Les emprunteurs', 'Le bien', 'Les revenus', 'Le plan de financement', 'L’analyse', 'La synthèse'] },
+  pieces: { n: '02 · PIÈCES PAR INTERVENANT', titre: 'Pièces à réunir', groupes: [['Emprunteur 1', ['Pièce d’identité', '3 derniers bulletins de salaire', '2 derniers avis d’imposition']], ['Co-emprunteur', ['Pièce d’identité', 'Contrat de travail']], ['SCI à créer', ['Projet de statuts']]] as [string, string[]][] },
+  note: { n: '01 · NOTE DE SYNTHÈSE', titre: 'Note de synthèse', sous: 'Investissement locatif · 2 emprunteurs · SCI', annexe: 'Annexe : toutes vos réponses déclarées' },
+  controle: 'Chaque montant correspond à une valeur déclarée ou calculée',
+  kicker: 'PEAK PITCH — UN SERVICE DE PEAK FUNDING', promesse: 'Votre projet, prêt à présenter.', mentions: 'TVA non applicable · Paiement unique',
+  decouvrir: 'Découvrir PEAK PITCH', banques: 'Le financement reste soumis à l’accord des banques.',
+  pause: 'Mettre l’animation en pause', reprendre: 'Reprendre l’animation', rejouer: 'Rejouer l’animation',
+  sr: 'Animation : un questionnaire guidé en 8 étapes, des chiffres rapprochés et étiquetés comme déclarés, calculés ou issus du simulateur, puis trois livrables : note de synthèse, pièces à réunir par intervenant et présentation bancaire en sept parties.',
+  ambiance: 'Courtier indépendant · France entière', exchange: 'RDV PEAK EXCHANGE', assurance: 'Assurance emprunteur',
+} : {
+  eyebrow: 'Independent broker · Throughout France',
+  h1: 'Independent financing and borrower insurance brokerage.',
+  texte: 'Buy-to-let investments, French property companies (SCI), business acquisitions and property trading projects: PEAK FUNDING structures and negotiates your financing throughout France.',
+  cta1: 'Estimate my capacity', cta2: 'Our firm & expertise',
+  scene: 'PEAK PITCH · FINANCING APPLICATION', exemple: 'ILLUSTRATIVE EXAMPLE', etape: 'STEP',
+  questionnaire: 'Guided questionnaire',
+  reponses: [['Project', 'Buy-to-let'], ['Borrowers', '2'], ['Net monthly income', '€4,300'], ['Personal contribution', '€45,000'], ['Structure', 'SCI to be formed']],
+  chiffresTitre: 'Your figures, reconciled',
+  chiffres: [['Total budget', '€329,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Loan requested', '€284,000', 'CALCULATED'], ['Estimated capacity', '€300,000', 'SIMULATOR']],
+  pres: { n: '03 · BANK PRESENTATION', titre: 'Bank presentation', parties: ['The request', 'The borrowers', 'The property', 'Income', 'Financing plan', 'Analysis', 'Summary'] },
+  pieces: { n: '02 · DOCUMENTS PER PARTY', titre: 'Documents to gather', groupes: [['Borrower 1', ['ID document', 'Last 3 payslips', 'Last 2 tax notices']], ['Co-borrower', ['ID document', 'Employment contract']], ['SCI to be formed', ['Draft articles']]] as [string, string[]][] },
+  note: { n: '01 · SUMMARY NOTE', titre: 'Summary note', sous: 'Buy-to-let · 2 borrowers · SCI', annexe: 'Appendix: all your declared answers' },
+  controle: 'Every amount matches a declared or calculated value',
+  kicker: 'PEAK PITCH — A PEAK FUNDING SERVICE', promesse: 'Your project, ready to present.', mentions: 'VAT not applicable · One payment',
+  decouvrir: 'Discover PEAK PITCH', banques: 'Financing remains subject to approval by the banks.',
+  pause: 'Pause the animation', reprendre: 'Resume the animation', rejouer: 'Replay the animation',
+  sr: 'Animation: a guided 8-step questionnaire, figures reconciled and labelled as declared, calculated or from the simulator, then three deliverables: summary note, documents to gather per party and a seven-part bank presentation.',
+  ambiance: 'Independent broker · Throughout France', exchange: 'Book PEAK EXCHANGE', assurance: 'Borrower insurance',
+};
+---
+
+<section class="heros sombre pp" data-pp aria-labelledby="pp-titre">
+  <div class="pp-grille">
+    <div class="pp-cabinet">
+      <p class="eyebrow text-cuivre-clair">{t.eyebrow}</p>
+      <h1 id="pp-titre">{t.h1}</h1>
+      <p class="pp-texte">{t.texte}</p>
+      <div class="pp-actions">
+        <a href="#simulateur" class="btn-fantome">{t.cta1}</a>
+        <a href="#expertises" class="btn-fantome">{t.cta2} <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+
+    <div class="pp-produit">
+      <div class="pp-scene pp-anime" data-pp-scene>
+        <p class="sr-only">{t.sr}</p>
+        <div class="pp-plateau" aria-hidden="true">
+          <div class="pp-entete"><span>{t.scene}</span><span>{t.exemple}</span></div>
+          <div class="pp-rail">{Array.from({ length: 8 }, (_, i) => <i style={`--i:${i}`}></i>)}<b class="pp-compteur">{t.etape}&nbsp;</b></div>
+
+          <div class="pp-carte pp-q">
+            <p class="pp-carte-titre">{t.questionnaire}</p>
+            {t.reponses.map(([q, r], i) => <p class="pp-ligne" style={`--i:${i}`}><span>{q}</span><b>{r}</b></p>)}
+          </div>
+
+          <div class="pp-carte pp-c">
+            <p class="pp-carte-titre">{t.chiffresTitre}</p>
+            {t.chiffres.map(([q, r, s], i) => <p class="pp-ligne" style={`--i:${i}`}><span>{q}</span><b>{r}</b><em>{s}</em></p>)}
+          </div>
+
+          <div class="pp-feuille pp-f1" tabindex="-1">
+            <p class="pp-n">{t.pres.n}</p><p class="pp-ft">{t.pres.titre}</p><i class="pp-trait"></i>
+            <ol>{t.pres.parties.map((p, i) => <li style={`--i:${i}`}><span>{String(i + 1).padStart(2, '0')}</span>{p}</li>)}</ol>
+          </div>
+          <div class="pp-feuille pp-f2">
+            <p class="pp-n">{t.pieces.n}</p><p class="pp-ft">{t.pieces.titre}</p><i class="pp-trait"></i>
+            {t.pieces.groupes.map(([g, docs]) => <div class="pp-groupe"><p>{g}</p>{docs.map((d, i) => <span style={`--i:${i}`}>{d}</span>)}</div>)}
+          </div>
+          <div class="pp-feuille pp-f3">
+            <p class="pp-n">{t.note.n}</p><p class="pp-ft">{t.note.titre}</p><i class="pp-trait"></i>
+            <p class="pp-sous">{t.note.sous}</p>
+            <dl>{t.chiffres.map(([q, r, s]) => <div><dt>{q}</dt><dd>{r}</dd><small>{s}</small></div>)}</dl>
+            <p class="pp-annexe">{t.note.annexe}</p>
+            <span class="pp-barre"></span><span class="pp-barre court"></span>
+          </div>
+
+          <p class="pp-controle"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" /></svg>{t.controle}</p>
+        </div>
+        <button class="pp-pause" type="button" data-pp-pause data-pause={t.pause} data-resume={t.reprendre} data-replay={t.rejouer} aria-label={t.pause}>
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path class="i-pause" d="M6 4h2.5v12H6zm5.5 0H14v12h-2.5z"/><path class="i-play" d="m7 4 10 6-10 6z"/><path class="i-replay" d="M10 4a6 6 0 1 1-5.7 4.1l1.5.5A4.4 4.4 0 1 0 10 5.6V8L6.5 4.8 10 1.6z"/></svg>
+        </button>
+      </div>
+
+      <div class="pp-offre">
+        <div>
+          <p class="pp-kicker">{t.kicker}</p>
+          <p class="pp-promesse">{t.promesse}</p>
+        </div>
+        <p class="pp-prix">99&nbsp;€<small>{t.mentions}</small></p>
+        <a class="btn-cuivre gap-4" href={L('/peak-pitch/')}>{t.decouvrir} <span aria-hidden="true">↗</span></a>
+        <p class="pp-banques">{t.banques}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pp-pied">
+    <p>{t.ambiance}<span>ORIAS n° 24002546 · {fr ? 'Supervision ACPR' : 'ACPR supervision'}</span></p>
+    <nav aria-label={fr ? 'Poursuivre sur le site' : 'Continue on the website'}>
+      <a href={L('/peak-exchange/')}>{t.exchange} ↗</a>
+      <a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener">{t.assurance} ↗</a>
+    </nav>
+  </div>
+</section>
+
+<script>
+  // Pause, reprise et relecture. Sans script, l'animation CSS joue une fois puis reste sur l'image finale.
+  let dispose: (() => void) | undefined;
+  function init() {
+    dispose?.();
+    const scene = document.querySelector<HTMLElement>('[data-pp-scene]');
+    const bouton = scene?.querySelector<HTMLButtonElement>('[data-pp-pause]');
+    if (!scene || !bouton) return;
+    const ctrl = new AbortController();
+    const reduit = matchMedia('(prefers-reduced-motion: reduce)');
+    if (new URLSearchParams(location.search).has('statique')) scene.classList.remove('pp-anime');
+    let etat: 'joue' | 'pause' | 'fin' = 'joue';
+    const maj = () => {
+      const anime = scene.classList.contains('pp-anime') && !reduit.matches;
+      bouton.hidden = !anime && etat !== 'fin';
+      scene.classList.toggle('pp-en-pause', etat === 'pause');
+      bouton.dataset.etat = etat;
+      bouton.setAttribute('aria-label', (etat === 'joue' ? bouton.dataset.pause : etat === 'pause' ? bouton.dataset.resume : bouton.dataset.replay) || '');
+    };
+    bouton.addEventListener('click', () => {
+      if (etat === 'fin') {
+        scene.classList.remove('pp-anime'); void scene.offsetWidth; scene.classList.add('pp-anime'); etat = 'joue';
+      } else etat = etat === 'joue' ? 'pause' : 'joue';
+      maj();
+    }, { signal: ctrl.signal });
+    scene.querySelector('.pp-controle')?.addEventListener('animationend', () => { etat = 'fin'; maj(); }, { signal: ctrl.signal });
+    reduit.addEventListener('change', maj, { signal: ctrl.signal });
+    dispose = () => ctrl.abort();
+    maj();
+  }
+  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', () => { dispose?.(); dispose = undefined; });
+</script>
+
+<style>
+  @property --pp-etape { syntax: '<integer>'; inherits: true; initial-value: 8; }
+  .pp{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:100svh;margin-top:-76px;padding-top:76px;background:#0b0d12;color:#edeae4;isolation:isolate}
+  .pp-grille{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,96px);align-items:center;width:100%;max-width:1840px;margin:0 auto;padding:clamp(28px,4vh,56px) clamp(20px,5vw,76px)}
+  .pp-cabinet h1{margin:22px 0 0;font-size:clamp(32px,3.6vw,60px);line-height:1.06;letter-spacing:-.04em;font-weight:300;text-wrap:balance}
+  .pp-texte{max-width:520px;margin:26px 0 0;font-size:17px;line-height:1.6;font-weight:300;color:#edeae4e6}
+  .pp-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .pp-produit{display:flex;flex-direction:column;gap:18px;min-width:0;max-width:calc((100svh - 300px) / .9 + 2px);width:100%;justify-self:end}
+
+  /* ── Scène : toutes les mesures en cqw pour garder la composition à toutes les tailles ── */
+  .pp-scene{position:relative;container-type:inline-size;border:1px solid #2a2f3a;border-radius:16px;background:#14171e;overflow:hidden}
+  .pp-plateau{position:relative;aspect-ratio:1/.9;font-size:1.9cqw;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:6cqw 6cqw}
+  .pp-entete{position:absolute;inset:3.4cqw 4cqw auto;display:flex;justify-content:space-between;font:1.5cqw var(--font-mono);letter-spacing:.08em;color:#a6a9b3}
+  .pp-entete span:first-child{color:#d9a47c}
+  .pp-rail{position:absolute;left:4cqw;right:4cqw;top:7.6cqw;display:flex;align-items:center;gap:.8cqw}
+  .pp-rail i{flex:1;height:.35cqw;border-radius:1cqw;background:#d9a47c;transform-origin:left}
+  .pp-compteur{margin-left:1.4cqw;font:400 1.5cqw var(--font-mono);letter-spacing:.06em;color:#edeae4;white-space:nowrap;counter-reset:e var(--pp-etape)}
+  .pp-compteur::after{content:'0' counter(e) ' / 08'}
+
+  .pp-carte{position:absolute;left:14cqw;top:17cqw;width:72cqw;padding:4cqw;border:1px solid #2a2f3a;border-radius:2.6cqw;background:#1e222b;opacity:0;visibility:hidden}
+  .pp-carte-titre{margin:0 0 2.4cqw;font-size:3.4cqw;font-weight:300;letter-spacing:-.03em}
+  .pp-ligne{display:flex;align-items:baseline;gap:2cqw;margin:0;padding:1.7cqw 0;border-top:1px solid #2a2f3a;font-size:2.2cqw}
+  .pp-ligne span{flex:1;color:#a6a9b3}
+  .pp-ligne b{font:400 2.4cqw var(--font-mono);letter-spacing:-.03em}
+  .pp-ligne em{width:13cqw;text-align:right;font:normal 1.4cqw var(--font-mono);letter-spacing:.06em;color:#d9a47c}
+
+  .pp-feuille{position:absolute;width:44cqw;height:57cqw;padding:3.4cqw;border-radius:1.6cqw;background:#f2f0eb;color:#111;transition:translate .35s cubic-bezier(.2,.7,.2,1);outline:none}
+  .pp-f1{left:4cqw;top:15cqw;transform:rotate(-3deg)}
+  .pp-f2{left:28cqw;top:17.5cqw;transform:rotate(-.5deg);background:#f7f5f1}
+  .pp-f3{left:52cqw;top:20cqw;transform:rotate(2deg);background:#fff}
+  .pp-feuille:hover{translate:0 -2.4cqw}
+  .pp-n{margin:0;font:1.25cqw var(--font-mono);letter-spacing:.08em;color:#825333}
+  .pp-ft{margin:1.6cqw 0 0;font-size:3.6cqw;line-height:1.05;font-weight:300;letter-spacing:-.04em}
+  .pp-trait{display:block;width:6cqw;height:.3cqw;margin:2cqw 0 2.4cqw;background:#b87b4f;transform-origin:left}
+  .pp-feuille ol{margin:0;padding:0;list-style:none}
+  .pp-feuille li{display:flex;gap:1.6cqw;padding:1.05cqw 0;border-top:1px solid #e2ded7;font-size:1.8cqw;color:#3d3f46}
+  .pp-feuille li span{font:1.4cqw var(--font-mono);color:#b87b4f;padding-top:.2cqw}
+  .pp-groupe{margin-bottom:2cqw}
+  .pp-groupe p{margin:0 0 .8cqw;font:1.3cqw var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#62656d}
+  .pp-groupe span{display:flex;align-items:center;gap:1.2cqw;padding:.55cqw 0;font-size:1.7cqw;color:#3d3f46}
+  .pp-groupe span::before{content:'';flex:0 0 auto;width:1.5cqw;height:1.5cqw;border:1px solid #b87b4f;border-radius:.3cqw}
+  .pp-sous{margin:0 0 2cqw;font-size:1.7cqw;color:#62656d}
+  .pp-feuille dl{display:grid;grid-template-columns:1fr 1fr;gap:1.4cqw;margin:0}
+  .pp-feuille dl div{padding:1.4cqw;border:1px solid #e2ded7;border-radius:1cqw}
+  .pp-feuille dt{font-size:1.4cqw;color:#62656d}
+  .pp-feuille dd{margin:.5cqw 0 .4cqw;font:2.3cqw var(--font-mono);letter-spacing:-.04em}
+  .pp-feuille small{font:1.05cqw var(--font-mono);letter-spacing:.08em;color:#825333}
+  .pp-annexe{margin:2.6cqw 0 1.2cqw;font-size:1.5cqw;color:#62656d}
+  .pp-barre{display:block;height:.9cqw;margin-top:1cqw;border-radius:1cqw;background:#e2ded7}.pp-barre.court{width:62%}
+
+  .pp-controle{position:absolute;left:4cqw;bottom:3.6cqw;display:flex;align-items:center;gap:1.4cqw;margin:0;padding:1.1cqw 2.2cqw;border:1px solid #b87b4f;border-radius:40px;font:1.5cqw var(--font-mono);letter-spacing:.04em;color:#edeae4;background:#0b0d12}
+  .pp-controle svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:#d9a47c;stroke-width:1.8;stroke-dasharray:16;stroke-dashoffset:0}
+
+  .pp-pause{position:absolute;right:2.4cqw;bottom:2.4cqw;display:grid;place-items:center;width:40px;height:40px;color:#edeae4;background:#0b0d12e6;border:1px solid #a6a9b3;border-radius:50%;cursor:pointer}
+  .pp-pause[hidden]{display:none}.pp-pause svg{width:16px;height:16px}
+  .pp-pause path{display:none}
+  .pp-pause[data-etat=joue] .i-pause,.pp-pause[data-etat=pause] .i-play,.pp-pause[data-etat=fin] .i-replay{display:block}
+  .pp-pause:focus-visible{outline:2px solid #edeae4;outline-offset:3px}
+
+  .pp-offre{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px 24px}.pp-offre > div{grid-column:1/-1}
+  .pp-kicker{display:inline;margin:0;font:10px var(--font-mono);letter-spacing:.08em;color:#d9a47c}
+  .pp-promesse{display:inline;margin:0 0 0 12px;font-size:clamp(17px,1.3vw,22px);font-weight:300;letter-spacing:-.03em}
+  .pp-prix{display:flex;flex-direction:column;align-items:flex-start;gap:2px;line-height:1;margin:0;font-size:30px;font-weight:300;letter-spacing:-.04em;color:#d9a47c}
+  .pp-prix small{white-space:nowrap;font-size:11px;line-height:1.5;letter-spacing:0;color:#a6a9b3}
+  .pp-offre .btn-cuivre{white-space:nowrap}
+  .pp-banques{grid-column:1/-1;margin:0;font-size:12px;color:#7c808a}
+
+  .pp-pied{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:64px;margin:0 clamp(20px,5vw,76px);border-top:1px solid #2a2f3a;font-size:11px;color:#a6a9b3}
+  .pp-pied p{margin:0;line-height:1.6}.pp-pied p span{display:block;font-size:10px}
+  .pp-pied nav{display:flex;gap:24px;flex-wrap:wrap}
+  .pp-pied a{display:inline-flex;align-items:center;min-height:44px;color:#edeae4;transition:color .18s}.pp-pied a:hover{color:#d9a47c}
+
+  /* ── Chorégraphie (≈ 8 s, une seule fois). L'état de base ci-dessus est l'image finale. ── */
+  @media (prefers-reduced-motion: no-preference){
+    .pp-anime .pp-entete{animation:pp-fondu .6s ease both}
+    .pp-anime .pp-rail i{animation:pp-remplir .3s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(.35s + var(--i) * .26s)}
+    .pp-anime .pp-compteur{animation:pp-etapes 2.1s steps(7,end) .35s both}
+    .pp-anime .pp-q{animation:pp-passage 2.5s cubic-bezier(.2,.7,.2,1) .3s both}
+    .pp-anime .pp-q .pp-ligne{animation:pp-monte .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.6s + var(--i) * .3s)}
+    .pp-anime .pp-c{animation:pp-passage-c 2.4s cubic-bezier(.2,.7,.2,1) 2.7s both}
+    .pp-anime .pp-c .pp-ligne{animation:pp-monte .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(3s + var(--i) * .28s)}
+    .pp-anime .pp-c .pp-ligne em{animation:pp-tampon .35s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(3.25s + var(--i) * .28s)}
+    .pp-anime .pp-f1{animation:pp-f1 1s cubic-bezier(.16,.8,.2,1) 4.9s both}
+    .pp-anime .pp-f2{animation:pp-f2 1s cubic-bezier(.16,.8,.2,1) 5.15s both}
+    .pp-anime .pp-f3{animation:pp-f3 1s cubic-bezier(.16,.8,.2,1) 5.4s both}
+    .pp-anime .pp-f1 .pp-trait{animation:pp-remplir .5s ease 5.5s both}
+    .pp-anime .pp-f2 .pp-trait{animation:pp-remplir .5s ease 5.75s both}
+    .pp-anime .pp-f3 .pp-trait{animation:pp-remplir .5s ease 6s both}
+    .pp-anime .pp-f1 li{animation:pp-fondu .3s ease both;animation-delay:calc(5.6s + var(--i) * .07s)}
+    .pp-anime .pp-f3 dl div{animation:pp-fondu .4s ease 6.1s both}
+    .pp-anime .pp-controle{animation:pp-monte .55s cubic-bezier(.2,.7,.2,1) 7s both}
+    .pp-anime .pp-controle svg{animation:pp-coche .5s ease 7.35s both}
+    .pp-en-pause *{animation-play-state:paused !important}
+  }
+  @keyframes pp-fondu{from{opacity:0}}
+  @keyframes pp-remplir{from{transform:scaleX(0)}}
+  @keyframes pp-etapes{from{--pp-etape:1}to{--pp-etape:8}}
+  @keyframes pp-monte{from{opacity:0;transform:translateY(1.6cqw)}}
+  @keyframes pp-tampon{from{opacity:0;transform:scale(1.6)}}
+  @keyframes pp-coche{from{stroke-dashoffset:16}}
+  @keyframes pp-passage{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}16%,84%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translateY(-3cqw)}}
+  /* Les chiffres glissent vers la note de synthèse, qui les reprend. */
+  @keyframes pp-passage-c{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}14%,78%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translate(16cqw,10cqw) scale(.62)}}
+  @keyframes pp-f1{from{opacity:0;transform:translateY(40cqw) rotate(0)}}
+  @keyframes pp-f2{from{opacity:0;transform:translateY(40cqw) rotate(0)}}
+  @keyframes pp-f3{from{opacity:0;transform:translateY(40cqw) rotate(0)}}
+
+  @media (max-width:1023px){
+    .pp-grille{grid-template-columns:1fr;gap:32px}
+    .pp-produit{max-width:none;justify-self:stretch}
+  }
+  @media (max-width:640px){
+    .pp-grille{padding:24px 20px}
+    .pp-cabinet h1{font-size:32px}
+    .pp-texte{font-size:15px;margin-top:18px}
+    .pp-actions{margin-top:22px}
+    .pp-scene{margin:0 -8px}
+    .pp-offre{grid-template-columns:1fr auto}
+    .pp-kicker,.pp-promesse{display:block}.pp-promesse{margin:6px 0 0}
+    .pp-offre .btn-cuivre{grid-column:1/-1;justify-content:center}
+    .pp-pied{flex-direction:column-reverse;align-items:flex-start;gap:6px;margin:0 20px;padding:6px 0 12px}
+  }
+</style>

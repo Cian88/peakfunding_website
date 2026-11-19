@@ -3,6 +3,7 @@ import { exchangeCredit, exchangeFirstConsultation } from '../../data/peak-excha
 import Pictogramme from '../Pictogramme.astro';
 import EbookTeaser from '../EbookTeaser.astro';
 import PeakPitchHero from '../PeakPitchHero.astro';
+import PeakPitchMotion from '../PeakPitchMotion.astro';
 import SimulateurCapacite from '../react/SimulateurCapacite';
 import MethodeSchema from '../MethodeSchema.astro';
 import ObservatoireWidget from '../react/ObservatoireWidget';
@@ -18,7 +19,7 @@ const u = c.ui;
 const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') ? 'valentin' : photo.includes('yves') ? 'yves' : 'maxime'}.webp`;
 ---
 
-  {import.meta.env.PUBLIC_PEAK_PITCH_HERO === 'true' ? <PeakPitchHero lang={lang} /> : <>
+  {import.meta.env.PUBLIC_PEAK_PITCH_HERO === 'motion' ? <PeakPitchMotion lang={lang} /> : import.meta.env.PUBLIC_PEAK_PITCH_HERO === 'true' ? <PeakPitchHero lang={lang} /> : <>
   <!-- ═══ 1 · Héros ═══ -->
   <section class="sombre heros -mt-[76px] overflow-hidden">
     <picture>

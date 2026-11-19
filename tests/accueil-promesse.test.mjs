@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { load } from 'cheerio';
+import { gzipSync } from 'node:zlib';
 
 test('Accueil FR/EN : repères sans statistiques ni compteurs', () => {
   for (const [file, label, titles] of [
@@ -35,5 +36,30 @@ test('Accueil FR/EN : le courtage, les publics et les deux parcours sont explici
     assert.match(hero.text(), /ORIAS.*24002546.*ACPR/);
     assert.equal(hero.find('.map-body img').attr('src'), '/cartographie/relief.svg');
     assert.equal($('#expertises [data-assurance]').attr('target'), '_blank');
+  }
+});
+
+test('Accueil : seul le simulateur hydrate React et les scripts initiaux restent sous 40 Kio gzip', () => {
+  for (const prefix of ['', 'en/']) {
+    const $ = load(readFileSync(`dist/${prefix}index.html`, 'utf8'));
+    const islands = $('main astro-island');
+    assert.equal(islands.length, 1);
+    assert.ok(islands.closest('#simulateur').length);
+    assert.match(islands.attr('component-url'), /\/SimulateurCapacite\./);
+    assert.equal(islands.attr('client'), 'visible');
+
+    const externals = new Set();
+    let bytes = 0;
+    $('script:not([type="application/ld+json"]):not([type="application/json"]), link[rel="modulepreload"]').each((_, element) => {
+      const node = $(element);
+      const url = node.attr('src') || node.attr('href');
+      if (url) externals.add(url);
+      else if (node.text().trim()) bytes += gzipSync(node.text()).length;
+    });
+    for (const url of externals) {
+      assert.match(url, /^\/_astro\//);
+      bytes += gzipSync(readFileSync('dist' + url)).length;
+    }
+    assert.ok(bytes <= 40 * 1024, `${prefix || '/'} : ${bytes} octets gzip`);
   }
 });

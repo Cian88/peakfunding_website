@@ -14,6 +14,9 @@
   font-display: swap;
 }
 :root {
+  --tracking-display: 0.005em;
+  --tracking-heading: 0em;
+  --tracking-copy: 0.006em;
   --paper: #f7f8f4;
   --ink: #172b32;
   --muted: #49595b;
@@ -53,12 +56,13 @@
     color: var(--ink);
     font-family: var(--font-sans);
     font-variant-numeric: tabular-nums;
+    letter-spacing: var(--tracking-copy);
     -webkit-font-smoothing: antialiased;
   }
   h1,
   h2,
   h3 {
-    letter-spacing: -0.046em;
+    letter-spacing: var(--tracking-heading);
     line-height: 1.06;
     text-wrap: balance;
   }
@@ -410,4 +414,36 @@ html[data-static] *::after {
   animation: none !important;
   transition: none !important;
   scroll-behavior: auto !important;
+}
+
+/* Transitions de documents natifs. Le navigateur conserve l’historique et le défilement. */
+@view-transition {
+  navigation: auto;
+}
+.mast {
+  view-transition-name: entete-cabinet;
+}
+::view-transition-group(entete-cabinet) {
+  animation-duration: 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.01ms !important;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation-duration: 140ms;
+  }
+  ::view-transition-new(root) {
+    animation-duration: 220ms;
+    animation-timing-function: cubic-bezier(0.22, 0.68, 0.16, 1);
+  }
+}
+html[data-static]::view-transition-group(*),
+html[data-static]::view-transition-old(*),
+html[data-static]::view-transition-new(*) {
+  animation-duration: 0.01ms !important;
 }

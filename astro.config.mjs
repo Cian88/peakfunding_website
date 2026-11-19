@@ -13,6 +13,7 @@ const salesEnv = loadEnv(process.env.NODE_ENV || 'production', process.cwd(), 'P
 
 export default defineConfig({
   site: 'https://peakfunding.eu',
+  devToolbar: { enabled: false },
   i18n: {
     locales: ['fr', 'en'],
     defaultLocale: 'fr',

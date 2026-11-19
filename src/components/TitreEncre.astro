@@ -1,0 +1,41 @@
+---
+interface Props {
+  texte: string;
+  id?: string;
+}
+const { texte, id } = Astro.props;
+---
+
+<h2 id={id} class="titre-encre">
+  {texte}
+  <span aria-hidden="true">{texte}</span>
+</h2>
+<style>
+  .titre-encre {
+    position: relative;
+  }
+  .titre-encre > span {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    color: var(--signal);
+    visibility: hidden;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.mouvement) .titre-encre:global(.impression) > span {
+      visibility: visible;
+      animation: passage-encre 720ms cubic-bezier(0.22, 0.68, 0.16, 1) both;
+    }
+    @keyframes passage-encre {
+      0% {
+        clip-path: inset(0 100% 0 0);
+      }
+      42% {
+        clip-path: inset(0 0 0 0);
+      }
+      100% {
+        clip-path: inset(0 0 0 100%);
+      }
+    }
+  }
+</style>

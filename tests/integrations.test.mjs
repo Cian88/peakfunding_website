@@ -104,6 +104,16 @@ test('Le Relevé : index des quatre pôles, méthode, calcul et observation mens
     assert.equal(home('.atlas-cover video,.atlas-cover .observatoire-widget').length, 0);
     assert.deepEqual(home('#expertises [data-expertise-reveal] a').toArray().map(a => home(a).attr('href')),
       ['estate','pro','pim','insure'].map(slug => `${prefix ? '/en' : ''}/expertises/${slug}`));
+    const stations = home('#methode a[data-waypoint]');
+    assert.equal(stations.length, 4);
+    stations.each((_, node) => {
+      const station = home(node);
+      const visible = station.find('text').toArray().map(label => home(label).text()).join(' ');
+      assert.ok(station.attr('aria-label').startsWith(visible), visible);
+      assert.equal(home(station.attr('href')).find('h3').length, 1);
+    });
+    assert.equal(home('.closing-sheet img').attr('src'), home('.atlas-cover figure img').attr('src'));
+    assert.equal(home('.closing-chart .action').attr('href'), '#simulateur');
     assert.equal(home('#simulateur .simulator-panel form').length, 1);
     assert.equal(home('#simulateur .simulator-panel .observatoire-widget').length, 0);
     assert.equal(home('#simulateur .market-reading .observatoire-widget').length, 1);

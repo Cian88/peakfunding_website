@@ -1,7 +1,7 @@
 ---
 import { accueil } from '../../data/contenu';
 import { langCourante, localiser } from '../../i18n';
-import { ASSURANCE_URL, SUPABASE_URL, SUPABASE_ANON_KEY } from '../../data/integrations';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../../data/integrations';
 import type { AvisPublic } from '../../lib/supabase';
 import { exchangeCredit, exchangeFirstConsultation } from '../../data/peak-exchange';
 import SimulateurCapacite from '../react/SimulateurCapacite';
@@ -11,6 +11,10 @@ import articlesEn from '../../data/en/articles.json';
 import { trierArticles } from '../../lib/editorial.mjs';
 import { ebook } from '../../data/ebook';
 import '../../styles/atlas.css';
+import ZonesReleve from '../ZonesReleve.astro';
+import MethodeReleve from '../MethodeReleve.astro';
+import TitreEncre from '../TitreEncre.astro';
+import CitationsClients from '../CitationsClients.astro';
 
 const lang = langCourante(Astro.currentLocale),
   en = lang === 'en';
@@ -18,22 +22,9 @@ const L = (path: string) => localiser(path, lang);
 const txt = (fr: string, english: string) => (en ? english : fr);
 const c = accueil(lang),
   u = c.ui;
-const titres = en
-  ? ['Property financing', 'Business financing', 'Property professionals', 'Borrower insurance']
-  : [
-      'Financement immobilier',
-      'Financement professionnel',
-      'Professionnels de l’immobilier',
-      'Assurance emprunteur',
-    ];
 const articles = trierArticles(en ? articlesEn : articlesFr).slice(0, 3);
 const book = ebook(lang);
-const points = [
-  [8, 100],
-  [103, 73],
-  [205, 83],
-  [305, 30],
-];
+const liensReperes = ['#expertises', '#equipe', L('/peak-exchange/'), '#faq-territoire'];
 const photos = ['valentin', 'yves', 'maxime'];
 let avis: AvisPublic[] = [];
 try {
@@ -116,84 +107,12 @@ try {
     <a href="https://www.data.gouv.fr/datasets/rge-alti-r">Source IGN · RGE ALTI®</a>
   </div>
 </section>
-<section id="expertises" class="frame chapter">
-  <div class="chapter-label">01 / {txt('Expertises', 'Expertise')}</div>
-  <div class="zone-index">
-    <div class="index-heading">
-      <h2>
-        {txt('Quatre pôles', 'Four areas')}
-        <br />
-        {txt('d’expertise.', 'of expertise.')}
-      </h2>
-      <p>
-        {txt('Retrouvez l’accompagnement adapté à votre projet.', 'Find the right support for your project.')}
-      </p>
-    </div>
-    <ol class="zone-list">
-      {c.expertises.map((x, i) => (
-        <li data-expertise-reveal>
-          <a href={L('/expertises/' + x.slug)}>
-            <span class="notation">{x.nom}</span>
-            <h3>{titres[i]}</h3>
-            <span class="zone-arrow" aria-hidden="true">
-              ↗
-            </span>
-          </a>
-        </li>
-      ))}
-    </ol>
-  </div>
-  <a class="text-link assurance-link" data-assurance href={ASSURANCE_URL} target="_blank" rel="noopener">
-    {u.hero_assurance}
-    <span class="sr-only">{u.hero_nouvel_onglet}</span>
-  </a>
-</section>
-<section id="methode" class="chapter wash">
-  <div class="frame">
-    <div class="chapter-label">02 / {txt('Méthode', 'Method')}</div>
-    <div class="method-grid">
-      <div class="method-fixed">
-        <h2>
-          {txt('Votre dossier,', 'Your application,')}
-          <br />
-          {txt('étape par étape.', 'step by step.')}
-        </h2>
-        <svg class="profile" viewBox="0 0 320 130" aria-hidden="true">
-          <path d="M8 120H312 M8 80H312 M8 40H312" stroke="#c6cec9" stroke-dasharray="2 4" fill="none" />
-          <path
-            d="M8 100 35 93 52 95 73 80 90 83 103 73 129 67 152 75 172 69 205 83 224 70 241 72 273 43 287 47 305 30"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          />
-          {points.map(([cx, cy], i) => (
-            <g data-waypoint>
-              <circle {cx} {cy} r="4" />
-              <text x={cx} y={cy - 12} text-anchor="middle">
-                0{i + 1}
-              </text>
-            </g>
-          ))}
-        </svg>
-      </div>
-      <ol class="steps">
-        {c.methode.map((step, i) => (
-          <li data-etape id={'etape-' + (i + 1)}>
-            <span class="notation">0{i + 1}</span>
-            <div>
-              <h3>{step.titre}</h3>
-              <p>{step.texte}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </div>
-</section>
+<ZonesReleve />
+<MethodeReleve lang={lang} />
 <section id="simulateur" class="chapter frame">
   <div class="chapter-label">03 / {u.sim_eyebrow}</div>
   <div class="section-intro">
-    <h2 id="sim-titre">{u.sim_titre}</h2>
+    <TitreEncre id="sim-titre" texte={u.sim_titre} />
     <p>{u.sim_texte}</p>
   </div>
   <noscript>
@@ -213,26 +132,32 @@ try {
 </section>
 <section id="equipe" class="chapter frame">
   <div class="chapter-label">04 / {txt('Le cabinet', 'The firm')}</div>
-  <div class="section-intro">
-    <h2>{u.equipe_titre}</h2>
-    <p>{c.equipe.intro}</p>
+  <div class="team-spread">
+    <div class="team-heading">
+      <h2>{txt('Votre équipe de courtage.', 'Your brokerage team.')}</h2>
+      <p>{c.equipe.intro}</p>
+    </div>
+    <ul class="portraits">
+      {c.equipe.membres.map((m, i) => (
+        <li>
+          <img
+            src={'/img/portrait-' + photos[i] + '.webp'}
+            alt={m.nom}
+            width="480"
+            height="600"
+            loading="lazy"
+          />
+          <div>
+            <p class="notation">{m.role}</p>
+            <h3>
+              {m.nom.split(' ')[0]} <span class="surname">{m.nom.split(' ').slice(1).join(' ')}</span>
+            </h3>
+            <p>{m.domaine}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
   </div>
-  <ul class="portraits">
-    {c.equipe.membres.map((m, i) => (
-      <li>
-        <img
-          src={'/img/portrait-' + photos[i] + '.webp'}
-          alt={m.nom}
-          width="480"
-          height="600"
-          loading="lazy"
-        />
-        <p class="notation">{m.role}</p>
-        <h3>{m.nom}</h3>
-        <p>{m.domaine}</p>
-      </li>
-    ))}
-  </ul>
   <div id="partenaires" class="partners">
     <h3>{u.part_eyebrow}</h3>
     {c.partenaires.map((p) => (
@@ -250,76 +175,61 @@ try {
     ))}
   </div>
 </section>
-<section class="wash chapter">
+<section id="services" class="chapter service-spread">
   <div class="frame">
     <div class="chapter-label">05 / Services</div>
-    <div class="section-intro">
-      <h2>{txt('Préparer votre dossier.', 'Prepare your application.')}</h2>
-    </div>
-    <div class="offer-rows">
-      <article>
-        <h3>
-          <a href={L('/peak-pitch/')}>PEAK PITCH ↗</a>
-        </h3>
-        <p>
-          {txt(
-            'Préparez la présentation de votre projet aux banques.',
-            'Prepare your project presentation for lenders.',
-          )}
-        </p>
-      </article>
-      <article>
-        <h3>
-          <a href={L('/peak-exchange/')}>PEAK EXCHANGE ↗</a>
-        </h3>
+    <TitreEncre texte={txt('Préparer votre dossier.', 'Prepare your application.')} />
+    <div class="service-grid">
+      <article id="livre" class="book-sheet">
+        <a class="teaser-cover" href={L('/livre/')} aria-label={book.title}>
+          <svg aria-hidden="true" viewBox="70 100 420 350" preserveAspectRatio="xMidYMid slice">
+            <use href="/cartographie/relief.svg#courbes-terrain" />
+          </svg>
+          <img
+            src={'/img/ebook/couverture-' + lang + '.webp'}
+            alt={book.title}
+            width="240"
+            height="340"
+            loading="lazy"
+          />
+        </a>
         <div>
-          <p>{exchangeFirstConsultation[lang]}</p>
-          <p>{exchangeCredit[lang]}</p>
-        </div>
-      </article>
-      <article id="livre">
-        <div>
-          <p class="notation">{txt('Le livre', 'The book')}</p>
+          <p class="notation">{txt('Le livre', 'The book')} · PDF</p>
           <h3>
             <a href={L('/livre/')}>{book.title} ↗</a>
           </h3>
-        </div>
-        <div class="book">
-          <a class="teaser-cover" href={L('/livre/')}>
-            <img
-              src={'/img/ebook/couverture-' + lang + '.webp'}
-              width="76"
-              height="108"
-              loading="lazy"
-              alt={book.title}
-            />
-          </a>
           <p>{book.subtitle}</p>
         </div>
       </article>
+      <div class="consultations">
+        <article>
+          <p class="notation">{txt('Présentation bancaire', 'Lender presentation')}</p>
+          <h3>
+            <a href={L('/peak-pitch/')}>PEAK PITCH ↗</a>
+          </h3>
+          <p>
+            {txt(
+              'Préparez la présentation de votre projet aux banques.',
+              'Prepare your project presentation for lenders.',
+            )}
+          </p>
+        </article>
+        <article>
+          <p class="notation">{txt('Consultation individuelle', 'Individual consultation')}</p>
+          <h3>
+            <a href={L('/peak-exchange/')}>PEAK EXCHANGE ↗</a>
+          </h3>
+          <p>{exchangeFirstConsultation[lang]}</p>
+          <details>
+            <summary>{txt('Déduction des honoraires', 'Deduction from brokerage fees')}</summary>
+            <p>{exchangeCredit[lang]}</p>
+          </details>
+        </article>
+      </div>
     </div>
   </div>
 </section>
-<section class="chapter frame" id="avis">
-  <div class="chapter-label">06 / {txt('Avis clients', 'Client reviews')}</div>
-  <h2>{txt('Retours de clients.', 'Client feedback.')}</h2>
-  {avis.length ? (
-    <ul class="review-list">
-      {avis.map((a) => (
-        <li>
-          <blockquote>{a.texte}</blockquote>
-          <cite>
-            {a.prenom} {a.initiale} · {a.note}/5
-          </cite>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p class="mt-6">
-      {txt('Aucun avis publié dans cette édition.', 'No reviews published in this edition.')}
-    </p>
-  )}
-</section>
+<CitationsClients avis={avis} lang={lang} />
 <section id="analyses" class="frame chapter">
   <div class="chapter-label">07 / {txt('Analyses', 'Insights')}</div>
   <div class="section-intro">
@@ -328,23 +238,44 @@ try {
       {txt('Toutes les analyses', 'All insights')} ↗
     </a>
   </div>
-  <div class="reading-list">
-    {articles.map((a) => (
-      <a href={L('/actualites/' + a.slug)}>
-        <span class="notation">{a.avant[1]}</span>
-        <h3>{a.title}</h3>
-        <small>{a.avant[2]} ↗</small>
-      </a>
+  <div class="journal-spread">
+    {articles.map((a, i) => (
+      <article>
+        <a href={L('/actualites/' + a.slug)}>
+          {i === 0 && <img src="/img/cabinet-travail.webp" alt="" width="640" height="360" loading="lazy" />}
+          <div>
+            <span class="notation">{a.avant[1]}</span>
+            <h3>{a.title}</h3>
+            <small>{a.avant[2]} ↗</small>
+          </div>
+        </a>
+      </article>
     ))}
   </div>
 </section>
 <section id="faq" class="frame chapter">
   <div class="chapter-label">08 / FAQ</div>
-  <div class="zone-index">
-    <h2>{txt('Vos questions.', 'Your questions.')}</h2>
+  <h2>{txt('Vos questions.', 'Your questions.')}</h2>
+  <div class="faq-spread">
+    <aside id="accompagnement" aria-label={u.reperes_aria}>
+      <p class="notation">{u.reperes_aria}</p>
+      <ul class="references">
+        {c.reperes.map((r, i) => (
+          <li>
+            <h3>
+              <a href={liensReperes[i]}>{r.titre}</a>
+            </h3>
+            <p>{r.texte}</p>
+          </li>
+        ))}
+      </ul>
+      <a href="#simulateur" class="text-link">
+        {u.hero_cta2} ↗
+      </a>
+    </aside>
     <div class="questions">
-      {c.faq.map((f) => (
-        <details>
+      {c.faq.map((f, i) => (
+        <details id={i === 3 ? 'faq-territoire' : undefined}>
           <summary>{f.q}</summary>
           <p>{f.r}</p>
         </details>
@@ -352,16 +283,31 @@ try {
     </div>
   </div>
 </section>
-<section id="accompagnement" aria-label={u.reperes_aria} class="frame chapter">
-  <ul class="references">
-    {c.reperes.map((r) => (
-      <li>
-        <h2>{r.titre}</h2>
-        <p>{r.texte}</p>
-      </li>
-    ))}
-  </ul>
-  <a href="#simulateur" class="action">
-    {u.hero_cta2} ↗
-  </a>
+<section class="closing-chart" aria-labelledby="closing-title">
+  <div class="frame closing-grid">
+    <div class="closing-copy">
+      <p class="notation">{txt('Estimation de financement', 'Financing estimate')}</p>
+      <h2 id="closing-title">{txt('Quel budget pour votre projet ?', 'What is your project budget?')}</h2>
+      <a class="action" href="#simulateur">
+        {u.hero_cta2} ↗
+      </a>
+    </div>
+    <figure class="closing-sheet">
+      <div class="closing-legend">
+        <span>{txt('Le relevé financier', 'The financial survey')}</span>
+        <span>PF / 01</span>
+      </div>
+      <img
+        src="/cartographie/relief.svg"
+        alt={txt('Feuille complète du puy de Dôme', 'Complete survey sheet of the puy de Dôme')}
+        width="800"
+        height="640"
+        loading="lazy"
+      />
+      <figcaption>
+        <strong>Puy de Dôme</strong>
+        <span>RGE ALTI® · IGN</span>
+      </figcaption>
+    </figure>
+  </div>
 </section>

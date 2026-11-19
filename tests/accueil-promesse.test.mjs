@@ -14,7 +14,7 @@ test('Accueil FR/EN : repères sans statistiques ni compteurs', () => {
     assert.equal(band.length, 1);
     assert.equal(band.attr('aria-label'), label);
     assert.equal(band.find('li').length, 4);
-    assert.deepEqual(band.find('h2').toArray().map(el => $(el).text()), titles);
+    assert.deepEqual(band.find('h3').toArray().map(el => $(el).text()), titles);
     assert.equal(band.find('[data-compte]').length, 0);
     assert.doesNotMatch(band.text(), /\b(?:500|95|72)\b|%/);
     assert.match(band.text(), /299/);

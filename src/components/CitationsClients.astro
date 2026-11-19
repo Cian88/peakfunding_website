@@ -1,0 +1,204 @@
+---
+import type { AvisPublic } from '../lib/supabase';
+import type { Lang } from '../i18n';
+
+interface Props {
+  avis: AvisPublic[];
+  lang: Lang;
+}
+const { avis, lang } = Astro.props;
+const en = lang === 'en';
+const numero = (n: number) => String(n).padStart(2, '0');
+---
+
+<section class="chapter review-spread" id="avis">
+  <div class="frame">
+    <div class="chapter-label">06 / {en ? 'Client reviews' : 'Avis clients'}</div>
+    <h2>{en ? 'Client feedback.' : 'Retours de clients.'}</h2>
+    {avis.length > 0 ? (
+      <citations-clients>
+        {avis.length > 1 && (
+          <div class="quote-controls" hidden>
+            <span data-position aria-live="polite" aria-atomic="true">
+              {numero(1)} / {numero(avis.length)}
+            </span>
+            <div>
+              <button
+                type="button"
+                data-direction="-1"
+                aria-label={en ? 'Previous review' : 'Avis précédent'}
+              >
+                ←
+              </button>
+              <button type="button" data-direction="1" aria-label={en ? 'Next review' : 'Avis suivant'}>
+                →
+              </button>
+            </div>
+          </div>
+        )}
+        <div class="quote-plate">
+          <span class="quote-mark" aria-hidden="true">
+            “
+          </span>
+          <div>
+            {avis.map((a, i) => (
+              <figure
+                data-quote
+                class:list={[{ 'quote-longue': a.texte.length > 420 }]}
+                id={'avis-client-' + (i + 1)}
+              >
+                <blockquote>{a.texte}</blockquote>
+                <figcaption>
+                  <strong>
+                    {a.prenom} {a.initiale}
+                  </strong>
+                  <span>
+                    {en ? 'Client rating' : 'Note du client'} · {a.note}/5
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </citations-clients>
+    ) : (
+      <p class="mt-6">
+        {en ? 'No reviews published in this edition.' : 'Aucun avis publié dans cette édition.'}
+      </p>
+    )}
+  </div>
+</section>
+<script>
+  class CitationsClients extends HTMLElement {
+    private controller?: AbortController;
+    connectedCallback() {
+      this.controller?.abort();
+      const controller = new AbortController();
+      this.controller = controller;
+      const quotes = [...this.querySelectorAll<HTMLElement>('[data-quote]')];
+      const controls = this.querySelector<HTMLElement>('.quote-controls');
+      if (!controls || quotes.length < 2) return;
+      let active = 0;
+      const show = (index: number) => {
+        active = (index + quotes.length) % quotes.length;
+        quotes.forEach((quote, i) => {
+          quote.hidden = i !== active;
+        });
+        const number = (n: number) => String(n).padStart(2, '0');
+        this.querySelector('[data-position]')!.textContent =
+          number(active + 1) + ' / ' + number(quotes.length);
+      };
+      controls.hidden = false;
+      controls.addEventListener(
+        'click',
+        (event) => {
+          const button =
+            event.target instanceof Element &&
+            event.target.closest<HTMLButtonElement>('button[data-direction]');
+          if (button) show(active + Number(button.dataset.direction));
+        },
+        { signal: controller.signal },
+      );
+      const fromHash = () => {
+        const index = quotes.findIndex((quote) => '#' + quote.id === location.hash);
+        if (index >= 0) show(index);
+        return index;
+      };
+      if (fromHash() < 0) show(0);
+      addEventListener('hashchange', fromHash, { signal: controller.signal });
+    }
+    disconnectedCallback() {
+      this.controller?.abort();
+    }
+  }
+  if (!customElements.get('citations-clients')) customElements.define('citations-clients', CitationsClients);
+</script>
+
+<style>
+  .review-spread {
+    background: #e7ede6;
+    border-block: 1px solid #b7c3b9;
+  }
+  citations-clients {
+    display: block;
+  }
+  .quote-plate {
+    display: grid;
+    grid-template-columns: minmax(50px, 0.18fr) minmax(0, 1fr);
+    gap: clamp(10px, 2vw, 28px);
+    padding: clamp(32px, 5vw, 76px) 0 24px;
+  }
+  .quote-mark {
+    font:
+      500 clamp(105px, 14vw, 220px)/0.83 Manrope,
+      sans-serif;
+    color: var(--signal);
+  }
+  figure + figure:not([hidden]) {
+    margin-top: 32px;
+  }
+  citations-clients:has(.quote-controls:not([hidden])) figure + figure:not([hidden]) {
+    margin-top: 0;
+  }
+  blockquote {
+    font-size: clamp(24px, 3.7vw, 64px);
+    line-height: 1.19;
+    letter-spacing: var(--tracking-heading);
+    font-weight: 470;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    max-width: 31ch;
+  }
+  .quote-longue blockquote {
+    font-size: clamp(21px, 2.4vw, 40px);
+    max-width: 55ch;
+    line-height: 1.4;
+  }
+  figcaption {
+    margin-top: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 20px;
+  }
+  figcaption span,
+  .quote-controls {
+    font: 12px/1.5 var(--mono);
+  }
+  .quote-controls:not([hidden]) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #a7b5aa;
+    margin-top: 18px;
+    padding-bottom: 12px;
+  }
+  .quote-controls button {
+    width: 50px;
+    height: 46px;
+    border: 1px solid var(--ink);
+    font-size: 22px;
+    background: transparent;
+  }
+  .quote-controls button + button {
+    border-left: none;
+  }
+  .quote-controls button:hover,
+  .quote-controls button:focus-visible {
+    background: var(--ink);
+    color: white;
+  }
+  @media (max-width: 640px) {
+    .quote-plate {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .quote-mark {
+      height: 51px;
+      font-size: 86px;
+    }
+    .quote-controls {
+      margin-top: 10px;
+    }
+  }
+</style>

@@ -68,25 +68,26 @@ export function demarrerMouvement() {
     },
     { signal },
   );
-  const steps = [...document.querySelectorAll('[data-etape]')];
-  const points = [...document.querySelectorAll('[data-waypoint]')];
-  const update = () => {
-    let index = 0;
-    steps.forEach((step, i) => {
-      if (step.getBoundingClientRect().top < innerHeight * 0.55) index = i;
-    });
-    points.forEach((point, i) => point.classList.toggle('current', i === index));
-    steps.forEach((step, i) => step.classList.toggle('current', i === index));
-  };
-  let observer: IntersectionObserver | undefined;
-  if (steps.length && 'IntersectionObserver' in window) {
-    observer = new IntersectionObserver(update, { rootMargin: '-54% 0px -45% 0px' });
-    steps.forEach((step) => observer!.observe(step));
-    update();
+  // Seule la copie en surimpression porte le masque. Le titre imprimé reste entier.
+  const impression =
+    'IntersectionObserver' in window
+      ? new IntersectionObserver(
+          (entries, observer) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add('impression');
+              observer.unobserve(entry.target);
+            }
+          },
+          { threshold: 0.55 },
+        )
+      : undefined;
+  if (!staticMode && !preference.matches) {
+    document.querySelectorAll('.titre-encre').forEach((title) => impression?.observe(title));
   }
   dispose = () => {
+    impression?.disconnect();
     controller.abort();
-    observer?.disconnect();
     background.forEach((el) => (el.inert = false));
   };
 }

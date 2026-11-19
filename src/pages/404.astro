@@ -1,15 +1,15 @@
 ---
-import Base from '../layouts/Base.astro';
+import Base from '../components/Feuillet.astro';
 ---
 
 <Base noindex title="Page introuvable | PEAK FUNDING" description="Cette page n’existe pas ou a été déplacée.">
-  <section class="contenu section">
-    <p class="eyebrow">Erreur 404</p>
-    <h1 class="display mt-3 max-w-2xl">Cette page n’existe pas.</h1>
-    <p class="corps mt-5 max-w-lg text-[18px]">Elle a peut-être été déplacée. Retrouvez les services et les ressources du cabinet depuis l’accueil.</p>
+  <section class="cadre-page respiration erreur-feuille"><b aria-hidden="true">404</b><div>
+    <p class="legende">Erreur 404</p>
+    <h1 class="grand-titre mt-3 max-w-2xl">Cette page n’existe pas.</h1>
+    <p class="paragraphe mt-5 max-w-lg text-[18px]">Elle a peut-être été déplacée. Retrouvez les services et les ressources du cabinet depuis l’accueil.</p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <a href="/" class="btn-cuivre">Retour à l’accueil</a>
-      <a href="/actualites/" class="btn-fantome">Consulter les analyses</a>
+      <a href="/" class="action-pleine">Retour à l’accueil</a>
+      <a href="/actualites/" class="action-ligne">Consulter les analyses</a>
     </div>
-  </section>
+  </div></section>
 </Base>

@@ -1,5 +1,5 @@
 ---
-import Base from '../../../layouts/Base.astro';
+import Base from '../../../components/Feuillet.astro';
 import VisuelArticle from '../../../components/VisuelArticle.astro';
 import { ASSURANCE_URL } from '../../../data/integrations';
 import articles from '../../../data/en/articles.json';
@@ -40,45 +40,45 @@ const schema = [
 ---
 
 <Base title={`${article.title} | PEAK FUNDING`} description={article.description || article.apres[2]} image={image} publie={dateISO(date)} auteur={auteur} schema={schema}>
-  <article class="contenu section">
-    <nav aria-label="Breadcrumb" class="eyebrow normal-case tracking-normal">
+  <article class="cadre-page respiration">
+    <nav aria-label="Breadcrumb" class="legende normal-case tracking-normal">
       <a href="/en/" class="hover:text-encre">Home</a> <span aria-hidden="true">/</span> <a href="/en/actualites" class="hover:text-encre">Insights</a>
     </nav>
-    <div class="mx-auto mt-10 max-w-[760px]">
-      <p class="eyebrow">{categorie} · {lecture}</p>
-      <h1 class="display mt-4 text-[36px] sm:text-[44px] lg:text-[52px]">{article.title}</h1>
-      <p class="donnee mt-6 text-[13px] text-gris"><span class="whitespace-nowrap">{auteur}</span> · <time datetime={dateISO(date)}>{date}</time></p>
-      <div class="mt-10 aspect-[16/10] overflow-hidden rounded-donnee"><VisuelArticle slug={article.slug} prioritaire /></div>
+    <div class="tete-article"><div>
+      <p class="legende">{categorie} · {lecture}</p>
+      <h1 class="grand-titre mt-4 text-[36px] sm:text-[44px] lg:text-[52px]">{article.title}</h1>
+      <p class="chiffres mt-6 text-[13px] teinte-secondaire"><span class="whitespace-nowrap">{auteur}</span> · <time datetime={dateISO(date)}>{date}</time></p>
+      </div><div class="image-article"><VisuelArticle slug={article.slug} prioritaire /></div>
     </div>
-    <div class="lecture-grille mt-12 border-t border-trait pt-10">
+    <div class="grille-document mt-12 border-t filet pt-10">
       <Sommaire headings={document.headings} />
       <div class="min-w-0">
-      <div class="prose-pf article-content [&>h2:first-child]:mt-0" set:html={document.html} />
+      <div class="texte-document article-content [&>h2:first-child]:mt-0" set:html={document.html} />
       {faq.length > 0 && (
-        <section class="mt-14 border-t border-trait pt-10" aria-labelledby="faq-article">
-          <p class="eyebrow">Frequently asked</p>
-          <h2 id="faq-article" class="titre mt-3">In short.</h2>
-          <div class="mt-6 divide-y divide-trait border-y border-trait">
+        <section class="mt-14 border-t filet pt-10" aria-labelledby="faq-article">
+          <p class="legende">Frequently asked</p>
+          <h2 id="faq-article" class="titre-rubrique mt-3">In short.</h2>
+          <div class="mt-6 divide-y filet border-y filet">
             {faq.map((q) => (
               <details class="group py-5">
-                <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-[17px] font-medium">{q.q}<span class="donnee text-gris transition-transform group-open:rotate-45" aria-hidden="true">+</span></summary>
-                <p class="corps mt-3">{q.r}</p>
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-[17px] font-medium">{q.q}<span class="chiffres teinte-secondaire transition-transform group-open:rotate-45" aria-hidden="true">+</span></summary>
+                <p class="paragraphe mt-3">{q.r}</p>
               </details>
             ))}
           </div>
         </section>
       )}
-      <p class="donnee mt-12 rounded-carte bg-blanc p-6 text-[12.5px] leading-relaxed text-gris">
+      <p class="chiffres mt-12 bg-white p-6 text-[12.5px] leading-relaxed teinte-secondaire">
         A loan commits you and must be repaid. Check your repayment capacity before committing. Informative content, not personalised advice.
       </p>
       {assurance
-        ? <div class="mt-7 flex flex-wrap gap-3"><a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="btn-cuivre">Compare my borrower insurance ↗<span class="sr-only"> (new tab)</span></a><a href="/en/expertises/insure/" class="btn-fantome">Discover PEAK INSURE</a></div>
-        : <a href="/en/peak-exchange/" class="btn-cuivre mt-7">Book PEAK EXCHANGE · €299 incl. VAT ↗</a>}
+        ? <div class="mt-7 flex flex-wrap gap-3"><a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="action-pleine">Compare my borrower insurance ↗<span class="sr-only"> (new tab)</span></a><a href="/en/expertises/insure/" class="action-ligne">Discover PEAK INSURE</a></div>
+        : <a href="/en/peak-exchange/" class="action-pleine mt-7">Book PEAK EXCHANGE · €299 incl. VAT ↗</a>}
       </div>
     </div>
-    <section class="mt-16 border-t border-trait pt-10" aria-labelledby="suite-lecture">
-      <div class="flex flex-wrap items-end justify-between gap-4"><h2 id="suite-lecture" class="titre">Keep reading.</h2><a href="/en/actualites" class="text-[14px] underline underline-offset-4">All insights →</a></div>
-      <ul class="mt-8 grid gap-8 md:grid-cols-3">{suggestions.map(a => <li class="border-t border-trait pt-5"><a href={`/en/actualites/${a.slug}`} class="group block"><p class="eyebrow">{a.avant[1]}</p><h3 class="sous-titre mt-3 group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3></a></li>)}</ul>
+    <section class="mt-16 border-t filet pt-10" aria-labelledby="suite-lecture">
+      <div class="flex flex-wrap items-end justify-between gap-4"><h2 id="suite-lecture" class="titre-rubrique">Keep reading.</h2><a href="/en/actualites" class="text-[14px] underline underline-offset-4">All insights →</a></div>
+      <ul class="mt-8 grid gap-8 md:grid-cols-3">{suggestions.map(a => <li class="border-t filet pt-5"><a href={`/en/actualites/${a.slug}`} class="group block"><p class="legende">{a.avant[1]}</p><h3 class="titre-entree mt-3 group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3></a></li>)}</ul>
     </section>
   </article>
 </Base>

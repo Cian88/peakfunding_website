@@ -1,0 +1,173 @@
+/* Feuillets de service, fiches de lecture et accès privés. */
+.feuillet {
+  --papier: var(--paper);
+  --encre: var(--ink);
+  --secondaire: var(--muted);
+  --filet: var(--rule);
+  --trame: var(--wash);
+  color: var(--encre);
+  background: var(--papier);
+  line-height: 1.55;
+}
+.feuillet :where(h1,h2,h3) { color:var(--encre); text-wrap:balance; }
+.feuillet :where(.cadre-page,.espace-large) { width:min(100%, 1740px); margin-inline:auto; padding-inline:var(--gutter); }
+.feuillet .respiration { padding-block:clamp(44px,6vw,100px); }
+.feuillet h1 { font-size:clamp(2.45rem,5.6vw,5.6rem); line-height:1; letter-spacing:-.058em; font-weight:650; overflow-wrap:break-word; }
+.feuillet .titre-rubrique,.feuillet :is(.book-heading,.exchange-section-head,.exchange-note-grid,.book-closing,.book-contents) h2 { font-size:clamp(2rem,3.8vw,3.8rem); letter-spacing:-.05em; line-height:1.06; font-weight:600; }
+.feuillet .titre-entree { font-size:clamp(1.3rem,2vw,1.8rem); line-height:1.16; font-weight:600; }
+.feuillet .legende,.feuillet .chemin,.feuillet .chiffres { font-family:var(--font-mono,monospace); font-variant-numeric:tabular-nums; }
+.feuillet .legende,.feuillet .chemin { font-size:.72rem; letter-spacing:.07em; color:var(--secondaire); }
+.feuillet .legende { text-transform:uppercase; }
+.feuillet .filet,.feuillet .filet>* { border-color:var(--filet); }
+.feuillet .signal { color:var(--signal); }
+.feuillet .teinte-secondaire,.feuillet .paragraphe { color:var(--secondaire); }
+.feuillet .fond-quadrille { background:var(--trame); }
+.feuillet .action-pleine,.feuillet .action-ligne { display:inline-flex; align-items:center; justify-content:center; gap:.6rem; min-height:46px; padding:10px 17px; font-size:.9rem; font-weight:650; line-height:1.35; text-align:center; transition:background-color .2s, color .2s; }
+.feuillet .action-pleine { background:var(--signal); color:#fff; }
+.feuillet .action-pleine:hover { background:#922f16; }
+.feuillet .action-ligne { border:1px solid var(--filet); }
+.feuillet .action-ligne:hover { background:var(--trame); }
+.feuillet .chemin { padding-bottom:18px; border-bottom:1px solid var(--filet); }
+.feuillet .chemin a:hover { text-decoration:underline; }
+.plan-expertise { padding-block:26px clamp(48px,6vw,94px); }
+.plan-entete,.exchange-intro,.book-hero-grid,.offre-grid,.tete-article { display:grid; grid-template-columns:minmax(0,1.22fr) minmax(0,.78fr); align-items:center; gap:clamp(32px,6vw,105px); }
+.plan-entete { padding-top:clamp(35px,5vw,80px); }
+.plan-texte .legende,.exchange-copy .legende,.book-hero-copy .legende,.offre-grid section>.legende { color:var(--signal); }
+.plan-texte h1 { margin:20px 0; font-size:clamp(2.35rem,4.65vw,5rem); }
+.chapeau { font-size:clamp(1rem,1.3vw,1.2rem); color:var(--secondaire); max-width:57ch; }
+.plan-actions { margin-top:28px; display:flex; flex-wrap:wrap; gap:10px; }
+.planche { align-self:stretch; display:flex; flex-direction:column; background:var(--trame); border:1px solid var(--filet); }
+.planche-index,.planche figcaption { padding:13px 18px; font-family:var(--font-mono,monospace); }
+.planche-index { display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--filet); text-transform:uppercase; font-size:10px; letter-spacing:.07em; }
+.planche svg { width:100%; flex:1; min-height:0; }
+.planche figcaption { border-top:1px solid var(--filet); font-size:.76rem; }
+.illustration-metier { width:100%; max-height:290px; margin-top:26px; object-fit:cover; }
+.fiche-point { padding:22px 0; border-top:1px solid var(--filet); }
+.feuillet .entete-document { margin-block:40px; padding-bottom:28px; border-bottom:1px solid var(--filet); max-width:1050px; }
+.feuillet .grille-document { display:grid; grid-template-columns:minmax(0,1fr); gap:34px; }
+.feuillet .texte-document { max-width:78ch; overflow-wrap:anywhere; }
+.feuillet .texte-document h1 { margin-bottom:28px; }
+.feuillet .texte-document h2 { font-size:clamp(1.6rem,2.5vw,2.4rem); line-height:1.1; margin:44px 0 18px; font-weight:650; letter-spacing:-.035em; }
+.feuillet .texte-document h3 { margin:28px 0 14px; font-weight:650; font-size:1.2rem; }
+.feuillet .texte-document :is(p,li) { font-size:1.03rem; line-height:1.7; margin-bottom:1em; }
+.feuillet .texte-document a,.feuillet .sommaire a:hover { text-decoration:underline; text-underline-offset:.2em; }
+.feuillet .texte-document ul,.feuillet .texte-document ol { margin-left:1.25rem; list-style:revert; }
+.feuillet .texte-document blockquote { padding-left:1rem; border-left:2px solid var(--signal); }
+.feuillet .texte-document table { display:block; max-width:100%; overflow:auto; border-collapse:collapse; }
+.feuillet .texte-document :is(th,td) { border-bottom:1px solid var(--filet); text-align:left; padding:10px; }
+.feuillet article.texte-document { box-sizing:content-box; width:auto; }
+.feuillet .sommaire a { display:block; padding:5px 0; font-size:.83rem; }
+.feuillet .tete-article { margin-top:32px; }
+.feuillet .tete-article h1 { font-size:clamp(2.35rem,4.25vw,4.8rem); }
+.feuillet .image-article { aspect-ratio:4/3; background:var(--trame); overflow:hidden; }
+.feuillet .image-article img { object-fit:contain; }
+.sommaire-analyses { margin-top:40px; border-top:1px solid var(--encre); }
+.entree-analyse { border-bottom:1px solid var(--filet); }
+.lien-analyse { display:grid; grid-template-columns:minmax(150px,.35fr) minmax(0,1.65fr); gap:clamp(18px,4vw,66px); padding:24px 0; }
+.vignette-analyse { aspect-ratio:4/3; overflow:hidden; align-self:start; background:var(--trame); }
+.resume-analyse { display:grid; grid-template-columns:minmax(0,1fr) minmax(134px,.28fr); align-content:start; gap:6px 24px; }
+.resume-analyse>* { grid-column:1; }
+.resume-analyse h2 { font-size:clamp(1.35rem,2.6vw,2.75rem); }
+.resume-analyse>div { grid-row:1/4; grid-column:2; }
+.feuillet .pastille span { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; min-height:44px; border:1px solid var(--filet); font-size:.83rem; cursor:pointer; }
+.pastille input:checked+span { background:var(--encre); color:white; }
+.pastille input:focus-visible+span { outline:2px solid var(--signal); outline-offset:3px; }
+.feuillet fieldset { min-width:0; }
+.contact-colonnes,.portail,.erreur-feuille { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); gap:clamp(28px,7vw,120px); align-items:start; }
+.contact-colonnes,.portail { margin-top:44px; }
+.contact-colonnes #administratif,.portail>div+div { border-top:2px solid var(--encre); padding:24px; background:var(--trame); margin-top:0; }
+.portail h1 { font-size:clamp(2.45rem,4.5vw,4.8rem); }
+.erreur-feuille { align-items:center; }
+.erreur-feuille>b { font:600 clamp(6rem,16vw,17rem)/1 var(--font-mono,monospace); letter-spacing:-.12em; color:var(--signal); }
+.feuillet .espace-large { max-width:1840px; }
+.feuillet .espace-large h1 { font-size:clamp(2.45rem,5vw,4.8rem); }
+@media(min-width:1024px) {
+  .feuillet .grille-document { grid-template-columns:minmax(200px,.5fr) minmax(0,1.5fr); gap:clamp(36px,7vw,130px); }
+  .feuillet .sommaire { position:sticky; top:100px; max-height:calc(100dvh - 130px); overflow:auto; align-self:start; }
+}
+/* Tarifs et produits sont composés comme des fiches, avec leurs conditions à portée du prix. */
+.feuillet :is(.book-hero,.exchange-hero,.dossier-offre) { padding-block:clamp(42px,5.5vw,90px); }
+.feuillet .offre-grid { align-items:start; }
+.feuillet :is(.offre-grid,.book-hero-copy,.exchange-copy) h1 { margin:22px 0 26px; font-size:clamp(2.55rem,5.2vw,5.5rem); }
+.offre-grid aside { align-self:start; border:1px solid var(--filet); border-top:3px solid var(--signal); padding:clamp(24px,3vw,48px); background:var(--trame); }
+.offre-grid aside h2 { margin-top:20px; font-size:1.5rem; font-weight:650; line-height:1.17; }
+.offre-grid aside .prix { font:550 clamp(2.5rem,4.7vw,5.35rem)/1.1 var(--font-mono,monospace); margin:24px 0 10px; }
+.offre-grid .prix small { display:block; font:normal .82rem/1.5 var(--font-mono,monospace); margin-top:6px; }
+.offre-grid aside p:not(.legende) { font-size:.86rem; margin-top:12px; }
+.offre-grid aside ul { margin-block:24px; border-block:1px solid var(--filet); padding:14px 0 14px 20px; list-style:square; font-size:.93rem; }
+.offre-grid aside li { margin-block:6px; }
+.offre-grid .secondaire a,.exchange-links a,.book-legal a { text-decoration:underline; text-underline-offset:.2em; }
+.offre-mobile { display:none; }
+.feuillet .intro,.exchange-lead,.book-intro { max-width:61ch; font-size:clamp(1.05rem,1.35vw,1.25rem); line-height:1.6; color:var(--secondaire); }
+.dossier-offre :is(.bloc,.film),.book-closing,.book-contents,.exchange-note { padding-block:clamp(38px,5vw,76px); border-top:1px solid var(--filet); }
+.dossier-offre :is(.bloc,.film) h2 { font-size:clamp(1.6rem,3vw,2.9rem); line-height:1.1; font-weight:600; margin-block:20px; }
+.dossier-offre :is(.offre-grid,.bloc) ol { margin-top:34px; }
+.dossier-offre :is(.offre-grid,.bloc) ol li { display:grid; grid-template-columns:40px 1fr; gap:12px; padding:18px 0; border-top:1px solid var(--filet); }
+.dossier-offre :is(.offre-grid,.bloc) ol li>span { font:500 .8rem var(--font-mono,monospace); color:var(--signal); }
+.dossier-offre ol h2,.dossier-offre h3,.exchange-angles h3,.book-audiences h3 { font-size:1.24rem; font-weight:650; line-height:1.25; }
+.dossier-offre :is(li,details) p,.exchange-angles p,.exchange-steps p,.book-audiences p { margin-top:.6rem; color:var(--secondaire); line-height:1.6; }
+.dossier-offre :is(.deux-colonnes,.guides),.exchange-note-grid,.closing-grid,.contents-grid,.sample-row,.book-heading,.exchange-section-head { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(24px,5vw,86px); }
+.dossier-offre :is(.grille-quatre,.guides),.book-audiences,.exchange-angles,.exchange-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:24px; margin-top:32px; }
+.dossier-offre :is(.grille-quatre li,.guides li,.liste li),.exchange-angles article,.exchange-steps li,.book-audiences article { padding:18px 0; border-top:1px solid var(--filet); }
+.dossier-offre .limites { padding-left:20px; border-left:2px solid var(--signal); margin-top:36px; }
+.dossier-offre .limites ul { list-style:disc; padding-left:18px; }
+.dossier-offre video { width:100%; height:auto; }
+.dossier-offre .faq details,.contents-parts details { padding:18px 0; border-block-start:1px solid var(--filet); }
+.dossier-offre .faq summary,.contents-parts summary { display:flex; align-items:center; gap:16px; justify-content:space-between; cursor:pointer; list-style:none; font-size:1.08rem; }
+.contents-parts summary h3 { margin-right:auto; font-weight:600; }
+.contents-parts ol { padding:18px 0 0 42px; list-style:decimal; }
+.contents-parts li { padding:4px 0; }
+.exchange-price,.book-price { display:flex; align-items:center; gap:22px; margin:24px 0; padding-block:14px; border-block:1px solid var(--filet); }
+.exchange-price strong,.book-price strong { font-size:clamp(1.75rem,2.9vw,3.2rem); line-height:1.1; letter-spacing:-.045em; white-space:nowrap; }
+.exchange-price span,.book-price span,.exchange-small,.book-seller,.exchange-disclaimer,.book-disclaimer,.book-prelaunch,.book-legal { font-size:.81rem; color:var(--secondaire); }
+.exchange-small,.book-seller,.exchange-disclaimer,.exchange-credit-final,.exchange-links,.book-about p,.book-about h3 { margin-top:18px; }
+.exchange-credit { margin-top:22px; padding-left:16px; border-left:2px solid var(--signal); }
+.exchange-credit strong,.exchange-credit span { display:block; font-size:.88rem; }
+.exchange-credit span { margin-top:6px; }
+.exchange-portrait { justify-self:center; width:min(100%,430px); }
+.exchange-portrait img { width:100%; height:auto; display:block; }
+.exchange-portrait figcaption,.book-stage figcaption { padding-block:12px; border-bottom:1px solid var(--filet); }
+.exchange-portrait figcaption>* { display:block; font-size:.82rem; }
+.exchange-portrait figcaption strong { font-size:1.2rem; }
+.exchange-portrait small,.book-stage figcaption { font:normal .72rem/1.5 var(--font-mono,monospace); margin-top:5px; }
+.exchange-note,.book-contents { background:var(--trame); }
+.exchange-note-grid ul,.exchange-booking { padding:20px; margin-block:22px; border:1px solid var(--filet); }
+.exchange-note-grid li { margin:5px 0 5px 18px; list-style:square; }
+.exchange-booking h3 { font-size:1.5rem; }
+.exchange-booking span,.exchange-links { font-family:var(--font-mono,monospace); font-size:.83rem; }
+.exchange-booking [role="status"] { color:var(--signal); margin-top:12px; }
+.exchange-links { display:flex; gap:16px; }
+.book-stage { width:100%; padding:clamp(18px,3vw,44px); border:1px solid var(--filet); background:var(--trame); }
+.book-stage img { display:block; width:min(100%,320px); height:auto; margin:auto; }
+.book-stage figcaption { margin-top:20px; border-bottom:0; text-align:center; }
+.book-subtitle { font-size:clamp(1.12rem,1.65vw,1.55rem); color:var(--signal); margin-block:16px; }
+.book-author { margin-top:18px; font-size:.9rem; }
+.book-author span { display:block; }
+.edition-nav { display:flex; flex-wrap:wrap; gap:14px; align-items:center; font-size:.82rem; margin-block:12px; }
+.edition-nav a { display:inline-flex; align-items:center; min-height:44px; }
+.edition-nav a[aria-current] { text-decoration:underline; text-underline-offset:5px; font-weight:700; }
+.book-facts { display:flex; flex-wrap:wrap; gap:22px; border-top:1px solid var(--filet); padding-top:20px; margin-top:24px; font-size:.85rem; }
+.book-facts strong { display:block; font-size:1.75rem; }
+.book-audiences h3,.exchange-angles h3,.book-contents h2,.book-closing h2 { margin-block:20px 12px; }
+.sample-row { margin-top:28px; }
+.sample-row a { justify-self:start; }
+@media(max-width:800px) {
+  .plan-entete,.offre-grid,.book-hero-grid,.exchange-intro,.tete-article,.contact-colonnes,.portail,.erreur-feuille { grid-template-columns:minmax(0,1fr); }
+  .planche svg { height:clamp(160px,42vw,280px); flex:none; }
+  .planche { max-width:500px; width:100%; }
+  .book-stage,.exchange-portrait { width:min(100%,360px); justify-self:start; }
+  .resume-analyse,.feuillet .exchange-section-head,.feuillet .book-heading { grid-template-columns:minmax(0,1fr); }
+  .resume-analyse>div { grid-area:auto; }
+  .offre-mobile { display:block; margin-block:20px; padding:16px 0; border-block:1px solid var(--filet); font-size:.87rem; }
+  .offre-mobile strong { font-size:1.9rem; margin-right:12px; }
+}
+@media(max-width:620px) {
+  .dossier-offre :is(.deux-colonnes,.guides),.closing-grid,.contents-grid,.sample-row,.exchange-note-grid { grid-template-columns:minmax(0,1fr); }
+  .lien-analyse { grid-template-columns:minmax(68px,.27fr) minmax(0,.73fr); gap:14px; }
+  .resume-analyse>div { padding-top:6px; }
+  .resume-analyse>p:not(.legende) { display:none; }
+  .feuillet .texte-document :is(p,li) { font-size:1rem; }
+  .exchange-price,.book-price { flex-wrap:wrap; gap:8px 18px; }
+}
+
+@media (scripting:none) { .cadre-actelo { display:none; } }

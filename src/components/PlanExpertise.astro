@@ -1,0 +1,47 @@
+---
+import type { Expertise } from '../data/expertises';
+interface Props { slug: Expertise['slug']; nom: string; lang: 'fr' | 'en' }
+const { slug, nom, lang } = Astro.props;
+const fiches = {
+  estate: ['01', 'Immobilier', 'Property'],
+  pro: ['02', 'Entreprises', 'Business'],
+  pim: ['03', 'Professionnels de l’immobilier', 'Property professionals'],
+  insure: ['04', 'Assurance emprunteur', 'Borrower insurance'],
+};
+const [numero, fr, en] = fiches[slug];
+---
+<figure class="planche">
+  <div class="planche-index"><span>{lang === 'fr' ? 'Pôle' : 'Division'} {numero} / 04</span><span>{nom}</span></div>
+  <svg viewBox="0 0 400 290" fill="none" aria-hidden="true" stroke-linejoin="round">
+    <defs><pattern id="carroyage" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M0 4V0h4" stroke="#80918b" stroke-width=".8"/></pattern></defs>
+    <rect width="400" height="290" fill="url(#carroyage)"/>
+    <g stroke="#1d353b" stroke-width="1.6" fill="#edf0e8">
+      {slug === 'estate' && <>
+        <path d="m76 149 37-44 47 85v63l-84-42z"/>
+        <path d="m160 190 132-66v63l-132 66z"/>
+        <path d="m113 105 132-66 47 85-132 66z"/>
+        <path d="m70 150 43-51 49 89 136-68" fill="none"/>
+        <path d="m113 99 132-66 53 87" fill="none"/>
+        <path d="m93 219 0-49 25 12v50z" fill="#bf4326"/>
+        <path d="m127 179 19 9v22l-19-9z"/>
+        {[0,1,2].map(i => <g transform={`translate(${i * 35} ${i * -17.5})`}>
+          <path d="m179 192 22-11v28l-22 11z"/><path d="m190 187 0 28"/>
+        </g>)}
+        <path d="m70 222-11 6m88 32-11 6m-72-39 79 39m23-8 0 10m130-74v9m-130 62 130-65" fill="none" stroke="#80918b" stroke-width=".9"/>
+
+      </>}
+      {slug === 'pro' && <>
+        <path d="m64 177 114-57 149 75-116 58z"/><path d="m64 177 147 76v16L64 193z"/><path d="m211 253 116-58v16l-116 58z"/>
+        {[0,1,2].map(i=><g transform={`translate(${i*44} ${i*22})`}><path d="m82 160 0-63 43-26 0 24 50-24v64z"/><path d="m82 97 42 21 43-26-42-21z"/><path d="m82 97 42 21v64l-42-21z"/><path d="m124 118 43-26v66l-43 24z"/></g>)}<path d="m188 180 18 9v26l-18-9z" fill="#bf4326"/>
+      </>}
+      {slug === 'pim' && <>
+        <path d="m48 189 136-67 169 83-137 67z"/>
+        {[[177,67,66],[111,128,54],[215,148,55]].map(([x,y,h],i)=><g transform={`translate(${x} ${y})`}><path d="m-42 0 46-23 44 22L2 22z"/><path d={`m-42 0 44 22v${h}l-44-22z`}/><path d={`m2 22 46-23v${h}l-46 23z`} fill={i===1?'#bf4326':undefined}/>{[16,32,48].map(v=><path d={`m-42 ${v} 44 22 46-23`}/>)}</g>)}
+      </>}
+      {slug === 'insure' && <>
+        {[0,1,2].map(i=><g transform={`translate(${i*11} ${-i*8})`}><path d="m115 88 72-29 73 28v57c0 47-33 77-73 100-39-17-72-54-72-101z"/></g>)}<path d="m158 90 51-20 51 19v41c0 34-23 58-51 77-28-18-51-40-51-75z" stroke-dasharray="4 4"/><path d="m178 132 20 13 40-37" stroke="#bf4326" stroke-width="6" fill="none"/>
+      </>}
+    </g>
+  </svg>
+  <figcaption>{lang === 'fr' ? fr : en}</figcaption>
+</figure>

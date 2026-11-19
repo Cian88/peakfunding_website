@@ -1,5 +1,5 @@
 ---
-import Pictogramme from '../Pictogramme.astro';
+import PlanExpertise from '../PlanExpertise.astro';
 import { faqExpertisesFor, expertiseUi } from '../../data/contenu';
 import type { Expertise } from '../../data/expertises';
 import { ASSURANCE_URL } from '../../data/integrations';
@@ -16,105 +16,104 @@ const tr = t(lang);
 const eu = expertiseUi(lang);
 const faq = faqExpertisesFor(lang)[e.slug];
 const lienPrincipal = e.slug === 'insure' ? ASSURANCE_URL : L('/peak-exchange/');
+const libelleExchange = lang === 'fr' ? 'Découvrir PEAK EXCHANGE' : 'Explore PEAK EXCHANGE';
 const cibleBlank = e.slug === 'insure';
 // Guides of the insurance cluster, listed on PEAK INSURE so each one is one click from the service page.
 const guides = e.slug === 'insure' ? trierArticles(lang === 'en' ? articlesEn : articlesFr).filter((a) => ['assurance-emprunteur', 'borrower-insurance'].includes(cleTheme(a.avant[1]))) : [];
 ---
 
-  <section class="contenu section grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-    <div>
-      <nav aria-label="Fil d’Ariane" class="eyebrow normal-case tracking-normal"><a href={L('/')} class="hover:text-encre">{tr.fil_accueil}</a> <span aria-hidden="true">/</span> <a href={L('/#expertises')} class="hover:text-encre">{eu.fil_expertises}</a> <span aria-hidden="true">/</span> {e.nom}</nav>
-      <p class="eyebrow mt-8">{e.nom}</p>
-      <h1 class="display mt-4 lg:text-[58px]">{e.titre}</h1>
-      <p class="corps mt-6 max-w-xl text-[18px]">{e.intro}</p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href={lienPrincipal} data-assurance={cibleBlank || undefined} target={cibleBlank ? '_blank' : undefined} rel={cibleBlank ? 'noopener' : undefined} class="btn-cuivre">{e.ctaPrincipal}{cibleBlank && <span class="sr-only">{eu.nouvel_onglet}</span>}</a>
-        <a href={L(e.ctaSecondaire.href)} class="btn-fantome">{e.ctaSecondaire.libelle}</a>
+  <section class="plan-expertise cadre-page">
+    <nav class="chemin" aria-label={lang === 'fr' ? 'Fil d’Ariane' : 'Breadcrumb'}><a href={L('/')}>{tr.fil_accueil}</a> / <a href={L('/#expertises')}>{eu.fil_expertises}</a> / {e.nom}</nav>
+    <div class="plan-entete">
+      <div class="plan-texte">
+        <p class="legende">{e.nom}</p>
+        <h1>{e.titre}</h1>
+        <p class="chapeau">{e.intro}</p>
+        <div class="plan-actions">
+          <a href={lienPrincipal} data-assurance={cibleBlank || undefined} target={cibleBlank ? '_blank' : undefined} rel={cibleBlank ? 'noopener' : undefined} class="action-pleine">{cibleBlank ? e.ctaPrincipal : libelleExchange}{cibleBlank && <span class="sr-only">{eu.nouvel_onglet}</span>}</a>
+          <a href={L(e.ctaSecondaire.href)} class="action-ligne">{e.ctaSecondaire.libelle}</a>
+        </div>
       </div>
-    </div>
-    <div class="reveal relative aspect-[4/3] overflow-hidden rounded-carte bg-trait">
-      <img src={`/img/ambiance-${e.slug}.webp`} alt="" fetchpriority="high" class="h-full w-full object-cover" />
-      <Pictogramme nom={e.slug} class="trace absolute bottom-6 left-6 h-14 w-14 text-etoile" />
+      <PlanExpertise slug={e.slug} nom={e.nom} lang={lang} />
     </div>
   </section>
 
   {e.pourQui && (
-    <section class="border-t border-trait">
-      <div class="contenu section reveal">
-        <p class="eyebrow">{eu.pourQui}</p>
-        <h2 class="titre mt-3 max-w-2xl">{e.pourQui.titre}</h2>
-        <ul class="reveal-groupe mt-10 grid gap-8 md:grid-cols-3">
-          {e.pourQui.cibles.map((cible, i) => (<li class="border-t border-trait pt-6"><span class="donnee text-[12px] text-cuivre-profond">0{i + 1}</span><h3 class="sous-titre mt-5">{cible.titre}</h3><p class="corps mt-3 text-[15px]">{cible.texte}</p></li>))}
+    <section class="border-t filet">
+      <div class="cadre-page respiration">
+        <p class="legende">{eu.pourQui}</p>
+        <h2 class="titre-rubrique mt-3 max-w-2xl">{e.pourQui.titre}</h2>
+        <ul class="mt-10 grid gap-8 md:grid-cols-3">
+          {e.pourQui.cibles.map((cible, i) => (<li class="border-t filet pt-6"><span class="chiffres text-[12px] signal">0{i + 1}</span><h3 class="titre-entree mt-5">{cible.titre}</h3><p class="paragraphe mt-3 text-[15px]">{cible.texte}</p></li>))}
         </ul>
       </div>
     </section>
   )}
 
   {e.reperes && (
-    <section class="border-t border-trait">
-      <ul class="contenu grid gap-8 py-14 md:grid-cols-3">
-        {e.reperes.map((r) => (<li><p class="donnee text-[32px] leading-none font-medium">{r.valeur}</p><p class="corps mt-3 text-[15px]">{r.texte}</p></li>))}
+    <section class="border-t filet">
+      <ul class="cadre-page grid gap-8 py-14 md:grid-cols-3">
+        {e.reperes.map((r) => (<li><p class="chiffres text-[32px] leading-none font-medium">{r.valeur}</p><p class="paragraphe mt-3 text-[15px]">{r.texte}</p></li>))}
       </ul>
     </section>
   )}
 
-  <section class="sombre border-t border-filet">
-    <div class="grille"></div>
-    <div class="contenu section-sombre relative grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-      <div class="reveal lg:sticky lg:top-28 lg:self-start"><p class="eyebrow">{eu.concretement}</p><h2 class="titre mt-4" set:html={eu.concretement_titre}></h2><p class="corps mt-6 text-[17px]">{e.concretement.intro}</p></div>
-      <ol class="reveal-groupe grid gap-4 sm:grid-cols-2">
+  <section class="fond-quadrille border-t filet">
+    <div class="cadre-page respiration relative grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div class="lg:sticky lg:top-28 lg:self-start"><p class="legende">{eu.concretement}</p><h2 class="titre-rubrique mt-4" set:html={eu.concretement_titre}></h2><p class="paragraphe mt-6 text-[17px]">{e.concretement.intro}</p><img class="illustration-metier" src={`/img/ambiance-${e.slug}.webp`} alt="" width="720" height="460" loading="lazy" /></div>
+      <ol class="grid gap-4 sm:grid-cols-2">
         {e.concretement.points.map((p, i) => (
-          <li class="carte-donnee"><p class="donnee text-[13px] text-cuivre-clair">0{i + 1}</p><h3 class="mt-5 text-[18px] font-medium leading-snug">{p.titre}</h3><p class="corps mt-3 text-[15px]">{p.texte}</p></li>
+          <li class="fiche-point"><p class="chiffres text-[13px] signal">0{i + 1}</p><h3 class="mt-5 text-[18px] font-medium leading-snug">{p.titre}</h3><p class="paragraphe mt-3 text-[15px]">{p.texte}</p></li>
         ))}
       </ol>
     </div>
   </section>
 
-  <section class="border-t border-trait bg-blanc">
-    <div class="contenu section">
-      <p class="eyebrow">{eu.comment}</p>
-      <h2 class="titre mt-3 max-w-2xl">{e.comment.titre}</h2>
-      <ol class="reveal-groupe mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+  <section class="border-t filet bg-white">
+    <div class="cadre-page respiration">
+      <p class="legende">{eu.comment}</p>
+      <h2 class="titre-rubrique mt-3 max-w-2xl">{e.comment.titre}</h2>
+      <ol class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {e.comment.etapes.map((s, i) => (
-          <li class="border-t border-trait pt-5"><p class="donnee text-[13px] text-gris">{eu.etape} {i + 1}</p><h3 class="mt-2 text-[18px] font-medium">{s.titre}</h3><p class="corps mt-2 text-[15px]">{s.texte}</p></li>
+          <li class="border-t filet pt-5"><p class="chiffres text-[13px] teinte-secondaire">{eu.etape} {i + 1}</p><h3 class="mt-2 text-[18px] font-medium">{s.titre}</h3><p class="paragraphe mt-2 text-[15px]">{s.texte}</p></li>
         ))}
       </ol>
     </div>
   </section>
 
   {guides.length > 0 && (
-    <section class="border-t border-trait" aria-labelledby="guides-expertise">
-      <div class="contenu section">
-        <p class="eyebrow">{eu.guides_eyebrow}</p>
-        <h2 id="guides-expertise" class="titre mt-3 max-w-2xl">{eu.guides_titre}</h2>
+    <section class="border-t filet" aria-labelledby="guides-expertise">
+      <div class="cadre-page respiration">
+        <p class="legende">{eu.guides_eyebrow}</p>
+        <h2 id="guides-expertise" class="titre-rubrique mt-3 max-w-2xl">{eu.guides_titre}</h2>
         <ul class="mt-10 grid gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
-          {guides.map((a) => (<li class="border-t border-trait pt-5"><a href={L(`/actualites/${a.slug}`)} class="group block"><h3 class="text-[17px] font-medium leading-snug group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3><p class="corps mt-2 text-[14.5px]">{a.description}</p></a></li>))}
+          {guides.map((a) => (<li class="border-t filet pt-5"><a href={L(`/actualites/${a.slug}`)} class="group block"><h3 class="text-[17px] font-medium leading-snug group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3><p class="paragraphe mt-2 text-[14.5px]">{a.description}</p></a></li>))}
         </ul>
       </div>
     </section>
   )}
 
-  <section class="border-t border-trait">
-    <div class="contenu section grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-      <div><p class="eyebrow">{eu.faq_eyebrow}</p><h2 class="titre mt-3">{eu.faq_titre}</h2></div>
-      <div class="divide-y divide-trait border-y border-trait">
+  <section class="border-t filet">
+    <div class="cadre-page respiration grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+      <div><p class="legende">{eu.faq_eyebrow}</p><h2 class="titre-rubrique mt-3">{eu.faq_titre}</h2></div>
+      <div class="divide-y border-y filet">
         {faq.map((q) => (
           <details class="group py-5">
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-[18px] font-medium">{q.q}<span class="donnee text-gris transition-transform group-open:rotate-45" aria-hidden="true">+</span></summary>
-            <p class="corps mt-3 max-w-2xl">{q.r}</p>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-[18px] font-medium">{q.q}<span class="chiffres teinte-secondaire transition-transform group-open:rotate-45" aria-hidden="true">+</span></summary>
+            <p class="paragraphe mt-3 max-w-2xl">{q.r}</p>
           </details>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="contenu pb-20">
-    <div class="sombre reveal rounded-donnee border border-filet px-7 py-14 lg:px-14 text-center">
-      <h2 class="titre">{e.final.titre}</h2>
-      <p class="corps mx-auto mt-4 max-w-lg text-[17px]">{e.final.texte}</p>
+  <section class="cadre-page pb-20">
+    <div class="fond-quadrille border filet px-7 py-14 lg:px-14 text-center">
+      <h2 class="titre-rubrique">{e.final.titre}</h2>
+      <p class="paragraphe mx-auto mt-4 max-w-lg text-[17px]">{e.final.texte}</p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <a href={lienPrincipal} data-assurance={cibleBlank || undefined} target={cibleBlank ? '_blank' : undefined} rel={cibleBlank ? 'noopener' : undefined} class="btn-cuivre">{e.final.bouton}{cibleBlank && <span class="sr-only">{eu.nouvel_onglet}</span>}</a>
-        <a href={e.slug === 'insure' ? '#guides-expertise' : L('/#simulateur')} class="btn-fantome">{e.slug === 'insure' ? eu.final_insure : eu.final_autre}</a>
+        <a href={lienPrincipal} data-assurance={cibleBlank || undefined} target={cibleBlank ? '_blank' : undefined} rel={cibleBlank ? 'noopener' : undefined} class="action-pleine">{cibleBlank ? e.final.bouton : libelleExchange}{cibleBlank && <span class="sr-only">{eu.nouvel_onglet}</span>}</a>
+        <a href={e.slug === 'insure' ? '#guides-expertise' : L('/#simulateur')} class="action-ligne">{e.slug === 'insure' ? eu.final_insure : eu.final_autre}</a>
       </div>
     </div>
   </section>

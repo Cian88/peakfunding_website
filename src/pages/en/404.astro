@@ -1,15 +1,15 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Base from '../../components/Feuillet.astro';
 ---
 
 <Base noindex title="Page not found | PEAK FUNDING" description="This page does not exist or has been moved.">
-  <section class="contenu section">
-    <p class="eyebrow">Error 404</p>
-    <h1 class="display mt-3 max-w-2xl">This page doesn’t exist.</h1>
-    <p class="corps mt-5 max-w-lg text-[18px]">It may have been moved. Find the firm’s services and resources from the home page.</p>
+  <section class="cadre-page respiration erreur-feuille"><b aria-hidden="true">404</b><div>
+    <p class="legende">Error 404</p>
+    <h1 class="grand-titre mt-3 max-w-2xl">This page doesn’t exist.</h1>
+    <p class="paragraphe mt-5 max-w-lg text-[18px]">It may have been moved. Find the firm’s services and resources from the home page.</p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <a href="/en/" class="btn-cuivre">Back to home</a>
-      <a href="/en/actualites/" class="btn-fantome">Read our insights</a>
+      <a href="/en/" class="action-pleine">Back to home</a>
+      <a href="/en/actualites/" class="action-ligne">Read our insights</a>
     </div>
-  </section>
+  </div></section>
 </Base>

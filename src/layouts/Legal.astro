@@ -1,5 +1,5 @@
 ---
-import Base from './Base.astro';
+import Base from '../components/Feuillet.astro';
 import { protectPublicEmails } from '../lib/public-contact.mjs';
 import Sommaire from '../components/Sommaire.astro';
 import { documentAvecSommaire } from '../lib/document.mjs';
@@ -17,17 +17,17 @@ const L = (p: string) => localiser(p, lang);
 ---
 
 <Base title={title} description={description}>
-  <article class="contenu section">
-    <nav aria-label={lang === 'en' ? 'Breadcrumb' : 'Fil d’Ariane'} class="eyebrow normal-case tracking-normal"><a href={L('/')} class="hover:text-encre">{tr.fil_accueil}</a> <span aria-hidden="true">/</span> {intitule}</nav>
-    <div class="mt-10 max-w-[880px] border-b border-trait pb-10">
-      <p class="eyebrow mb-5">{tr.legal_surtitre}</p>
-      <h1 class="display text-[36px] sm:text-[44px]">{intitule}</h1>
-      <p class="donnee mt-4 text-[13px] text-gris">{miseAJour}</p>
-      {lang === 'en' && <p class="mt-5 max-w-[760px] rounded-donnee border border-trait bg-blanc p-4 text-[13px] leading-relaxed text-gris">{tr.legal_langue}</p>}
+  <article class="cadre-page respiration">
+    <nav aria-label={lang === 'en' ? 'Breadcrumb' : 'Fil d’Ariane'} class="legende normal-case tracking-normal"><a href={L('/')} class="hover:text-encre">{tr.fil_accueil}</a> <span aria-hidden="true">/</span> {intitule}</nav>
+    <div class="entete-document">
+      <p class="legende mb-5">{tr.legal_surtitre}</p>
+      <h1 class="grand-titre text-[36px] sm:text-[44px]">{intitule}</h1>
+      <p class="chiffres mt-4 text-[13px] teinte-secondaire">{miseAJour}</p>
+      {lang === 'en' && <p class="mt-5 max-w-[760px] border filet bg-white p-4 text-[13px] leading-relaxed teinte-secondaire">{tr.legal_langue}</p>}
     </div>
-    <div class="lecture-grille mt-10">
+    <div class="grille-document mt-10">
       <Sommaire headings={headings} />
-      <div class="prose-pf legal-content min-w-0 [&>h2:first-child]:mt-0" set:html={protectPublicEmails(html, lang).replace(/href="\/(?!\/|en\/)([^"]*)"/g, (_, path) => `href="${L('/' + path)}"`)} />
+      <div class="texte-document legal-content min-w-0 [&>h2:first-child]:mt-0" set:html={protectPublicEmails(html, lang).replace(/href="\/(?!\/|en\/)([^"]*)"/g, (_, path) => `href="${L('/' + path)}"`)} />
     </div>
   </article>
 </Base>

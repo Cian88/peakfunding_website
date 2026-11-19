@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import type { ComponentProps } from 'astro/types';
+import '../styles/feuillets.css';
+
+type Props = ComponentProps<typeof Base>;
+const slug = Astro.url.pathname.replace(/^\/en(?=\/)/, '').split('/').filter(Boolean)[0] ?? '404';
+---
+<Base {...Astro.props}>
+  <div class="feuillet" data-rubrique={slug}><slot /></div>
+</Base>

@@ -100,16 +100,18 @@ export function demarrerMouvement() {
     const depart = scrollY;
     const arrivee = Math.max(0, Math.min(cible.getBoundingClientRect().top + depart - marge, document.documentElement.scrollHeight - innerHeight));
     const distance = arrivee - depart;
-    if (Math.abs(distance) < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) { scrollTo(0, arrivee); return; }
-    const duree = Math.min(900, Math.max(450, Math.abs(distance) * 0.35));
+    if (Math.abs(distance) < 2 || statique || preference.matches) { scrollTo(0, arrivee); return; }
+    const duree = hero
+      ? Math.min(680, 260 + Math.sqrt(Math.abs(distance)) * 6)
+      : Math.min(900, Math.max(450, Math.abs(distance) * 0.35));
     const debut = performance.now();
     let frame = 0;
     const stop = () => { cancelAnimationFrame(frame); ['wheel', 'touchstart', 'keydown'].forEach(t => removeEventListener(t, stop)); annulerDefilement = null; };
     ['wheel', 'touchstart', 'keydown'].forEach(t => addEventListener(t, stop, { passive: true, once: true }));
     annulerDefilement = stop;
     const etape = (t: number) => {
-      const p = Math.min(1, (t - debut) / duree);
-      const e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);   // expo-out, comme --ease-expo
+      const p = preference.matches ? 1 : Math.min(1, (t - debut) / duree);
+      const e = hero ? 1 - (1 - p) ** 3 : p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
       scrollTo(0, depart + distance * e);
       if (p < 1) frame = requestAnimationFrame(etape); else stop();
     };
@@ -181,6 +183,7 @@ export function demarrerMouvement() {
   window.addEventListener('resize', schedule, { signal });
   update();
   disposePage = () => {
+    annulerDefilement?.();
     controller.abort();
     arrierePlan.forEach(el => { el.inert = false; });
     observers.forEach(io => io.disconnect());

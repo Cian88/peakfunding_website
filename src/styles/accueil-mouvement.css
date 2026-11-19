@@ -1,0 +1,54 @@
+/* Les états au repos sont ceux de l’accueil de revue. Le film garde son
+   propre contrôleur de lecture et son bouton reste fixe pendant la vidéo. */
+@media (prefers-reduced-motion: no-preference) {
+  .mouvement .pitch-cabinet h1,
+  .mouvement .pitch-cabinet .pitch-film-title {
+    animation: accueil-titre 580ms var(--ease-expo) backwards;
+  }
+  .mouvement .pitch-cabinet .pitch-film-title {
+    animation-delay: 90ms;
+  }
+
+  @keyframes accueil-titre {
+    from { opacity: .55; transform: translateY(9px); }
+  }
+
+  /* Un seul mouvement pour la photographie. Le texte reste lisible même
+     lorsqu’un saut d’ancre précède la notification de l’observateur. */
+  .mouvement #expertises [data-expertise-reveal] .expertise-photo {
+    transition: clip-path 720ms var(--ease-expo);
+  }
+  .mouvement #expertises [data-expertise-reveal].reveal-pending:not(:focus-within) .expertise-photo {
+    clip-path: inset(4% 0 2% round 8px);
+    opacity: 1;
+    transform: none;
+  }
+  .mouvement #expertises [data-expertise-reveal] .expertise-photo img {
+    transition: scale 850ms var(--ease-expo), transform 500ms var(--ease-sortie);
+  }
+  .mouvement #expertises [data-expertise-reveal].reveal-pending:not(:focus-within) .expertise-photo img {
+    scale: 1.045;
+  }
+  .mouvement #expertises [data-expertise-reveal].reveal-pending:not(:focus-within) .expertise-texte > * {
+    opacity: .8;
+    transform: translateY(6px);
+  }
+
+  .mouvement #methode .etape.active .liaison {
+    animation: accueil-liaison 700ms var(--ease-sortie) backwards;
+  }
+  @keyframes accueil-liaison {
+    from { stroke-dasharray: 450; stroke-dashoffset: 450; }
+    to { stroke-dasharray: 450; stroke-dashoffset: 0; }
+  }
+
+  @media (hover: hover) {
+    .mouvement .pitch-cinema-cta svg {
+      transition: transform 210ms var(--ease-sortie);
+    }
+    .mouvement .pitch-cinema-cta:hover svg,
+    .mouvement .pitch-cinema-cta:focus-visible svg {
+      transform: translate(2px, -2px);
+    }
+  }
+}

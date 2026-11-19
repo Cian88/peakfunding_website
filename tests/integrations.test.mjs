@@ -108,7 +108,7 @@ test('Le Relevé : index des quatre pôles, méthode, calcul et observation mens
     assert.equal(stations.length, 4);
     stations.each((_, node) => {
       const station = home(node);
-      const visible = station.find('text').toArray().map(label => home(label).text()).join(' ');
+      const visible = station.find('text').toArray().map(label => home(label).text()).join('');
       assert.ok(station.attr('aria-label').startsWith(visible), visible);
       assert.equal(home(station.attr('href')).find('h3').length, 1);
     });

@@ -447,3 +447,6 @@ html[data-static]::view-transition-old(*),
 html[data-static]::view-transition-new(*) {
   animation-duration: 0.01ms !important;
 }
+
+/* Manrope fusionne « -- » : le nom officiel Boura--Defranoux doit garder ses deux traits. */
+*, *::before, *::after { font-variant-ligatures: none !important; }

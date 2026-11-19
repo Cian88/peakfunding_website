@@ -22,16 +22,29 @@ Les familles contrôlées comprennent l’accueil, PEAK ESTATE, la liste d’ana
 
 Les planches par famille et par route ont servi à la relecture. La revue détaillée a porté sur l’accueil, les actions, les sections au défilement et les anomalies. Les tests ont été rejoués après correction du contraste des boutons d’extrait, de la largeur des lignes d’analyses à 844 px, du double affichage du repère ORIAS et de l’accès direct à Actelo. [Expertise mobile](captures/expertise-fr-mobile.webp) · [Analyses sur tablette](captures/analyses-en-tablette.webp) · [Simulateur sur ordinateur](captures/simulateur-fr-bureau.webp)
 
-## Interactions et poids
+## Lecture au défilement
 
-- En français et en anglais, le clavier ouvre le menu mobile, Échap le ferme et le focus revient au bouton. La FAQ s’ouvre avec Entrée. Le lien principal rejoint le simulateur et la modification d’un revenu change le résultat estimé.
-- À 320 px sans JavaScript, le menu et la FAQ s’ouvrent au clavier. Le simulateur affiche sa valeur initiale et une explication sur le recalcul. Les formulaires privés expliquent leur dépendance à JavaScript. Le lien direct vers Actelo reste visible.
-- Après défilement de l’accueil complet en français et en anglais, le JavaScript hors simulateur pèse **10 384 octets gzip**. Le calcul additionne les scripts intégrés compressés individuellement (4 760 octets) et le seul fichier JavaScript chargé (5 624 octets). L’îlot du simulateur a été maintenu hors affichage pendant cette mesure pour isoler son coût. Les données JSON-LD sont exclues.
-- Les comparaisons, vues ciblées et neuf fichiers WebP conservés occupent **490 044 octets** dans le dossier des captures.
+Sur l’accueil français, la molette a parcouru 13 917 px en 21 vues à 390 px et 12 854 px en 18 vues à 1 440 px. Les titres et les citations étaient visibles à leur passage dans la fenêtre. Après retour en haut et stabilisation, Chromium a pris une capture pleine page native par format à densité 1. Les deux captures ont été relues de haut en bas. Deux images supplémentaires montrent les panneaux ESTATE et PIM pendant leur épinglage. [Accueil complet mobile](captures/accueil-complet-390.webp) · [Accueil complet bureau](captures/accueil-complet-1440.webp) · [Scène ESTATE](captures/scene-estate.webp) · [Scène PIM](captures/scene-pim.webp)
 
-## Compilation et polices
+Les 40 essais de liens vers les quatre zones ont placé leur cible sous le bandeau. Les 40 essais au clavier des liens du profil ont atteint les stations de méthode correspondantes. Au défilement, les stations 01 à 04 se sont activées dans l’ordre de passage, dans les deux sens. La trace reste fixe en mouvement réduit et avec `?statique`. Sans JavaScript, le profil et ses quatre stations restent lisibles.
 
-Le build produit 72 pages. La suite compte 71 tests, dont 70 réussites et un comparatif historique V1 omis faute de source. Les tables de caractères des deux polices locales contiennent les 33 caractères contrôlés, dont les lettres accentuées françaises, Œ, œ et €.
+## Parcours et clavier
+
+- En français et en anglais, Entrée ouvre le menu mobile, Échap le ferme et le focus revient au bouton. La FAQ s’ouvre avec Entrée. Le lien principal rejoint le simulateur. La modification du revenu change le résultat estimé.
+- La touche Fin atteint le pied de page et la touche Début ramène à zéro. Les ancres du simulateur et de l’équipe placent les sections à 86 px du haut pour des bandeaux de 63 et 73 px. Après saisie d’une ancre dans la barre d’adresse et visite d’une expertise, le bouton Précédent restaure exactement la position de départ, 1 137 px sur mobile et 1 467 px sur ordinateur.
+- Sur ordinateur, Chromium a signalé une transition interrompue au cours d’une navigation interceptée par Playwright. Le contenu et le défilement ont été restaurés. Trois répétitions par connexion locale directe ont restauré la page sans ce message.
+- Les commandes des avis font passer de 01/06 à 02/06, puis à 01/06. L’ancre du deuxième avis affiche sa citation. Les six avis sont présents sans JavaScript.
+- À 320 px sans JavaScript, le menu et la FAQ s’ouvrent au clavier. Le simulateur affiche sa valeur initiale et explique comment activer le recalcul. Les formulaires privés expliquent leur dépendance à JavaScript. Le lien direct vers Actelo reste visible.
+
+## Polices et zoom
+
+Les tables de caractères des deux polices locales couvrent les 33 caractères vérifiés, dont les accents français, Œ, œ et €. Le zoom a été émulé à 200 % et 400 % pour les 14 familles en français et en anglais, soit 56 vérifications. La fenêtre de référence de 1 440 px dispose respectivement de 720 et 360 px CSS. Aucun titre ni document ne déborde. Le contrôle au fort grossissement a porté sur les paires serrées de lettres, notamment dans « Financement » et « Cette ». [Détail des titres à 400 %](captures/titre-400.webp)
+
+## Poids et compilation
+
+L’accueil charge **6 120 octets gzip de JavaScript hors simulateur**, en français comme en anglais. La mesure additionne les sept scripts intégrés comprimés individuellement. Aucun fichier JavaScript externe n’a été chargé pendant le parcours avec le simulateur isolé. Le JSON-LD est exclu. Les 14 fichiers WebP conservés occupent **2 056 706 octets**.
+
+La compilation produit 72 pages. La suite compte 71 tests, dont 70 réussites et un comparatif historique V1 omis faute de source. Après correction du libellé SVG de la méthode au commit `64f87f5`, les quatre audits axe de l’accueil ont confirmé la disparition de la violation sur les noms accessibles des stations.
 
 ## Limites
 

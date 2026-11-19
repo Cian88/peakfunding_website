@@ -66,7 +66,7 @@ const stations = stages.map((stage, i) => {
               <circle class="station-hit" cx={s.position} cy={s.height} r="23"/>
               <circle class="station-dot" cx={s.position} cy={s.height} r="5"/>
               <text class="station-no" x={s.position} y={s.height} dy="-13" text-anchor="middle">0{i + 1}</text>
-              <text class="station-distance" x={s.position} y="94%" text-anchor="middle">{s.distance} m</text>
+              <text class="station-distance" x={s.position} y="94%" text-anchor="middle">{' ' + s.distance + ' m'}</text>
             </a>
           ))}
         </svg>

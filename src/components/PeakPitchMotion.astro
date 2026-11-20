@@ -28,7 +28,13 @@ const t = fr ? {
   controles: ['285 000 + 20 000 + 24 000 = 329 000 €', '329 000 − 45 000 = 284 000 €', '284 000 € · 25 ans · 3,5 % → 1 422 € / mois'],
   pdf: '3 PDF prêts à présenter',
   chiffres: [['Budget total', '329 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Mensualité · 25 ans', '1 422 €', 'CALCULÉ'], ['Capacité estimée', '350 000 €', 'SIMULATEUR']],
-  dossier: 'Dossier PP-2611', page: 'p. 1 / 6',
+  dossier: 'Dossier PP-2611', page: 'p. 1 / 6', date: '20 novembre 2026',
+  doc: { prepare: 'Établi d’après les déclarations du client · Exemple', page: (n: number, t: number) => `Page ${n} sur ${t}`,
+    noteSur: 'NOTE DE SYNTHÈSE', noteTitre: 'Acquisition locative d’un T3 — Lyon 8e', noteMeta: 'Emprunteurs : 2 associés, via une SCI à créer · Durée demandée : 25 ans',
+    s1: '1. Le projet', s2: '2. Chiffres clés', s3: '3. Plan de financement', cols: ['Libellé', 'Montant', 'Source'], emploi: 'Emplois', montant: 'Montant',
+    capacite: ['Capacité estimée', '350 000 €', 'Simulateur'], renvoi: 'Frais estimés, montants arrondis. Détail des réponses en annexe, p. 4 à 6.',
+    piecesSur: 'LISTE DES PIÈCES À FOURNIR', piecesTitre: 'Pièces justificatives par intervenant', piecesMeta: '3 intervenants · 9 pièces · à transmettre par le client à la banque',
+    piecesCols: ['Pièce', 'Motif'], presEntete: 'Présentation bancaire' },
   note: {
     n: '01 · NOTE DE SYNTHÈSE', titre: 'Note de synthèse', meta: ['Acquisition locative', 'Lyon 8e', 'SCI à créer'],
     resume: 'Acquisition, via une SCI à créer, d’un T3 destiné à la location (loyer attendu : 1 050 € par mois). Les deux associés, salariés en CDI, sollicitent un prêt de 284 000 € sur 25 ans.',
@@ -80,7 +86,13 @@ const t = fr ? {
   controles: ['285,000 + 20,000 + 24,000 = €329,000', '329,000 − 45,000 = €284,000', '€284,000 · 25 yrs · 3.5% → €1,422 / month'],
   pdf: '3 PDFs ready to present',
   chiffres: [['Total budget', '€329,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Loan requested', '€284,000', 'CALCULATED'], ['Monthly payment · 25 yrs', '€1,422', 'CALCULATED'], ['Estimated capacity', '€350,000', 'SIMULATOR']],
-  dossier: 'File PP-2611', page: 'p. 1 / 6',
+  dossier: 'File PP-2611', page: 'p. 1 / 6', date: '20 November 2026',
+  doc: { prepare: 'Based on the client’s declarations · Example', page: (n: number, t: number) => `Page ${n} of ${t}`,
+    noteSur: 'SUMMARY NOTE', noteTitre: 'Purchase of a two-bedroom flat to let — Lyon 8th', noteMeta: 'Borrowers: 2 partners, through an SCI to be formed · Term requested: 25 years',
+    s1: '1. The project', s2: '2. Key figures', s3: '3. Financing plan', cols: ['Item', 'Amount', 'Source'], emploi: 'Uses', montant: 'Amount',
+    capacite: ['Estimated capacity', '€350,000', 'Simulator'], renvoi: 'Estimated fees, rounded amounts. Detailed answers in the appendix, pp. 4–6.',
+    piecesSur: 'LIST OF DOCUMENTS TO PROVIDE', piecesTitre: 'Supporting documents per party', piecesMeta: '3 parties · 9 documents · to be sent to the bank by the client',
+    piecesCols: ['Document', 'Purpose'], presEntete: 'Bank presentation' },
   note: {
     n: '01 · SUMMARY NOTE', titre: 'Summary note', meta: ['Buy-to-let', 'Lyon 8th', 'SCI to be formed'],
     resume: 'Purchase, through an SCI to be formed, of a two-bedroom flat to let (expected rent: €1,050 a month). The two partners, both permanent employees, request a €284,000 loan over 25 years.',
@@ -166,7 +178,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
           <!-- 03 · Présentation bancaire : trois diapositives défilent pendant le plan rapproché -->
           <div class="pp-doc pp-pres">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{fr ? 'PDF · 7 DIAPOSITIVES' : 'PDF · 7 SLIDES'}</span></div>
+            <header class="pp-tete-diapo"><span class="pp-logo"><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK FUNDING</span><span>{t.doc.presEntete} · {t.dossier}</span></header>
             <div class="pp-diapos">
               <div class="pp-diapo d1">
                 <div class="pp-el" style="--k:0">
@@ -227,41 +239,57 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
             <div class="pp-vignettes pp-el" style="--k:2">{Array.from({ length: 7 }, (_, i) => <i class={i === 0 ? 'actif' : ''}><b></b><b></b></i>)}</div>
           </div>
 
-          <!-- 02 · Pièces à réunir -->
+          <!-- 02 · Pièces à réunir : page A4 -->
           <div class="pp-doc pp-pieces">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{fr ? 'PDF · 9 PIÈCES' : 'PDF · 9 DOCUMENTS'}</span></div>
-            <div class="pp-doc-corps">
-              <p class="pp-n pp-el" style="--k:0">{t.pieces.n}</p>
-              <p class="pp-doc-titre pp-el" style="--k:0">{t.pieces.titre}</p>
-              <p class="pp-puce pp-el" style="--k:1">{t.pieces.resume}</p>
-              {t.pieces.intervenants.map((iv, j) => (
-                <div class="pp-intervenant pp-el" style={`--k:${j + 2}`}>
-                  <p class="pp-qui"><i>{iv.sigle}</i><b>{iv.nom}</b><span>{iv.role}</span></p>
-                  {iv.pieces.map(([p, r]) => <p class="pp-piece"><span class="case"></span>{p}<em>{r}</em></p>)}
-                </div>
-              ))}
+            <header class="pp-tete-doc"><span class="pp-logo"><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK FUNDING</span><span>{t.dossier}<br />{t.date}</span></header>
+            <div class="pp-page">
+              <p class="pp-surtitre pp-el" style="--k:0">{t.doc.piecesSur}</p>
+              <p class="pp-titre-doc pp-el" style="--k:0">{t.doc.piecesTitre}</p>
+              <p class="pp-sous-doc pp-el" style="--k:1">{t.doc.piecesMeta}</p>
+              <table class="pp-tableau pp-tableau-pieces pp-el" style="--k:2">
+                <thead><tr><th></th><th>{t.doc.piecesCols[0]}</th><th>{t.doc.piecesCols[1]}</th></tr></thead>
+                {t.pieces.intervenants.map(iv => (
+                  <tbody>
+                    <tr class="groupe"><td colspan="3"><b>{iv.nom}</b> — {iv.role}</td></tr>
+                    {iv.pieces.map(([pc, r]) => <tr><td><span class="case"></span></td><td>{pc}</td><td>{r}</td></tr>)}
+                  </tbody>
+                ))}
+              </table>
             </div>
+            <footer class="pp-pied-doc"><span>{t.doc.prepare}</span><span>{t.doc.page(1, 2)}</span></footer>
           </div>
 
-          <!-- 01 · Note de synthèse : au premier plan -->
+          <!-- 01 · Note de synthèse : page A4, au premier plan -->
           <div class="pp-doc pp-note">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{fr ? 'PDF · 6 PAGES' : 'PDF · 6 PAGES'}</span></div>
-            <div class="pp-doc-corps">
-              <p class="pp-n pp-el" style="--k:0">{t.note.n}</p>
-              <p class="pp-doc-titre pp-el" style="--k:0">{t.note.titre}</p>
-              <p class="pp-meta pp-el" style="--k:1">{t.note.meta.map(m => <span>{m}</span>)}</p>
-              <p class="pp-resume pp-el" style="--k:1">{t.note.resume}</p>
-              <dl class="pp-kpi pp-el" style="--k:2">{t.note.chiffres.map(([q, r, s]) => <div><dt>{q}</dt><dd>{r}</dd><small>{s}</small></div>)}</dl>
-              <div class="pp-plan pp-el" style="--k:3">
-                <p class="pp-plan-titre">{t.note.plan}</p>
-                {t.note.emplois.map(([l, v]) => <p class="pp-plan-ligne"><span>{l}</span><b>{v}</b></p>)}
-                <p class="pp-plan-ligne total"><span>{t.note.total[0]}</span><b>{t.note.total[1]}</b></p>
+            <header class="pp-tete-doc"><span class="pp-logo"><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK FUNDING</span><span>{t.dossier}<br />{t.date}</span></header>
+            <div class="pp-page">
+              <p class="pp-surtitre pp-el" style="--k:0">{t.doc.noteSur}</p>
+              <p class="pp-titre-doc pp-el" style="--k:0">{t.doc.noteTitre}</p>
+              <p class="pp-sous-doc pp-el" style="--k:0">{t.doc.noteMeta}</p>
+              <p class="pp-h pp-el" style="--k:1">{t.doc.s1}</p>
+              <p class="pp-texte-doc pp-el" style="--k:1">{t.note.resume}</p>
+              <p class="pp-h pp-el" style="--k:2">{t.doc.s2}</p>
+              <table class="pp-tableau pp-el" style="--k:2">
+                <thead><tr><th>{t.doc.cols[0]}</th><th>{t.doc.cols[1]}</th><th>{t.doc.cols[2]}</th></tr></thead>
+                <tbody>
+                  {t.note.chiffres.map(([q, r, src]) => <tr><td>{q}</td><td>{r}</td><td>{src.charAt(0) + src.slice(1).toLowerCase()}</td></tr>)}
+                  <tr><td>{t.doc.capacite[0]}</td><td>{t.doc.capacite[1]}</td><td>{t.doc.capacite[2]}</td></tr>
+                </tbody>
+              </table>
+              <p class="pp-h pp-el" style="--k:3">{t.doc.s3}</p>
+              <div class="pp-el" style="--k:3">
+                <table class="pp-tableau">
+                  <thead><tr><th>{t.doc.emploi}</th><th>{t.doc.montant}</th></tr></thead>
+                  <tbody>
+                    {t.note.emplois.map(([l, v]) => <tr><td>{l}</td><td>{v}</td></tr>)}
+                    <tr class="total"><td>{t.note.total[0]}</td><td>{t.note.total[1]}</td></tr>
+                  </tbody>
+                </table>
                 <div class="pp-barre-financement"><i class="pret"></i><i class="apport"></i></div>
-                <p class="pp-barre-legende">{t.note.barre.map(([l, v]) => <span><b>{v}</b> {l}</span>)}</p>
+                <p class="pp-renvoi">{t.doc.renvoi}</p>
               </div>
-              <p class="pp-capacite pp-el" style="--k:4"><span>{t.note.capacite}</span><b>{t.note.capaciteValeur}</b><small>SIMULATEUR</small></p>
-              <p class="pp-annexe pp-el" style="--k:4">{t.note.annexe} <span>→</span></p>
             </div>
+            <footer class="pp-pied-doc"><span>{t.doc.prepare}</span><span>{t.doc.page(1, 6)}</span></footer>
           </div>
 
           <p class="pp-controle"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" /></svg>{t.controle}</p>
@@ -486,6 +514,38 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
   .pp-pdf{position:absolute;right:11cqw;bottom:2.6cqw;z-index:4;display:flex;align-items:center;gap:.5cqw;margin:0;padding:1.1cqw 1.8cqw;border:1px solid #2a2f3a;border-radius:40px;background:#0b0d12;font:1.3cqw var(--font-mono);color:#a6a9b3}
   .pp-pdf i{width:1.3cqw;height:1.7cqw;border:1px solid #d9a47c;border-radius:.2cqw}.pp-pdf i:nth-of-type(3){margin-right:.7cqw}
+
+  /* ── Pages A4 réalistes ── */
+  .pp-note{height:62.2cqw;display:flex;flex-direction:column;background:#fdfcf9}
+  .pp-pieces{height:56.6cqw;display:flex;flex-direction:column;background:#f9f7f2}
+  .pp-tete-doc{display:flex;justify-content:space-between;align-items:flex-start;margin:2.4cqw 3cqw 0;padding-bottom:1cqw;border-bottom:1px solid #d9d3c9;font:.8cqw/1.35 var(--font-mono);letter-spacing:.06em;color:#62656d;text-align:right}
+  .pp-logo{display:flex;align-items:center;gap:.6cqw;font:500 1cqw var(--font-sans);letter-spacing:.14em;color:#111}
+  .pp-logo svg{width:1.6cqw;height:1.4cqw;fill:none;stroke:#b87b4f;stroke-width:1.6;stroke-linejoin:round}
+  .pp-page{flex:1;padding:1.8cqw 3cqw 0}
+  .pp-surtitre{margin:0;font:.85cqw var(--font-mono);letter-spacing:.14em;color:#825333}
+  .pp-titre-doc{margin:.6cqw 0 0;font-size:2.15cqw;line-height:1.1;font-weight:400;letter-spacing:-.03em;color:#111}
+  .pp-sous-doc{margin:.6cqw 0 0;padding-bottom:1cqw;border-bottom:1px solid #e6e1d8;font-size:.95cqw;color:#62656d}
+  .pp-h{margin:1.2cqw 0 .4cqw;font-size:1.1cqw;font-weight:500;color:#111}
+  .pp-texte-doc{margin:0;font-size:1cqw;line-height:1.55;text-align:justify;hyphens:auto;color:#3d3f46}
+  .pp-tableau{width:100%;border-collapse:collapse;font-size:.95cqw;color:#3d3f46}
+  .pp-tableau th{padding:.35cqw 0;border-bottom:1px solid #111;font:.75cqw var(--font-mono);letter-spacing:.08em;text-transform:uppercase;text-align:left;color:#62656d}
+  .pp-tableau td{padding:.36cqw 0;border-bottom:1px solid #ebe6dd}
+  .pp-tableau th:nth-child(2),.pp-tableau td:nth-child(2){text-align:right;font-family:var(--font-mono);letter-spacing:-.03em;color:#111}
+  .pp-tableau th:nth-child(3),.pp-tableau td:nth-child(3){padding-left:1.5cqw;text-align:right;font-size:.8cqw;color:#825333}
+  .pp-tableau tr.total td{border-bottom:0;border-top:1px solid #111;font-weight:500;color:#111}
+  .pp-tableau-pieces{margin-top:1.4cqw}
+  .pp-tableau-pieces th:nth-child(1),.pp-tableau-pieces td:nth-child(1){width:2cqw}
+  .pp-tableau-pieces th:nth-child(2),.pp-tableau-pieces td:nth-child(2){text-align:left;font-family:var(--font-sans);letter-spacing:0;color:#3d3f46}
+  .pp-tableau-pieces td:nth-child(3){font-family:var(--font-mono)}
+  .pp-tableau-pieces tr.groupe td{padding:.55cqw .6cqw;border-bottom:0;background:#efe9df;font-size:.9cqw;color:#3d3f46}
+  .pp-tableau-pieces tr.groupe b{font-weight:500;color:#111}
+  .pp-tableau-pieces tbody + tbody tr.groupe td{border-top:.8cqw solid transparent;background-clip:padding-box}
+  .pp-tableau .case{display:block;width:1cqw;height:1cqw;border:1px solid #825333;border-radius:.15cqw}
+  .pp-renvoi{margin:.8cqw 0 0;font-size:.8cqw;font-style:italic;color:#62656d}
+  .pp-pied-doc{display:flex;justify-content:space-between;gap:2cqw;white-space:nowrap;margin:0 3cqw 1.4cqw;padding-top:.8cqw;border-top:1px solid #e6e1d8;font:.72cqw var(--font-mono);letter-spacing:.04em;color:#7c808a}
+  .pp-tete-diapo{display:flex;justify-content:space-between;align-items:center;margin:1.6cqw 3cqw 0;padding-bottom:.8cqw;border-bottom:1px solid #d9d3c9;font:.8cqw var(--font-mono);letter-spacing:.06em;color:#62656d}
+  .pp-note .pp-barre-financement{height:.7cqw;margin-top:.9cqw}
+  .pp-note .pp-barre-legende{font-size:.85cqw}
 
   /* ── Diapositives de la présentation bancaire ── */
   .pp-diapos{position:relative;flex:0 0 28.6cqw}

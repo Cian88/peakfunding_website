@@ -23,7 +23,7 @@ const libelle = (c: string) => c.charAt(0) + c.slice(1).toLowerCase();
       <div><p class="eyebrow">The firm’s view</p><h1 class="display mt-5 max-w-3xl lg:text-[56px]">Understand credit,<br />before you sign.</h1></div>
       <p class="corps max-w-md text-[18px]">Rates, structures, taxation, banking news: our analysis to see clearly, without needless jargon.</p>
     </div>
-    <fieldset class="mt-8 -mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&>label]:shrink-0 [&>label]:whitespace-nowrap md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
+    <fieldset class="filtres-ligne relative mt-8 -mx-5 flex min-w-0 snap-x gap-2 overflow-x-auto px-5 pb-1 [min-inline-size:0] [scrollbar-width:none] [&>label]:shrink-0 [&>label]:snap-start [&>label]:scroll-ml-5 [&>label]:whitespace-nowrap md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
       <legend class="sr-only">Filter articles by theme</legend>
       <label class="pastille"><input type="radio" name="theme" value="tout" checked class="sr-only" /><span>All insights <small>{liste.length}</small></span></label>
       {categories.map(c => <label class="pastille"><input type="radio" name="theme" value={cleTheme(c)} class="sr-only" /><span>{libelle(c)}</span></label>)}

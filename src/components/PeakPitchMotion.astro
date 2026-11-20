@@ -166,7 +166,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
           <!-- 03 · Présentation bancaire : trois diapositives défilent pendant le plan rapproché -->
           <div class="pp-doc pp-pres">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{t.pres.bandeau}</span></div>
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{fr ? 'PDF · 7 DIAPOSITIVES' : 'PDF · 7 SLIDES'}</span></div>
             <div class="pp-diapos">
               <div class="pp-diapo d1">
                 <div class="pp-el" style="--k:0">
@@ -229,7 +229,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
           <!-- 02 · Pièces à réunir -->
           <div class="pp-doc pp-pieces">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{t.dossier}</span></div>
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{fr ? 'PDF · 9 PIÈCES' : 'PDF · 9 DOCUMENTS'}</span></div>
             <div class="pp-doc-corps">
               <p class="pp-n pp-el" style="--k:0">{t.pieces.n}</p>
               <p class="pp-doc-titre pp-el" style="--k:0">{t.pieces.titre}</p>
@@ -245,7 +245,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
           <!-- 01 · Note de synthèse : au premier plan -->
           <div class="pp-doc pp-note">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{t.dossier} · {t.page}</span></div>
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{fr ? 'PDF · 6 PAGES' : 'PDF · 6 PAGES'}</span></div>
             <div class="pp-doc-corps">
               <p class="pp-n pp-el" style="--k:0">{t.note.n}</p>
               <p class="pp-doc-titre pp-el" style="--k:0">{t.note.titre}</p>
@@ -335,11 +335,11 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-cabinet h1{margin:22px 0 0;font-size:clamp(32px,3.6vw,60px);line-height:1.06;letter-spacing:-.04em;font-weight:300;text-wrap:balance}
   .pp-texte{max-width:520px;margin:26px 0 0;font-size:17px;line-height:1.6;font-weight:300;color:#edeae4e6}
   .pp-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
-  .pp-produit{display:flex;flex-direction:column;gap:18px;min-width:0;max-width:calc((100svh - 270px) / 1.02 + 2px);width:100%;justify-self:end}
+  .pp-produit{display:flex;flex-direction:column;gap:18px;min-width:0;max-width:calc((100svh - 270px) / 1.06 + 2px);width:100%;justify-self:end}
 
   /* ── Scène : toutes les mesures en cqw pour garder la composition à toutes les tailles ── */
   .pp-scene{position:relative;container-type:inline-size;border:1px solid #2a2f3a;border-radius:16px;background:#14171e;overflow:hidden}
-  .pp-plateau{position:relative;aspect-ratio:1/1.02;font-size:1.9cqw;background-image:radial-gradient(ellipse 70% 55% at 55% 60%,#1e222b 0%,transparent 70%),linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:auto,6cqw 6cqw,6cqw 6cqw}
+  .pp-plateau{position:relative;aspect-ratio:1/1.06;font-size:1.9cqw;background-image:radial-gradient(ellipse 70% 55% at 55% 60%,#1e222b 0%,transparent 70%),linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:auto,6cqw 6cqw,6cqw 6cqw}
   .pp-entete{position:absolute;inset:3.4cqw 4cqw auto;display:flex;justify-content:space-between;font:1.5cqw var(--font-mono);letter-spacing:.08em;color:#a6a9b3}
   .pp-entete span:first-child{color:#d9a47c}
   .pp-rail{position:absolute;left:4cqw;right:4cqw;top:7.6cqw;display:flex;align-items:center;gap:.8cqw}
@@ -357,9 +357,9 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   /* ── Documents : papier, bandeau de marque, contenu réel ── */
   .pp-doc{position:absolute;overflow:hidden;border-radius:1.2cqw;background:#fbfaf7;color:#111;outline:1px solid #ffffff14;transition:translate .4s cubic-bezier(.2,.7,.2,1)}
   .pp-doc:hover{translate:0 -1.8cqw}
-  .pp-pres{left:3cqw;top:14cqw;width:60cqw;height:37.5cqw;display:flex;flex-direction:column;transform:rotate(-2.5deg);z-index:1}
-  .pp-pieces{left:57cqw;top:15cqw;width:40cqw;height:61cqw;transform:rotate(2.5deg);z-index:2;background:#f6f4ef}
-  .pp-note{left:16cqw;top:30.5cqw;width:44cqw;height:62cqw;transform:rotate(-.8deg);z-index:3;background:#fff}
+  .pp-pres{left:20cqw;top:12.5cqw;width:60cqw;height:37.5cqw;display:flex;flex-direction:column;transform:rotate(-1deg);z-index:1}
+  .pp-pieces{left:49cqw;top:37cqw;width:40cqw;height:61cqw;transform:rotate(2deg) scale(.92);z-index:2;background:#f6f4ef}
+  .pp-note{left:9cqw;top:36cqw;width:44cqw;height:62cqw;transform:rotate(-2deg) scale(.92);z-index:3;background:#fff}
   .pp-bandeau{display:flex;justify-content:space-between;align-items:center;padding:1.3cqw 2.4cqw;background:#0b0d12;color:#a6a9b3;font:1.05cqw var(--font-mono);letter-spacing:.1em}
   .pp-bandeau span:first-child{display:flex;align-items:center;gap:.8cqw;color:#edeae4}
   .pp-bandeau svg{width:1.8cqw;height:1.6cqw;fill:none;stroke:#d9a47c;stroke-width:1.6;stroke-linejoin:round}
@@ -605,19 +605,19 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   @keyframes pp-passage-c{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}8%,88%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translate(0,14cqw) scale(.7)}}
   /* Plan rapproché centré, maintenu, puis place définitive (l'état de base). */
   @keyframes pp-note{
-    0%{opacity:0;z-index:10;transform:translate(12cqw,40cqw) scale(1.12)}
-    15%{opacity:1;z-index:10;transform:translate(12cqw,-9cqw) scale(1.12)}
-    79%{z-index:10;transform:translate(12cqw,-9cqw) scale(1.12)}
+    0%{opacity:0;z-index:10;transform:translate(19cqw,30cqw) scale(1.12)}
+    15%{opacity:1;z-index:10;transform:translate(19cqw,-11cqw) scale(1.12)}
+    79%{z-index:10;transform:translate(19cqw,-11cqw) scale(1.12)}
     100%{z-index:3}}
   @keyframes pp-pieces{
-    0%{opacity:0;z-index:10;transform:translate(-27cqw,50cqw) scale(1.18)}
-    19%{opacity:1;z-index:10;transform:translate(-27cqw,8cqw) scale(1.18)}
-    75%{z-index:10;transform:translate(-27cqw,8cqw) scale(1.18)}
+    0%{opacity:0;z-index:10;transform:translate(-19cqw,30cqw) scale(1.18)}
+    19%{opacity:1;z-index:10;transform:translate(-19cqw,-11.5cqw) scale(1.18)}
+    75%{z-index:10;transform:translate(-19cqw,-11.5cqw) scale(1.18)}
     100%{z-index:2}}
   @keyframes pp-pres{
-    0%{opacity:0;z-index:10;transform:translate(17cqw,60cqw) scale(1.45)}
-    9%{opacity:1;z-index:10;transform:translate(17cqw,22cqw) scale(1.45)}
-    88%{z-index:10;transform:translate(17cqw,22cqw) scale(1.45)}
+    0%{opacity:0;z-index:10;transform:translate(0,64cqw) scale(1.45)}
+    9%{opacity:1;z-index:10;transform:translate(0,24cqw) scale(1.45)}
+    88%{z-index:10;transform:translate(0,24cqw) scale(1.45)}
     100%{z-index:1}}
 
   @media (max-width:1023px){

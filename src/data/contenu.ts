@@ -156,7 +156,7 @@ const uiFr = {
   bandeau_eyebrow: 'Prendre rendez-vous',
   bandeau_titre: 'Parlons de votre projet.',
   bandeau_texte: 'PEAK EXCHANGE : un échange pour analyser les points forts et faibles de votre dossier, construire vos arguments et comprendre le contexte bancaire. Une note de conseil personnalisée est incluse. 299 € TTC.',
-  bandeau_cta1: 'Réserver PEAK EXCHANGE',
+  bandeau_cta1: 'RDV PEAK\u00a0EXCHANGE ↗',
   bandeau_cta2: 'Estimer ma capacité',
 };
 
@@ -201,7 +201,7 @@ const uiEn: typeof uiFr = {
   bandeau_eyebrow: 'Book a meeting',
   bandeau_titre: 'Let’s discuss your project.',
   bandeau_texte: 'PEAK EXCHANGE: a consultation to assess your strengths and weaknesses, prepare your arguments and understand the banking context. Includes a personalised advice note. €299 incl. VAT.',
-  bandeau_cta1: 'Book PEAK EXCHANGE',
+  bandeau_cta1: 'Book PEAK\u00a0EXCHANGE ↗',
   bandeau_cta2: 'Estimate my capacity',
 };
 

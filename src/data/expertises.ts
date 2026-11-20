@@ -142,7 +142,7 @@ export const expertises: Expertise[] = [
     reperes: [
       { valeur: 'Jusqu’à ⅓', texte: 'du coût total du crédit peut provenir de la seule assurance emprunteur.' },
       { valeur: 'À tout moment', texte: 'la loi Lemoine permet de résilier et changer d’assurance quand vous le souhaitez, sans frais.' },
-      { valeur: 'Plusieurs milliers €', texte: 'd’économies fréquentes sur la durée du prêt, à garanties équivalentes ou supérieures.' },
+      { valeur: 'Plusieurs milliers\u00a0€', texte: 'd’économies fréquentes sur la durée du prêt, à garanties équivalentes ou supérieures.' },
     ],
     concretement: {
       intro: 'Nous vérifions l’équivalence des garanties exigée par votre banque, puis nous mettons en concurrence les assureurs pour réduire le coût sans dégrader votre couverture.',

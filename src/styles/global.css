@@ -54,7 +54,9 @@
 }
 
 @layer components {
-  .contenu { @apply mx-auto w-full max-w-[1200px] px-5 lg:px-8; }
+  .contenu { @apply mx-auto w-full max-w-[1360px] px-5 lg:px-8; }
+  /* Questions dépliables : zone tactile d'au moins 44 px. */
+  details > summary { min-height: 44px; }
   .section { @apply py-20; }
 
   /* Registres de section : sombre (Abîme, grille technique) et clair (Cendre) */

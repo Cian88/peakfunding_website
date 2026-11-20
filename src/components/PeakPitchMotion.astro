@@ -140,6 +140,13 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 ---
 
 <section class="heros sombre pp" data-pp aria-labelledby="pp-titre">
+  <!-- Photographie de montagne du site actuel : le sommet se lève entre le texte et la scène -->
+  <div class="pp-photo" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 1023px)" srcset="/img/hero-mobile-1200.webp" />
+      <img src="/img/hero-2400.webp" srcset="/img/hero-1600.webp 1600w, /img/hero-2400.webp 2400w" sizes="200vw" alt="" fetchpriority="high" decoding="async" />
+    </picture>
+  </div>
   <div class="pp-grille">
     <div class="pp-cabinet">
       <p class="eyebrow text-cuivre-clair">{t.eyebrow}</p>
@@ -147,7 +154,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
       <p class="pp-texte">{t.texte}</p>
       <div class="pp-actions">
         <a href="#simulateur" class="btn-fantome">{t.cta1}</a>
-        <a href="#expertises" class="btn-fantome">{t.cta2} <span aria-hidden="true">↓</span></a>
+        <a href="#expertises" class="btn-fantome gap-2">{t.cta2} <span aria-hidden="true">↓</span></a>
       </div>
     </div>
 
@@ -155,7 +162,6 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
       <div class="pp-scene pp-anime" data-pp-scene>
         <p class="sr-only">{t.sr}</p>
         <div class="pp-plateau" aria-hidden="true">
-          <svg class="pp-relief" viewBox="0 0 100 40" preserveAspectRatio="none"><path pathLength="100" d="M0 36 L12 29 L20 32 L33 17 L41 23 L52 9 L61 24 L69 18 L80 29 L90 25 L100 30" /></svg>
           <div class="pp-reperes"><i></i><i></i><i></i><i></i><span>LYON 8E · 45,73 N · 4,87 E</span></div>
           <div class="pp-entete"><span>{t.scene}</span><span>{t.exemple}</span></div>
           <ol class="pp-phases">{t.phases.map((ph, i) => <li style={`--t:${[0, 6.3, 11.4, 25.8].map(v => +(v * 1.35).toFixed(2))[i]}s`}><span>{`0${i + 1}`}</span>{ph}</li>)}</ol>
@@ -317,12 +323,11 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
           <p class="pp-controle"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" /></svg>{t.controle}</p>
           <p class="pp-pdf"><i></i><i></i><i></i>{t.pdf}</p>
         </div>
-        <!-- Carte de conclusion : texte réel et lien actif, hors de la zone décorative -->
+        <!-- Carte de conclusion : texte réel ; l'action reste le bouton de l'offre, sous la scène -->
         <div class="pp-fin">
           <p class="pp-fin-kicker">{t.fin.kicker}</p>
           <p class="pp-fin-titre"><span>{t.fin.avant}</span> <em>{t.fin.accent}</em> <span>{t.fin.apres}</span></p>
           <p class="pp-fin-sous">{t.fin.sous}</p>
-          <p class="pp-fin-actions"><a class="btn-cuivre gap-4 pp-fin-cta" href={L('/peak-pitch/')}>{t.fin.bouton} <span aria-hidden="true">↗</span></a><span>{t.fin.prix}</span></p>
         </div>
         <button class="pp-pause" type="button" data-pp-pause data-pause={t.pause} data-resume={t.reprendre} data-replay={t.rejouer} aria-label={t.pause}>
           <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path class="i-pause" d="M6 4h2.5v12H6zm5.5 0H14v12h-2.5z"/><path class="i-play" d="m7 4 10 6-10 6z"/><path class="i-replay" d="M10 4a6 6 0 1 1-5.7 4.1l1.5.5A4.4 4.4 0 1 0 10 5.6V8L6.5 4.8 10 1.6z"/></svg>
@@ -342,9 +347,8 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   </div>
 
   <div class="pp-pied">
-    <p>{t.ambiance}<span>ORIAS n° 24002546 · {fr ? 'Supervision ACPR' : 'ACPR supervision'}</span></p>
+    <p>ORIAS n° 24002546 · {fr ? 'Supervision ACPR' : 'ACPR supervision'}</p>
     <nav aria-label={fr ? 'Poursuivre sur le site' : 'Continue on the website'}>
-      <a href={L('/peak-exchange/')}>{t.exchange} ↗</a>
       <a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener">{t.assurance} ↗</a>
     </nav>
   </div>
@@ -375,7 +379,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
       } else etat = etat === 'joue' ? 'pause' : 'joue';
       maj();
     }, { signal: ctrl.signal });
-    const dernier = scene.querySelector('.pp-fin-cta');
+    const dernier = document.querySelector('.pp-offre .btn-cuivre');
     dernier?.addEventListener('animationend', e => { if (e.target === dernier && (e as AnimationEvent).animationName === 'pp-appel') { etat = 'fin'; maj(); } }, { signal: ctrl.signal });
     reduit.addEventListener('change', maj, { signal: ctrl.signal });
     dispose = () => ctrl.abort();
@@ -387,8 +391,17 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
 <style>
   @property --pp-etape { syntax: '<integer>'; inherits: true; initial-value: 8; }
-  .pp{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:100svh;margin-top:-76px;padding-top:76px;background:#0b0d12;color:#edeae4;isolation:isolate}
-  .pp-grille{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,5vw,96px);align-items:center;width:100%;max-width:1840px;margin:0 auto;padding:clamp(28px,4vh,56px) clamp(20px,5vw,76px)}
+  .pp{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:100svh;margin-top:-76px;padding-top:76px;overflow:hidden;background:#0b0d12;color:#edeae4;isolation:isolate}
+  .pp-photo{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+  .pp-photo img{position:absolute;top:calc(250px - 26vw);left:calc(50vw - 0.07 * min(100vw, 1360px) - 10px - 140vw);width:200vw;max-width:none;height:auto}
+  /* Voiles : texte lisible à gauche, raccord avec l'en-tête en haut et avec la section suivante en bas. */
+  .pp-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#0b0d12f2 0%,#0b0d12d1 30%,#0b0d1273 46%,#0b0d1226 58%,#0b0d1280 100%),linear-gradient(180deg,#0b0d12b3 0%,#0b0d1200 22%,#0b0d1200 58%,#0b0d12 100%)}
+  @media (max-width:1023px){
+    .pp-photo{bottom:auto;height:min(120vw,760px)}
+    .pp-photo img{top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:62% 30%}
+    .pp-photo::after{background:linear-gradient(180deg,#0b0d12b3 0%,#0b0d1266 30%,#0b0d12cc 70%,#0b0d12 100%)}
+  }
+  .pp-grille{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,4vw,72px);align-items:center;width:100%;max-width:1360px;margin:0 auto;padding:clamp(28px,4vh,56px) 32px}
   .pp-cabinet h1{margin:22px 0 0;font-size:clamp(32px,3.6vw,60px);line-height:1.06;letter-spacing:-.04em;font-weight:300;text-wrap:balance}
   .pp-texte{max-width:520px;margin:26px 0 0;font-size:17px;line-height:1.6;font-weight:300;color:#edeae4e6}
   .pp-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
@@ -495,14 +508,12 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-offre .btn-cuivre{white-space:nowrap}
   .pp-banques{grid-column:1/-1;margin:0;font-size:12px;color:#7c808a}
 
-  .pp-pied{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:64px;margin:0 clamp(20px,5vw,76px);border-top:1px solid #2a2f3a;font-size:11px;color:#a6a9b3}
+  .pp-pied{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:64px;width:calc(100% - 64px);max-width:1296px;margin:0 auto;border-top:1px solid #2a2f3a;font-size:11px;color:#a6a9b3}
   .pp-pied p{margin:0;line-height:1.6}.pp-pied p span{display:block;font-size:10px}
   .pp-pied nav{display:flex;gap:24px;flex-wrap:wrap}
   .pp-pied a{display:inline-flex;align-items:center;min-height:44px;color:#edeae4;transition:color .18s}.pp-pied a:hover{color:#d9a47c}
 
   /* ── Relief de marque, phases, cartes enrichies ── */
-  .pp-relief{position:absolute;left:0;bottom:0;width:100%;height:42cqw;pointer-events:none}
-  .pp-relief path{fill:#d9a47c08;stroke:#d9a47c;stroke-opacity:.28;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:100}
   .pp-phases{position:absolute;left:4cqw;right:4cqw;top:6.6cqw;display:flex;justify-content:space-between;margin:0;padding:0;list-style:none}
   .pp-phases li{display:flex;gap:.8cqw;font:1.3cqw var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:#edeae4}
   .pp-phases li span{color:#d9a47c}
@@ -633,15 +644,13 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-tampon::after{content:'';position:absolute;inset:-6%;border:1px solid #d9a47c;border-radius:50%;opacity:0}
 
   /* ── Carte de conclusion ── */
-  .pp-fin{position:absolute;inset:0;z-index:7;display:flex;flex-direction:column;justify-content:flex-end;padding:0 6cqw 6cqw;background:linear-gradient(180deg,#0b0d1200 26%,#0b0d12cc 50%,#0b0d12f2 66%,#0b0d12 80%);pointer-events:none}
+  .pp-fin{position:absolute;inset:0;z-index:7;display:flex;flex-direction:column;justify-content:flex-end;padding:0 6cqw 8cqw;background:linear-gradient(180deg,#0b0d1200 26%,#0b0d12cc 50%,#0b0d12f2 66%,#0b0d12 80%);pointer-events:none}
   .pp-fin > *{pointer-events:auto}
   .pp-fin-kicker{margin:0;font:max(10px,1.35cqw) var(--font-mono);letter-spacing:.14em;color:#d9a47c}
   .pp-fin-titre{max-width:84cqw;margin:1.6cqw 0 0;font-size:max(22px,5.6cqw);line-height:1.04;font-weight:300;letter-spacing:-.045em;color:#edeae4;text-wrap:balance}
   .pp-fin-titre em{font-style:normal;color:#d9a47c}
   .pp-fin-sous{max-width:70cqw;margin:2.2cqw 0 0;font-size:max(13px,1.75cqw);line-height:1.55;font-weight:300;color:#a6a9b3}
-  .pp-fin-actions{display:flex;flex-wrap:wrap;align-items:center;gap:1.4cqw 2.6cqw;margin:3cqw 0 0;font:max(10px,1.3cqw) var(--font-mono);letter-spacing:.06em;color:#a6a9b3}
-  .pp-fin-cta{white-space:nowrap;font-family:var(--font-sans);letter-spacing:0}
-  @media (max-width:640px){.pp-fin{padding:0 5cqw 5cqw}.pp-fin-titre{font-size:max(19px,5.6cqw)}.pp-fin-sous{display:none}.pp-fin-actions{margin-top:3.6cqw}.pp-fin-actions span:not([aria-hidden]){display:none}}
+  @media (max-width:640px){.pp-fin{padding:0 5cqw 5cqw}.pp-fin-titre{font-size:max(19px,5.6cqw)}.pp-fin-sous{display:none}}
 
   /* ── Chorégraphie (≈ 45 s, tampon de clôture à 36,9 s, carte de conclusion à 39,4 s, une seule fois). L'état de base ci-dessus est l'image finale.
        Une pause marque la fin de chaque phase :
@@ -649,7 +658,6 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
        03 livrables : note 15,5 s, pièces 21,1 s, présentation 25,7 s · 04 contrôle 35,1 s. ── */
   @media (prefers-reduced-motion: no-preference){
     .pp-anime .pp-entete{animation:pp-fondu .8s ease both}
-    .pp-anime .pp-relief path{animation:pp-trace 4.32s cubic-bezier(.4,0,.2,1) .2s both}
     .pp-anime .pp-phases li{animation:pp-allume .6s ease both;animation-delay:var(--t)}
     .pp-anime .pp-phases-ligne b{animation:pp-progression 35.78s linear both}
     .pp-anime .pp-reperes{animation:pp-fondu 1.62s ease .4s both}
@@ -699,8 +707,8 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     .pp-anime .pp-fin-titre em{animation-delay:40.9s}
     .pp-anime .pp-fin-titre span:last-child{animation-delay:41.5s}
     .pp-anime .pp-fin-sous{animation:pp-monte .8s cubic-bezier(.2,.7,.2,1) 42.3s both}
-    .pp-anime .pp-fin-actions span{animation:pp-fondu .8s ease 43s both}
-    .pp-anime .pp-fin-cta{animation:pp-monte .7s cubic-bezier(.2,.7,.2,1) 42.9s both,pp-appel 1.6s cubic-bezier(.2,.7,.2,1) 43.8s}
+    .pp-produit:has(.pp-anime) .pp-offre .btn-cuivre{animation:pp-appel 1.6s cubic-bezier(.2,.7,.2,1) 43s}
+    .pp-produit:has(.pp-en-pause) .pp-offre .btn-cuivre{animation-play-state:paused}
     .pp-en-pause *,.pp-en-pause *::after{animation-play-state:paused !important}
   }
   @keyframes pp-fondu{from{opacity:0}}
@@ -750,12 +758,12 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   }
   @media (max-width:640px){
     .pp-grille{padding:24px 20px}
+    .pp-pied{width:calc(100% - 40px)}
     .pp-cabinet h1{font-size:32px}
     .pp-texte{font-size:15px;margin-top:18px}
     .pp-actions{margin-top:22px}
-    .pp-scene{margin:0 -8px}
     .pp-offre .btn-cuivre{grid-column:1/-1;justify-content:center}
     .pp-kicker,.pp-promesse{display:block}.pp-promesse{margin:6px 0 0}
-    .pp-pied{flex-direction:column-reverse;align-items:flex-start;gap:6px;margin:0 20px;padding:6px 0 12px}
+    .pp-pied{flex-direction:column-reverse;align-items:flex-start;gap:6px;margin:0 auto;padding:6px 0 12px}
   }
 </style>

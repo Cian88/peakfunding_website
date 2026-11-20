@@ -24,7 +24,9 @@ test('La couleur dépend du scroll et revient exactement en arrière, sans saut 
 
 test('Actelo utilise le conteneur élargi sans changement du script fournisseur', () => {
   const page = readFileSync('src/pages/espace-client.astro','utf8');
-  assert.equal((page.match(/class="espace-large /g)||[]).length,2);
+  // L'intitulé suit le conteneur commun (aligné sur l'en-tête) ; seul le module Actelo garde la largeur de 1840 px.
+  assert.equal((page.match(/class="espace-large /g)||[]).length,1);
+  assert.match(page,/<section class="contenu pt-12/);
   assert.match(page,/max-width:1840px/);
   assert.match(page,/id="actelo-espace-client"/);
 });

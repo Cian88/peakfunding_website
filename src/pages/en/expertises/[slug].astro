@@ -3,7 +3,7 @@ import Base from '../../../layouts/Base.astro';
 import ExpertiseCorps from '../../../components/pages/ExpertiseCorps.astro';
 import { expertisesEn } from '../../../data/en/expertises';
 import { accueil, faqExpertisesFor } from '../../../data/contenu';
-import { service, faqPage, filAriane, SITE } from '../../../lib/seo';
+import { catalogueServices, service, faqPage, filAriane, SITE } from '../../../lib/seo';
 
 export function getStaticPaths() {
   return expertisesEn.map((e) => ({ params: { slug: e.slug }, props: { e } }));
@@ -11,8 +11,13 @@ export function getStaticPaths() {
 const { e } = Astro.props;
 const accroche = accueil('en').expertises.find((x) => x.slug === e.slug)?.accroche ?? '';
 // PEAK INSURE: title and description written for the queries people actually type.
-const titre = e.slug === 'insure' ? 'Switching loan insurance in France: borrower-insurance delegation | PEAK FUNDING' : `${e.nom} — ${accroche} | PEAK FUNDING`;
-const description = e.slug === 'insure' ? 'Switch your French mortgage insurance at signing or at any time (Lemoine law): multi-insurer comparison with equivalent cover, specific profiles, substitution handled with the bank. Free review.' : e.intro;
+const titres = {
+  estate: 'Mortgage broker in France | PEAK ESTATE',
+  pro: 'Business financing and buyouts in France | PEAK PRO',
+  pim: 'Property trader and development financing in France | PEAK PIM',
+};
+const titre = e.slug === 'insure' ? 'Switching loan insurance in France: borrower-insurance delegation | PEAK FUNDING' : titres[e.slug];
+const description = e.slug === 'insure' ? 'Switch your French mortgage insurance at signing or at any time (Lemoine law): multi-insurer comparison with equivalent cover, specific profiles, substitution handled with the bank. Free review.' : (catalogueServices('en').find((service) => service.slug === e.slug)?.description ?? e.intro);
 const schema = [
   service(e, 'en'),
   faqPage(faqExpertisesFor('en')[e.slug]),

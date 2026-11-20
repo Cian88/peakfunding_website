@@ -6,8 +6,7 @@ import type { Lang } from '../i18n';
 import type { QR } from './textes';
 import {stancerServiceURL} from '../lib/services-checkout.mjs';
 
-/** Adresse publique du service PEAK PITCH. L'offre n'est « ouverte » que lorsqu'elle est définie au build
-    (PUBLIC_PEAK_PITCH_URL) : avant cela, la page reste en noindex et l'offre n'apparaît ni dans le catalogue
+/** L’offre ouvre lorsque la vente PEAK PITCH est activée, Stancer est prêt et l’adresse HTTPS est valide : avant cela, la page reste en noindex et l'offre n'apparaît ni dans le catalogue
     du cabinet, ni dans llms.txt, ni dans les renvois des guides. */
 export const SERVICE_URL = stancerServiceURL(import.meta.env,'pitch') || '';
 export const PEAK_PITCH_OUVERT = SERVICE_URL !== '';
@@ -27,11 +26,11 @@ export type PeakPitch = {
 };
 
 const fr: PeakPitch = {
-  titre: 'PEAK PITCH | L’outil pour préparer son dossier de prêt immobilier comme un courtier',
-  description: 'PEAK PITCH, l’outil innovant de PEAK FUNDING : préparez votre dossier de prêt immobilier avec l’expertise d’un cabinet de courtage et mettez toutes les chances de votre côté auprès des banques. 99 € (TVA non applicable), sans mandat.',
+  titre: 'Préparer son dossier de prêt immobilier | PEAK PITCH',
+  description: 'Préparez votre dossier de prêt immobilier sans mandat. PEAK PITCH fournit une note, une liste de pièces par personne ou société et une présentation bancaire pour 99 €.',
   eyebrow: 'PEAK PITCH / PRÉPARATION DU DOSSIER BANCAIRE',
   h1: 'Votre dossier.<br/>Présenté comme<br/>la banque l’attend.',
-  intro: 'PEAK PITCH est un outil innovant conçu par PEAK FUNDING, cabinet de courtage, pour les porteurs d’un projet immobilier qui veulent mettre toutes les chances de leur côté auprès des banques. Vous gardez la main sur votre dossier ; l’outil y applique l’expertise métier du cabinet, la façon dont ses courtiers structurent et présentent un dossier à un comité de crédit, et vous remet trois documents prêts à présenter. Pour 99 €, une fraction du coût d’un accompagnement complet.',
+  intro: 'PEAK PITCH est l’outil de PEAK FUNDING pour préparer soi-même un dossier de prêt immobilier en France, pour une résidence principale, un investissement locatif ou un achat en SCI. Vous gardez la main sur votre dossier ; l’outil y applique l’expertise métier du cabinet, la façon dont ses courtiers structurent et présentent un dossier à un comité de crédit, et vous remet trois documents prêts à présenter. Pour 99 €, une fraction du coût d’un accompagnement complet.',
   promesse: {
     titreMain: 'Vous gardez la main',
     main: [
@@ -97,11 +96,11 @@ const fr: PeakPitch = {
 };
 
 const en: PeakPitch = {
-  titre: 'PEAK PITCH | The tool to prepare your French mortgage application like a broker',
-  description: 'PEAK PITCH, PEAK FUNDING’s innovative tool: prepare your French mortgage application with a brokerage firm’s expertise and give yourself the best chance with banks. €99 (VAT not applicable), no broker mandate.',
+  titre: 'Prepare a French Mortgage Application | PEAK PITCH',
+  description: 'Prepare your French mortgage application with PEAK PITCH. Get a summary, document checklist and bank presentation for €99. The tool and PDFs are in French.',
   eyebrow: 'PEAK PITCH / BANK APPLICATION PREPARATION',
   h1: 'Your application.<br/>Presented the way<br/>banks expect it.',
-  intro: 'PEAK PITCH is an innovative tool designed by PEAK FUNDING, a brokerage firm, for people with a property project who want to give themselves the best chance with banks. You stay in control of your application; the tool applies the firm’s professional expertise, the way its brokers structure and present a file to a credit committee, and gives you three documents ready to present. For €99, a fraction of the cost of full brokerage support. The service and its deliverables are currently in French.',
+  intro: 'PEAK PITCH is PEAK FUNDING’s online tool for preparing your own French mortgage application for a home, a rental property or a purchase through an SCI. You stay in control of your application; the tool applies the firm’s professional expertise, the way its brokers structure and present a file to a credit committee, and gives you three documents ready to present. For €99, a fraction of the cost of full brokerage support. The service and its deliverables are currently in French.',
   promesse: {
     titreMain: 'You stay in control',
     main: [

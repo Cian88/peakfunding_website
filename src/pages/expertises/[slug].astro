@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import ExpertiseCorps from '../../components/pages/ExpertiseCorps.astro';
 import { expertises } from '../../data/expertises';
 import { accueil, faqExpertisesFor } from '../../data/contenu';
-import { service, faqPage, filAriane, SITE } from '../../lib/seo';
+import { catalogueServices, service, faqPage, filAriane, SITE } from '../../lib/seo';
 
 export function getStaticPaths() {
   return expertises.map((e) => ({ params: { slug: e.slug }, props: { e } }));
@@ -11,8 +11,13 @@ export function getStaticPaths() {
 const { e } = Astro.props;
 const accroche = accueil('fr').expertises.find((x) => x.slug === e.slug)?.accroche ?? '';
 // PEAK INSURE: title and description written for the queries people actually type.
-const titre = e.slug === 'insure' ? 'Changer d’assurance de prêt : délégation d’assurance emprunteur | PEAK FUNDING' : `${e.nom} — ${accroche} | PEAK FUNDING`;
-const description = e.slug === 'insure' ? 'Changer d’assurance de prêt immobilier, à la signature ou à tout moment (loi Lemoine) : comparaison multi-assureurs à garanties équivalentes, profils à risque, substitution gérée auprès de la banque. Étude gratuite.' : e.intro;
+const titres = {
+  estate: 'Courtier en prêt immobilier en France | PEAK ESTATE',
+  pro: 'Financement professionnel et reprise d’entreprise | PEAK PRO',
+  pim: 'Financement des marchands de biens et promoteurs | PEAK PIM',
+};
+const titre = e.slug === 'insure' ? 'Changer d’assurance de prêt : délégation d’assurance emprunteur | PEAK FUNDING' : titres[e.slug];
+const description = e.slug === 'insure' ? 'Changer d’assurance de prêt immobilier, à la signature ou à tout moment (loi Lemoine) : comparaison multi-assureurs à garanties équivalentes, profils à risque, substitution gérée auprès de la banque. Étude gratuite.' : (catalogueServices('fr').find((service) => service.slug === e.slug)?.description ?? e.intro);
 const schema = [
   service(e, 'fr'),
   faqPage(faqExpertisesFor('fr')[e.slug]),

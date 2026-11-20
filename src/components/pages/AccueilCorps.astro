@@ -1,5 +1,6 @@
 ---
 import { exchangeCredit, exchangeFirstConsultation } from '../../data/peak-exchange';
+import { services } from '../../data/services';
 import Pictogramme from '../Pictogramme.astro';
 import EbookTeaser from '../EbookTeaser.astro';
 import PeakPitchHero from '../PeakPitchHero.astro';
@@ -107,6 +108,18 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
                 <p class="corps mt-3 text-[15px]">{x.texte}</p>
                 <span class="mt-6 flex items-center justify-between text-[14px] font-medium">{u.exp_decouvrir} {x.nom}<span class="expertise-fleche flex h-10 w-10 items-center justify-center rounded-full border border-filet" aria-hidden="true">↗</span></span>
               </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <h2 class="titre mt-14">{lang === 'fr' ? 'Préparer votre projet de financement' : 'Prepare your financing project'}</h2>
+      <ul class="mt-7 grid gap-5 md:grid-cols-3">
+        {services(lang).map(({ name, path, detail, price }) => (
+          <li class="border-t border-filet">
+            <a href={L(path)} class="group block py-5">
+              <h3 class="sous-titre group-hover:underline underline-offset-4">{name} <span aria-hidden="true">↗</span></h3>
+              <p class="corps mt-2">{detail}</p>
+              <p class="donnee mt-3">{price}</p>
             </a>
           </li>
         ))}

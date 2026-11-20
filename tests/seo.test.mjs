@@ -18,6 +18,12 @@ const graphe = p => {
   assert.equal(doc['@context'], 'https://schema.org');
   return doc['@graph'];
 };
+const offres = [
+  { slug: 'peak-pitch', id: 'service', type: 'Service', prix: '99.00' },
+  { slug: 'peak-exchange', id: 'service', type: 'Service', prix: '299.00' },
+  { slug: 'livre', id: 'livre', type: 'Book', prix: '24.90' },
+];
+const offreIndexee = (lang, slug) => !load(html(`dist/${lang}${slug}/index.html`))('meta[name="robots"]').attr('content')?.includes('noindex');
 const types = g => g.flatMap(n => (Array.isArray(n['@type']) ? n['@type'] : [n['@type']]));
 
 test('Le build existe', () => { assert.ok(pages.length > 30, 'lancer `npm run build` avant les tests'); });
@@ -31,7 +37,8 @@ test('Chaque page publique porte la fiche du cabinet, le site et sa page ; les p
     assert.ok(orga, `${p} : organisation absente`);
     assert.equal(orga.identifier.find(i => i.propertyID === 'ORIAS').value, '24002546');
     assert.equal(orga.address.addressLocality, 'Neuilly-sur-Seine');
-    assert.equal(orga.hasOfferCatalog.itemListElement.length, 4);
+    const lang = p.startsWith('dist/en/') ? 'en/' : '';
+    assert.equal(orga.hasOfferCatalog.itemListElement.length, 4 + offres.filter(({ slug }) => offreIndexee(lang, slug)).length);
     assert.ok(types(g).includes('WebSite') && types(g).some(t => /Page$/.test(t)), `${p} : WebSite/WebPage absents`);
     assert.equal($('meta[property="og:site_name"]').attr('content'), 'PEAK FUNDING');
     assert.equal($('meta[name="twitter:card"]').attr('content'), 'summary_large_image');
@@ -74,7 +81,7 @@ test('Articles : Article daté, auteur, image dimensionnée, Open Graph article'
   }
   for (const p of ['dist/actualites/index.html', 'dist/en/actualites/index.html']) {
     const g = graphe(p);
-    assert.equal(g.find(x => x['@type'] === 'ItemList').itemListElement.length, 15, p);
+    assert.equal(g.find(x => x['@type'] === 'ItemList').itemListElement.length, 17, p);
     assert.ok(types(g).includes('CollectionPage'), p);
   }
 });
@@ -114,9 +121,43 @@ test('Délégation d’assurance : guides avec FAQ structurée, PEAK INSURE reli
     assert.equal(service.offers.price, '0', p);
     assert.equal(graphe(p).find(x => x['@type'] === 'FAQPage').mainEntity.length, 8, p);
     const liens = load(html(p))('#guides-expertise').closest('section').find('a').map((_, a) => load(html(p))(a).attr('href')).get();
-    assert.deepEqual([...liens].sort(), guides.map(s => `/${lang}actualites/${s}`).sort(), p);
+    assert.deepEqual([...liens].sort(), guides.map(s => `/${lang}actualites/${s}/`).sort(), p);
   }
   const llms = readFileSync('dist/llms.txt', 'utf8');
   for (const slug of guides) assert.ok(llms.includes(`https://peakfunding.eu/actualites/${slug}/`), slug);
   assert.match(llms, /## Délégation d'assurance emprunteur : faits clés/);
+});
+
+
+test('Offres : catalogue, sitemap, llms.txt et prix présents à l’ouverture effective', () => {
+  const sitemap = html('dist/sitemap-0.xml');
+  const llms = html('dist/llms.txt');
+  assert.doesNotMatch(llms, /\{\{EXCHANGE_|Réservations en préparation/);
+  for (const lang of ['', 'en/']) {
+    const accueil = load(html(`dist/${lang}index.html`));
+    const catalogue = graphe(`dist/${lang}index.html`).find(n => n['@id'].endsWith('#organisation')).hasOfferCatalog.itemListElement;
+    for (const { slug, id, type, prix } of offres) {
+      const chemin = `/${lang}${slug}/`, url = 'https://peakfunding.eu' + chemin;
+      const ouvert = offreIndexee(lang, slug);
+      assert.equal(sitemap.includes(`<loc>${url}</loc>`), ouvert, url);
+      assert.equal(llms.includes(`(${url})`), ouvert, url);
+      assert.equal(catalogue.some(n => n['@id'] === url + '#offre'), ouvert, url);
+      assert.ok(accueil(`main a[href="${chemin}"]`).length, url);
+      if (!ouvert) continue;
+      const n = graphe(`dist${chemin}index.html`).find(n => n['@id'] === url + '#' + id);
+      assert.equal(n['@type'], type, url);
+      assert.equal(n.offers.price, prix, url);
+      assert.equal(n.offers.priceCurrency, 'EUR', url);
+      assert.equal(n.offers.seller['@id'], 'https://peakfunding.eu/#organisation', url);
+    }
+    for (const slug of ['preparer-dossier-pret-immobilier', 'pieces-dossier-pret-immobilier']) {
+      const chemin = `/${lang}actualites/${slug}/`, url = 'https://peakfunding.eu' + chemin;
+      assert.ok(sitemap.includes(`<loc>${url}</loc>`), url);
+      assert.ok(llms.includes(`(${url})`), url);
+      const guide = load(html(`dist${chemin}index.html`));
+      assert.equal(Boolean(guide(`main a[href="/${lang}peak-pitch/"]`).length), offreIndexee(lang, 'peak-pitch'), url);
+      const estate = load(html(`dist/${lang}expertises/estate/index.html`));
+      assert.ok(estate(`main a[href="${chemin}"]`).length, url);
+    }
+  }
 });

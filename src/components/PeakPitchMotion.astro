@@ -28,6 +28,8 @@ const t = fr ? {
   controles: ['285 000 + 20 000 + 24 000 = 329 000 €', '329 000 − 45 000 = 284 000 €', '284 000 € · 25 ans · 3,5 % → 1 422 € / mois'],
   pdf: '3 PDF prêts à présenter',
   tampon: ['PEAK PITCH · DOSSIER PRÊT À PRÉSENTER · ', 'PRÊT'],
+  fin: { kicker: 'VOTRE DOSSIER EST PRÊT', avant: 'PEAK PITCH, c’est mettre', accent: 'toutes les chances', apres: 'de votre côté.',
+    sous: 'Votre dossier, structuré et présenté comme la banque l’attend. Sans mandat, vous gardez la main.', bouton: 'Préparer mon dossier', prix: '99 € · TVA non applicable' },
   chiffres: [['Budget total', '329 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Mensualité · 25 ans', '1 422 €', 'CALCULÉ'], ['Capacité estimée', '350 000 €', 'SIMULATEUR']],
   dossier: 'Dossier PP-2611', page: 'p. 1 / 6', date: '20 novembre 2026',
   doc: { prepare: 'Établi d’après les déclarations du client · Exemple', page: (n: number, t: number) => `Page ${n} sur ${t}`,
@@ -87,6 +89,8 @@ const t = fr ? {
   controles: ['285,000 + 20,000 + 24,000 = €329,000', '329,000 − 45,000 = €284,000', '€284,000 · 25 yrs · 3.5% → €1,422 / month'],
   pdf: '3 PDFs ready to present',
   tampon: ['PEAK PITCH · FILE READY TO PRESENT · ', 'READY'],
+  fin: { kicker: 'YOUR APPLICATION IS READY', avant: 'PEAK PITCH means putting', accent: 'every chance', apres: 'on your side.',
+    sous: 'Your application, structured and presented the way the bank expects it. No mandate: you stay in control.', bouton: 'Prepare my application', prix: '€99 · VAT not applicable' },
   chiffres: [['Total budget', '€329,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Loan requested', '€284,000', 'CALCULATED'], ['Monthly payment · 25 yrs', '€1,422', 'CALCULATED'], ['Estimated capacity', '€350,000', 'SIMULATOR']],
   dossier: 'File PP-2611', page: 'p. 1 / 6', date: '20 November 2026',
   doc: { prepare: 'Based on the client’s declarations · Example', page: (n: number, t: number) => `Page ${n} of ${t}`,
@@ -313,6 +317,13 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
           <p class="pp-controle"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" /></svg>{t.controle}</p>
           <p class="pp-pdf"><i></i><i></i><i></i>{t.pdf}</p>
         </div>
+        <!-- Carte de conclusion : texte réel et lien actif, hors de la zone décorative -->
+        <div class="pp-fin">
+          <p class="pp-fin-kicker">{t.fin.kicker}</p>
+          <p class="pp-fin-titre"><span>{t.fin.avant}</span> <em>{t.fin.accent}</em> <span>{t.fin.apres}</span></p>
+          <p class="pp-fin-sous">{t.fin.sous}</p>
+          <p class="pp-fin-actions"><a class="btn-cuivre gap-4 pp-fin-cta" href={L('/peak-pitch/')}>{t.fin.bouton} <span aria-hidden="true">↗</span></a><span>{t.fin.prix}</span></p>
+        </div>
         <button class="pp-pause" type="button" data-pp-pause data-pause={t.pause} data-resume={t.reprendre} data-replay={t.rejouer} aria-label={t.pause}>
           <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path class="i-pause" d="M6 4h2.5v12H6zm5.5 0H14v12h-2.5z"/><path class="i-play" d="m7 4 10 6-10 6z"/><path class="i-replay" d="M10 4a6 6 0 1 1-5.7 4.1l1.5.5A4.4 4.4 0 1 0 10 5.6V8L6.5 4.8 10 1.6z"/></svg>
         </button>
@@ -364,8 +375,8 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
       } else etat = etat === 'joue' ? 'pause' : 'joue';
       maj();
     }, { signal: ctrl.signal });
-    const dernier = scene.querySelector('.pp-tampon');
-    dernier?.addEventListener('animationend', e => { if (e.target === dernier && !(e as AnimationEvent).pseudoElement) { etat = 'fin'; maj(); } }, { signal: ctrl.signal });
+    const dernier = scene.querySelector('.pp-fin-cta');
+    dernier?.addEventListener('animationend', e => { if (e.target === dernier && (e as AnimationEvent).animationName === 'pp-appel') { etat = 'fin'; maj(); } }, { signal: ctrl.signal });
     reduit.addEventListener('change', maj, { signal: ctrl.signal });
     dispose = () => ctrl.abort();
     maj();
@@ -470,7 +481,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-controle{position:absolute;left:4cqw;bottom:2.6cqw;z-index:4;display:flex;align-items:center;gap:1.4cqw;margin:0;padding:1.1cqw 2.2cqw;border:1px solid #b87b4f;border-radius:40px;font:1.3cqw var(--font-mono);letter-spacing:.04em;color:#edeae4;background:#0b0d12}
   .pp-controle svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:#d9a47c;stroke-width:1.8;stroke-dasharray:16;stroke-dashoffset:0}
 
-  .pp-pause{position:absolute;right:2.4cqw;bottom:2.4cqw;z-index:5;display:grid;place-items:center;width:40px;height:40px;color:#edeae4;background:#0b0d12e6;border:1px solid #a6a9b3;border-radius:50%;cursor:pointer}
+  .pp-pause{position:absolute;right:2.4cqw;bottom:2.4cqw;z-index:8;display:grid;place-items:center;width:40px;height:40px;color:#edeae4;background:#0b0d12e6;border:1px solid #a6a9b3;border-radius:50%;cursor:pointer}
   .pp-pause[hidden]{display:none}.pp-pause svg{width:16px;height:16px}
   .pp-pause path{display:none}
   .pp-pause[data-etat=joue] .i-pause,.pp-pause[data-etat=pause] .i-play,.pp-pause[data-etat=fin] .i-replay{display:block}
@@ -621,7 +632,18 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-tampon .coche{stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
   .pp-tampon::after{content:'';position:absolute;inset:-6%;border:1px solid #d9a47c;border-radius:50%;opacity:0}
 
-  /* ── Chorégraphie (≈ 39 s, tampon de clôture à 36,9 s, une seule fois). L'état de base ci-dessus est l'image finale.
+  /* ── Carte de conclusion ── */
+  .pp-fin{position:absolute;inset:0;z-index:7;display:flex;flex-direction:column;justify-content:flex-end;padding:0 6cqw 6cqw;background:linear-gradient(180deg,#0b0d1200 26%,#0b0d12cc 50%,#0b0d12f2 66%,#0b0d12 80%);pointer-events:none}
+  .pp-fin > *{pointer-events:auto}
+  .pp-fin-kicker{margin:0;font:max(10px,1.35cqw) var(--font-mono);letter-spacing:.14em;color:#d9a47c}
+  .pp-fin-titre{max-width:84cqw;margin:1.6cqw 0 0;font-size:max(22px,5.6cqw);line-height:1.04;font-weight:300;letter-spacing:-.045em;color:#edeae4;text-wrap:balance}
+  .pp-fin-titre em{font-style:normal;color:#d9a47c}
+  .pp-fin-sous{max-width:70cqw;margin:2.2cqw 0 0;font-size:max(13px,1.75cqw);line-height:1.55;font-weight:300;color:#a6a9b3}
+  .pp-fin-actions{display:flex;flex-wrap:wrap;align-items:center;gap:1.4cqw 2.6cqw;margin:3cqw 0 0;font:max(10px,1.3cqw) var(--font-mono);letter-spacing:.06em;color:#a6a9b3}
+  .pp-fin-cta{white-space:nowrap;font-family:var(--font-sans);letter-spacing:0}
+  @media (max-width:640px){.pp-fin{padding:0 5cqw 5cqw}.pp-fin-titre{font-size:max(19px,5.6cqw)}.pp-fin-sous{display:none}.pp-fin-actions{margin-top:3.6cqw}.pp-fin-actions span:not([aria-hidden]){display:none}}
+
+  /* ── Chorégraphie (≈ 45 s, tampon de clôture à 36,9 s, carte de conclusion à 39,4 s, une seule fois). L'état de base ci-dessus est l'image finale.
        Une pause marque la fin de chaque phase :
        01 questionnaire 0,8–8,5 s · 02 rapprochement 8,6–15,4 s ·
        03 livrables : note 15,5 s, pièces 21,1 s, présentation 25,7 s · 04 contrôle 35,1 s. ── */
@@ -670,11 +692,19 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     .pp-anime .pp-pdf{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 35.91s both}
     .pp-anime .pp-tampon{animation:pp-tampon-pose .75s cubic-bezier(.3,1.4,.5,1) 36.9s both}
     .pp-anime .pp-tampon::after{animation:pp-onde 1s cubic-bezier(.2,.7,.2,1) 37.35s both}
-    .pp-produit:has(.pp-anime) .pp-offre .btn-cuivre{animation:pp-appel 1.4s cubic-bezier(.2,.7,.2,1) 37.9s}
-    .pp-produit:has(.pp-en-pause) .pp-offre .btn-cuivre{animation-play-state:paused}
+    .pp-anime .pp-fin{animation:pp-fondu 1.4s ease 39.4s both}
+    .pp-anime .pp-fin-kicker{animation:pp-monte .7s cubic-bezier(.2,.7,.2,1) 40s both}
+    .pp-anime .pp-fin-titre span,.pp-anime .pp-fin-titre em{display:inline-block;animation:pp-mot .9s cubic-bezier(.2,.7,.2,1) both}
+    .pp-anime .pp-fin-titre span:first-child{animation-delay:40.3s}
+    .pp-anime .pp-fin-titre em{animation-delay:40.9s}
+    .pp-anime .pp-fin-titre span:last-child{animation-delay:41.5s}
+    .pp-anime .pp-fin-sous{animation:pp-monte .8s cubic-bezier(.2,.7,.2,1) 42.3s both}
+    .pp-anime .pp-fin-actions span{animation:pp-fondu .8s ease 43s both}
+    .pp-anime .pp-fin-cta{animation:pp-monte .7s cubic-bezier(.2,.7,.2,1) 42.9s both,pp-appel 1.6s cubic-bezier(.2,.7,.2,1) 43.8s}
     .pp-en-pause *,.pp-en-pause *::after{animation-play-state:paused !important}
   }
   @keyframes pp-fondu{from{opacity:0}}
+  @keyframes pp-mot{from{opacity:0;transform:translateY(2.4cqw);clip-path:inset(0 0 100% 0)}to{clip-path:inset(-20% -5% -30% -5%)}}
   @keyframes pp-tampon-pose{0%{opacity:0;transform:rotate(-4deg) scale(1.9)}62%{opacity:.9;transform:rotate(-14deg) scale(.95)}82%{transform:rotate(-14deg) scale(1.02)}100%{opacity:.9;transform:rotate(-14deg) scale(1)}}
   @keyframes pp-onde{0%{opacity:.8;transform:scale(.9)}100%{opacity:0;transform:scale(1.5)}}
   @keyframes pp-appel{0%{box-shadow:0 0 0 0 #d9a47c99}100%{box-shadow:0 0 0 16px #d9a47c00}}

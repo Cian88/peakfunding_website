@@ -50,6 +50,14 @@ const t = fr ? {
     n: '03 · PRÉSENTATION BANCAIRE', titre: 'Acquisition d’un T3 locatif', sous: 'Demande de financement · 284 000 € sur 25 ans',
     parties: ['La demande', 'Les emprunteurs', 'Le bien', 'Les revenus', 'Le plan de financement', 'L’analyse', 'La synthèse'],
     anneau: 'Besoins', legende: [['Prêt', '284 000 €'], ['Apport', '45 000 €']], diapo: '1 / 7',
+    bandeau: 'Présentation bancaire', chips: [['Prêt', '284 000 €'], ['Durée', '25 ans'], ['Apport', '14 %']], bien: 'T3 · 68 m² · 2e étage',
+    d2: { n: '05 · LE PLAN DE FINANCEMENT', titre: 'Emplois et ressources', emplois: 'Emplois', ressources: 'Ressources',
+      e: [['Prix du bien', '285 000 €'], ['Travaux', '20 000 €'], ['Frais de notaire et de garantie', '24 000 €']],
+      r: [['Apport personnel', '45 000 €'], ['Prêt immobilier', '284 000 €']], total: ['Total', '329 000 €'] },
+    d3: { n: '06 · L’ANALYSE', titre: 'Revenus et charges mensuels',
+      barres: [['Revenus nets', '4 300 €', 85], ['Loyer pondéré à 70 %', '735 €', 15], ['Mensualité du prêt', '1 422 €', 28]] as [string, string, number][],
+      jauge: 'Taux d’effort', repere: 'REPÈRE HCSF : 35 %', couverture: ['Part de la mensualité couverte par le loyer', '74 %'] },
+    pied: 'Dossier PP-2611 · Exemple illustratif',
   },
   controle: 'Chaque montant correspond à une valeur déclarée ou calculée',
   kicker: 'PEAK PITCH — UN SERVICE DE PEAK FUNDING', promesse: 'Votre projet, prêt à présenter.', mentions: 'TVA non applicable · Paiement unique',
@@ -94,6 +102,14 @@ const t = fr ? {
     n: '03 · BANK PRESENTATION', titre: 'Purchase of a flat to let', sous: 'Financing request · €284,000 over 25 years',
     parties: ['The request', 'The borrowers', 'The property', 'Income', 'Financing plan', 'Analysis', 'Summary'],
     anneau: 'Requirement', legende: [['Loan', '€284,000'], ['Contribution', '€45,000']], diapo: '1 / 7',
+    bandeau: 'Bank presentation', chips: [['Loan', '€284,000'], ['Term', '25 years'], ['Contribution', '14%']], bien: '2-bed · 68 m² · 2nd floor',
+    d2: { n: '05 · FINANCING PLAN', titre: 'Uses and sources', emplois: 'Uses', ressources: 'Sources',
+      e: [['Property price', '€285,000'], ['Works', '€20,000'], ['Notary and guarantee fees', '€24,000']],
+      r: [['Personal contribution', '€45,000'], ['Mortgage loan', '€284,000']], total: ['Total', '€329,000'] },
+    d3: { n: '06 · ANALYSIS', titre: 'Monthly income and charges',
+      barres: [['Net income', '€4,300', 85], ['Rent weighted at 70%', '€735', 15], ['Loan payment', '€1,422', 28]] as [string, string, number][],
+      jauge: 'Debt ratio', repere: 'HCSF BENCHMARK: 35%', couverture: ['Share of the payment covered by rent', '74%'] },
+    pied: 'File PP-2611 · Illustrative example',
   },
   controle: 'Every amount matches a declared or calculated value',
   kicker: 'PEAK PITCH — A PEAK FUNDING SERVICE', promesse: 'Your project, ready to present.', mentions: 'VAT not applicable · One payment',
@@ -122,8 +138,9 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
         <p class="sr-only">{t.sr}</p>
         <div class="pp-plateau" aria-hidden="true">
           <svg class="pp-relief" viewBox="0 0 100 40" preserveAspectRatio="none"><path pathLength="100" d="M0 36 L12 29 L20 32 L33 17 L41 23 L52 9 L61 24 L69 18 L80 29 L90 25 L100 30" /></svg>
+          <div class="pp-reperes"><i></i><i></i><i></i><i></i><span>LYON 8E · 45,73 N · 4,87 E</span></div>
           <div class="pp-entete"><span>{t.scene}</span><span>{t.exemple}</span></div>
-          <ol class="pp-phases">{t.phases.map((ph, i) => <li style={`--t:${[0, 6.3, 11.4, 22.6][i]}s`}><span>{`0${i + 1}`}</span>{ph}</li>)}</ol>
+          <ol class="pp-phases">{t.phases.map((ph, i) => <li style={`--t:${[0, 6.3, 11.4, 25.8][i]}s`}><span>{`0${i + 1}`}</span>{ph}</li>)}</ol>
           <i class="pp-phases-ligne"><b></b></i>
 
           <div class="pp-carte pp-q">
@@ -147,23 +164,67 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
             </div>
           </div>
 
-          <!-- 03 · Présentation bancaire : diapositive 16:10, à l'arrière -->
+          <!-- 03 · Présentation bancaire : trois diapositives défilent pendant le plan rapproché -->
           <div class="pp-doc pp-pres">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{t.pres.diapo}</span></div>
-            <div class="pp-pres-corps">
-              <div class="pp-pres-texte pp-el" style="--k:0">
-                <p class="pp-n">{t.pres.n}</p>
-                <p class="pp-pres-titre">{t.pres.titre}</p>
-                <p class="pp-pres-sous">{t.pres.sous}</p>
-                <ol class="pp-sommaire">{t.pres.parties.map((p, i) => <li class={i === 0 ? 'actif' : ''}><span>{String(i + 1).padStart(2, '0')}</span>{p}</li>)}</ol>
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{t.pres.bandeau}</span></div>
+            <div class="pp-diapos">
+              <div class="pp-diapo d1">
+                <div class="pp-el" style="--k:0">
+                  <p class="pp-n">{t.pres.n}</p>
+                  <p class="pp-pres-titre">{t.pres.titre}</p>
+                  <p class="pp-pres-sous">{t.pres.sous}</p>
+                  <p class="pp-chips">{t.pres.chips.map(([l, v]) => <span><small>{l}</small>{v}</span>)}</p>
+                  <ol class="pp-sommaire">{t.pres.parties.map((p, i) => <li class={i === 0 ? 'actif' : ''}><span>{String(i + 1).padStart(2, '0')}</span>{p}</li>)}</ol>
+                </div>
+                <figure class="pp-immeuble pp-el" style="--k:1">
+                  <svg viewBox="0 0 120 100">
+                    <path pathLength="1" d="M4 94H116" /><path pathLength="1" d="M22 94V22L60 8 98 22V94" /><path pathLength="1" d="M22 22H98M22 40H98M22 56H98M22 72H98" />
+                                        <rect pathLength="1" x="22" y="26" width="16" height="10" />
+                    <rect pathLength="1" x="44" y="26" width="16" height="10" />
+                    <rect pathLength="1" x="66" y="26" width="16" height="10" />
+                    <rect pathLength="1" x="22" y="42" width="16" height="10" class="t3" />
+                    <rect pathLength="1" x="44" y="42" width="16" height="10" class="t3" />
+                    <rect pathLength="1" x="66" y="42" width="16" height="10" class="t3" />
+                    <rect pathLength="1" x="22" y="58" width="16" height="10" />
+                    <rect pathLength="1" x="44" y="58" width="16" height="10" />
+                    <rect pathLength="1" x="66" y="58" width="16" height="10" />
+                    <rect pathLength="1" x="52" y="78" width="16" height="16" /><path pathLength="1" d="M108 94V84" /><circle pathLength="1" cx="108" cy="78" r="7" />
+                  </svg>
+                  <figcaption>{t.pres.bien}</figcaption>
+                </figure>
               </div>
-              <div class="pp-anneau pp-el" style="--k:2">
-                <svg viewBox="0 0 42 42"><circle class="fond" cx="21" cy="21" r="15.915" /><circle class="pret" cx="21" cy="21" r="15.915" pathLength="100" /><circle class="apport" cx="21" cy="21" r="15.915" pathLength="100" /></svg>
-                <p><b>329 k€</b><span>{t.pres.anneau}</span></p>
-                <ul>{t.pres.legende.map(([l, v], i) => <li class={i ? 'apport' : 'pret'}><i></i>{l}<b>{v}</b></li>)}</ul>
+              <div class="pp-diapo d2">
+                <div>
+                  <p class="pp-n">{t.pres.d2.n}</p>
+                  <p class="pp-diapo-titre">{t.pres.d2.titre}</p>
+                  <div class="pp-er">
+                    <div><p class="tete">{t.pres.d2.emplois}</p>{t.pres.d2.e.map(([l, v]) => <p>{l}<b>{v}</b></p>)}<p class="tot">{t.pres.d2.total[0]}<b>{t.pres.d2.total[1]}</b></p></div>
+                    <div><p class="tete">{t.pres.d2.ressources}</p>{t.pres.d2.r.map(([l, v]) => <p>{l}<b>{v}</b></p>)}<p class="vide"></p><p class="tot">{t.pres.d2.total[0]}<b>{t.pres.d2.total[1]}</b></p></div>
+                  </div>
+                </div>
+                <div class="pp-anneau">
+                  <svg viewBox="0 0 42 42"><circle class="fond" cx="21" cy="21" r="15.915" /><circle class="pret" cx="21" cy="21" r="15.915" pathLength="100" /><circle class="apport" cx="21" cy="21" r="15.915" pathLength="100" /></svg>
+                  <p><b>329 k€</b><span>{t.pres.anneau}</span></p>
+                  <ul>{t.pres.legende.map(([l, v], i) => <li class={i ? 'apport' : 'pret'}><i></i>{l}<b>{v}</b></li>)}</ul>
+                </div>
+                <p class="pp-diapo-pied"><span>{t.pres.pied}</span><span>05 / 07</span></p>
+              </div>
+              <div class="pp-diapo d3">
+                <div>
+                  <p class="pp-n">{t.pres.d3.n}</p>
+                  <p class="pp-diapo-titre">{t.pres.d3.titre}</p>
+                  <div class="pp-barres">{t.pres.d3.barres.map(([l, v, w], i) => <p style={`--i:${i}`}><span>{l}</span><i><b style={`width:${w}%`}></b></i><em>{v}</em></p>)}</div>
+                  <p class="pp-couverture"><span>{t.pres.d3.couverture[0]}</span><b>{t.pres.d3.couverture[1]}</b></p>
+                </div>
+                <div class="pp-jauge">
+                  <svg viewBox="0 0 60 34"><path class="fond" pathLength="100" d="M5 30A25 25 0 0 1 55 30" /><path class="val" pathLength="100" d="M5 30A25 25 0 0 1 55 30" /><path class="repere" d="M41.76 13.82 47.63 5.73" /></svg>
+                  <p><b>{fr ? '28,2 %' : '28.2%'}</b><span>{t.pres.d3.jauge}</span></p>
+                  <small>{t.pres.d3.repere}</small>
+                </div>
+                <p class="pp-diapo-pied"><span>{t.pres.pied}</span><span>06 / 07</span></p>
               </div>
             </div>
-            <div class="pp-vignettes pp-el" style="--k:3">{Array.from({ length: 7 }, (_, i) => <i class={i === 0 ? 'actif' : ''}><b></b><b></b></i>)}</div>
+            <div class="pp-vignettes pp-el" style="--k:2">{Array.from({ length: 7 }, (_, i) => <i class={i === 0 ? 'actif' : ''}><b></b><b></b></i>)}</div>
           </div>
 
           <!-- 02 · Pièces à réunir -->
@@ -296,7 +357,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   /* ── Documents : papier, bandeau de marque, contenu réel ── */
   .pp-doc{position:absolute;overflow:hidden;border-radius:1.2cqw;background:#fbfaf7;color:#111;outline:1px solid #ffffff14;transition:translate .4s cubic-bezier(.2,.7,.2,1)}
   .pp-doc:hover{translate:0 -1.8cqw}
-  .pp-pres{left:3cqw;top:14cqw;width:60cqw;height:37.5cqw;transform:rotate(-2.5deg);z-index:1}
+  .pp-pres{left:3cqw;top:14cqw;width:60cqw;height:37.5cqw;display:flex;flex-direction:column;transform:rotate(-2.5deg);z-index:1}
   .pp-pieces{left:57cqw;top:15cqw;width:40cqw;height:61cqw;transform:rotate(2.5deg);z-index:2;background:#f6f4ef}
   .pp-note{left:16cqw;top:30.5cqw;width:44cqw;height:62cqw;transform:rotate(-.8deg);z-index:3;background:#fff}
   .pp-bandeau{display:flex;justify-content:space-between;align-items:center;padding:1.3cqw 2.4cqw;background:#0b0d12;color:#a6a9b3;font:1.05cqw var(--font-mono);letter-spacing:.1em}
@@ -340,10 +401,10 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
   .pp-pres{background:#fbfaf7}
   .pp-pres-corps{display:grid;grid-template-columns:1.25fr 1fr;gap:2cqw;padding:2cqw 3cqw 1.2cqw}
-  .pp-pres-titre{margin:.9cqw 0 0;font-size:3.3cqw;line-height:1.02;font-weight:300;letter-spacing:-.045em}
+  .pp-pres-titre{margin:.8cqw 0 0;font-size:2.8cqw;line-height:1.02;font-weight:300;letter-spacing:-.045em}
   .pp-pres-sous{margin:1cqw 0 0;font-size:1.2cqw;color:#62656d}
   .pp-sommaire{display:grid;grid-template-columns:1fr 1fr;gap:0 1.6cqw;margin:1.4cqw 0 0;padding:0;list-style:none}
-  .pp-sommaire li{display:flex;gap:.8cqw;padding:.45cqw 0;border-top:1px solid #e9e5de;font-size:1.05cqw;color:#3d3f46}
+  .pp-sommaire li{display:flex;gap:.8cqw;padding:.35cqw 0;border-top:1px solid #e9e5de;font-size:1.05cqw;color:#3d3f46}
   .pp-sommaire li span{font:.95cqw var(--font-mono);color:#b87b4f}
   .pp-sommaire li.actif{color:#111;font-weight:500}
   .pp-anneau{position:relative;display:flex;flex-direction:column;align-items:center}
@@ -417,7 +478,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   /* Bords de pages empilées (aplats nets, pas d'ombre portée floue). */
   .pp-note{box-shadow:.7cqw .7cqw 0 -.05cqw #e6e1d8,1.4cqw 1.4cqw 0 -.1cqw #cdc5b8}
   .pp-pieces{box-shadow:.7cqw .7cqw 0 -.05cqw #d9d2c6}
-  .pp-vignettes{display:flex;gap:.8cqw;padding:0 3cqw}
+  .pp-vignettes{display:flex;gap:.8cqw;padding:.8cqw 3cqw 0}
   .pp-vignettes i{flex:1;display:flex;flex-direction:column;gap:.4cqw;height:3.4cqw;padding:.6cqw;border:1px solid #e2ded7;border-radius:.4cqw;background:#fff}
   .pp-vignettes i.actif{border-color:#b87b4f}
   .pp-vignettes b{display:block;height:.35cqw;border-radius:1cqw;background:#e2ded7}.pp-vignettes b+b{width:60%}
@@ -425,6 +486,53 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
   .pp-pdf{position:absolute;right:11cqw;bottom:2.6cqw;z-index:4;display:flex;align-items:center;gap:.5cqw;margin:0;padding:1.1cqw 1.8cqw;border:1px solid #2a2f3a;border-radius:40px;background:#0b0d12;font:1.3cqw var(--font-mono);color:#a6a9b3}
   .pp-pdf i{width:1.3cqw;height:1.7cqw;border:1px solid #d9a47c;border-radius:.2cqw}.pp-pdf i:nth-of-type(3){margin-right:.7cqw}
+
+  /* ── Diapositives de la présentation bancaire ── */
+  .pp-diapos{position:relative;flex:0 0 28.6cqw}
+  .pp-diapo{position:absolute;inset:0;display:grid;grid-template-columns:1.2fr 1fr;gap:2cqw;padding:1.8cqw 3cqw 2.2cqw;background:#fbfaf7}
+  .pp-diapo.d2,.pp-diapo.d3{opacity:0;visibility:hidden}
+  .pp-diapo-pied{position:absolute;left:3cqw;right:3cqw;bottom:.4cqw;display:flex;justify-content:space-between;margin:0;font:.8cqw var(--font-mono);letter-spacing:.08em;color:#a6a9b3}
+  .pp-diapo-titre{margin:.8cqw 0 0;font-size:2.4cqw;line-height:1.05;font-weight:300;letter-spacing:-.04em}
+  .pp-chips{display:flex;gap:.7cqw;margin:1.2cqw 0 0}
+  .pp-chips span{display:flex;flex-direction:column;gap:.15cqw;padding:.5cqw .9cqw;border:1px solid #e2ded7;border-radius:.6cqw;background:#fff;font:1.1cqw var(--font-mono);letter-spacing:-.03em;color:#111}
+  .pp-chips small{font:.8cqw var(--font-sans);letter-spacing:0;color:#62656d}
+  .pp-immeuble{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0;padding:1cqw;border-radius:1cqw;background:#f2ede6}
+  .pp-immeuble svg{width:100%;height:19cqw;fill:none;stroke:#b87b4f;stroke-width:.7;stroke-linejoin:round}
+  .pp-immeuble [pathLength]{stroke-dasharray:1}
+  .pp-immeuble .t3{fill:#e9d3bf}
+  .pp-immeuble figcaption{margin-top:.5cqw;font:.9cqw var(--font-mono);letter-spacing:.06em;color:#825333}
+  .pp-er{display:grid;grid-template-columns:1fr 1fr;gap:1.6cqw;margin-top:1.4cqw}
+  .pp-er p{display:flex;justify-content:space-between;gap:.6cqw;min-height:2.2cqw;margin:0;padding:.5cqw 0;border-top:1px solid #e9e5de;font-size:.95cqw;color:#3d3f46}
+  .pp-er p b{font:400 .95cqw var(--font-mono);color:#111;white-space:nowrap}
+  .pp-er p.tete{min-height:0;border:0;font:.85cqw var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:#825333}
+  .pp-er p.vide{border-color:transparent}
+  .pp-er p.tot{border-top:1px solid #111;font-weight:500;color:#111}
+  .d2 .pp-anneau{justify-content:flex-start;padding-top:1.6cqw}.d2 .pp-anneau > p{top:1.6cqw}
+  .pp-barres{margin-top:1.6cqw}
+  .pp-barres p{display:grid;grid-template-columns:10.5cqw 1fr 5cqw;align-items:center;gap:1cqw;margin:0;padding:.6cqw 0;border-top:1px solid #e9e5de;font-size:.95cqw;color:#3d3f46}
+  .pp-barres i{display:block;height:1.1cqw;border-radius:1cqw;background:#eeebe5;overflow:hidden}
+  .pp-barres i b{display:block;height:100%;background:#b87b4f;transform-origin:left}
+  .pp-barres p:nth-child(2) i b{background:#d9c2ad}.pp-barres p:nth-child(3) i b{background:#111}
+  .pp-barres em{font:normal .95cqw var(--font-mono);text-align:right;color:#111}
+  .pp-couverture{display:flex;justify-content:space-between;align-items:baseline;gap:1cqw;margin:1.2cqw 0 0;padding:.8cqw 1cqw;border-radius:.6cqw;background:#f2ede6;font-size:.95cqw;color:#3d3f46}
+  .pp-couverture b{font:400 1.3cqw var(--font-mono);color:#111}
+  .pp-jauge{display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .pp-jauge svg{width:20cqw;height:11.3cqw;fill:none;stroke-linecap:round}
+  .pp-jauge .fond{stroke:#eeebe5;stroke-width:5}
+  .pp-jauge .val{stroke:#b87b4f;stroke-width:5;stroke-dasharray:56.4 100}
+  .pp-jauge .repere{stroke:#111;stroke-width:.8}
+  .pp-jauge p{display:flex;flex-direction:column;align-items:center;margin:-4.6cqw 0 0}
+  .pp-jauge p b{font:400 2.2cqw var(--font-mono);letter-spacing:-.05em}
+  .pp-jauge p span{font-size:.95cqw;color:#62656d}
+  .pp-jauge small{margin-top:1.2cqw;font:.8cqw var(--font-mono);letter-spacing:.08em;color:#825333}
+
+  /* Repères de cadrage techniques */
+  .pp-reperes i{position:absolute;width:1.8cqw;height:1.8cqw;border:0 solid #d9a47c66}
+  .pp-reperes i:nth-child(1){left:1.4cqw;top:1.4cqw;border-left-width:1px;border-top-width:1px}
+  .pp-reperes i:nth-child(2){right:1.4cqw;top:1.4cqw;border-right-width:1px;border-top-width:1px}
+  .pp-reperes i:nth-child(3){left:1.4cqw;bottom:1.4cqw;border-left-width:1px;border-bottom-width:1px}
+  .pp-reperes i:nth-child(4){right:1.4cqw;bottom:1.4cqw;border-right-width:1px;border-bottom-width:1px}
+  .pp-reperes span{position:absolute;left:1.2cqw;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);font:.9cqw var(--font-mono);letter-spacing:.25em;color:#7c808a}
 
   /* ── Chorégraphie (≈ 24 s, une seule fois). L'état de base ci-dessus est l'image finale.
        Une pause marque la fin de chaque phase :
@@ -434,7 +542,8 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     .pp-anime .pp-entete{animation:pp-fondu .8s ease both}
     .pp-anime .pp-relief path{animation:pp-trace 3.2s cubic-bezier(.4,0,.2,1) .2s both}
     .pp-anime .pp-phases li{animation:pp-allume .6s ease both;animation-delay:var(--t)}
-    .pp-anime .pp-phases-ligne b{animation:pp-progression 23s linear both}
+    .pp-anime .pp-phases-ligne b{animation:pp-progression 26.5s linear both}
+    .pp-anime .pp-reperes{animation:pp-fondu 1.2s ease .4s both}
 
     .pp-anime .pp-q{animation:pp-passage 5.7s cubic-bezier(.2,.7,.2,1) .6s both}
     .pp-anime .pp-q .pp-rail i{animation:pp-remplir .4s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(1.2s + var(--i) * .45s)}
@@ -454,21 +563,34 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
     .pp-anime .pp-note{--d:11.5s;animation:pp-note 3.9s cubic-bezier(.65,0,.25,1) 11.5s both}
     .pp-anime .pp-pieces{--d:15.6s;animation:pp-pieces 3.2s cubic-bezier(.65,0,.25,1) 15.6s both}
-    .pp-anime .pp-pres{--d:19s;animation:pp-pres 3.2s cubic-bezier(.65,0,.25,1) 19s both}
+    .pp-anime .pp-pres{--d:19s;animation:pp-pres 6.6s cubic-bezier(.65,0,.25,1) 19s both}
+    .pp-anime .pp-immeuble [pathLength]{animation:pp-trace1 1.6s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--d) + .8s)}
+    .pp-anime .pp-immeuble .t3{animation:pp-trace1 1.6s cubic-bezier(.4,0,.2,1) both,pp-fondu-t3 .6s ease both;animation-delay:calc(var(--d) + .8s),calc(var(--d) + 1.8s)}
+    .pp-anime .pp-diapo.d2{animation:pp-diapo 1.9s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--d) + 2.1s)}
+    .pp-anime .pp-diapo.d3{animation:pp-diapo 1.9s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--d) + 3.9s)}
+    .pp-anime .d2 .pp-er{animation:pp-monte .5s ease both;animation-delay:calc(var(--d) + 2.4s)}
+    .pp-anime .pp-barres i b{animation:pp-remplir .7s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 4.3s + var(--i) * .2s)}
+    .pp-anime .pp-jauge .val{animation:pp-anneau 1s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 4.4s)}
+    .pp-anime .pp-vignettes i:nth-child(5){animation:pp-vig 1.9s linear;animation-delay:calc(var(--d) + 2.1s)}
+    .pp-anime .pp-vignettes i:nth-child(6){animation:pp-vig 1.9s linear;animation-delay:calc(var(--d) + 3.9s)}
     .pp-anime .pp-el{animation:pp-monte .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d) + .5s + var(--k) * .3s)}
     .pp-anime .pp-barre-financement i{animation:pp-remplir .7s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 1.7s)}
-    .pp-anime .pp-anneau .pret{animation:pp-anneau 1s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 1.1s)}
-    .pp-anime .pp-anneau .apport{animation:pp-fondu .4s ease both;animation-delay:calc(var(--d) + 2.1s)}
+    .pp-anime .pp-anneau .pret{animation:pp-anneau 1s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 2.5s)}
+    .pp-anime .pp-anneau .apport{animation:pp-fondu .4s ease both;animation-delay:calc(var(--d) + 2.9s)}
 
-    .pp-anime .pp-controle{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 22.8s both}
-    .pp-anime .pp-controle svg{animation:pp-coche .5s ease 23.2s both}
-    .pp-anime .pp-pdf{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 23.4s both}
+    .pp-anime .pp-controle{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 26s both}
+    .pp-anime .pp-controle svg{animation:pp-coche .5s ease 26.4s both}
+    .pp-anime .pp-pdf{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 26.6s both}
     .pp-en-pause *{animation-play-state:paused !important}
   }
   @keyframes pp-fondu{from{opacity:0}}
   @keyframes pp-allume{from{opacity:.28}}
   @keyframes pp-trace{from{stroke-dashoffset:100}}
-  @keyframes pp-progression{0%{transform:scaleX(0)}3%,27.4%{transform:scaleX(.25)}29.5%,49.6%{transform:scaleX(.5)}51.7%,98%{transform:scaleX(.75)}100%{transform:scaleX(1)}}
+  @keyframes pp-progression{0%{transform:scaleX(0)}3%,23.8%{transform:scaleX(.25)}25.6%,43%{transform:scaleX(.5)}44.8%,97.4%{transform:scaleX(.75)}100%{transform:scaleX(1)}}
+  @keyframes pp-trace1{from{stroke-dashoffset:1}}
+  @keyframes pp-fondu-t3{from{fill:transparent}}
+  @keyframes pp-diapo{0%{opacity:0;visibility:visible;transform:translateX(5cqw)}14%,86%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translateX(-3cqw)}}
+  @keyframes pp-vig{0%,100%{border-color:#e2ded7}12%,88%{border-color:#b87b4f}}
   @keyframes pp-remplir{from{transform:scaleX(0)}}
   @keyframes pp-etape{from{color:#4a4f5a}}
   @keyframes pp-etapes{from{--pp-etape:1}to{--pp-etape:8}}
@@ -493,9 +615,9 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     75%{z-index:10;transform:translate(-27cqw,8cqw) scale(1.18)}
     100%{z-index:2}}
   @keyframes pp-pres{
-    0%{opacity:0;z-index:10;transform:translate(17cqw,60cqw) scale(1.4)}
-    19%{opacity:1;z-index:10;transform:translate(17cqw,22cqw) scale(1.4)}
-    75%{z-index:10;transform:translate(17cqw,22cqw) scale(1.4)}
+    0%{opacity:0;z-index:10;transform:translate(17cqw,60cqw) scale(1.45)}
+    9%{opacity:1;z-index:10;transform:translate(17cqw,22cqw) scale(1.45)}
+    88%{z-index:10;transform:translate(17cqw,22cqw) scale(1.45)}
     100%{z-index:1}}
 
   @media (max-width:1023px){

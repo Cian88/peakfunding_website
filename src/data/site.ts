@@ -39,7 +39,7 @@ export const methode = [
 export const equipe = {
   intro: 'Vous parlez à la personne qui monte réellement votre dossier, du premier appel au déblocage des fonds. Pas de call center, pas de dossier qui change de main.',
   membres: [
-    { nom: 'Valentin Boura–Defranoux', role: 'Dirigeant', domaine: 'Financement professionnel & PIM', photo: '/img/valentin-nb.jpg', agenda: agendas.valentin },
+    { nom: 'Valentin Boura--Defranoux', role: 'Dirigeant', domaine: 'Financement professionnel & PIM', photo: '/img/valentin-nb.jpg', agenda: agendas.valentin },
     { nom: 'Yves Monnier', role: 'Mandataire', domaine: 'Financement immobilier locatif', photo: '/img/yves-nb.jpg' },
     { nom: 'Maxime Pidoux', role: 'Mandataire', domaine: 'Financement immobilier locatif', photo: '/img/maxime-nb.jpg', agenda: agendas.maxime },
   ],

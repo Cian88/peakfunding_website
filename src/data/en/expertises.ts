@@ -10,7 +10,7 @@ export const expertisesEn: Expertise[] = [
     nom: 'PEAK ESTATE',
     titre: 'Financing your property, from first purchase to lasting wealth.',
     intro: 'Primary residence, rental investment, SCI, dismemberment: we build the financing suited to your situation and your goals — not a standardised loan.',
-    ctaPrincipal: 'Book a 30-minute conversation',
+    ctaPrincipal: 'Book PEAK EXCHANGE · €299 incl. VAT',
     ctaSecondaire: { libelle: 'Estimate my capacity', href: '/#simulateur' },
     pourQui: {
       titre: 'Whatever your borrower profile.',
@@ -33,20 +33,20 @@ export const expertisesEn: Expertise[] = [
     comment: {
       titre: 'From your call to the release of funds.',
       etapes: [
-        { titre: 'Reviewing your situation', texte: 'A first conversation to understand your situation and your project. Free, with no commitment.' },
+        { titre: 'Reviewing your situation', texte: 'PEAK EXCHANGE: assess your situation and project, prepare your banking arguments and receive a personalised advice note. €299 incl. VAT.' },
         { titre: 'Structuring the file', texte: 'Choice of structure, debt calibration, preparation of a solid file for the banks.' },
         { titre: 'Bank negotiation', texte: 'Presentation to the best-placed banks and negotiation of terms, rate and insurance included.' },
         { titre: 'Follow-up to disbursement', texte: 'Support through to signing at the notary and the release of funds, then availability for your next deals.' },
       ],
     },
-    final: { titre: 'A property project in mind?', texte: '30 minutes to talk it through and see where you stand, with no commitment.', bouton: 'Book a 30-minute conversation' },
+    final: { titre: 'A property project in mind?', texte: 'Assess your application and prepare your arguments with PEAK EXCHANGE. Consultation and advice note: €299 incl. VAT.', bouton: 'Book PEAK EXCHANGE · €299 incl. VAT' },
   },
   {
     slug: 'pro',
     nom: 'PEAK PRO',
     titre: 'Financing a business, its acquisition and its growth.',
     intro: 'Start-up, buyout (LBO), cash flow, leasing: we structure business financing that holds up over time — debt, equity and taxation thought through together.',
-    ctaPrincipal: 'Book a 30-minute conversation',
+    ctaPrincipal: 'Book PEAK EXCHANGE · €299 incl. VAT',
     ctaSecondaire: { libelle: 'See the other areas', href: '/#expertises' },
     pourQui: {
       titre: 'Executives, buyers and growing businesses.',
@@ -69,20 +69,20 @@ export const expertisesEn: Expertise[] = [
     comment: {
       titre: 'From the first conversation to the disbursement.',
       etapes: [
-        { titre: 'Analysing the project', texte: 'Understanding the deal, the accounts and the objectives. First conversation free and with no commitment.' },
+        { titre: 'Analysing the project', texte: 'PEAK EXCHANGE: assess the deal, accounts and objectives, with banking arguments and a personalised advice note. €299 incl. VAT.' },
         { titre: 'Financial structuring', texte: 'Legal and financial structure, financing plan and forecast ready to present to institutions.' },
         { titre: 'Bank negotiation', texte: 'Putting business banks and partners in competition, negotiating the rate, guarantees and covenants.' },
         { titre: 'Closing & follow-up', texte: 'Support through to disbursement, then availability for your next deals and financing needs.' },
       ],
     },
-    final: { titre: 'A deal to finance?', texte: '30 minutes to talk it through and frame its feasibility, with no commitment.', bouton: 'Book a 30-minute conversation' },
+    final: { titre: 'A deal to finance?', texte: 'Assess your deal and prepare your arguments with PEAK EXCHANGE. Consultation and advice note: €299 incl. VAT.', bouton: 'Book PEAK EXCHANGE · €299 incl. VAT' },
   },
   {
     slug: 'pim',
     nom: 'PEAK PIM',
     titre: 'Financing lines for fast-moving operations.',
     intro: 'Property traders, developers, holding companies: we set up property-trader loans, programme financing and the holding / SPV structures suited to your operating cycles.',
-    ctaPrincipal: 'Book a 30-minute conversation',
+    ctaPrincipal: 'Book PEAK EXCHANGE · €299 incl. VAT',
     ctaSecondaire: { libelle: 'See the other areas', href: '/#expertises' },
     pourQui: {
       titre: 'Players who finance operations, not a home.',
@@ -111,7 +111,7 @@ export const expertisesEn: Expertise[] = [
         { titre: 'Follow-up & renewal', texte: 'Support through to disbursement, then renewal of the lines for your next operations.' },
       ],
     },
-    final: { titre: 'An operation to structure?', texte: '30 minutes to frame the financing of your next operation.', bouton: 'Book a 30-minute conversation' },
+    final: { titre: 'An operation to structure?', texte: 'PEAK EXCHANGE: analysis and arguments for your next deal. Consultation and advice note: €299 incl. VAT.', bouton: 'Book PEAK EXCHANGE · €299 incl. VAT' },
   },
   {
     slug: 'insure',

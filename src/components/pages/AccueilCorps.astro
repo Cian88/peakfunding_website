@@ -1,5 +1,9 @@
 ---
+import { exchangeCredit, exchangeFirstConsultation } from '../../data/peak-exchange';
 import Pictogramme from '../Pictogramme.astro';
+import EbookTeaser from '../EbookTeaser.astro';
+import PeakPitchHero from '../PeakPitchHero.astro';
+import PeakPitchMotion from '../PeakPitchMotion.astro';
 import SimulateurCapacite from '../react/SimulateurCapacite';
 import MethodeSchema from '../MethodeSchema.astro';
 import ObservatoireWidget from '../react/ObservatoireWidget';
@@ -15,6 +19,7 @@ const u = c.ui;
 const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') ? 'valentin' : photo.includes('yves') ? 'yves' : 'maxime'}.webp`;
 ---
 
+  {import.meta.env.PUBLIC_PEAK_PITCH_HERO === 'motion' ? <PeakPitchMotion lang={lang} /> : import.meta.env.PUBLIC_PEAK_PITCH_HERO === 'true' ? <PeakPitchHero lang={lang} /> : <>
   <!-- ═══ 1 · Héros ═══ -->
   <section class="sombre heros -mt-[76px] overflow-hidden">
     <picture>
@@ -32,7 +37,7 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
         </h1>
         <p class="heros-fondu mt-7 max-w-[530px] text-[17px] leading-[1.6] font-light text-etoile/90">{u.hero_texte}</p>
         <div class="heros-fondu mt-9 flex flex-wrap gap-3">
-          <a href="#rdv" class="btn-cuivre gap-4">{u.hero_cta1} <span aria-hidden="true">↗</span></a>
+          <a href={L('/peak-exchange/')} class="btn-cuivre gap-4">{lang === 'fr' ? 'RDV PEAK EXCHANGE' : 'Book PEAK EXCHANGE'} <span aria-hidden="true">↗</span></a>
           <a href="#simulateur" class="btn-fantome">{u.hero_cta2}</a>
         </div>
         <p class="heros-fondu mt-5 text-[13px] text-etoile/80">{u.hero_note}</p>
@@ -47,6 +52,8 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
     </div>
   </section>
 
+  </>}
+
   <!-- ═══ 2 · Repères d’accompagnement ═══ -->
   <section id="accompagnement" class="sombre border-y border-filet" aria-label={u.reperes_aria}>
     <div class="grille"></div>
@@ -60,6 +67,7 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
       ))}
     </ul>
   </section>
+
 
   <!-- ═══ 3 · Mission ═══ -->
   <section id="mission" class="sombre section-sombre">
@@ -85,7 +93,6 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
       <div class="chapitre-filet reveal" aria-hidden="true"></div>
       <div class="reveal flex flex-wrap items-end justify-between gap-6">
         <div><p class="eyebrow">{u.exp_eyebrow}</p><h2 class="titre mt-4">{u.exp_titre}</h2></div>
-        <a href="#rdv" class="btn-fantome">{u.exp_cta}</a>
       </div>
       <ul class="expertises-lignes mt-14">
         {c.expertises.map((x, i) => (
@@ -135,7 +142,7 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
         <p class="eyebrow">{u.methode_eyebrow}</p>
         <h2 class="titre mt-4" set:html={u.methode_titre}></h2>
         <p class="corps mt-5 max-w-md">{u.methode_texte}</p>
-        <nav aria-label={u.methode_nav} class="relative mt-10 pl-6">
+        <nav aria-label={u.methode_nav} class="relative mt-10 hidden pl-6 lg:block">
           <div class="absolute inset-y-0 left-0 w-px bg-filet" aria-hidden="true"><div data-rail class="absolute inset-0 origin-top bg-cuivre-clair transition-transform duration-500" style="transform:scaleY(.25)"></div></div>
           <ol class="grid gap-5">
             {c.methode.map((s, i) => (
@@ -171,12 +178,13 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
       </div>
       <ul class="reveal-groupe mt-12 grid gap-6 sm:grid-cols-3">
         {c.equipe.membres.map((m) => (
-          <li>
+          <li class="grid grid-cols-[112px_1fr] items-center gap-x-5 sm:block">
             <div class="aspect-[4/5] overflow-hidden rounded-carte bg-trait"><img src={portrait(m.photo)} alt={`${u.equipe_portrait} ${m.nom}`} loading="lazy" decoding="async" class="h-full w-full object-cover object-top" /></div>
-            <p class="eyebrow mt-5">{m.role}</p>
-            <h3 class="mt-1 text-[18px] font-medium">{m.nom}</h3>
-            <p class="corps text-[14px]">{m.domaine}</p>
-            <button type="button" data-rdv class="mt-3 inline-block text-[14px] font-medium underline underline-offset-4 decoration-trait hover:decoration-cuivre-profond">{u.equipe_rdv}</button>
+            <div>
+              <p class="eyebrow sm:mt-5">{m.role}</p>
+              <h3 class="mt-1 text-[18px] font-medium"><span class="whitespace-nowrap">{m.nom}</span></h3>
+              <p class="corps text-[14px]">{m.domaine}</p>
+            </div>
           </li>
         ))}
       </ul>
@@ -197,6 +205,7 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
   </section>
 
   <!-- ═══ 7b · Avis clients — mur vivant (état « à venir » tant que Supabase n'est pas branché) ═══ -->
+  <EbookTeaser />
   <AvisClients />
 
   <!-- ═══ 8 · FAQ ═══ -->
@@ -207,7 +216,7 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
         <p class="eyebrow">{u.faq_eyebrow}</p>
         <h2 class="titre mt-4">{u.faq_titre}</h2>
         <p class="corps mt-6 max-w-sm">{u.faq_texte}</p>
-        <a href="#rdv" class="btn-fantome mt-6">{u.faq_cta}</a>
+        <a href={L('/peak-exchange/')} class="btn-fantome mt-6">{u.faq_cta}</a>
       </div>
       <div class="reveal divide-y divide-filet border-y border-filet">
         {c.faq.map((q) => (
@@ -227,9 +236,9 @@ const portrait = (photo: string) => `/img/portrait-${photo.includes('valentin') 
         <div class="p-8 lg:p-12">
           <p class="eyebrow">{u.bandeau_eyebrow}</p>
           <h2 class="titre mt-4">{u.bandeau_titre}</h2>
-          <p class="corps mt-4 max-w-lg text-[17px]">{u.bandeau_texte}</p>
+          <p class="corps mt-4 max-w-lg text-[17px]">{u.bandeau_texte}</p><p class="mt-4 max-w-lg text-[13px] leading-relaxed text-argent">{exchangeCredit[lang]}</p>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="#rdv" class="btn-cuivre">{u.bandeau_cta1}</a>
+            <a href={L('/peak-exchange/')} class="btn-cuivre">{u.bandeau_cta1}</a>
             <a href="#simulateur" class="btn-fantome">{u.bandeau_cta2}</a>
           </div>
         </div>

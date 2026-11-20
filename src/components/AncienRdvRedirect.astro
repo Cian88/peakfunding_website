@@ -1,0 +1,13 @@
+<script>
+  import { rdvDestination, isLegacyRdvHash } from '../lib/rdv-route.mjs';
+  const reprendreAncienLien = () => {
+    if (isLegacyRdvHash(location.hash)) location.replace(rdvDestination(location.pathname));
+  };
+  window.addEventListener('hashchange', reprendreAncienLien);
+  document.addEventListener('astro:page-load', reprendreAncienLien);
+  window.addEventListener('ouvrir-rdv', (event) => {
+    event.preventDefault();
+    location.assign(rdvDestination(location.pathname));
+  });
+  reprendreAncienLien();
+</script>

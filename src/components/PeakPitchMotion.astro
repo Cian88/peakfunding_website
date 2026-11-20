@@ -1,0 +1,772 @@
+---
+/* Prototype : couverture de l'accueil avec une animation native (HTML/CSS) de PEAK PITCH.
+   Activée par PUBLIC_PEAK_PITCH_HERO=motion. Le film PEAK PITCH reste disponible avec la valeur true.
+   L'état de base du CSS est l'image finale : sans animation, mouvement réduit ou ?statique, on voit
+   directement les trois livrables. Les montants sont un exemple illustratif cohérent :
+   285 000 + 20 000 + 24 000 = 329 000 € ; 329 000 − 45 000 = 284 000 € ; 25 ans à 3,5 % → 1 422 €/mois ;
+   revenus 4 300 € + loyer 1 050 € × 70 % = 5 035 € → effort 28,2 % ; capacité 35 % → 350 000 €. */
+import { localiser } from '../i18n';
+import { ASSURANCE_URL } from '../data/integrations';
+interface Props { lang?: 'fr' | 'en' }
+const { lang = 'fr' } = Astro.props;
+const fr = lang === 'fr';
+const L = (p: string) => localiser(p, lang);
+type Piece = [string, string];
+type Intervenant = { sigle: string; nom: string; role: string; pieces: Piece[] };
+const t = fr ? {
+  eyebrow: 'Courtier indépendant · France entière',
+  h1: 'Cabinet de courtage en financement et assurance emprunteur.',
+  texte: 'Investissement locatif, SCI, reprise d’entreprise, opérations de marchands de biens : PEAK FUNDING structure et négocie votre financement, partout en France.',
+  cta1: 'Estimer ma capacité', cta2: 'Le cabinet & ses expertises',
+  scene: 'PEAK PITCH · DOSSIER DE FINANCEMENT', exemple: 'EXEMPLE ILLUSTRATIF', etape: 'ÉTAPE',
+  questionnaire: 'Questionnaire guidé',
+  reponses: [['Projet', 'Investissement locatif · T3'], ['Emprunteurs', '2 · salariés en CDI'], ['Revenus nets mensuels', '4 300 €'], ['Loyer attendu', '1 050 € / mois'], ['Apport personnel', '45 000 €'], ['Structure', 'SCI à créer']],
+  chiffresTitre: 'Vos chiffres, rapprochés',
+  phases: ['Questionnaire', 'Rapprochement', 'Livrables', 'Contrôle'],
+  qTitre: 'Votre projet', continuer: 'Continuer',
+  coherence: 'Contrôles de cohérence',
+  controles: ['285 000 + 20 000 + 24 000 = 329 000 €', '329 000 − 45 000 = 284 000 €', '284 000 € · 25 ans · 3,5 % → 1 422 € / mois'],
+  pdf: '3 PDF prêts à présenter',
+  tampon: ['PEAK PITCH · DOSSIER PRÊT À PRÉSENTER · ', 'PRÊT'],
+  fin: { kicker: 'VOTRE DOSSIER EST PRÊT', avant: 'PEAK PITCH, c’est mettre', accent: 'toutes les chances', apres: 'de votre côté.',
+    sous: 'Votre dossier, structuré et présenté comme la banque l’attend. Sans mandat, vous gardez la main.', bouton: 'Préparer mon dossier', prix: '99 € · TVA non applicable' },
+  chiffres: [['Budget total', '329 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Mensualité · 25 ans', '1 422 €', 'CALCULÉ'], ['Capacité estimée', '350 000 €', 'SIMULATEUR']],
+  dossier: 'Dossier PP-2611', page: 'p. 1 / 6', date: '20 novembre 2026',
+  doc: { prepare: 'Établi d’après les déclarations du client · Exemple', page: (n: number, t: number) => `Page ${n} sur ${t}`,
+    noteSur: 'NOTE DE SYNTHÈSE', noteTitre: 'Acquisition locative d’un T3 — Lyon 8e', noteMeta: 'Emprunteurs : 2 associés, via une SCI à créer · Durée demandée : 25 ans',
+    s1: '1. Le projet', s2: '2. Chiffres clés', s3: '3. Plan de financement', cols: ['Libellé', 'Montant', 'Source'], emploi: 'Emplois', montant: 'Montant',
+    capacite: ['Capacité estimée', '350 000 €', 'Simulateur'], renvoi: 'Frais estimés, montants arrondis. Détail des réponses en annexe, p. 4 à 6.',
+    piecesSur: 'LISTE DES PIÈCES À FOURNIR', piecesTitre: 'Pièces justificatives par intervenant', piecesMeta: '3 intervenants · 9 pièces · à transmettre par le client à la banque',
+    piecesCols: ['Pièce', 'Motif'], presEntete: 'Présentation bancaire' },
+  note: {
+    n: '01 · NOTE DE SYNTHÈSE', titre: 'Note de synthèse', meta: ['Acquisition locative', 'Lyon 8e', 'SCI à créer'],
+    resume: 'Acquisition, via une SCI à créer, d’un T3 destiné à la location (loyer attendu : 1 050 € par mois). Les deux associés, salariés en CDI, sollicitent un prêt de 284 000 € sur 25 ans.',
+    chiffres: [['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Mensualité', '1 422 €', 'CALCULÉ'], ['Taux d’effort', '28,2 %', 'CALCULÉ']],
+    plan: 'Plan de financement', emplois: [['Prix du bien', '285 000 €'], ['Travaux', '20 000 €'], ['Frais de notaire et de garantie', '24 000 €']], total: ['Total des besoins', '329 000 €'],
+    barre: [['Prêt', '86 %'], ['Apport', '14 %']],
+    capacite: 'Capacité estimée par le simulateur', capaciteValeur: '350 000 €',
+    annexe: 'Annexe : les 64 réponses déclarées',
+  },
+  pieces: {
+    n: '02 · PIÈCES PAR INTERVENANT', titre: 'Pièces à réunir', resume: '3 intervenants · 9 pièces',
+    intervenants: [
+      { sigle: 'E1', nom: 'Emprunteur 1', role: 'Salarié en CDI', pieces: [['Pièce d’identité', 'Identité'], ['3 derniers bulletins de salaire', 'Revenus'], ['2 derniers avis d’imposition', 'Revenus'], ['Relevés de comptes, 3 mois', 'Gestion']] },
+      { sigle: 'E2', nom: 'Co-emprunteur', role: 'Salariée en CDI', pieces: [['Pièce d’identité', 'Identité'], ['Contrat de travail', 'Stabilité'], ['Justificatif d’épargne', 'Apport']] },
+      { sigle: 'SCI', nom: 'SCI à créer', role: '2 associés', pieces: [['Projet de statuts', 'Structure'], ['Répartition du capital', 'Associés']] },
+    ] as Intervenant[],
+  },
+  pres: {
+    n: '03 · PRÉSENTATION BANCAIRE', titre: 'Acquisition d’un T3 locatif', sous: 'Demande de financement · 284 000 € sur 25 ans',
+    parties: ['La demande', 'Les emprunteurs', 'Le bien', 'Les revenus', 'Le plan de financement', 'L’analyse', 'La synthèse'],
+    anneau: 'Besoins', legende: [['Prêt', '284 000 €'], ['Apport', '45 000 €']], diapo: '1 / 7',
+    bandeau: 'Présentation bancaire', chips: [['Prêt', '284 000 €'], ['Durée', '25 ans'], ['Apport', '14 %']], bien: 'T3 · 68 m² · 2e étage',
+    d2: { n: '05 · LE PLAN DE FINANCEMENT', titre: 'Emplois et ressources', emplois: 'Emplois', ressources: 'Ressources',
+      e: [['Prix du bien', '285 000 €'], ['Travaux', '20 000 €'], ['Frais de notaire et de garantie', '24 000 €']],
+      r: [['Apport personnel', '45 000 €'], ['Prêt immobilier', '284 000 €']], total: ['Total', '329 000 €'] },
+    d3: { n: '06 · L’ANALYSE', titre: 'Revenus et charges mensuels',
+      barres: [['Revenus nets', '4 300 €', 85], ['Loyer pondéré à 70 %', '735 €', 15], ['Mensualité du prêt', '1 422 €', 28]] as [string, string, number][],
+      jauge: 'Taux d’effort', repere: 'REPÈRE HCSF : 35 %', couverture: ['Part de la mensualité couverte par le loyer', '74 %'] },
+    pied: 'Dossier PP-2611 · Exemple illustratif',
+  },
+  controle: 'Chaque montant correspond à une valeur déclarée ou calculée',
+  kicker: 'PEAK PITCH — UN SERVICE DE PEAK FUNDING', promesse: 'Votre projet, prêt à présenter.', mentions: 'TVA non applicable · Paiement unique',
+  decouvrir: 'Découvrir PEAK PITCH', banques: 'Le financement reste soumis à l’accord des banques.',
+  pause: 'Mettre l’animation en pause', reprendre: 'Reprendre l’animation', rejouer: 'Rejouer l’animation',
+  sr: 'Animation : un questionnaire guidé en 8 étapes, des chiffres rapprochés et étiquetés comme déclarés, calculés ou issus du simulateur, puis trois livrables : note de synthèse, pièces à réunir par intervenant et présentation bancaire en sept parties.',
+  ambiance: 'Courtier indépendant · France entière', exchange: 'RDV PEAK EXCHANGE', assurance: 'Assurance emprunteur',
+} : {
+  eyebrow: 'Independent broker · Throughout France',
+  h1: 'Independent financing and borrower insurance brokerage.',
+  texte: 'Buy-to-let investments, French property companies (SCI), business acquisitions and property trading projects: PEAK FUNDING structures and negotiates your financing throughout France.',
+  cta1: 'Estimate my capacity', cta2: 'Our firm & expertise',
+  scene: 'PEAK PITCH · FINANCING APPLICATION', exemple: 'ILLUSTRATIVE EXAMPLE', etape: 'STEP',
+  questionnaire: 'Guided questionnaire',
+  reponses: [['Project', 'Buy-to-let · 2-bedroom flat'], ['Borrowers', '2 · permanent employees'], ['Net monthly income', '€4,300'], ['Expected rent', '€1,050 / month'], ['Personal contribution', '€45,000'], ['Structure', 'SCI to be formed']],
+  chiffresTitre: 'Your figures, reconciled',
+  phases: ['Questionnaire', 'Reconciliation', 'Deliverables', 'Check'],
+  qTitre: 'Your project', continuer: 'Continue',
+  coherence: 'Consistency checks',
+  controles: ['285,000 + 20,000 + 24,000 = €329,000', '329,000 − 45,000 = €284,000', '€284,000 · 25 yrs · 3.5% → €1,422 / month'],
+  pdf: '3 PDFs ready to present',
+  tampon: ['PEAK PITCH · FILE READY TO PRESENT · ', 'READY'],
+  fin: { kicker: 'YOUR APPLICATION IS READY', avant: 'PEAK PITCH means putting', accent: 'every chance', apres: 'on your side.',
+    sous: 'Your application, structured and presented the way the bank expects it. No mandate: you stay in control.', bouton: 'Prepare my application', prix: '€99 · VAT not applicable' },
+  chiffres: [['Total budget', '€329,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Loan requested', '€284,000', 'CALCULATED'], ['Monthly payment · 25 yrs', '€1,422', 'CALCULATED'], ['Estimated capacity', '€350,000', 'SIMULATOR']],
+  dossier: 'File PP-2611', page: 'p. 1 / 6', date: '20 November 2026',
+  doc: { prepare: 'Based on the client’s declarations · Example', page: (n: number, t: number) => `Page ${n} of ${t}`,
+    noteSur: 'SUMMARY NOTE', noteTitre: 'Purchase of a two-bedroom flat to let — Lyon 8th', noteMeta: 'Borrowers: 2 partners, through an SCI to be formed · Term requested: 25 years',
+    s1: '1. The project', s2: '2. Key figures', s3: '3. Financing plan', cols: ['Item', 'Amount', 'Source'], emploi: 'Uses', montant: 'Amount',
+    capacite: ['Estimated capacity', '€350,000', 'Simulator'], renvoi: 'Estimated fees, rounded amounts. Detailed answers in the appendix, pp. 4–6.',
+    piecesSur: 'LIST OF DOCUMENTS TO PROVIDE', piecesTitre: 'Supporting documents per party', piecesMeta: '3 parties · 9 documents · to be sent to the bank by the client',
+    piecesCols: ['Document', 'Purpose'], presEntete: 'Bank presentation' },
+  note: {
+    n: '01 · SUMMARY NOTE', titre: 'Summary note', meta: ['Buy-to-let', 'Lyon 8th', 'SCI to be formed'],
+    resume: 'Purchase, through an SCI to be formed, of a two-bedroom flat to let (expected rent: €1,050 a month). The two partners, both permanent employees, request a €284,000 loan over 25 years.',
+    chiffres: [['Loan requested', '€284,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Monthly payment', '€1,422', 'CALCULATED'], ['Debt ratio', '28.2%', 'CALCULATED']],
+    plan: 'Financing plan', emplois: [['Property price', '€285,000'], ['Works', '€20,000'], ['Notary and guarantee fees', '€24,000']], total: ['Total requirement', '€329,000'],
+    barre: [['Loan', '86%'], ['Contribution', '14%']],
+    capacite: 'Capacity estimated by the simulator', capaciteValeur: '€350,000',
+    annexe: 'Appendix: the 64 declared answers',
+  },
+  pieces: {
+    n: '02 · DOCUMENTS PER PARTY', titre: 'Documents to gather', resume: '3 parties · 9 documents',
+    intervenants: [
+      { sigle: 'B1', nom: 'Borrower 1', role: 'Permanent employee', pieces: [['ID document', 'Identity'], ['Last 3 payslips', 'Income'], ['Last 2 tax notices', 'Income'], ['Bank statements, 3 months', 'Management']] },
+      { sigle: 'B2', nom: 'Co-borrower', role: 'Permanent employee', pieces: [['ID document', 'Identity'], ['Employment contract', 'Stability'], ['Proof of savings', 'Contribution']] },
+      { sigle: 'SCI', nom: 'SCI to be formed', role: '2 partners', pieces: [['Draft articles', 'Structure'], ['Share capital split', 'Partners']] },
+    ] as Intervenant[],
+  },
+  pres: {
+    n: '03 · BANK PRESENTATION', titre: 'Purchase of a flat to let', sous: 'Financing request · €284,000 over 25 years',
+    parties: ['The request', 'The borrowers', 'The property', 'Income', 'Financing plan', 'Analysis', 'Summary'],
+    anneau: 'Requirement', legende: [['Loan', '€284,000'], ['Contribution', '€45,000']], diapo: '1 / 7',
+    bandeau: 'Bank presentation', chips: [['Loan', '€284,000'], ['Term', '25 years'], ['Contribution', '14%']], bien: '2-bed · 68 m² · 2nd floor',
+    d2: { n: '05 · FINANCING PLAN', titre: 'Uses and sources', emplois: 'Uses', ressources: 'Sources',
+      e: [['Property price', '€285,000'], ['Works', '€20,000'], ['Notary and guarantee fees', '€24,000']],
+      r: [['Personal contribution', '€45,000'], ['Mortgage loan', '€284,000']], total: ['Total', '€329,000'] },
+    d3: { n: '06 · ANALYSIS', titre: 'Monthly income and charges',
+      barres: [['Net income', '€4,300', 85], ['Rent weighted at 70%', '€735', 15], ['Loan payment', '€1,422', 28]] as [string, string, number][],
+      jauge: 'Debt ratio', repere: 'HCSF BENCHMARK: 35%', couverture: ['Share of the payment covered by rent', '74%'] },
+    pied: 'File PP-2611 · Illustrative example',
+  },
+  controle: 'Every amount matches a declared or calculated value',
+  kicker: 'PEAK PITCH — A PEAK FUNDING SERVICE', promesse: 'Your project, ready to present.', mentions: 'VAT not applicable · One payment',
+  decouvrir: 'Discover PEAK PITCH', banques: 'Financing remains subject to approval by the banks.',
+  pause: 'Pause the animation', reprendre: 'Resume the animation', rejouer: 'Replay the animation',
+  sr: 'Animation: a guided 8-step questionnaire, figures reconciled and labelled as declared, calculated or from the simulator, then three deliverables: summary note, documents to gather per party and a seven-part bank presentation.',
+  ambiance: 'Independent broker · Throughout France', exchange: 'Book PEAK EXCHANGE', assurance: 'Borrower insurance',
+};
+const marque = 'M1 13 7 3l3 5 2-3 5 8';
+---
+
+<section class="heros sombre pp" data-pp aria-labelledby="pp-titre">
+  <!-- Photographie de montagne du site actuel : le sommet se lève entre le texte et la scène -->
+  <div class="pp-photo" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 1023px)" srcset="/img/hero-mobile-1200.webp" />
+      <img src="/img/hero-2400.webp" srcset="/img/hero-1600.webp 1600w, /img/hero-2400.webp 2400w" sizes="200vw" alt="" fetchpriority="high" decoding="async" />
+    </picture>
+  </div>
+  <div class="pp-grille">
+    <div class="pp-cabinet">
+      <p class="eyebrow text-cuivre-clair">{t.eyebrow}</p>
+      <h1 id="pp-titre">{t.h1}</h1>
+      <p class="pp-texte">{t.texte}</p>
+      <div class="pp-actions">
+        <a href="#simulateur" class="btn-fantome">{t.cta1}</a>
+        <a href="#expertises" class="btn-fantome gap-2">{t.cta2} <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+
+    <div class="pp-produit">
+      <div class="pp-scene pp-anime" data-pp-scene>
+        <p class="sr-only">{t.sr}</p>
+        <div class="pp-plateau" aria-hidden="true">
+          <div class="pp-reperes"><i></i><i></i><i></i><i></i><span>LYON 8E · 45,73 N · 4,87 E</span></div>
+          <div class="pp-entete"><span>{t.scene}</span><span>{t.exemple}</span></div>
+          <ol class="pp-phases">{t.phases.map((ph, i) => <li style={`--t:${[0, 6.3, 11.4, 25.8].map(v => +(v * 1.35).toFixed(2))[i]}s`}><span>{`0${i + 1}`}</span>{ph}</li>)}</ol>
+          <i class="pp-phases-ligne"><b></b></i>
+
+          <div class="pp-carte pp-q">
+            <div class="pp-q-tete"><p class="pp-carte-titre">{t.questionnaire}</p><b class="pp-compteur">{t.etape}&nbsp;</b></div>
+            <div class="pp-rail">{Array.from({ length: 8 }, (_, i) => <i style={`--i:${i}`}></i>)}</div>
+            <div class="pp-q-corps">
+              <ol class="pp-q-etapes">{Array.from({ length: 8 }, (_, i) => <li style={`--i:${i}`}>{`0${i + 1}`}</li>)}</ol>
+              <div>
+                <p class="pp-q-titre">{t.qTitre}</p>
+                <div class="pp-champs">{t.reponses.map(([q, r], i) => <div class="pp-champ" style={`--i:${i}`}><span>{q}</span><b><em>{r}</em></b></div>)}</div>
+                <p class="pp-continuer">{t.continuer} →</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pp-carte pp-c">
+            <p class="pp-carte-titre">{t.chiffresTitre}</p>
+            <div class="pp-c-corps">
+              <div>{t.chiffres.map(([q, r, s], i) => <p class="pp-ligne" style={`--i:${i}`}><span>{q}</span><b>{r}</b><em>{s}</em></p>)}</div>
+              <div class="pp-coherence"><p>{t.coherence}</p>{t.controles.map((c, i) => <span style={`--i:${i}`}><svg viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" /></svg>{c}</span>)}</div>
+            </div>
+          </div>
+
+          <!-- 03 · Présentation bancaire : trois diapositives défilent pendant le plan rapproché -->
+          <div class="pp-doc pp-pres">
+            <header class="pp-tete-diapo"><span class="pp-logo"><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK FUNDING</span><span>{t.doc.presEntete} · {t.dossier}</span></header>
+            <div class="pp-diapos">
+              <div class="pp-diapo d1">
+                <div class="pp-el" style="--k:0">
+                  <p class="pp-n">{t.pres.n}</p>
+                  <p class="pp-pres-titre">{t.pres.titre}</p>
+                  <p class="pp-pres-sous">{t.pres.sous}</p>
+                  <p class="pp-chips">{t.pres.chips.map(([l, v]) => <span><small>{l}</small>{v}</span>)}</p>
+                  <ol class="pp-sommaire">{t.pres.parties.map((p, i) => <li class={i === 0 ? 'actif' : ''}><span>{String(i + 1).padStart(2, '0')}</span>{p}</li>)}</ol>
+                </div>
+                <figure class="pp-immeuble pp-el" style="--k:1">
+                  <svg viewBox="0 0 120 100">
+                    <path pathLength="1" d="M4 94H116" /><path pathLength="1" d="M22 94V22L60 8 98 22V94" /><path pathLength="1" d="M22 22H98M22 40H98M22 56H98M22 72H98" />
+                                        <rect pathLength="1" x="22" y="26" width="16" height="10" />
+                    <rect pathLength="1" x="44" y="26" width="16" height="10" />
+                    <rect pathLength="1" x="66" y="26" width="16" height="10" />
+                    <rect pathLength="1" x="22" y="42" width="16" height="10" class="t3" />
+                    <rect pathLength="1" x="44" y="42" width="16" height="10" class="t3" />
+                    <rect pathLength="1" x="66" y="42" width="16" height="10" class="t3" />
+                    <rect pathLength="1" x="22" y="58" width="16" height="10" />
+                    <rect pathLength="1" x="44" y="58" width="16" height="10" />
+                    <rect pathLength="1" x="66" y="58" width="16" height="10" />
+                    <rect pathLength="1" x="52" y="78" width="16" height="16" /><path pathLength="1" d="M108 94V84" /><circle pathLength="1" cx="108" cy="78" r="7" />
+                  </svg>
+                  <figcaption>{t.pres.bien}</figcaption>
+                </figure>
+              </div>
+              <div class="pp-diapo d2">
+                <div>
+                  <p class="pp-n">{t.pres.d2.n}</p>
+                  <p class="pp-diapo-titre">{t.pres.d2.titre}</p>
+                  <div class="pp-er">
+                    <div><p class="tete">{t.pres.d2.emplois}</p>{t.pres.d2.e.map(([l, v]) => <p>{l}<b>{v}</b></p>)}<p class="tot">{t.pres.d2.total[0]}<b>{t.pres.d2.total[1]}</b></p></div>
+                    <div><p class="tete">{t.pres.d2.ressources}</p>{t.pres.d2.r.map(([l, v]) => <p>{l}<b>{v}</b></p>)}<p class="vide"></p><p class="tot">{t.pres.d2.total[0]}<b>{t.pres.d2.total[1]}</b></p></div>
+                  </div>
+                </div>
+                <div class="pp-anneau">
+                  <svg viewBox="0 0 42 42"><circle class="fond" cx="21" cy="21" r="15.915" /><circle class="pret" cx="21" cy="21" r="15.915" pathLength="100" /><circle class="apport" cx="21" cy="21" r="15.915" pathLength="100" /></svg>
+                  <p><b>329 k€</b><span>{t.pres.anneau}</span></p>
+                  <ul>{t.pres.legende.map(([l, v], i) => <li class={i ? 'apport' : 'pret'}><i></i>{l}<b>{v}</b></li>)}</ul>
+                </div>
+                <p class="pp-diapo-pied"><span>{t.pres.pied}</span><span>05 / 07</span></p>
+              </div>
+              <div class="pp-diapo d3">
+                <div>
+                  <p class="pp-n">{t.pres.d3.n}</p>
+                  <p class="pp-diapo-titre">{t.pres.d3.titre}</p>
+                  <div class="pp-barres">{t.pres.d3.barres.map(([l, v, w], i) => <p style={`--i:${i}`}><span>{l}</span><i><b style={`width:${w}%`}></b></i><em>{v}</em></p>)}</div>
+                  <p class="pp-couverture"><span>{t.pres.d3.couverture[0]}</span><b>{t.pres.d3.couverture[1]}</b></p>
+                </div>
+                <div class="pp-jauge">
+                  <svg viewBox="0 0 60 34"><path class="fond" pathLength="100" d="M5 30A25 25 0 0 1 55 30" /><path class="val" pathLength="100" d="M5 30A25 25 0 0 1 55 30" /><path class="repere" d="M41.76 13.82 47.63 5.73" /></svg>
+                  <p><b>{fr ? '28,2 %' : '28.2%'}</b><span>{t.pres.d3.jauge}</span></p>
+                  <small>{t.pres.d3.repere}</small>
+                </div>
+                <p class="pp-diapo-pied"><span>{t.pres.pied}</span><span>06 / 07</span></p>
+              </div>
+            </div>
+            <div class="pp-vignettes pp-el" style="--k:2">{Array.from({ length: 7 }, (_, i) => <i class={i === 0 ? 'actif' : ''}><b></b><b></b></i>)}</div>
+          </div>
+
+          <!-- 02 · Pièces à réunir : page A4 -->
+          <div class="pp-doc pp-pieces">
+            <header class="pp-tete-doc"><span class="pp-logo"><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK FUNDING</span><span>{t.dossier}<br />{t.date}</span></header>
+            <div class="pp-page">
+              <p class="pp-surtitre pp-el" style="--k:0">{t.doc.piecesSur}</p>
+              <p class="pp-titre-doc pp-el" style="--k:0">{t.doc.piecesTitre}</p>
+              <p class="pp-sous-doc pp-el" style="--k:1">{t.doc.piecesMeta}</p>
+              <table class="pp-tableau pp-tableau-pieces pp-el" style="--k:2">
+                <thead><tr><th></th><th>{t.doc.piecesCols[0]}</th><th>{t.doc.piecesCols[1]}</th></tr></thead>
+                {t.pieces.intervenants.map(iv => (
+                  <tbody>
+                    <tr class="groupe"><td colspan="3"><b>{iv.nom}</b> — {iv.role}</td></tr>
+                    {iv.pieces.map(([pc, r]) => <tr><td><span class="case"></span></td><td>{pc}</td><td>{r}</td></tr>)}
+                  </tbody>
+                ))}
+              </table>
+            </div>
+            <footer class="pp-pied-doc"><span>{t.doc.prepare}</span><span>{t.doc.page(1, 2)}</span></footer>
+          </div>
+
+          <!-- 01 · Note de synthèse : page A4, au premier plan -->
+          <div class="pp-doc pp-note">
+            <header class="pp-tete-doc"><span class="pp-logo"><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK FUNDING</span><span>{t.dossier}<br />{t.date}</span></header>
+            <div class="pp-page">
+              <p class="pp-surtitre pp-el" style="--k:0">{t.doc.noteSur}</p>
+              <p class="pp-titre-doc pp-el" style="--k:0">{t.doc.noteTitre}</p>
+              <p class="pp-sous-doc pp-el" style="--k:0">{t.doc.noteMeta}</p>
+              <p class="pp-h pp-el" style="--k:1">{t.doc.s1}</p>
+              <p class="pp-texte-doc pp-el" style="--k:1">{t.note.resume}</p>
+              <p class="pp-h pp-el" style="--k:2">{t.doc.s2}</p>
+              <table class="pp-tableau pp-el" style="--k:2">
+                <thead><tr><th>{t.doc.cols[0]}</th><th>{t.doc.cols[1]}</th><th>{t.doc.cols[2]}</th></tr></thead>
+                <tbody>
+                  {t.note.chiffres.map(([q, r, src]) => <tr><td>{q}</td><td>{r}</td><td>{src.charAt(0) + src.slice(1).toLowerCase()}</td></tr>)}
+                  <tr><td>{t.doc.capacite[0]}</td><td>{t.doc.capacite[1]}</td><td>{t.doc.capacite[2]}</td></tr>
+                </tbody>
+              </table>
+              <p class="pp-h pp-el" style="--k:3">{t.doc.s3}</p>
+              <div class="pp-el" style="--k:3">
+                <table class="pp-tableau">
+                  <thead><tr><th>{t.doc.emploi}</th><th>{t.doc.montant}</th></tr></thead>
+                  <tbody>
+                    {t.note.emplois.map(([l, v]) => <tr><td>{l}</td><td>{v}</td></tr>)}
+                    <tr class="total"><td>{t.note.total[0]}</td><td>{t.note.total[1]}</td></tr>
+                  </tbody>
+                </table>
+                <div class="pp-barre-financement"><i class="pret"></i><i class="apport"></i></div>
+                <p class="pp-renvoi">{t.doc.renvoi}</p>
+              </div>
+            </div>
+            <footer class="pp-pied-doc"><span>{t.doc.prepare}</span><span>{t.doc.page(1, 6)}</span></footer>
+          </div>
+
+          <!-- Clôture : tampon apposé sur le dossier -->
+          <div class="pp-tampon">
+            <svg viewBox="0 0 100 100">
+              <defs>
+                <path id="pp-cercle" d="M50 50m-37 0a37 37 0 1 1 74 0a37 37 0 1 1-74 0" />
+                <filter id="pp-encre"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" /><feDisplacementMap in="SourceGraphic" scale="1.1" /></filter>
+              </defs>
+              <g filter="url(#pp-encre)">
+                <circle cx="50" cy="50" r="47" /><circle class="fin" cx="50" cy="50" r="44.5" /><circle cx="50" cy="50" r="28" />
+                <text><textPath href="#pp-cercle" textLength="230" lengthAdjust="spacing">{t.tampon[0]}</textPath></text>
+                <path class="coche" d="M39 46 47 54 62 37" />
+                <text class="pret" x="51" y="70" text-anchor="middle">{t.tampon[1]}</text>
+              </g>
+            </svg>
+          </div>
+
+          <p class="pp-controle"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" /></svg>{t.controle}</p>
+          <p class="pp-pdf"><i></i><i></i><i></i>{t.pdf}</p>
+        </div>
+        <!-- Carte de conclusion : texte réel ; l'action reste le bouton de l'offre, sous la scène -->
+        <div class="pp-fin">
+          <p class="pp-fin-kicker">{t.fin.kicker}</p>
+          <p class="pp-fin-titre"><span>{t.fin.avant}</span> <em>{t.fin.accent}</em> <span>{t.fin.apres}</span></p>
+          <p class="pp-fin-sous">{t.fin.sous}</p>
+        </div>
+        <button class="pp-pause" type="button" data-pp-pause data-pause={t.pause} data-resume={t.reprendre} data-replay={t.rejouer} aria-label={t.pause}>
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path class="i-pause" d="M6 4h2.5v12H6zm5.5 0H14v12h-2.5z"/><path class="i-play" d="m7 4 10 6-10 6z"/><path class="i-replay" d="M10 4a6 6 0 1 1-5.7 4.1l1.5.5A4.4 4.4 0 1 0 10 5.6V8L6.5 4.8 10 1.6z"/></svg>
+        </button>
+      </div>
+
+      <div class="pp-offre">
+        <div>
+          <p class="pp-kicker">{t.kicker}</p>
+          <p class="pp-promesse">{t.promesse}</p>
+        </div>
+        <p class="pp-prix">99&nbsp;€<small>{t.mentions}</small></p>
+        <a class="btn-cuivre gap-4" href={L('/peak-pitch/')}>{t.decouvrir} <span aria-hidden="true">↗</span></a>
+        <p class="pp-banques">{t.banques}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pp-pied">
+    <p>ORIAS n° 24002546 · {fr ? 'Supervision ACPR' : 'ACPR supervision'}</p>
+    <nav aria-label={fr ? 'Poursuivre sur le site' : 'Continue on the website'}>
+      <a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener">{t.assurance} ↗</a>
+    </nav>
+  </div>
+</section>
+
+<script>
+  // Pause, reprise et relecture. Sans script, l'animation CSS joue une fois puis reste sur l'image finale.
+  let dispose: (() => void) | undefined;
+  function init() {
+    dispose?.();
+    const scene = document.querySelector<HTMLElement>('[data-pp-scene]');
+    const bouton = scene?.querySelector<HTMLButtonElement>('[data-pp-pause]');
+    if (!scene || !bouton) return;
+    const ctrl = new AbortController();
+    const reduit = matchMedia('(prefers-reduced-motion: reduce)');
+    // Sur petit écran, la scène est trop réduite pour être lue en mouvement : on montre directement l'image finale.
+    if (new URLSearchParams(location.search).has('statique') || matchMedia('(max-width: 640px)').matches) scene.classList.remove('pp-anime');
+    let etat: 'joue' | 'pause' | 'fin' = 'joue';
+    const maj = () => {
+      const anime = scene.classList.contains('pp-anime') && !reduit.matches;
+      bouton.hidden = !anime && etat !== 'fin';
+      scene.classList.toggle('pp-en-pause', etat === 'pause');
+      bouton.dataset.etat = etat;
+      bouton.setAttribute('aria-label', (etat === 'joue' ? bouton.dataset.pause : etat === 'pause' ? bouton.dataset.resume : bouton.dataset.replay) || '');
+    };
+    bouton.addEventListener('click', () => {
+      if (etat === 'fin') {
+        scene.classList.remove('pp-anime'); void scene.offsetWidth; scene.classList.add('pp-anime'); etat = 'joue';
+      } else etat = etat === 'joue' ? 'pause' : 'joue';
+      maj();
+    }, { signal: ctrl.signal });
+    const dernier = document.querySelector('.pp-offre .btn-cuivre');
+    dernier?.addEventListener('animationend', e => { if (e.target === dernier && (e as AnimationEvent).animationName === 'pp-appel') { etat = 'fin'; maj(); } }, { signal: ctrl.signal });
+    reduit.addEventListener('change', maj, { signal: ctrl.signal });
+    dispose = () => ctrl.abort();
+    maj();
+  }
+  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', () => { dispose?.(); dispose = undefined; });
+</script>
+
+<style>
+  @property --pp-etape { syntax: '<integer>'; inherits: true; initial-value: 8; }
+  .pp{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:100svh;margin-top:-76px;padding-top:76px;overflow:hidden;background:#0b0d12;color:#edeae4;isolation:isolate}
+  .pp-photo{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+  .pp-photo img{position:absolute;top:calc(250px - 26vw);left:calc(50vw - 0.07 * min(100vw, 1360px) - 10px - 140vw);width:200vw;max-width:none;height:auto}
+  /* Voiles : texte lisible à gauche, raccord avec l'en-tête en haut et avec la section suivante en bas. */
+  .pp-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#0b0d12f2 0%,#0b0d12d1 30%,#0b0d1273 46%,#0b0d1226 58%,#0b0d1280 100%),linear-gradient(180deg,#0b0d12b3 0%,#0b0d1200 22%,#0b0d1200 58%,#0b0d12 100%)}
+  @media (max-width:1023px){
+    .pp-photo{bottom:auto;height:min(120vw,760px)}
+    .pp-photo img{top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:62% 30%}
+    .pp-photo::after{background:linear-gradient(180deg,#0b0d12b3 0%,#0b0d1266 30%,#0b0d12cc 70%,#0b0d12 100%)}
+  }
+  .pp-grille{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,4vw,72px);align-items:center;width:100%;max-width:1360px;margin:0 auto;padding:clamp(28px,4vh,56px) 32px}
+  .pp-cabinet h1{margin:22px 0 0;font-size:clamp(32px,3.6vw,60px);line-height:1.06;letter-spacing:-.04em;font-weight:300;text-wrap:balance}
+  .pp-texte{max-width:520px;margin:26px 0 0;font-size:17px;line-height:1.6;font-weight:300;color:#edeae4e6}
+  .pp-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .pp-produit{display:flex;flex-direction:column;gap:18px;min-width:0;max-width:calc((100svh - 270px) / 1.06 + 2px);width:100%;justify-self:end}
+
+  /* ── Scène : toutes les mesures en cqw pour garder la composition à toutes les tailles ── */
+  .pp-scene{position:relative;container-type:inline-size;border:1px solid #2a2f3a;border-radius:16px;background:#14171e;overflow:hidden}
+  .pp-plateau{position:relative;aspect-ratio:1/1.06;font-size:1.9cqw;background-image:radial-gradient(ellipse 70% 55% at 55% 60%,#1e222b 0%,transparent 70%),linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:auto,6cqw 6cqw,6cqw 6cqw}
+  .pp-entete{position:absolute;inset:3.4cqw 4cqw auto;display:flex;justify-content:space-between;font:1.5cqw var(--font-mono);letter-spacing:.08em;color:#a6a9b3}
+  .pp-entete span:first-child{color:#d9a47c}
+  .pp-rail{position:absolute;left:4cqw;right:4cqw;top:7.6cqw;display:flex;align-items:center;gap:.8cqw}
+  .pp-rail i{flex:1;height:.35cqw;border-radius:1cqw;background:#d9a47c;transform-origin:left}
+  .pp-compteur{margin-left:1.4cqw;font:400 1.5cqw var(--font-mono);letter-spacing:.06em;color:#edeae4;white-space:nowrap;counter-reset:e var(--pp-etape)}
+  .pp-compteur::after{content:'0' counter(e) ' / 08'}
+
+  .pp-carte{position:absolute;left:7cqw;top:15cqw;width:86cqw;padding:3.4cqw 3.6cqw;border:1px solid #2a2f3a;border-radius:2.6cqw;background:#1e222b;opacity:0;visibility:hidden}
+  .pp-carte-titre{margin:0 0 2.4cqw;font-size:3.4cqw;font-weight:300;letter-spacing:-.03em}
+  .pp-ligne{display:flex;align-items:baseline;gap:2cqw;margin:0;padding:1.6cqw 0;border-top:1px solid #2a2f3a;font-size:2.1cqw}
+  .pp-ligne span{flex:1;color:#a6a9b3}
+  .pp-ligne b{font:400 2.3cqw var(--font-mono);letter-spacing:-.03em}
+  .pp-ligne em{width:13cqw;text-align:right;font:normal 1.4cqw var(--font-mono);letter-spacing:.06em;color:#d9a47c}
+
+  /* ── Documents : papier, bandeau de marque, contenu réel ── */
+  .pp-doc{position:absolute;overflow:hidden;border-radius:1.2cqw;background:#fbfaf7;color:#111;outline:1px solid #ffffff14;transition:translate .4s cubic-bezier(.2,.7,.2,1)}
+  .pp-doc:hover{translate:0 -1.8cqw}
+  .pp-pres{left:20cqw;top:12.5cqw;width:60cqw;height:37.5cqw;display:flex;flex-direction:column;transform:rotate(-1deg);z-index:1}
+  .pp-pieces{left:49cqw;top:37cqw;width:40cqw;height:61cqw;transform:rotate(2deg) scale(.92);z-index:2;background:#f6f4ef}
+  .pp-note{left:9cqw;top:36cqw;width:44cqw;height:62cqw;transform:rotate(-2deg) scale(.92);z-index:3;background:#fff}
+  .pp-bandeau{display:flex;justify-content:space-between;align-items:center;padding:1.3cqw 2.4cqw;background:#0b0d12;color:#a6a9b3;font:1.05cqw var(--font-mono);letter-spacing:.1em}
+  .pp-bandeau span:first-child{display:flex;align-items:center;gap:.8cqw;color:#edeae4}
+  .pp-bandeau svg{width:1.8cqw;height:1.6cqw;fill:none;stroke:#d9a47c;stroke-width:1.6;stroke-linejoin:round}
+  .pp-doc-corps{padding:2.2cqw 2.6cqw}
+  .pp-n{margin:0;font:1.1cqw var(--font-mono);letter-spacing:.1em;color:#825333}
+  .pp-doc-titre{margin:.9cqw 0 0;padding-bottom:1.4cqw;border-bottom:.25cqw solid #b87b4f;width:fit-content;font-size:3.1cqw;line-height:1.05;font-weight:300;letter-spacing:-.04em}
+
+  .pp-meta{display:flex;flex-wrap:wrap;gap:.6cqw;margin:1.6cqw 0 0}
+  .pp-meta span{padding:.35cqw .9cqw;border:1px solid #e2ded7;border-radius:4cqw;font-size:1.05cqw;color:#3d3f46}
+  .pp-resume{margin:1.2cqw 0 0;font-size:1.15cqw;line-height:1.5;color:#3d3f46}
+  .pp-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:.6cqw;margin:1.4cqw 0 0}
+  .pp-kpi div{padding:.8cqw .9cqw;border-radius:.8cqw;background:#f2f0eb}
+  .pp-kpi dt{font-size:.9cqw;white-space:nowrap;color:#62656d}
+  .pp-kpi dd{margin:.3cqw 0 .2cqw;font:1.55cqw var(--font-mono);letter-spacing:-.06em;white-space:nowrap;color:#111}
+  .pp-kpi small,.pp-capacite small{font:.85cqw var(--font-mono);letter-spacing:.1em;color:#825333}
+  .pp-plan{margin-top:1.3cqw}
+  .pp-plan-titre{margin:0 0 .6cqw;font:1.05cqw var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:#62656d}
+  .pp-plan-ligne{display:flex;justify-content:space-between;margin:0;padding:.35cqw 0;border-bottom:1px solid #eeebe5;font-size:1.15cqw;color:#3d3f46}
+  .pp-plan-ligne b{font:400 1.15cqw var(--font-mono);color:#111}
+  .pp-plan-ligne.total{border-bottom:0;font-weight:500;color:#111}
+  .pp-barre-financement{display:flex;height:1cqw;margin-top:.8cqw;border-radius:1cqw;overflow:hidden;background:#eeebe5}
+  .pp-barre-financement i{display:block;height:100%;transform-origin:left}
+  .pp-barre-financement .pret{width:86%;background:#b87b4f}.pp-barre-financement .apport{width:14%;background:#d9c2ad}
+  .pp-barre-legende{display:flex;gap:2cqw;margin:.6cqw 0 0;font-size:1cqw;color:#62656d}
+  .pp-barre-legende b{font:400 1cqw var(--font-mono);color:#111}
+  .pp-capacite{display:flex;align-items:baseline;gap:1cqw;margin:1.1cqw 0 0;padding:.8cqw 1.1cqw;border:1px solid #e2ded7;border-radius:.8cqw;font-size:1.05cqw;color:#62656d}
+  .pp-capacite span{flex:1}.pp-capacite b{font:400 1.5cqw var(--font-mono);color:#111}
+  .pp-annexe{display:flex;justify-content:space-between;margin:1.2cqw 0 0;padding-top:1cqw;border-top:1px solid #eeebe5;font-size:1.05cqw;color:#825333}
+
+  .pp-puce{display:inline-block;margin:1.4cqw 0 .4cqw;padding:.35cqw .9cqw;border-radius:4cqw;background:#0b0d12;color:#edeae4;font:1cqw var(--font-mono);letter-spacing:.06em}
+  .pp-intervenant{margin-top:1.1cqw}
+  .pp-qui{display:flex;align-items:center;gap:.9cqw;margin:0 0 .5cqw}
+  .pp-qui i{display:grid;place-items:center;width:2.8cqw;height:2.8cqw;border-radius:50%;background:#b87b4f;color:#fff;font:normal .95cqw var(--font-mono)}
+  .pp-qui b{font-size:1.3cqw;font-weight:500}
+  .pp-qui span{font-size:1.05cqw;color:#62656d}
+  .pp-piece{display:flex;align-items:center;gap:.9cqw;margin:0;padding:.45cqw 0 .45cqw 3.7cqw;border-top:1px solid #e9e5de;font-size:1.12cqw;color:#3d3f46}
+  .pp-piece .case{flex:0 0 auto;width:1.2cqw;height:1.2cqw;border:1px solid #b87b4f;border-radius:.25cqw}
+  .pp-piece em{margin-left:auto;padding:.15cqw .7cqw;border-radius:4cqw;background:#efe7df;font:normal .9cqw var(--font-mono);color:#825333}
+
+  .pp-pres{background:#fbfaf7}
+  .pp-pres-corps{display:grid;grid-template-columns:1.25fr 1fr;gap:2cqw;padding:2cqw 3cqw 1.2cqw}
+  .pp-pres-titre{margin:.8cqw 0 0;font-size:2.8cqw;line-height:1.02;font-weight:300;letter-spacing:-.045em}
+  .pp-pres-sous{margin:1cqw 0 0;font-size:1.2cqw;color:#62656d}
+  .pp-sommaire{display:grid;grid-template-columns:1fr 1fr;gap:0 1.6cqw;margin:1.4cqw 0 0;padding:0;list-style:none}
+  .pp-sommaire li{display:flex;gap:.8cqw;padding:.35cqw 0;border-top:1px solid #e9e5de;font-size:1.05cqw;color:#3d3f46}
+  .pp-sommaire li span{font:.95cqw var(--font-mono);color:#b87b4f}
+  .pp-sommaire li.actif{color:#111;font-weight:500}
+  .pp-anneau{position:relative;display:flex;flex-direction:column;align-items:center}
+  .pp-anneau svg{width:12cqw;height:12cqw;transform:rotate(-90deg)}
+  .pp-anneau circle{fill:none;stroke-width:5}
+  .pp-anneau .fond{stroke:#eeebe5}
+  .pp-anneau .pret{stroke:#b87b4f;stroke-dasharray:86 100}
+  .pp-anneau .apport{stroke:#d9c2ad;stroke-dasharray:14 100;stroke-dashoffset:-86}
+  .pp-anneau > p{position:absolute;top:0;height:12cqw;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0}
+  .pp-anneau > p b{font:400 1.9cqw var(--font-mono);letter-spacing:-.05em}
+  .pp-anneau > p span{font-size:.95cqw;color:#62656d}
+  .pp-anneau ul{width:100%;margin:1cqw 0 0;padding:0;list-style:none}
+  .pp-anneau li{display:flex;align-items:center;gap:.8cqw;padding:.45cqw 0;border-top:1px solid #e9e5de;font-size:1.05cqw;color:#3d3f46}
+  .pp-anneau li i{width:1cqw;height:1cqw;border-radius:50%;background:#b87b4f}.pp-anneau li.apport i{background:#d9c2ad}
+  .pp-anneau li b{margin-left:auto;font:400 1.05cqw var(--font-mono);color:#111}
+
+  .pp-controle{position:absolute;left:4cqw;bottom:2.6cqw;z-index:4;display:flex;align-items:center;gap:1.4cqw;margin:0;padding:1.1cqw 2.2cqw;border:1px solid #b87b4f;border-radius:40px;font:1.3cqw var(--font-mono);letter-spacing:.04em;color:#edeae4;background:#0b0d12}
+  .pp-controle svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:#d9a47c;stroke-width:1.8;stroke-dasharray:16;stroke-dashoffset:0}
+
+  .pp-pause{position:absolute;right:2.4cqw;bottom:2.4cqw;z-index:8;display:grid;place-items:center;width:40px;height:40px;color:#edeae4;background:#0b0d12e6;border:1px solid #a6a9b3;border-radius:50%;cursor:pointer}
+  .pp-pause[hidden]{display:none}.pp-pause svg{width:16px;height:16px}
+  .pp-pause path{display:none}
+  .pp-pause[data-etat=joue] .i-pause,.pp-pause[data-etat=pause] .i-play,.pp-pause[data-etat=fin] .i-replay{display:block}
+  .pp-pause:focus-visible{outline:2px solid #edeae4;outline-offset:3px}
+
+  .pp-offre{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px 24px}.pp-offre > div{grid-column:1/-1}
+  .pp-kicker{display:inline;margin:0;font:10px var(--font-mono);letter-spacing:.08em;color:#d9a47c}
+  .pp-promesse{display:inline;margin:0 0 0 12px;font-size:clamp(17px,1.3vw,22px);font-weight:300;letter-spacing:-.03em}
+  .pp-prix{display:flex;flex-direction:column;align-items:flex-start;gap:2px;line-height:1;margin:0;font-size:30px;font-weight:300;letter-spacing:-.04em;color:#d9a47c}
+  .pp-prix small{white-space:nowrap;font-size:11px;line-height:1.5;letter-spacing:0;color:#a6a9b3}
+  .pp-offre .btn-cuivre{white-space:nowrap}
+  .pp-banques{grid-column:1/-1;margin:0;font-size:12px;color:#7c808a}
+
+  .pp-pied{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:64px;width:calc(100% - 64px);max-width:1296px;margin:0 auto;border-top:1px solid #2a2f3a;font-size:11px;color:#a6a9b3}
+  .pp-pied p{margin:0;line-height:1.6}.pp-pied p span{display:block;font-size:10px}
+  .pp-pied nav{display:flex;gap:24px;flex-wrap:wrap}
+  .pp-pied a{display:inline-flex;align-items:center;min-height:44px;color:#edeae4;transition:color .18s}.pp-pied a:hover{color:#d9a47c}
+
+  /* ── Relief de marque, phases, cartes enrichies ── */
+  .pp-phases{position:absolute;left:4cqw;right:4cqw;top:6.6cqw;display:flex;justify-content:space-between;margin:0;padding:0;list-style:none}
+  .pp-phases li{display:flex;gap:.8cqw;font:1.3cqw var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:#edeae4}
+  .pp-phases li span{color:#d9a47c}
+  .pp-phases-ligne{position:absolute;left:4cqw;right:4cqw;top:9.8cqw;height:.25cqw;border-radius:1cqw;overflow:hidden;background:#2a2f3a}
+  .pp-phases-ligne b{display:block;height:100%;background:#d9a47c;transform-origin:left}
+
+  .pp-q-tete{display:flex;justify-content:space-between;align-items:baseline}
+  .pp-q-tete .pp-carte-titre{margin:0}
+  .pp-q .pp-rail{position:relative;left:auto;right:auto;top:auto;margin:1.4cqw 0 2.6cqw}
+  .pp-q .pp-compteur{margin:0;color:#d9a47c}
+  .pp-q-corps{display:grid;grid-template-columns:7cqw 1fr;gap:3cqw}
+  .pp-q-etapes{margin:0;padding:0 0 0 0;list-style:none;border-right:1px solid #2a2f3a}
+  .pp-q-etapes li{padding:.75cqw 0;font:1.3cqw var(--font-mono);color:#d9a47c}
+  .pp-q-titre{margin:0 0 1.8cqw;font-size:2.6cqw;font-weight:300;letter-spacing:-.03em}
+  .pp-champs{display:grid;grid-template-columns:1fr 1fr;gap:1.5cqw 1.8cqw}
+  .pp-champ span{display:block;margin-bottom:.6cqw;font-size:1.25cqw;color:#a6a9b3}
+  .pp-champ b{display:block;padding:1.1cqw 1.3cqw;border:1px solid #2a2f3a;border-radius:.8cqw;background:#14171e;font:400 1.6cqw var(--font-sans);color:#edeae4;white-space:nowrap;overflow:hidden}
+  .pp-champ em{display:inline-block;font-style:normal;clip-path:inset(0)}
+  .pp-continuer{display:inline-block;margin:2.2cqw 0 0;padding:.9cqw 2.2cqw;border:1px solid #b87b4f;border-radius:4cqw;font-size:1.4cqw;color:#d9a47c}
+
+  .pp-c-corps{display:grid;grid-template-columns:1.3fr 1fr;gap:3cqw;align-items:start}
+  .pp-c .pp-ligne{padding:1.3cqw 0;font-size:1.7cqw}
+  .pp-c .pp-ligne b{font-size:1.9cqw}
+  .pp-c .pp-ligne em{width:11cqw;font-size:1.15cqw}
+  .pp-coherence{padding:2cqw 2.2cqw;border:1px solid #2a2f3a;border-radius:1.6cqw;background:#14171e}
+  .pp-coherence p{margin:0 0 1.2cqw;font:1.2cqw var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:#a6a9b3}
+  .pp-coherence span{display:flex;gap:1cqw;align-items:flex-start;padding:1.1cqw 0;border-top:1px solid #2a2f3a;font:1.3cqw/1.45 var(--font-mono);color:#edeae4}
+  .pp-coherence svg{flex:0 0 auto;width:1.8cqw;height:1.8cqw;fill:none;stroke:#d9a47c;stroke-width:1.8;stroke-dasharray:16}
+
+  /* Bords de pages empilées (aplats nets, pas d'ombre portée floue). */
+  .pp-note{box-shadow:.7cqw .7cqw 0 -.05cqw #e6e1d8,1.4cqw 1.4cqw 0 -.1cqw #cdc5b8}
+  .pp-pieces{box-shadow:.7cqw .7cqw 0 -.05cqw #d9d2c6}
+  .pp-vignettes{display:flex;gap:.8cqw;padding:.8cqw 3cqw 0}
+  .pp-vignettes i{flex:1;display:flex;flex-direction:column;gap:.4cqw;height:3.4cqw;padding:.6cqw;border:1px solid #e2ded7;border-radius:.4cqw;background:#fff}
+  .pp-vignettes i.actif{border-color:#b87b4f}
+  .pp-vignettes b{display:block;height:.35cqw;border-radius:1cqw;background:#e2ded7}.pp-vignettes b+b{width:60%}
+  .pp-vignettes i.actif b:first-child{background:#b87b4f}
+
+  .pp-pdf{position:absolute;right:11cqw;bottom:2.6cqw;z-index:4;display:flex;align-items:center;gap:.5cqw;margin:0;padding:1.1cqw 1.8cqw;border:1px solid #2a2f3a;border-radius:40px;background:#0b0d12;font:1.3cqw var(--font-mono);color:#a6a9b3}
+  .pp-pdf i{width:1.3cqw;height:1.7cqw;border:1px solid #d9a47c;border-radius:.2cqw}.pp-pdf i:nth-of-type(3){margin-right:.7cqw}
+
+  /* ── Pages A4 réalistes ── */
+  .pp-note{height:62.2cqw;display:flex;flex-direction:column;background:#fdfcf9}
+  .pp-pieces{height:56.6cqw;display:flex;flex-direction:column;background:#f9f7f2}
+  .pp-tete-doc{display:flex;justify-content:space-between;align-items:flex-start;margin:2.4cqw 3cqw 0;padding-bottom:1cqw;border-bottom:1px solid #d9d3c9;font:.8cqw/1.35 var(--font-mono);letter-spacing:.06em;color:#62656d;text-align:right}
+  .pp-logo{display:flex;align-items:center;gap:.6cqw;font:500 1cqw var(--font-sans);letter-spacing:.14em;color:#111}
+  .pp-logo svg{width:1.6cqw;height:1.4cqw;fill:none;stroke:#b87b4f;stroke-width:1.6;stroke-linejoin:round}
+  .pp-page{flex:1;padding:1.8cqw 3cqw 0}
+  .pp-surtitre{margin:0;font:.85cqw var(--font-mono);letter-spacing:.14em;color:#825333}
+  .pp-titre-doc{margin:.6cqw 0 0;font-size:2.15cqw;line-height:1.1;font-weight:400;letter-spacing:-.03em;color:#111}
+  .pp-sous-doc{margin:.6cqw 0 0;padding-bottom:1cqw;border-bottom:1px solid #e6e1d8;font-size:.95cqw;color:#62656d}
+  .pp-h{margin:1.2cqw 0 .4cqw;font-size:1.1cqw;font-weight:500;color:#111}
+  .pp-texte-doc{margin:0;font-size:1cqw;line-height:1.55;text-align:justify;hyphens:auto;color:#3d3f46}
+  .pp-tableau{width:100%;border-collapse:collapse;font-size:.95cqw;color:#3d3f46}
+  .pp-tableau th{padding:.35cqw 0;border-bottom:1px solid #111;font:.75cqw var(--font-mono);letter-spacing:.08em;text-transform:uppercase;text-align:left;color:#62656d}
+  .pp-tableau td{padding:.36cqw 0;border-bottom:1px solid #ebe6dd}
+  .pp-tableau th:nth-child(2),.pp-tableau td:nth-child(2){text-align:right;font-family:var(--font-mono);letter-spacing:-.03em;color:#111}
+  .pp-tableau th:nth-child(3),.pp-tableau td:nth-child(3){padding-left:1.5cqw;text-align:right;font-size:.8cqw;color:#825333}
+  .pp-tableau tr.total td{border-bottom:0;border-top:1px solid #111;font-weight:500;color:#111}
+  .pp-tableau-pieces{margin-top:1.4cqw}
+  .pp-tableau-pieces th:nth-child(1),.pp-tableau-pieces td:nth-child(1){width:2cqw}
+  .pp-tableau-pieces th:nth-child(2),.pp-tableau-pieces td:nth-child(2){text-align:left;font-family:var(--font-sans);letter-spacing:0;color:#3d3f46}
+  .pp-tableau-pieces td:nth-child(3){font-family:var(--font-mono)}
+  .pp-tableau-pieces tr.groupe td{padding:.55cqw .6cqw;border-bottom:0;background:#efe9df;font-size:.9cqw;color:#3d3f46}
+  .pp-tableau-pieces tr.groupe b{font-weight:500;color:#111}
+  .pp-tableau-pieces tbody + tbody tr.groupe td{border-top:.8cqw solid transparent;background-clip:padding-box}
+  .pp-tableau .case{display:block;width:1cqw;height:1cqw;border:1px solid #825333;border-radius:.15cqw}
+  .pp-renvoi{margin:.8cqw 0 0;font-size:.8cqw;font-style:italic;color:#62656d}
+  .pp-pied-doc{display:flex;justify-content:space-between;gap:2cqw;white-space:nowrap;margin:0 3cqw 1.4cqw;padding-top:.8cqw;border-top:1px solid #e6e1d8;font:.72cqw var(--font-mono);letter-spacing:.04em;color:#7c808a}
+  .pp-tete-diapo{display:flex;justify-content:space-between;align-items:center;margin:1.6cqw 3cqw 0;padding-bottom:.8cqw;border-bottom:1px solid #d9d3c9;font:.8cqw var(--font-mono);letter-spacing:.06em;color:#62656d}
+  .pp-note .pp-barre-financement{height:.7cqw;margin-top:.9cqw}
+  .pp-note .pp-barre-legende{font-size:.85cqw}
+
+  /* ── Diapositives de la présentation bancaire ── */
+  .pp-diapos{position:relative;flex:0 0 28.6cqw}
+  .pp-diapo{position:absolute;inset:0;display:grid;grid-template-columns:1.2fr 1fr;gap:2cqw;padding:1.8cqw 3cqw 2.2cqw;background:#fbfaf7}
+  .pp-diapo.d2,.pp-diapo.d3{opacity:0;visibility:hidden}
+  .pp-diapo-pied{position:absolute;left:3cqw;right:3cqw;bottom:.4cqw;display:flex;justify-content:space-between;margin:0;font:.8cqw var(--font-mono);letter-spacing:.08em;color:#a6a9b3}
+  .pp-diapo-titre{margin:.8cqw 0 0;font-size:2.4cqw;line-height:1.05;font-weight:300;letter-spacing:-.04em}
+  .pp-chips{display:flex;gap:.7cqw;margin:1.2cqw 0 0}
+  .pp-chips span{display:flex;flex-direction:column;gap:.15cqw;padding:.5cqw .9cqw;border:1px solid #e2ded7;border-radius:.6cqw;background:#fff;font:1.1cqw var(--font-mono);letter-spacing:-.03em;color:#111}
+  .pp-chips small{font:.8cqw var(--font-sans);letter-spacing:0;color:#62656d}
+  .pp-immeuble{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0;padding:1cqw;border-radius:1cqw;background:#f2ede6}
+  .pp-immeuble svg{width:100%;height:19cqw;fill:none;stroke:#b87b4f;stroke-width:.7;stroke-linejoin:round}
+  .pp-immeuble [pathLength]{stroke-dasharray:1}
+  .pp-immeuble .t3{fill:#e9d3bf}
+  .pp-immeuble figcaption{margin-top:.5cqw;font:.9cqw var(--font-mono);letter-spacing:.06em;color:#825333}
+  .pp-er{display:grid;grid-template-columns:1fr 1fr;gap:1.6cqw;margin-top:1.4cqw}
+  .pp-er p{display:flex;justify-content:space-between;gap:.6cqw;min-height:2.2cqw;margin:0;padding:.5cqw 0;border-top:1px solid #e9e5de;font-size:.95cqw;color:#3d3f46}
+  .pp-er p b{font:400 .95cqw var(--font-mono);color:#111;white-space:nowrap}
+  .pp-er p.tete{min-height:0;border:0;font:.85cqw var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:#825333}
+  .pp-er p.vide{border-color:transparent}
+  .pp-er p.tot{border-top:1px solid #111;font-weight:500;color:#111}
+  .d2 .pp-anneau{justify-content:flex-start;padding-top:1.6cqw}.d2 .pp-anneau > p{top:1.6cqw}
+  .pp-barres{margin-top:1.6cqw}
+  .pp-barres p{display:grid;grid-template-columns:10.5cqw 1fr 5cqw;align-items:center;gap:1cqw;margin:0;padding:.6cqw 0;border-top:1px solid #e9e5de;font-size:.95cqw;color:#3d3f46}
+  .pp-barres i{display:block;height:1.1cqw;border-radius:1cqw;background:#eeebe5;overflow:hidden}
+  .pp-barres i b{display:block;height:100%;background:#b87b4f;transform-origin:left}
+  .pp-barres p:nth-child(2) i b{background:#d9c2ad}.pp-barres p:nth-child(3) i b{background:#111}
+  .pp-barres em{font:normal .95cqw var(--font-mono);text-align:right;color:#111}
+  .pp-couverture{display:flex;justify-content:space-between;align-items:baseline;gap:1cqw;margin:1.2cqw 0 0;padding:.8cqw 1cqw;border-radius:.6cqw;background:#f2ede6;font-size:.95cqw;color:#3d3f46}
+  .pp-couverture b{font:400 1.3cqw var(--font-mono);color:#111}
+  .pp-jauge{display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .pp-jauge svg{width:20cqw;height:11.3cqw;fill:none;stroke-linecap:round}
+  .pp-jauge .fond{stroke:#eeebe5;stroke-width:5}
+  .pp-jauge .val{stroke:#b87b4f;stroke-width:5;stroke-dasharray:56.4 100}
+  .pp-jauge .repere{stroke:#111;stroke-width:.8}
+  .pp-jauge p{display:flex;flex-direction:column;align-items:center;margin:-4.6cqw 0 0}
+  .pp-jauge p b{font:400 2.2cqw var(--font-mono);letter-spacing:-.05em}
+  .pp-jauge p span{font-size:.95cqw;color:#62656d}
+  .pp-jauge small{margin-top:1.2cqw;font:.8cqw var(--font-mono);letter-spacing:.08em;color:#825333}
+
+  /* Repères de cadrage techniques */
+  .pp-reperes i{position:absolute;width:1.8cqw;height:1.8cqw;border:0 solid #d9a47c66}
+  .pp-reperes i:nth-child(1){left:1.4cqw;top:1.4cqw;border-left-width:1px;border-top-width:1px}
+  .pp-reperes i:nth-child(2){right:1.4cqw;top:1.4cqw;border-right-width:1px;border-top-width:1px}
+  .pp-reperes i:nth-child(3){left:1.4cqw;bottom:1.4cqw;border-left-width:1px;border-bottom-width:1px}
+  .pp-reperes i:nth-child(4){right:1.4cqw;bottom:1.4cqw;border-right-width:1px;border-bottom-width:1px}
+  .pp-reperes span{position:absolute;left:1.2cqw;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);font:.9cqw var(--font-mono);letter-spacing:.25em;color:#7c808a}
+
+  /* ── Clôture : tampon d'encre cuivre et appel vers l'offre ── */
+  .pp-tampon{position:absolute;left:37cqw;top:54cqw;z-index:6;width:23cqw;height:23cqw;color:#9c5f36;opacity:.9;mix-blend-mode:multiply;transform:rotate(-14deg);pointer-events:none}
+  .pp-tampon svg{width:100%;height:100%;overflow:visible;fill:none;stroke:currentColor;stroke-width:2.2}
+  .pp-tampon .fin{stroke-width:.8}
+  .pp-tampon text{fill:currentColor;stroke:none;font:600 6.2px var(--font-mono)}
+  .pp-tampon .pret{font:700 8px var(--font-mono);letter-spacing:.2em}
+  .pp-tampon .coche{stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
+  .pp-tampon::after{content:'';position:absolute;inset:-6%;border:1px solid #d9a47c;border-radius:50%;opacity:0}
+
+  /* ── Carte de conclusion ── */
+  .pp-fin{position:absolute;inset:0;z-index:7;display:flex;flex-direction:column;justify-content:flex-end;padding:0 6cqw 8cqw;background:linear-gradient(180deg,#0b0d1200 26%,#0b0d12cc 50%,#0b0d12f2 66%,#0b0d12 80%);pointer-events:none}
+  .pp-fin > *{pointer-events:auto}
+  .pp-fin-kicker{margin:0;font:max(10px,1.35cqw) var(--font-mono);letter-spacing:.14em;color:#d9a47c}
+  .pp-fin-titre{max-width:84cqw;margin:1.6cqw 0 0;font-size:max(22px,5.6cqw);line-height:1.04;font-weight:300;letter-spacing:-.045em;color:#edeae4;text-wrap:balance}
+  .pp-fin-titre em{font-style:normal;color:#d9a47c}
+  .pp-fin-sous{max-width:70cqw;margin:2.2cqw 0 0;font-size:max(13px,1.75cqw);line-height:1.55;font-weight:300;color:#a6a9b3}
+  @media (max-width:640px){.pp-fin{padding:0 5cqw 5cqw}.pp-fin-titre{font-size:max(19px,5.6cqw)}.pp-fin-sous{display:none}}
+
+  /* ── Chorégraphie (≈ 45 s, tampon de clôture à 36,9 s, carte de conclusion à 39,4 s, une seule fois). L'état de base ci-dessus est l'image finale.
+       Une pause marque la fin de chaque phase :
+       01 questionnaire 0,8–8,5 s · 02 rapprochement 8,6–15,4 s ·
+       03 livrables : note 15,5 s, pièces 21,1 s, présentation 25,7 s · 04 contrôle 35,1 s. ── */
+  @media (prefers-reduced-motion: no-preference){
+    .pp-anime .pp-entete{animation:pp-fondu .8s ease both}
+    .pp-anime .pp-phases li{animation:pp-allume .6s ease both;animation-delay:var(--t)}
+    .pp-anime .pp-phases-ligne b{animation:pp-progression 35.78s linear both}
+    .pp-anime .pp-reperes{animation:pp-fondu 1.62s ease .4s both}
+
+    .pp-anime .pp-q{animation:pp-passage 7.7s cubic-bezier(.2,.7,.2,1) .6s both}
+    .pp-anime .pp-q .pp-rail i{animation:pp-remplir .4s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(1.62s + var(--i) * .45s)}
+    .pp-anime .pp-q-etapes li{animation:pp-etape .3s ease both;animation-delay:calc(1.62s + var(--i) * .45s)}
+    .pp-anime .pp-compteur{animation:pp-etapes 4.86s steps(7,end) 1.62s both}
+    .pp-anime .pp-champ{animation:pp-monte .4s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(1.49s + var(--i) * .55s)}
+    .pp-anime .pp-champ b{animation:pp-focus .9s ease forwards;animation-delay:calc(1.62s + var(--i) * .55s)}
+    .pp-anime .pp-champ em{animation:pp-frappe .45s steps(14,end) both;animation-delay:calc(1.76s + var(--i) * .55s)}
+    .pp-anime .pp-continuer{animation:pp-fondu .5s ease 6.62s both}
+
+    .pp-anime .pp-c{animation:pp-passage-c 6.75s cubic-bezier(.2,.7,.2,1) 8.64s both}
+    .pp-anime .pp-c .pp-ligne{animation:pp-monte .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(9.32s + var(--i) * .4s)}
+    .pp-anime .pp-c .pp-ligne em{animation:pp-tampon .4s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(9.65s + var(--i) * .4s)}
+    .pp-anime .pp-coherence{animation:pp-fondu .5s ease 11.61s both}
+    .pp-anime .pp-coherence span{animation:pp-monte .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(12.02s + var(--i) * .45s)}
+    .pp-anime .pp-coherence svg{animation:pp-coche .4s ease both;animation-delay:calc(12.29s + var(--i) * .45s)}
+
+    .pp-anime .pp-note{--d:15.53s;animation:pp-note 5.27s cubic-bezier(.65,0,.25,1) 15.53s both}
+    .pp-anime .pp-pieces{--d:21.06s;animation:pp-pieces 4.32s cubic-bezier(.65,0,.25,1) 21.06s both}
+    .pp-anime .pp-pres{--d:25.65s;animation:pp-pres 8.91s cubic-bezier(.65,0,.25,1) 25.65s both}
+    .pp-anime .pp-immeuble [pathLength]{animation:pp-trace1 2.16s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--d) + .8s)}
+    .pp-anime .pp-immeuble .t3{animation:pp-trace1 2.16s cubic-bezier(.4,0,.2,1) both,pp-fondu-t3 .6s ease both;animation-delay:calc(var(--d) + .8s),calc(var(--d) + 2.43s)}
+    .pp-anime .pp-diapo.d2{animation:pp-diapo 2.56s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--d) + 2.84s)}
+    .pp-anime .pp-diapo.d3{animation:pp-diapo 2.56s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--d) + 5.27s)}
+    .pp-anime .d2 .pp-er{animation:pp-monte .5s ease both;animation-delay:calc(var(--d) + 3.24s)}
+    .pp-anime .pp-barres i b{animation:pp-remplir .7s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 5.8s + var(--i) * .2s)}
+    .pp-anime .pp-jauge .val{animation:pp-anneau 1.35s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 5.94s)}
+    .pp-anime .pp-vignettes i:nth-child(5){animation:pp-vig 2.56s linear;animation-delay:calc(var(--d) + 2.84s)}
+    .pp-anime .pp-vignettes i:nth-child(6){animation:pp-vig 2.56s linear;animation-delay:calc(var(--d) + 5.27s)}
+    .pp-anime .pp-el{animation:pp-monte .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d) + .5s + var(--k) * .3s)}
+    .pp-anime .pp-barre-financement i{animation:pp-remplir .7s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 2.29s)}
+    .pp-anime .pp-anneau .pret{animation:pp-anneau 1.35s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 3.38s)}
+    .pp-anime .pp-anneau .apport{animation:pp-fondu .4s ease both;animation-delay:calc(var(--d) + 3.92s)}
+
+    .pp-anime .pp-controle{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 35.1s both}
+    .pp-anime .pp-controle svg{animation:pp-coche .5s ease 35.64s both}
+    .pp-anime .pp-pdf{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 35.91s both}
+    .pp-anime .pp-tampon{animation:pp-tampon-pose .75s cubic-bezier(.3,1.4,.5,1) 36.9s both}
+    .pp-anime .pp-tampon::after{animation:pp-onde 1s cubic-bezier(.2,.7,.2,1) 37.35s both}
+    .pp-anime .pp-fin{animation:pp-fondu 1.4s ease 39.4s both}
+    .pp-anime .pp-fin-kicker{animation:pp-monte .7s cubic-bezier(.2,.7,.2,1) 40s both}
+    .pp-anime .pp-fin-titre span,.pp-anime .pp-fin-titre em{display:inline-block;animation:pp-mot .9s cubic-bezier(.2,.7,.2,1) both}
+    .pp-anime .pp-fin-titre span:first-child{animation-delay:40.3s}
+    .pp-anime .pp-fin-titre em{animation-delay:40.9s}
+    .pp-anime .pp-fin-titre span:last-child{animation-delay:41.5s}
+    .pp-anime .pp-fin-sous{animation:pp-monte .8s cubic-bezier(.2,.7,.2,1) 42.3s both}
+    .pp-produit:has(.pp-anime) .pp-offre .btn-cuivre{animation:pp-appel 1.6s cubic-bezier(.2,.7,.2,1) 43s}
+    .pp-produit:has(.pp-en-pause) .pp-offre .btn-cuivre{animation-play-state:paused}
+    .pp-en-pause *,.pp-en-pause *::after{animation-play-state:paused !important}
+  }
+  @keyframes pp-fondu{from{opacity:0}}
+  @keyframes pp-mot{from{opacity:0;transform:translateY(2.4cqw);clip-path:inset(0 0 100% 0)}to{clip-path:inset(-20% -5% -30% -5%)}}
+  @keyframes pp-tampon-pose{0%{opacity:0;transform:rotate(-4deg) scale(1.9)}62%{opacity:.9;transform:rotate(-14deg) scale(.95)}82%{transform:rotate(-14deg) scale(1.02)}100%{opacity:.9;transform:rotate(-14deg) scale(1)}}
+  @keyframes pp-onde{0%{opacity:.8;transform:scale(.9)}100%{opacity:0;transform:scale(1.5)}}
+  @keyframes pp-appel{0%{box-shadow:0 0 0 0 #d9a47c99}100%{box-shadow:0 0 0 16px #d9a47c00}}
+  @keyframes pp-allume{from{opacity:.28}}
+  @keyframes pp-trace{from{stroke-dashoffset:100}}
+  @keyframes pp-progression{0%{transform:scaleX(0)}3%,23.8%{transform:scaleX(.25)}25.6%,43%{transform:scaleX(.5)}44.8%,97.4%{transform:scaleX(.75)}100%{transform:scaleX(1)}}
+  @keyframes pp-trace1{from{stroke-dashoffset:1}}
+  @keyframes pp-fondu-t3{from{fill:transparent}}
+  @keyframes pp-diapo{0%{opacity:0;visibility:visible;transform:translateX(5cqw)}14%,86%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translateX(-3cqw)}}
+  @keyframes pp-vig{0%,100%{border-color:#e2ded7}12%,88%{border-color:#b87b4f}}
+  @keyframes pp-remplir{from{transform:scaleX(0)}}
+  @keyframes pp-etape{from{color:#4a4f5a}}
+  @keyframes pp-etapes{from{--pp-etape:1}to{--pp-etape:8}}
+  @keyframes pp-monte{from{opacity:0;transform:translateY(1.4cqw)}}
+  @keyframes pp-focus{0%,70%{border-color:#b87b4f}}
+  @keyframes pp-frappe{from{clip-path:inset(0 100% 0 0)}}
+  @keyframes pp-tampon{from{opacity:0;transform:scale(1.6)}}
+  @keyframes pp-coche{from{stroke-dashoffset:16}}
+  @keyframes pp-anneau{from{stroke-dasharray:0 100}}
+  @keyframes pp-passage{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}8%,91%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translateY(-3cqw)}}
+  /* Les chiffres glissent vers la note de synthèse, qui les reprend. */
+  @keyframes pp-passage-c{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}8%,88%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translate(0,14cqw) scale(.7)}}
+  /* Plan rapproché centré, maintenu, puis place définitive (l'état de base). */
+  @keyframes pp-note{
+    0%{opacity:0;z-index:10;transform:translate(19cqw,30cqw) scale(1.12)}
+    15%{opacity:1;z-index:10;transform:translate(19cqw,-11cqw) scale(1.12)}
+    79%{z-index:10;transform:translate(19cqw,-11cqw) scale(1.12)}
+    100%{z-index:3}}
+  @keyframes pp-pieces{
+    0%{opacity:0;z-index:10;transform:translate(-19cqw,30cqw) scale(1.18)}
+    19%{opacity:1;z-index:10;transform:translate(-19cqw,-11.5cqw) scale(1.18)}
+    75%{z-index:10;transform:translate(-19cqw,-11.5cqw) scale(1.18)}
+    100%{z-index:2}}
+  @keyframes pp-pres{
+    0%{opacity:0;z-index:10;transform:translate(0,64cqw) scale(1.45)}
+    9%{opacity:1;z-index:10;transform:translate(0,24cqw) scale(1.45)}
+    88%{z-index:10;transform:translate(0,24cqw) scale(1.45)}
+    100%{z-index:1}}
+
+  @media (max-width:1023px){
+    .pp-grille{grid-template-columns:1fr;gap:32px}
+    .pp-produit{max-width:none;justify-self:stretch}
+  }
+  @media (max-width:640px){
+    .pp-grille{padding:24px 20px}
+    .pp-pied{width:calc(100% - 40px)}
+    .pp-cabinet h1{font-size:32px}
+    .pp-texte{font-size:15px;margin-top:18px}
+    .pp-actions{margin-top:22px}
+    .pp-offre .btn-cuivre{grid-column:1/-1;justify-content:center}
+    .pp-kicker,.pp-promesse{display:block}.pp-promesse{margin:6px 0 0}
+    .pp-offre{order:-1}
+    .pp-anime,.pp-anime *,.pp-anime *::after,.pp-produit .pp-offre .btn-cuivre{animation:none!important}
+    .pp-pied{flex-direction:column-reverse;align-items:flex-start;gap:6px;margin:0 auto;padding:6px 0 12px}
+  }
+</style>

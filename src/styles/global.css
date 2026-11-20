@@ -18,11 +18,11 @@
   --color-blanc: #ffffff;
   --color-encre: #111111;
   --color-corps: #3d3f46;
-  --color-gris: #6d7078;
+  --color-gris: #62656d;
   --color-trait: #e2ded7;
   --color-cuivre: #b87b4f;
   --color-cuivre-clair: #d9a47c;
-  --color-cuivre-profond: #9a6b45;
+  --color-cuivre-profond: #825333;
 
   --font-sans: "Geist Variable", "Geist", "Inter", system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
@@ -54,7 +54,9 @@
 }
 
 @layer components {
-  .contenu { @apply mx-auto w-full max-w-[1200px] px-5 lg:px-8; }
+  .contenu { @apply mx-auto w-full max-w-[1360px] px-5 lg:px-8; }
+  /* Questions dépliables : zone tactile d'au moins 44 px. */
+  details > summary { min-height: 44px; }
   .section { @apply py-20; }
 
   /* Registres de section : sombre (Abîme, grille technique) et clair (Cendre) */
@@ -65,8 +67,8 @@
     background-image: linear-gradient(var(--color-filet) 1px, transparent 1px), linear-gradient(90deg, var(--color-filet) 1px, transparent 1px);
     background-size: 64px 64px; }
   .clair { @apply relative bg-cendre text-corps; }
-  .section-sombre { @apply py-24 lg:py-28; }
-  .section-claire { @apply py-20 lg:py-22; }
+  .section-sombre { @apply py-16 sm:py-24 lg:py-28; }
+  .section-claire { @apply py-16 sm:py-20 lg:py-22; }
 
   /* Typographie */
   .display { @apply text-[44px] leading-[1.04] font-light tracking-[-0.03em] sm:text-[56px] lg:text-[72px]; }
@@ -258,8 +260,8 @@
 /* Surfaces are independent of the canvas, so fields, photos and cards never invert. */
 .fond-scroll :is(.carte-donnee, .simulator-panel, .carte-claire) {
   --color-etoile:#edeae4; --color-argent:#a6a9b3; --color-filet:#2a2f3a;
-  --color-encre:#111111; --color-corps:#3d3f46; --color-gris:#6d7078; --color-trait:#e2ded7;
-  --color-cuivre-clair:#d9a47c; --color-cuivre-profond:#9a6b45;
+  --color-encre:#111111; --color-corps:#3d3f46; --color-gris:#62656d; --color-trait:#e2ded7;
+  --color-cuivre-clair:#d9a47c; --color-cuivre-profond:#825333;
 }
 .fond-scroll > section:not(.heros) .btn-fantome { border-color:var(--color-filet); }
 .fond-scroll > section:not(.heros) .btn-cuivre { background:#9a6b45; color:#fff; }
@@ -491,3 +493,4 @@ main .clair .surface-claire .btn-cuivre:hover { background:#85593a; }
 }
 /* Listes déroulantes : chevron visible (le natif est retiré par appearance-none). */
 select.champ { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%239aa0ab' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 5 4 4 4-4'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:38px; cursor:pointer; }
+

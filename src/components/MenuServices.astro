@@ -1,0 +1,28 @@
+---
+import {langCourante,localiser} from '../i18n';
+import {services} from '../data/services';
+const lang=langCourante(Astro.currentLocale),en=lang==='en';
+---
+<details data-services class="services-menu relative hidden xl:block">
+ <summary class="services-trigger">{en?'Our services':'Nos services'}<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+ <nav aria-label={en?'Our services':'Nos services'} class="services-panel">
+  {services(lang).map((item,i)=><a href={localiser(item.path,lang)} class="service-link"><span class="service-number" aria-hidden="true">0{i+1}</span><span><strong>{item.name}</strong><small>{item.detail}</small><span class="service-price">{item.price}</span></span><span class="service-arrow" aria-hidden="true">↗</span></a>)}
+ </nav>
+</details>
+<style>
+ .services-trigger{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;border:1px solid #edeae433;border-radius:40px;font-size:13px;color:#edeae4d9;list-style:none;white-space:nowrap;cursor:pointer}
+ .services-trigger::-webkit-details-marker{display:none}
+ .services-trigger svg{transition:transform .18s}
+ [open]>.services-trigger{border-color:#b87b4f;color:#edeae4}
+ [open]>.services-trigger svg{transform:rotate(180deg)}
+ .services-panel{position:absolute;top:56px;right:0;width:360px;max-height:calc(100dvh - 110px);overflow-y:auto;padding:10px 16px;background:#14171e;border:1px solid #2a2f3a;border-radius:12px}
+ .service-link{display:grid;grid-template-columns:22px 1fr 14px;gap:12px;padding:20px 4px;color:#edeae4}
+ .service-link+.service-link{border-top:1px solid #2a2f3a}
+ .service-number,.service-price{font-family:var(--font-mono);font-size:10px;color:#d9a47c;line-height:1.6}
+ .service-number{padding-top:3px}.service-price{display:block;margin-top:8px}
+ .service-link strong{display:block;font-size:15px;font-weight:500;line-height:1.5}
+ .service-link small{display:block;font-size:12px;line-height:1.6;color:#a6a9b3;margin-top:4px}
+ .service-arrow{color:#a6a9b3;padding-top:2px}
+ .service-link:hover strong,.service-link:focus-visible strong{color:#d9a47c}
+ @media(prefers-reduced-motion:reduce){.services-trigger svg{transition:none}}
+</style>

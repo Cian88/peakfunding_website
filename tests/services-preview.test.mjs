@@ -20,6 +20,12 @@ test('Services : trois offres regroupées avant Vos espaces, liens FR/EN et vent
    assert.equal(page('main a[href*="/paiement.html"], main a[href*="/exchange-paiement.html"], main [data-ebook-buy]').length,0,slug);
   }
   const pitch=load(read(`dist/${prefix}peak-pitch/index.html`));
+  const terms=load(read(`dist/${prefix}conditions-peak-pitch/index.html`));
+  const exchange=load(read(`dist/${prefix}peak-exchange/index.html`));
+  const book=load(read(`dist/${prefix}livre/index.html`));
+  assert.match(terms('main').text(),/article 261 C/i);
+  assert.match(exchange('main').text(),prefix?/20% French VAT/:/TVA à 20 % incluse/);
+  assert.match(book('main').text(),prefix?/5\.5% French VAT/:/TVA à 5,5 % incluse/);
   assert.equal(pitch('main #peak-exchange').length,0);assert.doesNotMatch(pitch('main').text(),/199|298|PEAK EXCHANGE/);
  }
 });

@@ -4,9 +4,9 @@
 
 ## Offre et vendeur
 
-PEAK FUNDING, SIREN 987 461 787, vend le livre ; Valentin Boura--Defranoux est l’auteur. Prix affiché : **24,90 €**, paiement unique, une édition PDF française ou anglaise au choix par achat, sans abonnement. **Stancer** remplace le choix initial de Stripe.
+PEAK FUNDING, SIREN 987 461 787, vend le livre ; Valentin Boura--Defranoux est l’auteur. Prix affiché : **24,90 € TTC**, paiement unique, une édition PDF française ou anglaise au choix par achat, sans abonnement. **Stancer** remplace le choix initial de Stripe.
 
-Le traitement fiscal du livre reste à confirmer pour la facturation Qonto ; ne pas reprendre automatiquement celui des autres prestations. Le serveur conserve `vatTreatment: to_confirm`.
+Le prix français inclut la TVA à 5,5 %. L’export pour la facturation Qonto indique 23,60 € HT et 1,30 € de TVA.
 
 ## Contenu préparé
 
@@ -56,7 +56,7 @@ Bouton désactivé sans activation explicite et URL HTTPS du service. La version
 1. Accord explicite de Valentin pour publier cette page, distinct de la validation Stancer.
 2. Stancer opérationnel et recette du paiement, confirmation, téléchargement et remboursement.
 3. Service serveur sain, fichiers complets installés dans le stockage privé de production et contrôlés. Aucun chargement de production dans ce lot.
-4. Finaliser les CGV du livre et leur traduction, la rétractation numérique, la médiation et le traitement fiscal avec les interlocuteurs compétents. Les pages de conditions sont des **projets non indexables**.
+4. Finaliser les CGV du livre et leur traduction, la rétractation numérique, la médiation avec les interlocuteurs compétents. Les pages de conditions sont des **projets non indexables**.
 5. Arbitrer l’écart entre le pied de page des extraits (SASU, capital 1 400 €) et les mentions historiques du site (SAS, 2 000 €). Ni les PDF reçus ni les mentions légales protégées du site n’ont été réécrits.
 6. Recette navigateur ordinateur/mobile et récupération du livre. Le re-téléchargement fonctionne dans le même navigateur avec son cookie privé ; pas encore de récupération autonome par e-mail sur un autre appareil.
 

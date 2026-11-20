@@ -1,0 +1,15 @@
+---
+const { en = false } = Astro.props;
+---
+<section class="border border-current p-5" aria-labelledby="garantie-numerique">
+  <h2 id="garantie-numerique">{en ? 'Legal guarantee of conformity for digital content' : 'Garantie légale de conformité des contenus numériques'}</h2>
+  <p>{en
+    ? 'For a one-off supply, PEAK FUNDING is liable for any lack of conformity that exists at the time of supply and becomes apparent within two years. During the first year, the consumer only needs to show that the defect exists and does not have to prove when it began. This guarantee includes the updates needed to maintain conformity.'
+    : 'Pour une fourniture ponctuelle, PEAK FUNDING répond des défauts de conformité qui existent à la fourniture et apparaissent dans les deux ans. Pendant la première année, le consommateur doit établir l’existence du défaut sans avoir à prouver sa date d’apparition. La garantie comprend les mises à jour nécessaires au maintien de la conformité.'}</p>
+  <p>{en
+    ? 'The consumer can ask PEAK FUNDING to bring the content into conformity free of charge, without undue delay or significant inconvenience. In the circumstances provided by law, including when conformity is impossible, refused, delayed or the defect persists, the consumer can obtain a price reduction or terminate the contract and receive the applicable refund. A serious defect can justify an immediate reduction or termination.'
+    : 'Le consommateur peut demander à PEAK FUNDING une mise en conformité gratuite, sans retard injustifié ni inconvénient majeur. Dans les cas prévus par la loi, notamment si la mise en conformité est impossible, refusée, tardive ou si le défaut persiste, il peut obtenir une réduction du prix ou mettre fin au contrat et recevoir le remboursement dû. Un défaut suffisamment grave peut justifier une réduction ou une résolution immédiate.'}</p>
+  <p>{en
+    ? 'This guarantee is governed by Articles L. 224-25-12 et seq. of the French Consumer Code. The separate warranty for hidden defects under Articles 1641 to 1649 of the French Civil Code also applies where its conditions are met.'
+    : 'Cette garantie est régie par les articles L. 224-25-12 et suivants du Code de la consommation. La garantie des vices cachés prévue aux articles 1641 à 1649 du Code civil s’applique également lorsque ses conditions sont réunies.'}</p>
+</section>

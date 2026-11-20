@@ -1,4 +1,21 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ConditionsCommunes from '../../components/legal/ConditionsCommunes.astro';
+import { exchangeCredit, exchangeFreedom } from '../../data/peak-exchange';
 ---
-<Base title="PEAK EXCHANGE terms — Draft | PEAK FUNDING" description="PEAK EXCHANGE terms are being finalised before online payments open." noindex><article class="contenu section prose-pf max-w-[900px]"><h1>PEAK EXCHANGE — Terms of sale</h1><p>The one-off price is €299 including 20% French VAT. The terms are being finalised before online payments open. The French version will govern the service.</p><p><a href="/conditions-peak-exchange/">Read the French draft</a></p><p><a href="/en/peak-exchange/">Back to PEAK EXCHANGE</a></p></article></Base>
+<Base title="PEAK EXCHANGE terms of sale | PEAK FUNDING" description="PEAK EXCHANGE terms of sale" noindex>
+  <article class="contenu section prose-pf max-w-[900px]">
+    <h1>PEAK EXCHANGE terms of sale</h1>
+    <h2>The consultation</h2>
+    <p>PEAK EXCHANGE costs €299 including 20% French VAT. It includes an individual consultation with Valentin Boura--Defranoux and a written note tailored to the project. The consultation covers the strengths and weaknesses of the application, arguments relevant to the customer’s profile and the banking context.</p>
+    <p>{exchangeFreedom.en} The service does not include presenting the application to a bank or negotiating financing.</p>
+    <h2>Booking and delivery</h2>
+    <p>After payment, choose an available appointment in the booking calendar. The consultation lasts up to one hour. The appointment confirmation gives the time and the way to join. The firm sends the note on a durable medium within 24 hours of the end of the consultation. Contact the firm before your appointment to reschedule free of charge or cancel for a full refund. If the firm cancels, it offers a replacement appointment or refunds the payment if you decline.</p>
+    <h2>Brokerage fee credit</h2>
+    <p>{exchangeCredit.en}</p>
+    <h2>Right of withdrawal</h2>
+    <p>Consumers have 14 days from the conclusion of the contract to withdraw. If you expressly request early performance, the right ends once the consultation has taken place and the note has been supplied, subject to prior acknowledgement. If you withdraw earlier, you may owe a proportionate amount for work already supplied, as provided by law.</p>
+    <ConditionsCommunes en />
+    <p><a href="/en/peak-exchange/">Back to the offer</a></p>
+  </article>
+</Base>

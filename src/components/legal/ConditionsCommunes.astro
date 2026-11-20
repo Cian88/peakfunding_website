@@ -1,0 +1,27 @@
+---
+const { en = false } = Astro.props;
+const lang = en ? '/en' : '';
+const withdrawal = 'https://peak-pitch.valentinboura.workers.dev/retractation.html' + (en ? '?lang=en' : '');
+---
+<h2>{en ? 'Seller and payment' : 'Vendeur et paiement'}</h2>
+<p>PEAK FUNDING, SAS {en ? 'with capital of €2,000' : 'au capital de 2 000 €'}, 99 avenue Achille Peretti, 92200 Neuilly-sur-Seine, France. RCS Nanterre 987 461 787 · ORIAS 24002546.</p>
+<p>{en
+  ? 'Payment is made once by card via Stancer. The order is confirmed after payment. PEAK FUNDING sends a confirmation by email to the billing address supplied.'
+  : 'Le règlement se fait en une fois par carte via Stancer. La commande est confirmée après paiement. PEAK FUNDING envoie une confirmation à l’adresse électronique de facturation indiquée.'}</p>
+<h2>{en ? 'How to withdraw' : 'Comment se rétracter'}</h2>
+<p><a href={withdrawal}>{en ? 'Withdraw from the contract online' : 'Renoncer au contrat en ligne'}</a></p>
+<p>{en
+  ? 'Before the 14-day period expires, send an unequivocal request by post to the seller or use the administrative contact below. You may use the form below. Where a refund is due, PEAK FUNDING issues it within 14 days of receiving your request, using the original payment method unless you agree otherwise.'
+  : 'Avant la fin du délai de 14 jours, adressez une déclaration sans ambiguïté par courrier au vendeur ou via le contact administratif ci-dessous. Vous pouvez utiliser le modèle ci-dessous. Si un remboursement est dû, PEAK FUNDING le réalise dans les 14 jours suivant la réception de votre demande, par le moyen de paiement initial sauf accord contraire.'}</p>
+<p>{en
+  ? 'To PEAK FUNDING: I hereby give notice that I withdraw from my contract for [offer and order reference], ordered on [date]. Consumer name and postal address, date, and signature (only for paper notices).'
+  : 'À l’attention de PEAK FUNDING : je vous notifie ma rétractation du contrat portant sur [offre et référence], commandé le [date]. Nom et adresse du consommateur, date et signature (uniquement sur papier).'}</p>
+<h2>{en ? 'Complaints, mediation and applicable law' : 'Réclamations, médiation et droit applicable'}</h2>
+<p>{en
+  ? 'Send written complaints to PEAK FUNDING. If the dispute remains unresolved, consumers can contact IEAM free of charge within one year of their written complaint.'
+  : 'Adressez vos réclamations écrites à PEAK FUNDING. Si le litige persiste, le consommateur peut saisir gratuitement l’IEAM dans l’année qui suit sa réclamation écrite.'}</p>
+<p>IEAM · 31 bis–33 rue Daru, 75008 Paris, France · <a href="mailto:ieam-paris@ieam.eu">ieam-paris@ieam.eu</a> · <a href="https://www.ieam.eu/demande-de-mediation">{en ? 'Request mediation' : 'Demander une médiation'}</a></p>
+<p>{en
+  ? 'French law applies, subject to mandatory consumer protections in the consumer’s country of residence.'
+  : 'Le droit français s’applique, sous réserve des protections impératives du pays de résidence du consommateur.'}</p>
+<p><a href={lang + '/contact/#administratif'}>{en ? 'Administrative contact' : 'Contact administratif'}</a> · <a href={lang + '/politique-de-confidentialite/'}>{en ? 'Privacy policy' : 'Politique de confidentialité'}</a></p>

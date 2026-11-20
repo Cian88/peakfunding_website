@@ -27,6 +27,7 @@ const t = fr ? {
   coherence: 'Contrôles de cohérence',
   controles: ['285 000 + 20 000 + 24 000 = 329 000 €', '329 000 − 45 000 = 284 000 €', '284 000 € · 25 ans · 3,5 % → 1 422 € / mois'],
   pdf: '3 PDF prêts à présenter',
+  tampon: ['PEAK PITCH · DOSSIER PRÊT À PRÉSENTER · ', 'PRÊT'],
   chiffres: [['Budget total', '329 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Mensualité · 25 ans', '1 422 €', 'CALCULÉ'], ['Capacité estimée', '350 000 €', 'SIMULATEUR']],
   dossier: 'Dossier PP-2611', page: 'p. 1 / 6', date: '20 novembre 2026',
   doc: { prepare: 'Établi d’après les déclarations du client · Exemple', page: (n: number, t: number) => `Page ${n} sur ${t}`,
@@ -85,6 +86,7 @@ const t = fr ? {
   coherence: 'Consistency checks',
   controles: ['285,000 + 20,000 + 24,000 = €329,000', '329,000 − 45,000 = €284,000', '€284,000 · 25 yrs · 3.5% → €1,422 / month'],
   pdf: '3 PDFs ready to present',
+  tampon: ['PEAK PITCH · FILE READY TO PRESENT · ', 'READY'],
   chiffres: [['Total budget', '€329,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Loan requested', '€284,000', 'CALCULATED'], ['Monthly payment · 25 yrs', '€1,422', 'CALCULATED'], ['Estimated capacity', '€350,000', 'SIMULATOR']],
   dossier: 'File PP-2611', page: 'p. 1 / 6', date: '20 November 2026',
   doc: { prepare: 'Based on the client’s declarations · Example', page: (n: number, t: number) => `Page ${n} of ${t}`,
@@ -292,6 +294,22 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
             <footer class="pp-pied-doc"><span>{t.doc.prepare}</span><span>{t.doc.page(1, 6)}</span></footer>
           </div>
 
+          <!-- Clôture : tampon apposé sur le dossier -->
+          <div class="pp-tampon">
+            <svg viewBox="0 0 100 100">
+              <defs>
+                <path id="pp-cercle" d="M50 50m-37 0a37 37 0 1 1 74 0a37 37 0 1 1-74 0" />
+                <filter id="pp-encre"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" /><feDisplacementMap in="SourceGraphic" scale="1.1" /></filter>
+              </defs>
+              <g filter="url(#pp-encre)">
+                <circle cx="50" cy="50" r="47" /><circle class="fin" cx="50" cy="50" r="44.5" /><circle cx="50" cy="50" r="28" />
+                <text><textPath href="#pp-cercle" textLength="230" lengthAdjust="spacing">{t.tampon[0]}</textPath></text>
+                <path class="coche" d="M39 46 47 54 62 37" />
+                <text class="pret" x="51" y="70" text-anchor="middle">{t.tampon[1]}</text>
+              </g>
+            </svg>
+          </div>
+
           <p class="pp-controle"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" /></svg>{t.controle}</p>
           <p class="pp-pdf"><i></i><i></i><i></i>{t.pdf}</p>
         </div>
@@ -346,8 +364,8 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
       } else etat = etat === 'joue' ? 'pause' : 'joue';
       maj();
     }, { signal: ctrl.signal });
-    const dernier = scene.querySelector('.pp-pdf');
-    dernier?.addEventListener('animationend', e => { if (e.target === dernier) { etat = 'fin'; maj(); } }, { signal: ctrl.signal });
+    const dernier = scene.querySelector('.pp-tampon');
+    dernier?.addEventListener('animationend', e => { if (e.target === dernier && !(e as AnimationEvent).pseudoElement) { etat = 'fin'; maj(); } }, { signal: ctrl.signal });
     reduit.addEventListener('change', maj, { signal: ctrl.signal });
     dispose = () => ctrl.abort();
     maj();
@@ -594,7 +612,16 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-reperes i:nth-child(4){right:1.4cqw;bottom:1.4cqw;border-right-width:1px;border-bottom-width:1px}
   .pp-reperes span{position:absolute;left:1.2cqw;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);font:.9cqw var(--font-mono);letter-spacing:.25em;color:#7c808a}
 
-  /* ── Chorégraphie (≈ 36 s, une seule fois). L'état de base ci-dessus est l'image finale.
+  /* ── Clôture : tampon d'encre cuivre et appel vers l'offre ── */
+  .pp-tampon{position:absolute;left:37cqw;top:54cqw;z-index:6;width:23cqw;height:23cqw;color:#9c5f36;opacity:.9;mix-blend-mode:multiply;transform:rotate(-14deg);pointer-events:none}
+  .pp-tampon svg{width:100%;height:100%;overflow:visible;fill:none;stroke:currentColor;stroke-width:2.2}
+  .pp-tampon .fin{stroke-width:.8}
+  .pp-tampon text{fill:currentColor;stroke:none;font:600 6.2px var(--font-mono)}
+  .pp-tampon .pret{font:700 8px var(--font-mono);letter-spacing:.2em}
+  .pp-tampon .coche{stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
+  .pp-tampon::after{content:'';position:absolute;inset:-6%;border:1px solid #d9a47c;border-radius:50%;opacity:0}
+
+  /* ── Chorégraphie (≈ 39 s, tampon de clôture à 36,9 s, une seule fois). L'état de base ci-dessus est l'image finale.
        Une pause marque la fin de chaque phase :
        01 questionnaire 0,8–8,5 s · 02 rapprochement 8,6–15,4 s ·
        03 livrables : note 15,5 s, pièces 21,1 s, présentation 25,7 s · 04 contrôle 35,1 s. ── */
@@ -641,9 +668,16 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     .pp-anime .pp-controle{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 35.1s both}
     .pp-anime .pp-controle svg{animation:pp-coche .5s ease 35.64s both}
     .pp-anime .pp-pdf{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 35.91s both}
-    .pp-en-pause *{animation-play-state:paused !important}
+    .pp-anime .pp-tampon{animation:pp-tampon-pose .75s cubic-bezier(.3,1.4,.5,1) 36.9s both}
+    .pp-anime .pp-tampon::after{animation:pp-onde 1s cubic-bezier(.2,.7,.2,1) 37.35s both}
+    .pp-produit:has(.pp-anime) .pp-offre .btn-cuivre{animation:pp-appel 1.4s cubic-bezier(.2,.7,.2,1) 37.9s}
+    .pp-produit:has(.pp-en-pause) .pp-offre .btn-cuivre{animation-play-state:paused}
+    .pp-en-pause *,.pp-en-pause *::after{animation-play-state:paused !important}
   }
   @keyframes pp-fondu{from{opacity:0}}
+  @keyframes pp-tampon-pose{0%{opacity:0;transform:rotate(-4deg) scale(1.9)}62%{opacity:.9;transform:rotate(-14deg) scale(.95)}82%{transform:rotate(-14deg) scale(1.02)}100%{opacity:.9;transform:rotate(-14deg) scale(1)}}
+  @keyframes pp-onde{0%{opacity:.8;transform:scale(.9)}100%{opacity:0;transform:scale(1.5)}}
+  @keyframes pp-appel{0%{box-shadow:0 0 0 0 #d9a47c99}100%{box-shadow:0 0 0 16px #d9a47c00}}
   @keyframes pp-allume{from{opacity:.28}}
   @keyframes pp-trace{from{stroke-dashoffset:100}}
   @keyframes pp-progression{0%{transform:scaleX(0)}3%,23.8%{transform:scaleX(.25)}25.6%,43%{transform:scaleX(.5)}44.8%,97.4%{transform:scaleX(.75)}100%{transform:scaleX(1)}}

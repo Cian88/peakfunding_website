@@ -33,7 +33,7 @@ const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPe
       {t.offre.mentions.map((m) => <p>{m}</p>)}
       <ul>{t.offre.points.map((p) => <li>{p}</li>)}</ul>
       {service ? <a href={`${service}/paiement.html${lang === 'en' ? '?lang=en' : ''}`} class="btn-cuivre" data-astro-reload>{t.offre.bouton}</a> : <p class="ouverture">{t.offre.ouverture}</p>}
-      <p class="secondaire">{t.offre.secondaire} <a href={L('/conditions-peak-pitch/')} class="cgv">{lang === 'fr' ? 'Conditions générales de vente' : 'Terms of sale (French)'}</a></p>
+      <p class="secondaire">{t.offre.secondaire} <a href={L('/conditions-peak-pitch/')} class="cgv">{lang === 'fr' ? 'Conditions générales de vente' : 'Terms of sale'}</a></p>
     </aside>
   </div>
 
@@ -73,7 +73,7 @@ const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPe
   {guides.length > 0 && (
     <section class="bloc" aria-labelledby="pitch-guides">
       <p class="eyebrow">{t.libelles.guides}</p>
-      <ul class="guides" id="pitch-guides">{guides.map((a) => <li><a href={L(`/actualites/${a.slug}`)}><h3>{a.title} <span aria-hidden="true">↗</span></h3><p>{a.description}</p></a></li>)}</ul>
+      <ul class="guides" id="pitch-guides">{guides.map((a) => <li><a href={L(`/actualites/${a.slug}/`)}><h3>{a.title} <span aria-hidden="true">↗</span></h3><p>{a.description}</p></a></li>)}</ul>
     </section>
   )}
 </div>

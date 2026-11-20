@@ -39,7 +39,7 @@ const graphe = noindex ? [] : [organisation(lang), siteWeb(lang), pageWeb({ url:
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "max-image-preview:large"} />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang={lang} href={canonical} />
     <link rel="alternate" hreflang={autre} href={urlAutre} />

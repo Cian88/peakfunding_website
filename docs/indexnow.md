@@ -1,6 +1,6 @@
 # IndexNow
 
-IndexNow prévient immédiatement Bing (et Yandex, Seznam, Naver) qu'une page est nouvelle ou modifiée. L'index de Bing alimente la recherche de ChatGPT et de Copilot : c'est le moyen le plus rapide d'y faire apparaître une page.
+IndexNow signale aux moteurs participants les URL ajoutées, modifiées ou supprimées. Un envoi accepté indique que la notification a été reçue. Suivre l’indexation et les citations dans Bing Webmaster Tools, et la présence dans Google dans Search Console.
 
 - Clé : `cb099be1da4dbcd43da885ad30aa0fe4`, servie par `public/cb099be1da4dbcd43da885ad30aa0fe4.txt` (https://peakfunding.eu/cb099be1da4dbcd43da885ad30aa0fe4.txt). Ne pas la supprimer ni la renommer ; le test `tests/indexnow.test.mjs` vérifie qu'elle correspond au script.
 - Envoi complet, **après** une mise en ligne : `npm run build && npm run indexnow`. Cela envoie les URL des sitemaps et `llms.txt`.

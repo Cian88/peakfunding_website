@@ -7,6 +7,10 @@ import { localiser } from '../i18n';
 import type { QR } from '../data/textes';
 import type { Expertise } from '../data/expertises';
 import { equipe } from '../data/site';
+import { peakPitch, PEAK_PITCH_OUVERT, PRIX_PITCH } from '../data/peak-pitch';
+import { exchangeFirstConsultation, PRIX_EXCHANGE } from '../data/peak-exchange';
+import { checkoutURL, ebook, EBOOK_AUTHOR, EBOOK_PRICE } from '../data/ebook';
+import { stancerServiceURL } from './services-checkout.mjs';
 
 export const SITE = 'https://peakfunding.eu';
 const ID_ORGANISATION = `${SITE}/#organisation`;
@@ -93,7 +97,12 @@ export function organisation(lang: Lang) {
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: lang === 'fr' ? 'Expertises PEAK FUNDING' : 'PEAK FUNDING services',
-      itemListElement: catalogue[lang].map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': `${url(`/expertises/${s.slug}`, lang)}#service`, name: s.nom, description: s.description, url: url(`/expertises/${s.slug}`, lang) } })),
+      itemListElement: [
+        ...catalogue[lang].map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', '@id': `${url(`/expertises/${s.slug}`, lang)}#service`, name: s.nom, description: s.description, url: url(`/expertises/${s.slug}`, lang) } })),
+        ...(PEAK_PITCH_OUVERT ? [{ '@id': `${url('/peak-pitch', lang)}#offre` }] : []),
+        ...(stancerServiceURL(import.meta.env, 'exchange') ? [{ '@id': `${url('/peak-exchange', lang)}#offre` }] : []),
+        ...(checkoutURL(lang) ? [{ '@id': `${url('/livre', lang)}#offre` }] : []),
+      ],
     },
     contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', url: `${SITE}${localiser('/contact/', lang)}`, availableLanguage: ['fr', 'en'], areaServed: 'FR' },
   };
@@ -144,6 +153,49 @@ export function service(e: Expertise, lang: Lang) {
     ...(e.pourQui ? { audience: e.pourQui.cibles.map((c) => ({ '@type': 'Audience', audienceType: c.titre })) } : {}),
     hasOfferCatalog: { '@type': 'OfferCatalog', name: fiche.nom, itemListElement: e.concretement.points.map((p) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: p.titre, description: p.texte } })) },
     ...(e.slug === 'insure' ? { offers: { '@type': 'Offer', name: etudeAssurance[lang].nom, description: etudeAssurance[lang].description, price: '0', priceCurrency: 'EUR', url: page, seller: { '@id': ID_ORGANISATION } } } : {}),
+  };
+}
+
+function offreEnLigne(page: string, prix: number, item: string) {
+  return {
+    '@type': 'Offer', '@id': `${page}#offre`, url: page,
+    price: prix.toFixed(2), priceCurrency: 'EUR', availability: 'https://schema.org/InStock',
+    seller: { '@id': ID_ORGANISATION }, itemOffered: { '@id': item },
+  };
+}
+
+export function offrePeakPitch(lang: Lang) {
+  const texte = peakPitch(lang);
+  const page = url('/peak-pitch', lang), id = `${page}#service`;
+  return {
+    '@type': 'Service', '@id': id, url: page, mainEntityOfPage: { '@id': page },
+    name: 'PEAK PITCH', serviceType: texte.service.nom, description: texte.intro,
+    provider: { '@id': ID_ORGANISATION }, areaServed: { '@type': 'Country', name: 'France' },
+    availableChannel: { '@type': 'ServiceChannel', serviceUrl: page, availableLanguage: 'fr' },
+    audience: texte.pourQui.map((profil) => ({ '@type': 'Audience', audienceType: profil.titre })),
+    offers: { ...offreEnLigne(page, PRIX_PITCH, id), description: texte.service.offre },
+  };
+}
+
+export function offrePeakExchange(lang: Lang) {
+  const page = url('/peak-exchange', lang), id = `${page}#service`;
+  return {
+    '@type': 'Service', '@id': id, url: page, mainEntityOfPage: { '@id': page },
+    name: 'PEAK EXCHANGE', serviceType: lang === 'fr' ? 'Analyse personnalisée d’un dossier de financement' : 'Personalised financing consultation',
+    description: exchangeFirstConsultation[lang], provider: { '@id': ID_ORGANISATION },
+    areaServed: { '@type': 'Country', name: 'France' }, offers: offreEnLigne(page, PRIX_EXCHANGE, id),
+  };
+}
+
+export function offreLivre(lang: Lang) {
+  const livre = ebook(lang), page = url('/livre', lang), id = `${page}#livre`;
+  return {
+    '@type': 'Book', '@id': id, url: page, mainEntityOfPage: { '@id': page },
+    name: livre.title, alternativeHeadline: livre.subtitle, description: livre.introduction,
+    inLanguage: lang, bookFormat: 'https://schema.org/EBook', encodingFormat: 'application/pdf',
+    numberOfPages: livre.pages, author: { '@type': 'Person', name: EBOOK_AUTHOR, sameAs: cabinet.profilsPersonnes[EBOOK_AUTHOR] },
+    publisher: { '@id': ID_ORGANISATION }, image: `${SITE}/img/ebook/couverture-${lang}.webp`,
+    ...(checkoutURL(lang) ? { offers: offreEnLigne(page, EBOOK_PRICE, id) } : {}),
   };
 }
 

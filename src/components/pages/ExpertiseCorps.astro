@@ -6,6 +6,7 @@ import { ASSURANCE_URL } from '../../data/integrations';
 import { langCourante, localiser, t } from '../../i18n';
 import articlesFr from '../../data/articles.json';
 import articlesEn from '../../data/en/articles.json';
+import { guidesPeakPitch, PEAK_PITCH_OUVERT } from '../../data/peak-pitch';
 import { cleTheme, trierArticles } from '../../lib/editorial.mjs';
 
 interface Props { e: Expertise }
@@ -17,8 +18,11 @@ const eu = expertiseUi(lang);
 const faq = faqExpertisesFor(lang)[e.slug];
 const lienPrincipal = e.slug === 'insure' ? ASSURANCE_URL : L('/peak-exchange/');
 const cibleBlank = e.slug === 'insure';
-// Guides of the insurance cluster, listed on PEAK INSURE so each one is one click from the service page.
-const guides = e.slug === 'insure' ? trierArticles(lang === 'en' ? articlesEn : articlesFr).filter((a) => ['assurance-emprunteur', 'borrower-insurance'].includes(cleTheme(a.avant[1]))) : [];
+const articles = trierArticles(lang === 'en' ? articlesEn : articlesFr);
+const guides = articles.filter((a) => {
+  if (e.slug === 'insure') return ['assurance-emprunteur', 'borrower-insurance'].includes(cleTheme(a.avant[1]));
+  return e.slug === 'estate' && guidesPeakPitch.some((slug) => slug === a.slug);
+});
 ---
 
   <section class="contenu section grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
@@ -86,9 +90,10 @@ const guides = e.slug === 'insure' ? trierArticles(lang === 'en' ? articlesEn : 
     <section class="border-t border-trait" aria-labelledby="guides-expertise">
       <div class="contenu section">
         <p class="eyebrow">{eu.guides_eyebrow}</p>
-        <h2 id="guides-expertise" class="titre mt-3 max-w-2xl">{eu.guides_titre}</h2>
+        <h2 id="guides-expertise" class="titre mt-3 max-w-2xl">{e.slug === 'estate' ? (lang === 'fr' ? 'Préparer votre dossier de prêt immobilier' : 'Prepare your French mortgage application') : eu.guides_titre}</h2>
+        {e.slug === 'estate' && PEAK_PITCH_OUVERT && <a href={L('/peak-pitch/')} class="mt-5 inline-block underline underline-offset-4">{lang === 'fr' ? 'Préparer mon dossier avec PEAK PITCH' : 'Prepare my application with PEAK PITCH'} ↗</a>}
         <ul class="mt-10 grid gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
-          {guides.map((a) => (<li class="border-t border-trait pt-5"><a href={L(`/actualites/${a.slug}`)} class="group block"><h3 class="text-[17px] font-medium leading-snug group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3><p class="corps mt-2 text-[14.5px]">{a.description}</p></a></li>))}
+          {guides.map((a) => (<li class="border-t border-trait pt-5"><a href={L(`/actualites/${a.slug}/`)} class="group block"><h3 class="text-[17px] font-medium leading-snug group-hover:underline underline-offset-4">{a.title} <span aria-hidden="true">↗</span></h3><p class="corps mt-2 text-[14.5px]">{a.description}</p></a></li>))}
         </ul>
       </div>
     </section>

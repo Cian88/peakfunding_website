@@ -1,4 +1,5 @@
 ---
+import { guidesPeakPitch, PEAK_PITCH_OUVERT } from '../../data/peak-pitch';
 import Base from '../../layouts/Base.astro';
 import VisuelArticle from '../../components/VisuelArticle.astro';
 import { ASSURANCE_URL } from '../../data/integrations';
@@ -24,6 +25,7 @@ const categorie = article.avant[1];
 // Same theme first, so each guide links to its own cluster before the rest of the newsroom.
 const autres = trierArticles(articles).filter(a => a.slug !== article.slug);
 const suggestions = [...autres.filter(a => a.avant[1] === categorie), ...autres.filter(a => a.avant[1] !== categorie)].slice(0, 3);
+const lienPitch = PEAK_PITCH_OUVERT && [...guidesPeakPitch, 'primo', 'sci', 'capacite-locatif'].some((slug) => slug === article.slug);
 const assurance = cleTheme(categorie) === 'assurance-emprunteur';
 const faq = (article as { faq?: { q: string; r: string }[] }).faq ?? [];
 const lecture = article.avant[2];
@@ -71,6 +73,7 @@ const schema = [
       <p class="donnee mt-12 rounded-carte bg-blanc p-6 text-[12.5px] leading-relaxed text-gris">
         Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager. Contenu informatif, ne constituant pas un conseil personnalisé.
       </p>
+      {lienPitch && <p class="corps mt-7"><a href="/peak-pitch/" class="underline underline-offset-4">Préparer mon dossier de prêt immobilier avec PEAK PITCH ↗</a></p>}
       {assurance
         ? <div class="mt-7 flex flex-wrap gap-3"><a href={ASSURANCE_URL} data-assurance target="_blank" rel="noopener" class="btn-cuivre">Comparer mon assurance emprunteur ↗<span class="sr-only"> (nouvel onglet)</span></a><a href="/expertises/insure/" class="btn-fantome">Découvrir PEAK INSURE</a></div>
         : <a href="/peak-exchange/" class="btn-cuivre mt-7">RDV PEAK EXCHANGE · 299 € TTC ↗</a>}

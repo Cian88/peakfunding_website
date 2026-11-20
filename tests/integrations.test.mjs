@@ -9,9 +9,9 @@ const built = route => load(read(`dist/${route ? route + '/' : ''}index.html`));
 test('Sept visuels V1 exacts, utilisés dans la liste ET dans chaque article', {skip: !existsSync('_source/site-actuel/image-slots-state.json') && 'Archive V1 locale non versionnée absente ; liens et images contrôlés par site.test.mjs'}, () => {
   const slots = JSON.parse(read('_source/site-actuel/image-slots-state.json'));
   const listing = built('actualites');
-  // Quinze articles : les sept visuels V1 (avec emplacement d'origine) + les illustrations propres des
+  // Visuels des analyses : les sept visuels V1 (avec emplacement d'origine) + les illustrations propres des
   // guides d'assurance ajoutés depuis (2026-09-16 et 2026-10-14), hors V1 donc sans data-v1-slot.
-  assert.equal(listing('[data-article-visual]').length, 15);
+  assert.equal(listing('[data-article-visual]').length, 17);
   for (const slug of ['delegation-assurance', 'economie-assurance-emprunteur', 'refus-delegation-banque', 'assurance-emprunteur-sante', 'assurance-emprunteur-senior', 'assurance-emprunteur-metiers-sports-risque', 'quotite-assurance-emprunteur', 'assurance-emprunteur-investissement-locatif']) {
     assert.equal(listing(`[data-article-visual="${slug}"]`).attr('src'), `/img/article-v1-${slug}.webp`);
   }
@@ -54,7 +54,7 @@ test('Annotations : cartes uniformes, méthode illustrée, héros et simulateur 
   const home = built('');
   const listing = built('actualites');
   assert.equal(listing('.article-vedette').length, 0);
-  assert.equal(listing('.article-carte .article-image.h-\\[180px\\]').length, 15);
+  assert.equal(listing('.article-carte .article-image.h-\\[180px\\]').length, 17);
   assert.equal(home('#methode .methode-schema').length, 4);
   assert.equal(home('[data-espaces] .espace-lien').length, 2);
   assert.equal(home('#simulateur form').length, 1);

@@ -1,5 +1,4 @@
-// Signale les URL du site à IndexNow (Bing, Yandex, Seznam, Naver…). Bing alimente la recherche de ChatGPT
-// et de Copilot : c'est le moyen le plus rapide d'y faire (ré)indexer une page. À lancer APRÈS une mise en
+// Signale les URL du site à IndexNow (Bing, Yandex, Seznam, Naver…). Le signalement ne garantit pas l’indexation. À lancer APRÈS une mise en
 // ligne effective (le fichier de clé doit être servi par https://peakfunding.eu) :
 //   npm run build && npm run indexnow                       → toutes les URL des sitemaps + llms.txt
 //   npm run indexnow -- /expertises/ /en/actualites/x/      → seulement ces pages (après une modification ciblée)

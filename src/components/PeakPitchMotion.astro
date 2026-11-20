@@ -2,13 +2,17 @@
 /* Prototype : couverture de l'accueil avec une animation native (HTML/CSS) de PEAK PITCH.
    Activée par PUBLIC_PEAK_PITCH_HERO=motion. Le film PEAK PITCH reste disponible avec la valeur true.
    L'état de base du CSS est l'image finale : sans animation, mouvement réduit ou ?statique, on voit
-   directement les trois livrables. Les montants sont un exemple illustratif cohérent. */
+   directement les trois livrables. Les montants sont un exemple illustratif cohérent :
+   285 000 + 20 000 + 24 000 = 329 000 € ; 329 000 − 45 000 = 284 000 € ; 25 ans à 3,5 % → 1 422 €/mois ;
+   revenus 4 300 € + loyer 1 050 € × 70 % = 5 035 € → effort 28,2 % ; capacité 35 % → 350 000 €. */
 import { localiser } from '../i18n';
 import { ASSURANCE_URL } from '../data/integrations';
 interface Props { lang?: 'fr' | 'en' }
 const { lang = 'fr' } = Astro.props;
 const fr = lang === 'fr';
 const L = (p: string) => localiser(p, lang);
+type Piece = [string, string];
+type Intervenant = { sigle: string; nom: string; role: string; pieces: Piece[] };
 const t = fr ? {
   eyebrow: 'Courtier indépendant · France entière',
   h1: 'Cabinet de courtage en financement et assurance emprunteur.',
@@ -16,12 +20,32 @@ const t = fr ? {
   cta1: 'Estimer ma capacité', cta2: 'Le cabinet & ses expertises',
   scene: 'PEAK PITCH · DOSSIER DE FINANCEMENT', exemple: 'EXEMPLE ILLUSTRATIF', etape: 'ÉTAPE',
   questionnaire: 'Questionnaire guidé',
-  reponses: [['Projet', 'Investissement locatif'], ['Emprunteurs', '2'], ['Revenus nets mensuels', '4 300 €'], ['Apport personnel', '45 000 €'], ['Structure', 'SCI à créer']],
+  reponses: [['Projet', 'Investissement locatif · T3'], ['Emprunteurs', '2 · salariés en CDI'], ['Revenus nets mensuels', '4 300 €'], ['Loyer attendu', '1 050 € / mois'], ['Apport personnel', '45 000 €'], ['Structure', 'SCI à créer']],
   chiffresTitre: 'Vos chiffres, rapprochés',
-  chiffres: [['Budget total', '329 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Capacité estimée', '300 000 €', 'SIMULATEUR']],
-  pres: { n: '03 · PRÉSENTATION BANCAIRE', titre: 'Présentation bancaire', parties: ['La demande', 'Les emprunteurs', 'Le bien', 'Les revenus', 'Le plan de financement', 'L’analyse', 'La synthèse'] },
-  pieces: { n: '02 · PIÈCES PAR INTERVENANT', titre: 'Pièces à réunir', groupes: [['Emprunteur 1', ['Pièce d’identité', '3 derniers bulletins de salaire', '2 derniers avis d’imposition']], ['Co-emprunteur', ['Pièce d’identité', 'Contrat de travail']], ['SCI à créer', ['Projet de statuts']]] as [string, string[]][] },
-  note: { n: '01 · NOTE DE SYNTHÈSE', titre: 'Note de synthèse', sous: 'Investissement locatif · 2 emprunteurs · SCI', annexe: 'Annexe : toutes vos réponses déclarées' },
+  chiffres: [['Budget total', '329 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Mensualité · 25 ans à 3,5 %', '1 422 €', 'CALCULÉ'], ['Capacité estimée', '350 000 €', 'SIMULATEUR']],
+  dossier: 'Dossier PP-2611', page: 'p. 1 / 6',
+  note: {
+    n: '01 · NOTE DE SYNTHÈSE', titre: 'Note de synthèse', meta: ['Acquisition locative', 'Lyon 8e', 'SCI à créer'],
+    resume: 'Acquisition, via une SCI à créer, d’un T3 destiné à la location (loyer attendu : 1 050 € par mois). Les deux associés, salariés en CDI, sollicitent un prêt de 284 000 € sur 25 ans.',
+    chiffres: [['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Mensualité', '1 422 €', 'CALCULÉ'], ['Taux d’effort', '28,2 %', 'CALCULÉ']],
+    plan: 'Plan de financement', emplois: [['Prix du bien', '285 000 €'], ['Travaux', '20 000 €'], ['Frais de notaire et de garantie', '24 000 €']], total: ['Total des besoins', '329 000 €'],
+    barre: [['Prêt', '86 %'], ['Apport', '14 %']],
+    capacite: 'Capacité estimée par le simulateur', capaciteValeur: '350 000 €',
+    annexe: 'Annexe : les 64 réponses déclarées',
+  },
+  pieces: {
+    n: '02 · PIÈCES PAR INTERVENANT', titre: 'Pièces à réunir', resume: '3 intervenants · 9 pièces',
+    intervenants: [
+      { sigle: 'E1', nom: 'Emprunteur 1', role: 'Salarié en CDI', pieces: [['Pièce d’identité', 'Identité'], ['3 derniers bulletins de salaire', 'Revenus'], ['2 derniers avis d’imposition', 'Revenus'], ['Relevés de comptes, 3 mois', 'Gestion']] },
+      { sigle: 'E2', nom: 'Co-emprunteur', role: 'Salariée en CDI', pieces: [['Pièce d’identité', 'Identité'], ['Contrat de travail', 'Stabilité'], ['Justificatif d’épargne', 'Apport']] },
+      { sigle: 'SCI', nom: 'SCI à créer', role: '2 associés', pieces: [['Projet de statuts', 'Structure'], ['Répartition du capital', 'Associés']] },
+    ] as Intervenant[],
+  },
+  pres: {
+    n: '03 · PRÉSENTATION BANCAIRE', titre: 'Acquisition d’un T3 locatif', sous: 'Demande de financement · 284 000 € sur 25 ans',
+    parties: ['La demande', 'Les emprunteurs', 'Le bien', 'Les revenus', 'Le plan de financement', 'L’analyse', 'La synthèse'],
+    anneau: 'Besoins', legende: [['Prêt', '284 000 €'], ['Apport', '45 000 €']], diapo: '1 / 7',
+  },
   controle: 'Chaque montant correspond à une valeur déclarée ou calculée',
   kicker: 'PEAK PITCH — UN SERVICE DE PEAK FUNDING', promesse: 'Votre projet, prêt à présenter.', mentions: 'TVA non applicable · Paiement unique',
   decouvrir: 'Découvrir PEAK PITCH', banques: 'Le financement reste soumis à l’accord des banques.',
@@ -35,12 +59,32 @@ const t = fr ? {
   cta1: 'Estimate my capacity', cta2: 'Our firm & expertise',
   scene: 'PEAK PITCH · FINANCING APPLICATION', exemple: 'ILLUSTRATIVE EXAMPLE', etape: 'STEP',
   questionnaire: 'Guided questionnaire',
-  reponses: [['Project', 'Buy-to-let'], ['Borrowers', '2'], ['Net monthly income', '€4,300'], ['Personal contribution', '€45,000'], ['Structure', 'SCI to be formed']],
+  reponses: [['Project', 'Buy-to-let · 2-bedroom flat'], ['Borrowers', '2 · permanent employees'], ['Net monthly income', '€4,300'], ['Expected rent', '€1,050 / month'], ['Personal contribution', '€45,000'], ['Structure', 'SCI to be formed']],
   chiffresTitre: 'Your figures, reconciled',
-  chiffres: [['Total budget', '€329,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Loan requested', '€284,000', 'CALCULATED'], ['Estimated capacity', '€300,000', 'SIMULATOR']],
-  pres: { n: '03 · BANK PRESENTATION', titre: 'Bank presentation', parties: ['The request', 'The borrowers', 'The property', 'Income', 'Financing plan', 'Analysis', 'Summary'] },
-  pieces: { n: '02 · DOCUMENTS PER PARTY', titre: 'Documents to gather', groupes: [['Borrower 1', ['ID document', 'Last 3 payslips', 'Last 2 tax notices']], ['Co-borrower', ['ID document', 'Employment contract']], ['SCI to be formed', ['Draft articles']]] as [string, string[]][] },
-  note: { n: '01 · SUMMARY NOTE', titre: 'Summary note', sous: 'Buy-to-let · 2 borrowers · SCI', annexe: 'Appendix: all your declared answers' },
+  chiffres: [['Total budget', '€329,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Loan requested', '€284,000', 'CALCULATED'], ['Monthly payment · 25 yrs at 3.5%', '€1,422', 'CALCULATED'], ['Estimated capacity', '€350,000', 'SIMULATOR']],
+  dossier: 'File PP-2611', page: 'p. 1 / 6',
+  note: {
+    n: '01 · SUMMARY NOTE', titre: 'Summary note', meta: ['Buy-to-let', 'Lyon 8th', 'SCI to be formed'],
+    resume: 'Purchase, through an SCI to be formed, of a two-bedroom flat to let (expected rent: €1,050 a month). The two partners, both permanent employees, request a €284,000 loan over 25 years.',
+    chiffres: [['Loan requested', '€284,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Monthly payment', '€1,422', 'CALCULATED'], ['Debt ratio', '28.2%', 'CALCULATED']],
+    plan: 'Financing plan', emplois: [['Property price', '€285,000'], ['Works', '€20,000'], ['Notary and guarantee fees', '€24,000']], total: ['Total requirement', '€329,000'],
+    barre: [['Loan', '86%'], ['Contribution', '14%']],
+    capacite: 'Capacity estimated by the simulator', capaciteValeur: '€350,000',
+    annexe: 'Appendix: the 64 declared answers',
+  },
+  pieces: {
+    n: '02 · DOCUMENTS PER PARTY', titre: 'Documents to gather', resume: '3 parties · 9 documents',
+    intervenants: [
+      { sigle: 'B1', nom: 'Borrower 1', role: 'Permanent employee', pieces: [['ID document', 'Identity'], ['Last 3 payslips', 'Income'], ['Last 2 tax notices', 'Income'], ['Bank statements, 3 months', 'Management']] },
+      { sigle: 'B2', nom: 'Co-borrower', role: 'Permanent employee', pieces: [['ID document', 'Identity'], ['Employment contract', 'Stability'], ['Proof of savings', 'Contribution']] },
+      { sigle: 'SCI', nom: 'SCI to be formed', role: '2 partners', pieces: [['Draft articles', 'Structure'], ['Share capital split', 'Partners']] },
+    ] as Intervenant[],
+  },
+  pres: {
+    n: '03 · BANK PRESENTATION', titre: 'Purchase of a flat to let', sous: 'Financing request · €284,000 over 25 years',
+    parties: ['The request', 'The borrowers', 'The property', 'Income', 'Financing plan', 'Analysis', 'Summary'],
+    anneau: 'Requirement', legende: [['Loan', '€284,000'], ['Contribution', '€45,000']], diapo: '1 / 7',
+  },
   controle: 'Every amount matches a declared or calculated value',
   kicker: 'PEAK PITCH — A PEAK FUNDING SERVICE', promesse: 'Your project, ready to present.', mentions: 'VAT not applicable · One payment',
   decouvrir: 'Discover PEAK PITCH', banques: 'Financing remains subject to approval by the banks.',
@@ -48,6 +92,7 @@ const t = fr ? {
   sr: 'Animation: a guided 8-step questionnaire, figures reconciled and labelled as declared, calculated or from the simulator, then three deliverables: summary note, documents to gather per party and a seven-part bank presentation.',
   ambiance: 'Independent broker · Throughout France', exchange: 'Book PEAK EXCHANGE', assurance: 'Borrower insurance',
 };
+const marque = 'M1 13 7 3l3 5 2-3 5 8';
 ---
 
 <section class="heros sombre pp" data-pp aria-labelledby="pp-titre">
@@ -79,20 +124,59 @@ const t = fr ? {
             {t.chiffres.map(([q, r, s], i) => <p class="pp-ligne" style={`--i:${i}`}><span>{q}</span><b>{r}</b><em>{s}</em></p>)}
           </div>
 
-          <div class="pp-feuille pp-f1" tabindex="-1">
-            <p class="pp-n">{t.pres.n}</p><p class="pp-ft">{t.pres.titre}</p><i class="pp-trait"></i>
-            <ol>{t.pres.parties.map((p, i) => <li style={`--i:${i}`}><span>{String(i + 1).padStart(2, '0')}</span>{p}</li>)}</ol>
+          <!-- 03 · Présentation bancaire : diapositive 16:10, à l'arrière -->
+          <div class="pp-doc pp-pres">
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{t.pres.diapo}</span></div>
+            <div class="pp-pres-corps">
+              <div class="pp-pres-texte pp-el" style="--k:0">
+                <p class="pp-n">{t.pres.n}</p>
+                <p class="pp-pres-titre">{t.pres.titre}</p>
+                <p class="pp-pres-sous">{t.pres.sous}</p>
+                <ol class="pp-sommaire">{t.pres.parties.map((p, i) => <li class={i === 0 ? 'actif' : ''}><span>{String(i + 1).padStart(2, '0')}</span>{p}</li>)}</ol>
+              </div>
+              <div class="pp-anneau pp-el" style="--k:2">
+                <svg viewBox="0 0 42 42"><circle class="fond" cx="21" cy="21" r="15.915" /><circle class="pret" cx="21" cy="21" r="15.915" pathLength="100" /><circle class="apport" cx="21" cy="21" r="15.915" pathLength="100" /></svg>
+                <p><b>329 k€</b><span>{t.pres.anneau}</span></p>
+                <ul>{t.pres.legende.map(([l, v], i) => <li class={i ? 'apport' : 'pret'}><i></i>{l}<b>{v}</b></li>)}</ul>
+              </div>
+            </div>
           </div>
-          <div class="pp-feuille pp-f2">
-            <p class="pp-n">{t.pieces.n}</p><p class="pp-ft">{t.pieces.titre}</p><i class="pp-trait"></i>
-            {t.pieces.groupes.map(([g, docs]) => <div class="pp-groupe"><p>{g}</p>{docs.map((d, i) => <span style={`--i:${i}`}>{d}</span>)}</div>)}
+
+          <!-- 02 · Pièces à réunir -->
+          <div class="pp-doc pp-pieces">
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{t.dossier}</span></div>
+            <div class="pp-doc-corps">
+              <p class="pp-n pp-el" style="--k:0">{t.pieces.n}</p>
+              <p class="pp-doc-titre pp-el" style="--k:0">{t.pieces.titre}</p>
+              <p class="pp-puce pp-el" style="--k:1">{t.pieces.resume}</p>
+              {t.pieces.intervenants.map((iv, j) => (
+                <div class="pp-intervenant pp-el" style={`--k:${j + 2}`}>
+                  <p class="pp-qui"><i>{iv.sigle}</i><b>{iv.nom}</b><span>{iv.role}</span></p>
+                  {iv.pieces.map(([p, r]) => <p class="pp-piece"><span class="case"></span>{p}<em>{r}</em></p>)}
+                </div>
+              ))}
+            </div>
           </div>
-          <div class="pp-feuille pp-f3">
-            <p class="pp-n">{t.note.n}</p><p class="pp-ft">{t.note.titre}</p><i class="pp-trait"></i>
-            <p class="pp-sous">{t.note.sous}</p>
-            <dl>{t.chiffres.map(([q, r, s]) => <div><dt>{q}</dt><dd>{r}</dd><small>{s}</small></div>)}</dl>
-            <p class="pp-annexe">{t.note.annexe}</p>
-            <span class="pp-barre"></span><span class="pp-barre court"></span>
+
+          <!-- 01 · Note de synthèse : au premier plan -->
+          <div class="pp-doc pp-note">
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{t.dossier} · {t.page}</span></div>
+            <div class="pp-doc-corps">
+              <p class="pp-n pp-el" style="--k:0">{t.note.n}</p>
+              <p class="pp-doc-titre pp-el" style="--k:0">{t.note.titre}</p>
+              <p class="pp-meta pp-el" style="--k:1">{t.note.meta.map(m => <span>{m}</span>)}</p>
+              <p class="pp-resume pp-el" style="--k:1">{t.note.resume}</p>
+              <dl class="pp-kpi pp-el" style="--k:2">{t.note.chiffres.map(([q, r, s]) => <div><dt>{q}</dt><dd>{r}</dd><small>{s}</small></div>)}</dl>
+              <div class="pp-plan pp-el" style="--k:3">
+                <p class="pp-plan-titre">{t.note.plan}</p>
+                {t.note.emplois.map(([l, v]) => <p class="pp-plan-ligne"><span>{l}</span><b>{v}</b></p>)}
+                <p class="pp-plan-ligne total"><span>{t.note.total[0]}</span><b>{t.note.total[1]}</b></p>
+                <div class="pp-barre-financement"><i class="pret"></i><i class="apport"></i></div>
+                <p class="pp-barre-legende">{t.note.barre.map(([l, v]) => <span><b>{v}</b> {l}</span>)}</p>
+              </div>
+              <p class="pp-capacite pp-el" style="--k:4"><span>{t.note.capacite}</span><b>{t.note.capaciteValeur}</b><small>SIMULATEUR</small></p>
+              <p class="pp-annexe pp-el" style="--k:4">{t.note.annexe} <span>→</span></p>
+            </div>
           </div>
 
           <p class="pp-controle"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" /></svg>{t.controle}</p>
@@ -160,15 +244,15 @@ const t = fr ? {
 <style>
   @property --pp-etape { syntax: '<integer>'; inherits: true; initial-value: 8; }
   .pp{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:100svh;margin-top:-76px;padding-top:76px;background:#0b0d12;color:#edeae4;isolation:isolate}
-  .pp-grille{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,96px);align-items:center;width:100%;max-width:1840px;margin:0 auto;padding:clamp(28px,4vh,56px) clamp(20px,5vw,76px)}
+  .pp-grille{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,5vw,96px);align-items:center;width:100%;max-width:1840px;margin:0 auto;padding:clamp(28px,4vh,56px) clamp(20px,5vw,76px)}
   .pp-cabinet h1{margin:22px 0 0;font-size:clamp(32px,3.6vw,60px);line-height:1.06;letter-spacing:-.04em;font-weight:300;text-wrap:balance}
   .pp-texte{max-width:520px;margin:26px 0 0;font-size:17px;line-height:1.6;font-weight:300;color:#edeae4e6}
   .pp-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
-  .pp-produit{display:flex;flex-direction:column;gap:18px;min-width:0;max-width:calc((100svh - 300px) / .9 + 2px);width:100%;justify-self:end}
+  .pp-produit{display:flex;flex-direction:column;gap:18px;min-width:0;max-width:calc((100svh - 280px) / .96 + 2px);width:100%;justify-self:end}
 
   /* ── Scène : toutes les mesures en cqw pour garder la composition à toutes les tailles ── */
   .pp-scene{position:relative;container-type:inline-size;border:1px solid #2a2f3a;border-radius:16px;background:#14171e;overflow:hidden}
-  .pp-plateau{position:relative;aspect-ratio:1/.9;font-size:1.9cqw;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:6cqw 6cqw}
+  .pp-plateau{position:relative;aspect-ratio:1/.96;font-size:1.9cqw;background-image:radial-gradient(ellipse 70% 55% at 55% 60%,#1e222b 0%,transparent 70%),linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:auto,6cqw 6cqw,6cqw 6cqw}
   .pp-entete{position:absolute;inset:3.4cqw 4cqw auto;display:flex;justify-content:space-between;font:1.5cqw var(--font-mono);letter-spacing:.08em;color:#a6a9b3}
   .pp-entete span:first-child{color:#d9a47c}
   .pp-rail{position:absolute;left:4cqw;right:4cqw;top:7.6cqw;display:flex;align-items:center;gap:.8cqw}
@@ -178,39 +262,82 @@ const t = fr ? {
 
   .pp-carte{position:absolute;left:14cqw;top:17cqw;width:72cqw;padding:4cqw;border:1px solid #2a2f3a;border-radius:2.6cqw;background:#1e222b;opacity:0;visibility:hidden}
   .pp-carte-titre{margin:0 0 2.4cqw;font-size:3.4cqw;font-weight:300;letter-spacing:-.03em}
-  .pp-ligne{display:flex;align-items:baseline;gap:2cqw;margin:0;padding:1.7cqw 0;border-top:1px solid #2a2f3a;font-size:2.2cqw}
+  .pp-ligne{display:flex;align-items:baseline;gap:2cqw;margin:0;padding:1.6cqw 0;border-top:1px solid #2a2f3a;font-size:2.1cqw}
   .pp-ligne span{flex:1;color:#a6a9b3}
-  .pp-ligne b{font:400 2.4cqw var(--font-mono);letter-spacing:-.03em}
+  .pp-ligne b{font:400 2.3cqw var(--font-mono);letter-spacing:-.03em}
   .pp-ligne em{width:13cqw;text-align:right;font:normal 1.4cqw var(--font-mono);letter-spacing:.06em;color:#d9a47c}
 
-  .pp-feuille{position:absolute;width:44cqw;height:57cqw;padding:3.4cqw;border-radius:1.6cqw;background:#f2f0eb;color:#111;transition:translate .35s cubic-bezier(.2,.7,.2,1);outline:none}
-  .pp-f1{left:4cqw;top:15cqw;transform:rotate(-3deg)}
-  .pp-f2{left:28cqw;top:17.5cqw;transform:rotate(-.5deg);background:#f7f5f1}
-  .pp-f3{left:52cqw;top:20cqw;transform:rotate(2deg);background:#fff}
-  .pp-feuille:hover{translate:0 -2.4cqw}
-  .pp-n{margin:0;font:1.25cqw var(--font-mono);letter-spacing:.08em;color:#825333}
-  .pp-ft{margin:1.6cqw 0 0;font-size:3.6cqw;line-height:1.05;font-weight:300;letter-spacing:-.04em}
-  .pp-trait{display:block;width:6cqw;height:.3cqw;margin:2cqw 0 2.4cqw;background:#b87b4f;transform-origin:left}
-  .pp-feuille ol{margin:0;padding:0;list-style:none}
-  .pp-feuille li{display:flex;gap:1.6cqw;padding:1.05cqw 0;border-top:1px solid #e2ded7;font-size:1.8cqw;color:#3d3f46}
-  .pp-feuille li span{font:1.4cqw var(--font-mono);color:#b87b4f;padding-top:.2cqw}
-  .pp-groupe{margin-bottom:2cqw}
-  .pp-groupe p{margin:0 0 .8cqw;font:1.3cqw var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#62656d}
-  .pp-groupe span{display:flex;align-items:center;gap:1.2cqw;padding:.55cqw 0;font-size:1.7cqw;color:#3d3f46}
-  .pp-groupe span::before{content:'';flex:0 0 auto;width:1.5cqw;height:1.5cqw;border:1px solid #b87b4f;border-radius:.3cqw}
-  .pp-sous{margin:0 0 2cqw;font-size:1.7cqw;color:#62656d}
-  .pp-feuille dl{display:grid;grid-template-columns:1fr 1fr;gap:1.4cqw;margin:0}
-  .pp-feuille dl div{padding:1.4cqw;border:1px solid #e2ded7;border-radius:1cqw}
-  .pp-feuille dt{font-size:1.4cqw;color:#62656d}
-  .pp-feuille dd{margin:.5cqw 0 .4cqw;font:2.3cqw var(--font-mono);letter-spacing:-.04em}
-  .pp-feuille small{font:1.05cqw var(--font-mono);letter-spacing:.08em;color:#825333}
-  .pp-annexe{margin:2.6cqw 0 1.2cqw;font-size:1.5cqw;color:#62656d}
-  .pp-barre{display:block;height:.9cqw;margin-top:1cqw;border-radius:1cqw;background:#e2ded7}.pp-barre.court{width:62%}
+  /* ── Documents : papier, bandeau de marque, contenu réel ── */
+  .pp-doc{position:absolute;overflow:hidden;border-radius:1.2cqw;background:#fbfaf7;color:#111;outline:1px solid #ffffff14;transition:translate .4s cubic-bezier(.2,.7,.2,1)}
+  .pp-doc:hover{translate:0 -1.8cqw}
+  .pp-pres{left:3cqw;top:12cqw;width:60cqw;height:37.5cqw;transform:rotate(-2.5deg);z-index:1}
+  .pp-pieces{left:57cqw;top:13cqw;width:40cqw;height:61cqw;transform:rotate(2.5deg);z-index:2;background:#f6f4ef}
+  .pp-note{left:16cqw;top:30cqw;width:44cqw;height:62cqw;transform:rotate(-.8deg);z-index:3;background:#fff}
+  .pp-bandeau{display:flex;justify-content:space-between;align-items:center;padding:1.3cqw 2.4cqw;background:#0b0d12;color:#a6a9b3;font:1.05cqw var(--font-mono);letter-spacing:.1em}
+  .pp-bandeau span:first-child{display:flex;align-items:center;gap:.8cqw;color:#edeae4}
+  .pp-bandeau svg{width:1.8cqw;height:1.6cqw;fill:none;stroke:#d9a47c;stroke-width:1.6;stroke-linejoin:round}
+  .pp-doc-corps{padding:2.2cqw 2.6cqw}
+  .pp-n{margin:0;font:1.1cqw var(--font-mono);letter-spacing:.1em;color:#825333}
+  .pp-doc-titre{margin:.9cqw 0 0;padding-bottom:1.4cqw;border-bottom:.25cqw solid #b87b4f;width:fit-content;font-size:3.1cqw;line-height:1.05;font-weight:300;letter-spacing:-.04em}
 
-  .pp-controle{position:absolute;left:4cqw;bottom:3.6cqw;display:flex;align-items:center;gap:1.4cqw;margin:0;padding:1.1cqw 2.2cqw;border:1px solid #b87b4f;border-radius:40px;font:1.5cqw var(--font-mono);letter-spacing:.04em;color:#edeae4;background:#0b0d12}
+  .pp-meta{display:flex;flex-wrap:wrap;gap:.6cqw;margin:1.6cqw 0 0}
+  .pp-meta span{padding:.35cqw .9cqw;border:1px solid #e2ded7;border-radius:4cqw;font-size:1.05cqw;color:#3d3f46}
+  .pp-resume{margin:1.2cqw 0 0;font-size:1.15cqw;line-height:1.5;color:#3d3f46}
+  .pp-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:.6cqw;margin:1.4cqw 0 0}
+  .pp-kpi div{padding:.8cqw .9cqw;border-radius:.8cqw;background:#f2f0eb}
+  .pp-kpi dt{font-size:.9cqw;white-space:nowrap;color:#62656d}
+  .pp-kpi dd{margin:.3cqw 0 .2cqw;font:1.55cqw var(--font-mono);letter-spacing:-.06em;white-space:nowrap;color:#111}
+  .pp-kpi small,.pp-capacite small{font:.85cqw var(--font-mono);letter-spacing:.1em;color:#825333}
+  .pp-plan{margin-top:1.3cqw}
+  .pp-plan-titre{margin:0 0 .6cqw;font:1.05cqw var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:#62656d}
+  .pp-plan-ligne{display:flex;justify-content:space-between;margin:0;padding:.35cqw 0;border-bottom:1px solid #eeebe5;font-size:1.15cqw;color:#3d3f46}
+  .pp-plan-ligne b{font:400 1.15cqw var(--font-mono);color:#111}
+  .pp-plan-ligne.total{border-bottom:0;font-weight:500;color:#111}
+  .pp-barre-financement{display:flex;height:1cqw;margin-top:.8cqw;border-radius:1cqw;overflow:hidden;background:#eeebe5}
+  .pp-barre-financement i{display:block;height:100%;transform-origin:left}
+  .pp-barre-financement .pret{width:86%;background:#b87b4f}.pp-barre-financement .apport{width:14%;background:#d9c2ad}
+  .pp-barre-legende{display:flex;gap:2cqw;margin:.6cqw 0 0;font-size:1cqw;color:#62656d}
+  .pp-barre-legende b{font:400 1cqw var(--font-mono);color:#111}
+  .pp-capacite{display:flex;align-items:baseline;gap:1cqw;margin:1.1cqw 0 0;padding:.8cqw 1.1cqw;border:1px solid #e2ded7;border-radius:.8cqw;font-size:1.05cqw;color:#62656d}
+  .pp-capacite span{flex:1}.pp-capacite b{font:400 1.5cqw var(--font-mono);color:#111}
+  .pp-annexe{display:flex;justify-content:space-between;margin:1.2cqw 0 0;padding-top:1cqw;border-top:1px solid #eeebe5;font-size:1.05cqw;color:#825333}
+
+  .pp-puce{display:inline-block;margin:1.4cqw 0 .4cqw;padding:.35cqw .9cqw;border-radius:4cqw;background:#0b0d12;color:#edeae4;font:1cqw var(--font-mono);letter-spacing:.06em}
+  .pp-intervenant{margin-top:1.1cqw}
+  .pp-qui{display:flex;align-items:center;gap:.9cqw;margin:0 0 .5cqw}
+  .pp-qui i{display:grid;place-items:center;width:2.8cqw;height:2.8cqw;border-radius:50%;background:#b87b4f;color:#fff;font:normal .95cqw var(--font-mono)}
+  .pp-qui b{font-size:1.3cqw;font-weight:500}
+  .pp-qui span{font-size:1.05cqw;color:#62656d}
+  .pp-piece{display:flex;align-items:center;gap:.9cqw;margin:0;padding:.45cqw 0 .45cqw 3.7cqw;border-top:1px solid #e9e5de;font-size:1.12cqw;color:#3d3f46}
+  .pp-piece .case{flex:0 0 auto;width:1.2cqw;height:1.2cqw;border:1px solid #b87b4f;border-radius:.25cqw}
+  .pp-piece em{margin-left:auto;padding:.15cqw .7cqw;border-radius:4cqw;background:#efe7df;font:normal .9cqw var(--font-mono);color:#825333}
+
+  .pp-pres{background:#fbfaf7}
+  .pp-pres-corps{display:grid;grid-template-columns:1.25fr 1fr;gap:2cqw;padding:2.4cqw 3cqw}
+  .pp-pres-titre{margin:.9cqw 0 0;font-size:3.3cqw;line-height:1.02;font-weight:300;letter-spacing:-.045em}
+  .pp-pres-sous{margin:1cqw 0 0;font-size:1.2cqw;color:#62656d}
+  .pp-sommaire{display:grid;grid-template-columns:1fr 1fr;gap:.2cqw 1.6cqw;margin:2cqw 0 0;padding:0;list-style:none}
+  .pp-sommaire li{display:flex;gap:.8cqw;padding:.45cqw 0;border-top:1px solid #e9e5de;font-size:1.05cqw;color:#3d3f46}
+  .pp-sommaire li span{font:.95cqw var(--font-mono);color:#b87b4f}
+  .pp-sommaire li.actif{color:#111;font-weight:500}
+  .pp-anneau{position:relative;display:flex;flex-direction:column;align-items:center}
+  .pp-anneau svg{width:12cqw;height:12cqw;transform:rotate(-90deg)}
+  .pp-anneau circle{fill:none;stroke-width:5}
+  .pp-anneau .fond{stroke:#eeebe5}
+  .pp-anneau .pret{stroke:#b87b4f;stroke-dasharray:86 100}
+  .pp-anneau .apport{stroke:#d9c2ad;stroke-dasharray:14 100;stroke-dashoffset:-86}
+  .pp-anneau > p{position:absolute;top:0;height:12cqw;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0}
+  .pp-anneau > p b{font:400 1.9cqw var(--font-mono);letter-spacing:-.05em}
+  .pp-anneau > p span{font-size:.95cqw;color:#62656d}
+  .pp-anneau ul{width:100%;margin:1cqw 0 0;padding:0;list-style:none}
+  .pp-anneau li{display:flex;align-items:center;gap:.8cqw;padding:.45cqw 0;border-top:1px solid #e9e5de;font-size:1.05cqw;color:#3d3f46}
+  .pp-anneau li i{width:1cqw;height:1cqw;border-radius:50%;background:#b87b4f}.pp-anneau li.apport i{background:#d9c2ad}
+  .pp-anneau li b{margin-left:auto;font:400 1.05cqw var(--font-mono);color:#111}
+
+  .pp-controle{position:absolute;left:4cqw;bottom:3cqw;z-index:4;display:flex;align-items:center;gap:1.4cqw;margin:0;padding:1.1cqw 2.2cqw;border:1px solid #b87b4f;border-radius:40px;font:1.45cqw var(--font-mono);letter-spacing:.04em;color:#edeae4;background:#0b0d12}
   .pp-controle svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:#d9a47c;stroke-width:1.8;stroke-dasharray:16;stroke-dashoffset:0}
 
-  .pp-pause{position:absolute;right:2.4cqw;bottom:2.4cqw;display:grid;place-items:center;width:40px;height:40px;color:#edeae4;background:#0b0d12e6;border:1px solid #a6a9b3;border-radius:50%;cursor:pointer}
+  .pp-pause{position:absolute;right:2.4cqw;bottom:2.4cqw;z-index:5;display:grid;place-items:center;width:40px;height:40px;color:#edeae4;background:#0b0d12e6;border:1px solid #a6a9b3;border-radius:50%;cursor:pointer}
   .pp-pause[hidden]{display:none}.pp-pause svg{width:16px;height:16px}
   .pp-pause path{display:none}
   .pp-pause[data-etat=joue] .i-pause,.pp-pause[data-etat=pause] .i-play,.pp-pause[data-etat=fin] .i-replay{display:block}
@@ -229,40 +356,56 @@ const t = fr ? {
   .pp-pied nav{display:flex;gap:24px;flex-wrap:wrap}
   .pp-pied a{display:inline-flex;align-items:center;min-height:44px;color:#edeae4;transition:color .18s}.pp-pied a:hover{color:#d9a47c}
 
-  /* ── Chorégraphie (≈ 8 s, une seule fois). L'état de base ci-dessus est l'image finale. ── */
+  /* ── Chorégraphie (≈ 16 s, une seule fois). L'état de base ci-dessus est l'image finale.
+       0–4,4 s questionnaire · 4,4–7,6 s chiffres · puis chaque livrable en plan rapproché :
+       note 7,4 s, pièces 10,2 s, présentation 12,8 s · contrôle 15,6 s. ── */
   @media (prefers-reduced-motion: no-preference){
-    .pp-anime .pp-entete{animation:pp-fondu .6s ease both}
-    .pp-anime .pp-rail i{animation:pp-remplir .3s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(.35s + var(--i) * .26s)}
-    .pp-anime .pp-compteur{animation:pp-etapes 2.1s steps(7,end) .35s both}
-    .pp-anime .pp-q{animation:pp-passage 2.5s cubic-bezier(.2,.7,.2,1) .3s both}
-    .pp-anime .pp-q .pp-ligne{animation:pp-monte .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.6s + var(--i) * .3s)}
-    .pp-anime .pp-c{animation:pp-passage-c 2.4s cubic-bezier(.2,.7,.2,1) 2.7s both}
-    .pp-anime .pp-c .pp-ligne{animation:pp-monte .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(3s + var(--i) * .28s)}
-    .pp-anime .pp-c .pp-ligne em{animation:pp-tampon .35s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(3.25s + var(--i) * .28s)}
-    .pp-anime .pp-f1{animation:pp-f1 1s cubic-bezier(.16,.8,.2,1) 4.9s both}
-    .pp-anime .pp-f2{animation:pp-f2 1s cubic-bezier(.16,.8,.2,1) 5.15s both}
-    .pp-anime .pp-f3{animation:pp-f3 1s cubic-bezier(.16,.8,.2,1) 5.4s both}
-    .pp-anime .pp-f1 .pp-trait{animation:pp-remplir .5s ease 5.5s both}
-    .pp-anime .pp-f2 .pp-trait{animation:pp-remplir .5s ease 5.75s both}
-    .pp-anime .pp-f3 .pp-trait{animation:pp-remplir .5s ease 6s both}
-    .pp-anime .pp-f1 li{animation:pp-fondu .3s ease both;animation-delay:calc(5.6s + var(--i) * .07s)}
-    .pp-anime .pp-f3 dl div{animation:pp-fondu .4s ease 6.1s both}
-    .pp-anime .pp-controle{animation:pp-monte .55s cubic-bezier(.2,.7,.2,1) 7s both}
-    .pp-anime .pp-controle svg{animation:pp-coche .5s ease 7.35s both}
+    .pp-anime .pp-entete{animation:pp-fondu .8s ease both}
+    .pp-anime .pp-rail i{animation:pp-remplir .4s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(.6s + var(--i) * .45s)}
+    .pp-anime .pp-compteur{animation:pp-etapes 3.6s steps(7,end) .6s both}
+    .pp-anime .pp-q{animation:pp-passage 4s cubic-bezier(.2,.7,.2,1) .4s both}
+    .pp-anime .pp-q .pp-ligne{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(1s + var(--i) * .5s)}
+    .pp-anime .pp-c{animation:pp-passage-c 3.4s cubic-bezier(.2,.7,.2,1) 4.4s both}
+    .pp-anime .pp-c .pp-ligne{animation:pp-monte .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(4.9s + var(--i) * .42s)}
+    .pp-anime .pp-c .pp-ligne em{animation:pp-tampon .4s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(5.2s + var(--i) * .42s)}
+
+    .pp-anime .pp-note{--d:7.4s;animation:pp-note 3.4s cubic-bezier(.65,0,.25,1) 7.4s both}
+    .pp-anime .pp-pieces{--d:10.2s;animation:pp-pieces 3.2s cubic-bezier(.65,0,.25,1) 10.2s both}
+    .pp-anime .pp-pres{--d:12.8s;animation:pp-pres 3.2s cubic-bezier(.65,0,.25,1) 12.8s both}
+    .pp-anime .pp-el{animation:pp-monte .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d) + .45s + var(--k) * .28s)}
+    .pp-anime .pp-barre-financement i{animation:pp-remplir .7s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 1.5s)}
+    .pp-anime .pp-anneau .pret{animation:pp-anneau 1s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + .9s)}
+    .pp-anime .pp-anneau .apport{animation:pp-fondu .4s ease both;animation-delay:calc(var(--d) + 1.8s)}
+    .pp-anime .pp-controle{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 15.6s both}
+    .pp-anime .pp-controle svg{animation:pp-coche .5s ease 16s both}
     .pp-en-pause *{animation-play-state:paused !important}
   }
   @keyframes pp-fondu{from{opacity:0}}
   @keyframes pp-remplir{from{transform:scaleX(0)}}
   @keyframes pp-etapes{from{--pp-etape:1}to{--pp-etape:8}}
-  @keyframes pp-monte{from{opacity:0;transform:translateY(1.6cqw)}}
+  @keyframes pp-monte{from{opacity:0;transform:translateY(1.4cqw)}}
   @keyframes pp-tampon{from{opacity:0;transform:scale(1.6)}}
   @keyframes pp-coche{from{stroke-dashoffset:16}}
-  @keyframes pp-passage{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}16%,84%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translateY(-3cqw)}}
+  @keyframes pp-anneau{from{stroke-dasharray:0 100}}
+  @keyframes pp-passage{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}12%,88%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translateY(-3cqw)}}
   /* Les chiffres glissent vers la note de synthèse, qui les reprend. */
-  @keyframes pp-passage-c{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}14%,78%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translate(16cqw,10cqw) scale(.62)}}
-  @keyframes pp-f1{from{opacity:0;transform:translateY(40cqw) rotate(0)}}
-  @keyframes pp-f2{from{opacity:0;transform:translateY(40cqw) rotate(0)}}
-  @keyframes pp-f3{from{opacity:0;transform:translateY(40cqw) rotate(0)}}
+  @keyframes pp-passage-c{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}12%,80%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translate(0,14cqw) scale(.7)}}
+  /* Plan rapproché centré, maintenu, puis place définitive (l'état de base). */
+  @keyframes pp-note{
+    0%{opacity:0;z-index:10;transform:translate(11cqw,40cqw) scale(1.12)}
+    16%{opacity:1;z-index:10;transform:translate(11cqw,-9cqw) scale(1.12)}
+    74%{z-index:10;transform:translate(11cqw,-9cqw) scale(1.12)}
+    100%{z-index:3}}
+  @keyframes pp-pieces{
+    0%{opacity:0;z-index:10;transform:translate(-27cqw,50cqw) scale(1.18)}
+    18%{opacity:1;z-index:10;transform:translate(-27cqw,6cqw) scale(1.18)}
+    74%{z-index:10;transform:translate(-27cqw,6cqw) scale(1.18)}
+    100%{z-index:2}}
+  @keyframes pp-pres{
+    0%{opacity:0;z-index:10;transform:translate(17cqw,60cqw) scale(1.4)}
+    18%{opacity:1;z-index:10;transform:translate(17cqw,22cqw) scale(1.4)}
+    74%{z-index:10;transform:translate(17cqw,22cqw) scale(1.4)}
+    100%{z-index:1}}
 
   @media (max-width:1023px){
     .pp-grille{grid-template-columns:1fr;gap:32px}
@@ -274,9 +417,8 @@ const t = fr ? {
     .pp-texte{font-size:15px;margin-top:18px}
     .pp-actions{margin-top:22px}
     .pp-scene{margin:0 -8px}
-    .pp-offre{grid-template-columns:1fr auto}
-    .pp-kicker,.pp-promesse{display:block}.pp-promesse{margin:6px 0 0}
     .pp-offre .btn-cuivre{grid-column:1/-1;justify-content:center}
+    .pp-kicker,.pp-promesse{display:block}.pp-promesse{margin:6px 0 0}
     .pp-pied{flex-direction:column-reverse;align-items:flex-start;gap:6px;margin:0 20px;padding:6px 0 12px}
   }
 </style>

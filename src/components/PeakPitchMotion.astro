@@ -364,7 +364,8 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     if (!scene || !bouton) return;
     const ctrl = new AbortController();
     const reduit = matchMedia('(prefers-reduced-motion: reduce)');
-    if (new URLSearchParams(location.search).has('statique')) scene.classList.remove('pp-anime');
+    // Sur petit écran, la scène est trop réduite pour être lue en mouvement : on montre directement l'image finale.
+    if (new URLSearchParams(location.search).has('statique') || matchMedia('(max-width: 640px)').matches) scene.classList.remove('pp-anime');
     let etat: 'joue' | 'pause' | 'fin' = 'joue';
     const maj = () => {
       const anime = scene.classList.contains('pp-anime') && !reduit.matches;
@@ -764,6 +765,8 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     .pp-actions{margin-top:22px}
     .pp-offre .btn-cuivre{grid-column:1/-1;justify-content:center}
     .pp-kicker,.pp-promesse{display:block}.pp-promesse{margin:6px 0 0}
+    .pp-offre{order:-1}
+    .pp-anime,.pp-anime *,.pp-anime *::after,.pp-produit .pp-offre .btn-cuivre{animation:none!important}
     .pp-pied{flex-direction:column-reverse;align-items:flex-start;gap:6px;margin:0 auto;padding:6px 0 12px}
   }
 </style>

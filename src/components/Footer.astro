@@ -26,7 +26,7 @@ const annee = new Date().getFullYear();
         <div>
           <h2 class="eyebrow text-argent">{c.titre}</h2>
           <ul class="mt-4 space-y-2.5">
-            {c.liens.map(([href, libelle]) => (<li><a href={href} data-astro-reload={href === L('/espace-client') || undefined} class="inline-block py-1 text-[13px] leading-relaxed text-argent transition-colors hover:text-etoile">{libelle}</a></li>))}
+            {c.liens.map(([href, libelle]) => (<li><a href={href} data-astro-reload={href === L('/espace-client') || undefined} class="inline-flex min-h-10 items-center text-[13px] leading-relaxed text-argent sm:min-h-0 sm:py-1 transition-colors hover:text-etoile">{libelle}</a></li>))}
           </ul>
         </div>
       ))}

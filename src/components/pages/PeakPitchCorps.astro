@@ -18,7 +18,7 @@ const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPe
       <p class="eyebrow">{t.eyebrow}</p>
       <h1 set:html={t.h1} />
       <div class="offre-mobile">
-        <strong>99 €</strong>
+        <strong>99 €</strong>
         <span>{lang === 'fr' ? 'TVA non applicable · 3 livrables' : 'VAT not applicable · 3 deliverables'}</span>
         {service ? <a href={`${service}/paiement.html${lang === 'en' ? '?lang=en' : ''}`} class="btn-cuivre" data-astro-reload>{t.offre.bouton}</a> : <a href="#offre" class="btn-fantome">{lang === 'fr' ? 'Voir l’offre' : 'See the offer'} ↓</a>}
       </div>
@@ -29,7 +29,7 @@ const guides = (lang === 'en' ? articlesEn : articlesFr).filter((a) => (guidesPe
     <aside id="offre">
       <p class="eyebrow">{t.offre.eyebrow}</p>
       <h2>{t.offre.titre}</h2>
-      {service && <p class="offre-stancer">{lang==='fr'?'Paiement sécurisé par Stancer.':'Secure payment with Stancer.'}</p>}<div class="prix">99 € <small>{lang === 'fr' ? 'TVA non applicable' : 'VAT not applicable'}</small></div>
+      {service && <p class="offre-stancer">{lang==='fr'?'Paiement sécurisé par Stancer.':'Secure payment with Stancer.'}</p>}<div class="prix">99 € <small>{lang === 'fr' ? 'TVA non applicable' : 'VAT not applicable'}</small></div>
       {t.offre.mentions.map((m) => <p>{m}</p>)}
       <ul>{t.offre.points.map((p) => <li>{p}</li>)}</ul>
       {service ? <a href={`${service}/paiement.html${lang === 'en' ? '?lang=en' : ''}`} class="btn-cuivre" data-astro-reload>{t.offre.bouton}</a> : <p class="ouverture">{t.offre.ouverture}</p>}

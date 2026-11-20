@@ -67,8 +67,8 @@
     background-image: linear-gradient(var(--color-filet) 1px, transparent 1px), linear-gradient(90deg, var(--color-filet) 1px, transparent 1px);
     background-size: 64px 64px; }
   .clair { @apply relative bg-cendre text-corps; }
-  .section-sombre { @apply py-24 lg:py-28; }
-  .section-claire { @apply py-20 lg:py-22; }
+  .section-sombre { @apply py-16 sm:py-24 lg:py-28; }
+  .section-claire { @apply py-16 sm:py-20 lg:py-22; }
 
   /* Typographie */
   .display { @apply text-[44px] leading-[1.04] font-light tracking-[-0.03em] sm:text-[56px] lg:text-[72px]; }

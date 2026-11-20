@@ -159,7 +159,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     </div>
 
     <div class="pp-produit">
-      <div class="pp-scene pp-anime" data-pp-scene>
+      <div class="pp-scene" data-pp-scene>
         <p class="sr-only">{t.sr}</p>
         <div class="pp-plateau" aria-hidden="true">
           <div class="pp-reperes"><i></i><i></i><i></i><i></i><span>LYON 8E · 45,73 N · 4,87 E</span></div>
@@ -329,7 +329,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
           <p class="pp-fin-titre"><span>{t.fin.avant}</span> <em>{t.fin.accent}</em> <span>{t.fin.apres}</span></p>
           <p class="pp-fin-sous">{t.fin.sous}</p>
         </div>
-        <button class="pp-pause" type="button" data-pp-pause data-pause={t.pause} data-resume={t.reprendre} data-replay={t.rejouer} aria-label={t.pause}>
+        <button class="pp-pause" type="button" hidden data-pp-pause data-pause={t.pause} data-resume={t.reprendre} data-replay={t.rejouer} aria-label={t.pause}>
           <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"><path class="i-pause" d="M6 4h2.5v12H6zm5.5 0H14v12h-2.5z"/><path class="i-play" d="m7 4 10 6-10 6z"/><path class="i-replay" d="M10 4a6 6 0 1 1-5.7 4.1l1.5.5A4.4 4.4 0 1 0 10 5.6V8L6.5 4.8 10 1.6z"/></svg>
         </button>
       </div>
@@ -355,7 +355,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 </section>
 
 <script>
-  // Pause, reprise et relecture. Sans script, l'animation CSS joue une fois puis reste sur l'image finale.
+  // Sur petit écran, la scène démarre quand le visiteur peut la voir.
   let dispose: (() => void) | undefined;
   function init() {
     dispose?.();
@@ -364,15 +364,35 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     if (!scene || !bouton) return;
     const ctrl = new AbortController();
     const reduit = matchMedia('(prefers-reduced-motion: reduce)');
-    // Sur petit écran, la scène est trop réduite pour être lue en mouvement : on montre directement l'image finale.
-    if (new URLSearchParams(location.search).has('statique') || matchMedia('(max-width: 640px)').matches) scene.classList.remove('pp-anime');
+    const statique = new URLSearchParams(location.search).has('statique');
+    const surPetitEcran = matchMedia('(max-width: 1023px)');
+    let observateur: IntersectionObserver | undefined;
     let etat: 'joue' | 'pause' | 'fin' = 'joue';
     const maj = () => {
-      const anime = scene.classList.contains('pp-anime') && !reduit.matches;
-      bouton.hidden = !anime && etat !== 'fin';
+      bouton.hidden = !scene.classList.contains('pp-anime');
       scene.classList.toggle('pp-en-pause', etat === 'pause');
       bouton.dataset.etat = etat;
       bouton.setAttribute('aria-label', (etat === 'joue' ? bouton.dataset.pause : etat === 'pause' ? bouton.dataset.resume : bouton.dataset.replay) || '');
+    };
+    const lancer = () => {
+      observateur?.disconnect();
+      scene.classList.add('pp-anime');
+      maj();
+    };
+    const reglerMouvement = () => {
+      observateur?.disconnect();
+      scene.classList.remove('pp-anime');
+      etat = 'joue';
+      maj();
+      if (statique || reduit.matches) return;
+      if (!surPetitEcran.matches || !('IntersectionObserver' in window)) {
+        lancer();
+        return;
+      }
+      observateur = new IntersectionObserver(([entree]) => {
+        if (!ctrl.signal.aborted && !reduit.matches && entree.intersectionRatio >= 0.25) lancer();
+      }, { threshold: 0.25 });
+      observateur.observe(scene);
     };
     bouton.addEventListener('click', () => {
       if (etat === 'fin') {
@@ -382,9 +402,12 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     }, { signal: ctrl.signal });
     const dernier = document.querySelector('.pp-offre .btn-cuivre');
     dernier?.addEventListener('animationend', e => { if (e.target === dernier && (e as AnimationEvent).animationName === 'pp-appel') { etat = 'fin'; maj(); } }, { signal: ctrl.signal });
-    reduit.addEventListener('change', maj, { signal: ctrl.signal });
-    dispose = () => ctrl.abort();
-    maj();
+    reduit.addEventListener('change', reglerMouvement, { signal: ctrl.signal });
+    dispose = () => {
+      observateur?.disconnect();
+      ctrl.abort();
+    };
+    reglerMouvement();
   }
   document.addEventListener('astro:page-load', init);
   document.addEventListener('astro:before-swap', () => { dispose?.(); dispose = undefined; });
@@ -766,7 +789,6 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     .pp-offre .btn-cuivre{grid-column:1/-1;justify-content:center}
     .pp-kicker,.pp-promesse{display:block}.pp-promesse{margin:6px 0 0}
     .pp-offre{order:-1}
-    .pp-anime,.pp-anime *,.pp-anime *::after,.pp-produit .pp-offre .btn-cuivre{animation:none!important}
     .pp-pied{flex-direction:column-reverse;align-items:flex-start;gap:6px;margin:0 auto;padding:6px 0 12px}
   }
 </style>

@@ -28,7 +28,7 @@ const t = fr ? {
   controles: ['285 000 + 20 000 + 24 000 = 329 000 €', '329 000 − 45 000 = 284 000 €', '284 000 € · 25 ans · 3,5 % → 1 422 € / mois'],
   pdf: '3 PDF prêts à présenter',
   chiffres: [['Budget total', '329 000 €', 'CALCULÉ'], ['Apport', '45 000 €', 'DÉCLARÉ'], ['Prêt demandé', '284 000 €', 'CALCULÉ'], ['Mensualité · 25 ans', '1 422 €', 'CALCULÉ'], ['Capacité estimée', '350 000 €', 'SIMULATEUR']],
-  dossier: 'Dossier PP-2611', page: 'p. 1 / 6',
+  dossier: 'Dossier PP-2611', page: 'Page 1 sur 6', checklistPage: 'Page 1 sur 1', date: '20 novembre 2026', simulateur: 'SIMULATEUR', source: 'Document préparé à partir des déclarations du client', colonnes: ['Intervenant', 'Pièce', 'Motif'], profil: 'Profil du projet', noteTableau: 'Frais de notaire et de garantie inclus.',
   note: {
     n: '01 · NOTE DE SYNTHÈSE', titre: 'Note de synthèse', meta: ['Acquisition locative', 'Lyon 8e', 'SCI à créer'],
     resume: 'Acquisition, via une SCI à créer, d’un T3 destiné à la location (loyer attendu : 1 050 € par mois). Les deux associés, salariés en CDI, sollicitent un prêt de 284 000 € sur 25 ans.',
@@ -80,7 +80,7 @@ const t = fr ? {
   controles: ['285,000 + 20,000 + 24,000 = €329,000', '329,000 − 45,000 = €284,000', '€284,000 · 25 yrs · 3.5% → €1,422 / month'],
   pdf: '3 PDFs ready to present',
   chiffres: [['Total budget', '€329,000', 'CALCULATED'], ['Contribution', '€45,000', 'DECLARED'], ['Loan requested', '€284,000', 'CALCULATED'], ['Monthly payment · 25 yrs', '€1,422', 'CALCULATED'], ['Estimated capacity', '€350,000', 'SIMULATOR']],
-  dossier: 'File PP-2611', page: 'p. 1 / 6',
+  dossier: 'File PP-2611', page: 'Page 1 of 6', checklistPage: 'Page 1 of 1', date: '20 November 2026', simulateur: 'SIMULATOR', source: 'Prepared from the client’s declarations', colonnes: ['Party', 'Document', 'Purpose'], profil: 'Project profile', noteTableau: 'Includes notary and guarantee fees.',
   note: {
     n: '01 · SUMMARY NOTE', titre: 'Summary note', meta: ['Buy-to-let', 'Lyon 8th', 'SCI to be formed'],
     resume: 'Purchase, through an SCI to be formed, of a two-bedroom flat to let (expected rent: €1,050 a month). The two partners, both permanent employees, request a €284,000 loan over 25 years.',
@@ -137,7 +137,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
       <div class="pp-scene pp-anime" data-pp-scene>
         <p class="sr-only">{t.sr}</p>
         <div class="pp-plateau" aria-hidden="true">
-          <svg class="pp-relief" viewBox="0 0 100 40" preserveAspectRatio="none"><path pathLength="100" d="M0 36 L12 29 L20 32 L33 17 L41 23 L52 9 L61 24 L69 18 L80 29 L90 25 L100 30" /></svg>
+          <svg class="pp-relief" viewBox="0 0 100 40" preserveAspectRatio="none">{Array.from({ length: 11 }, (_, i) => <path pathLength="100" transform={`translate(0 ${i * 1.35})`} d="M-5 30 C9 31 12 20 22 21 S38 26 48 13 S59 4 67 12 S77 27 89 17 S100 7 105 8" />)}</svg>
           <div class="pp-reperes"><i></i><i></i><i></i><i></i><span>LYON 8E · 45,73 N · 4,87 E</span></div>
           <div class="pp-entete"><span>{t.scene}</span><span>{t.exemple}</span></div>
           <ol class="pp-phases">{t.phases.map((ph, i) => <li style={`--t:${[0, 6.3, 11.4, 25.8].map(v => +(v * 1.35).toFixed(2))[i]}s`}><span>{`0${i + 1}`}</span>{ph}</li>)}</ol>
@@ -166,7 +166,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
           <!-- 03 · Présentation bancaire : trois diapositives défilent pendant le plan rapproché -->
           <div class="pp-doc pp-pres">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{fr ? 'PDF · 7 DIAPOSITIVES' : 'PDF · 7 SLIDES'}</span></div>
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK FUNDING</span><span>{t.dossier} · {t.date}</span></div>
             <div class="pp-diapos">
               <div class="pp-diapo d1">
                 <div class="pp-el" style="--k:0">
@@ -192,6 +192,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
                   </svg>
                   <figcaption>{t.pres.bien}</figcaption>
                 </figure>
+                <p class="pp-diapo-pied"><span>{t.source}</span><span>01 / 07</span></p>
               </div>
               <div class="pp-diapo d2">
                 <div>
@@ -207,7 +208,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
                   <p><b>329 k€</b><span>{t.pres.anneau}</span></p>
                   <ul>{t.pres.legende.map(([l, v], i) => <li class={i ? 'apport' : 'pret'}><i></i>{l}<b>{v}</b></li>)}</ul>
                 </div>
-                <p class="pp-diapo-pied"><span>{t.pres.pied}</span><span>05 / 07</span></p>
+                <p class="pp-diapo-pied"><span>{t.source}</span><span>05 / 07</span></p>
               </div>
               <div class="pp-diapo d3">
                 <div>
@@ -221,47 +222,54 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
                   <p><b>{fr ? '28,2 %' : '28.2%'}</b><span>{t.pres.d3.jauge}</span></p>
                   <small>{t.pres.d3.repere}</small>
                 </div>
-                <p class="pp-diapo-pied"><span>{t.pres.pied}</span><span>06 / 07</span></p>
+                <p class="pp-diapo-pied"><span>{t.source}</span><span>06 / 07</span></p>
               </div>
             </div>
-            <div class="pp-vignettes pp-el" style="--k:2">{Array.from({ length: 7 }, (_, i) => <i class={i === 0 ? 'actif' : ''}><b></b><b></b></i>)}</div>
+
           </div>
 
           <!-- 02 · Pièces à réunir -->
           <div class="pp-doc pp-pieces">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{fr ? 'PDF · 9 PIÈCES' : 'PDF · 9 DOCUMENTS'}</span></div>
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK FUNDING</span><span>{t.dossier} · {t.date}</span></div>
             <div class="pp-doc-corps">
               <p class="pp-n pp-el" style="--k:0">{t.pieces.n}</p>
               <p class="pp-doc-titre pp-el" style="--k:0">{t.pieces.titre}</p>
               <p class="pp-puce pp-el" style="--k:1">{t.pieces.resume}</p>
-              {t.pieces.intervenants.map((iv, j) => (
-                <div class="pp-intervenant pp-el" style={`--k:${j + 2}`}>
-                  <p class="pp-qui"><i>{iv.sigle}</i><b>{iv.nom}</b><span>{iv.role}</span></p>
-                  {iv.pieces.map(([p, r]) => <p class="pp-piece"><span class="case"></span>{p}<em>{r}</em></p>)}
-                </div>
-              ))}
+              <table class="pp-inventaire">
+                <thead><tr>{t.colonnes.map(c => <th>{c}</th>)}</tr></thead>
+                {t.pieces.intervenants.map((iv, j) => <tbody class="pp-el" style={`--k:${j + 2}`}>
+                  {iv.pieces.map(([piece, motif], i) => <tr>
+                    {i === 0 && <th rowspan={iv.pieces.length} scope="rowgroup">{iv.nom}<small>{iv.role}</small></th>}
+                    <td><span class="pp-case"></span>{piece}</td><td>{motif}</td>
+                  </tr>)}
+                </tbody>)}
+              </table>
             </div>
+            <div class="pp-folio"><span>{t.source}</span><span>{t.checklistPage}</span></div>
           </div>
 
           <!-- 01 · Note de synthèse : au premier plan -->
           <div class="pp-doc pp-note">
-            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK PITCH</span><span>{fr ? 'PDF · 6 PAGES' : 'PDF · 6 PAGES'}</span></div>
+            <div class="pp-bandeau"><span><svg viewBox="0 0 18 16"><path d={marque} /></svg>PEAK FUNDING</span><span>{t.dossier} · {t.date}</span></div>
             <div class="pp-doc-corps">
               <p class="pp-n pp-el" style="--k:0">{t.note.n}</p>
               <p class="pp-doc-titre pp-el" style="--k:0">{t.note.titre}</p>
               <p class="pp-meta pp-el" style="--k:1">{t.note.meta.map(m => <span>{m}</span>)}</p>
+              <p class="pp-plan-titre pp-el" style="--k:1">1. {t.profil}</p>
               <p class="pp-resume pp-el" style="--k:1">{t.note.resume}</p>
               <dl class="pp-kpi pp-el" style="--k:2">{t.note.chiffres.map(([q, r, s]) => <div><dt>{q}</dt><dd>{r}</dd><small>{s}</small></div>)}</dl>
               <div class="pp-plan pp-el" style="--k:3">
-                <p class="pp-plan-titre">{t.note.plan}</p>
+                <p class="pp-plan-titre">2. {t.note.plan}</p>
                 {t.note.emplois.map(([l, v]) => <p class="pp-plan-ligne"><span>{l}</span><b>{v}</b></p>)}
                 <p class="pp-plan-ligne total"><span>{t.note.total[0]}</span><b>{t.note.total[1]}</b></p>
+                <p class="pp-table-note">{t.noteTableau}</p>
                 <div class="pp-barre-financement"><i class="pret"></i><i class="apport"></i></div>
                 <p class="pp-barre-legende">{t.note.barre.map(([l, v]) => <span><b>{v}</b> {l}</span>)}</p>
               </div>
-              <p class="pp-capacite pp-el" style="--k:4"><span>{t.note.capacite}</span><b>{t.note.capaciteValeur}</b><small>SIMULATEUR</small></p>
+              <p class="pp-capacite pp-el" style="--k:4"><span>{t.note.capacite}</span><b>{t.note.capaciteValeur}</b><small>{t.simulateur}</small></p>
               <p class="pp-annexe pp-el" style="--k:4">{t.note.annexe} <span>→</span></p>
             </div>
+            <div class="pp-folio"><span>{t.source}</span><span>{t.page}</span></div>
           </div>
 
           <p class="pp-controle"><svg viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" /></svg>{t.controle}</p>
@@ -347,7 +355,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-compteur{margin-left:1.4cqw;font:400 1.5cqw var(--font-mono);letter-spacing:.06em;color:#edeae4;white-space:nowrap;counter-reset:e var(--pp-etape)}
   .pp-compteur::after{content:'0' counter(e) ' / 08'}
 
-  .pp-carte{position:absolute;left:7cqw;top:15cqw;width:86cqw;padding:3.4cqw 3.6cqw;border:1px solid #2a2f3a;border-radius:2.6cqw;background:#1e222b;opacity:0;visibility:hidden}
+  .pp-carte{position:absolute;left:7cqw;top:28cqw;width:86cqw;padding:3.4cqw 3.6cqw;border:1px solid #2a2f3a;border-radius:2.6cqw;background:#1e222b;opacity:0;visibility:hidden}
   .pp-carte-titre{margin:0 0 2.4cqw;font-size:3.4cqw;font-weight:300;letter-spacing:-.03em}
   .pp-ligne{display:flex;align-items:baseline;gap:2cqw;margin:0;padding:1.6cqw 0;border-top:1px solid #2a2f3a;font-size:2.1cqw}
   .pp-ligne span{flex:1;color:#a6a9b3}
@@ -355,11 +363,10 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-ligne em{width:13cqw;text-align:right;font:normal 1.4cqw var(--font-mono);letter-spacing:.06em;color:#d9a47c}
 
   /* ── Documents : papier, bandeau de marque, contenu réel ── */
-  .pp-doc{position:absolute;overflow:hidden;border-radius:1.2cqw;background:#fbfaf7;color:#111;outline:1px solid #ffffff14;transition:translate .4s cubic-bezier(.2,.7,.2,1)}
-  .pp-doc:hover{translate:0 -1.8cqw}
+  .pp-doc{position:absolute;overflow:hidden;border-radius:1.2cqw;background:#fbfaf7;color:#111;outline:1px solid #ffffff14;font-variant-numeric:tabular-nums}
   .pp-pres{left:20cqw;top:12.5cqw;width:60cqw;height:37.5cqw;display:flex;flex-direction:column;transform:rotate(-1deg);z-index:1}
-  .pp-pieces{left:49cqw;top:37cqw;width:40cqw;height:61cqw;transform:rotate(2deg) scale(.92);z-index:2;background:#f6f4ef}
-  .pp-note{left:9cqw;top:36cqw;width:44cqw;height:62cqw;transform:rotate(-2deg) scale(.92);z-index:3;background:#fff}
+  .pp-pieces{left:49cqw;top:35cqw;width:40cqw;transform:rotate(2deg) scale(.92);z-index:2;background:#f6f4ef}
+  .pp-note{left:9cqw;top:31cqw;width:44cqw;transform:rotate(-2deg) scale(.92);z-index:3;background:#fff}
   .pp-bandeau{display:flex;justify-content:space-between;align-items:center;padding:1.3cqw 2.4cqw;background:#0b0d12;color:#a6a9b3;font:1.05cqw var(--font-mono);letter-spacing:.1em}
   .pp-bandeau span:first-child{display:flex;align-items:center;gap:.8cqw;color:#edeae4}
   .pp-bandeau svg{width:1.8cqw;height:1.6cqw;fill:none;stroke:#d9a47c;stroke-width:1.6;stroke-linejoin:round}
@@ -390,17 +397,8 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-annexe{display:flex;justify-content:space-between;margin:1.2cqw 0 0;padding-top:1cqw;border-top:1px solid #eeebe5;font-size:1.05cqw;color:#825333}
 
   .pp-puce{display:inline-block;margin:1.4cqw 0 .4cqw;padding:.35cqw .9cqw;border-radius:4cqw;background:#0b0d12;color:#edeae4;font:1cqw var(--font-mono);letter-spacing:.06em}
-  .pp-intervenant{margin-top:1.1cqw}
-  .pp-qui{display:flex;align-items:center;gap:.9cqw;margin:0 0 .5cqw}
-  .pp-qui i{display:grid;place-items:center;width:2.8cqw;height:2.8cqw;border-radius:50%;background:#b87b4f;color:#fff;font:normal .95cqw var(--font-mono)}
-  .pp-qui b{font-size:1.3cqw;font-weight:500}
-  .pp-qui span{font-size:1.05cqw;color:#62656d}
-  .pp-piece{display:flex;align-items:center;gap:.9cqw;margin:0;padding:.45cqw 0 .45cqw 3.7cqw;border-top:1px solid #e9e5de;font-size:1.12cqw;color:#3d3f46}
-  .pp-piece .case{flex:0 0 auto;width:1.2cqw;height:1.2cqw;border:1px solid #b87b4f;border-radius:.25cqw}
-  .pp-piece em{margin-left:auto;padding:.15cqw .7cqw;border-radius:4cqw;background:#efe7df;font:normal .9cqw var(--font-mono);color:#825333}
 
   .pp-pres{background:#fbfaf7}
-  .pp-pres-corps{display:grid;grid-template-columns:1.25fr 1fr;gap:2cqw;padding:2cqw 3cqw 1.2cqw}
   .pp-pres-titre{margin:.8cqw 0 0;font-size:2.8cqw;line-height:1.02;font-weight:300;letter-spacing:-.045em}
   .pp-pres-sous{margin:1cqw 0 0;font-size:1.2cqw;color:#62656d}
   .pp-sommaire{display:grid;grid-template-columns:1fr 1fr;gap:0 1.6cqw;margin:1.4cqw 0 0;padding:0;list-style:none}
@@ -445,7 +443,7 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
   /* ── Relief de marque, phases, cartes enrichies ── */
   .pp-relief{position:absolute;left:0;bottom:0;width:100%;height:42cqw;pointer-events:none}
-  .pp-relief path{fill:#d9a47c08;stroke:#d9a47c;stroke-opacity:.28;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:100}
+  .pp-relief path{fill:none;stroke:#d9a47c;stroke-opacity:.27;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:100}
   .pp-phases{position:absolute;left:4cqw;right:4cqw;top:6.6cqw;display:flex;justify-content:space-between;margin:0;padding:0;list-style:none}
   .pp-phases li{display:flex;gap:.8cqw;font:1.3cqw var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:#edeae4}
   .pp-phases li span{color:#d9a47c}
@@ -478,11 +476,6 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   /* Bords de pages empilées (aplats nets, pas d'ombre portée floue). */
   .pp-note{box-shadow:.7cqw .7cqw 0 -.05cqw #e6e1d8,1.4cqw 1.4cqw 0 -.1cqw #cdc5b8}
   .pp-pieces{box-shadow:.7cqw .7cqw 0 -.05cqw #d9d2c6}
-  .pp-vignettes{display:flex;gap:.8cqw;padding:.8cqw 3cqw 0}
-  .pp-vignettes i{flex:1;display:flex;flex-direction:column;gap:.4cqw;height:3.4cqw;padding:.6cqw;border:1px solid #e2ded7;border-radius:.4cqw;background:#fff}
-  .pp-vignettes i.actif{border-color:#b87b4f}
-  .pp-vignettes b{display:block;height:.35cqw;border-radius:1cqw;background:#e2ded7}.pp-vignettes b+b{width:60%}
-  .pp-vignettes i.actif b:first-child{background:#b87b4f}
 
   .pp-pdf{position:absolute;right:11cqw;bottom:2.6cqw;z-index:4;display:flex;align-items:center;gap:.5cqw;margin:0;padding:1.1cqw 1.8cqw;border:1px solid #2a2f3a;border-radius:40px;background:#0b0d12;font:1.3cqw var(--font-mono);color:#a6a9b3}
   .pp-pdf i{width:1.3cqw;height:1.7cqw;border:1px solid #d9a47c;border-radius:.2cqw}.pp-pdf i:nth-of-type(3){margin-right:.7cqw}
@@ -534,6 +527,76 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   .pp-reperes i:nth-child(4){right:1.4cqw;bottom:1.4cqw;border-right-width:1px;border-bottom-width:1px}
   .pp-reperes span{position:absolute;left:1.2cqw;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);font:.9cqw var(--font-mono);letter-spacing:.25em;color:#7c808a}
 
+  /* Les feuilles reprennent les filets et les folios d’un dossier imprimé. */
+  .pp-plateau{background-size:auto,8cqw 8cqw,8cqw 8cqw}
+  .pp-carte{padding:3.8cqw 4cqw;background:var(--color-ardoise);border-color:var(--color-filet)}
+  .pp-carte-titre{font-size:4.3cqw}
+  .pp-champ span{font-size:1.7cqw}
+  .pp-champ b{font-size:1.95cqw;padding:1.4cqw}
+  .pp-c-corps{display:block}
+  .pp-c .pp-ligne{gap:2cqw;padding:1.2cqw 0;font-size:2.1cqw}
+  .pp-c .pp-ligne b{font-size:2.5cqw;white-space:nowrap}
+  .pp-c .pp-ligne em{width:16cqw;font-size:1.45cqw}
+  .pp-coherence{margin-top:2cqw;background:var(--color-graphite)}
+  .pp-coherence span{font-size:1.65cqw;padding:.65cqw 0}
+  .pp-doc-titre{width:100%;border-bottom:1px solid var(--color-trait);font-size:3.7cqw}
+  .pp-meta{gap:0}
+  .pp-meta span{padding:0 .75cqw;border:0;border-radius:0;border-left:1px solid var(--color-trait);font-size:1.2cqw}
+  .pp-meta span:first-child{padding-left:0;border:0}
+  .pp-resume{font-size:1.28cqw}
+  .pp-kpi{grid-template-columns:repeat(2,1fr);gap:1cqw 2cqw}
+  .pp-kpi div{border-top:1px solid var(--color-trait);border-radius:0;padding:.45cqw 0;background:transparent}
+  .pp-kpi dt{font-size:1.1cqw}
+  .pp-kpi dd{font-size:2.05cqw}
+  .pp-kpi small{display:block}
+  .pp-note .pp-doc-corps{padding-bottom:.8cqw}
+  .pp-puce{padding:0;background:transparent;color:var(--color-cuivre-profond);font-size:1.28cqw}
+  .pp-immeuble{background-color:var(--color-ardoise);background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:2cqw 2cqw}
+  .pp-immeuble svg{stroke:var(--color-cuivre-clair);stroke-width:1.1}
+  .pp-immeuble .t3{fill:var(--color-cuivre-profond)}
+  .pp-immeuble figcaption{color:var(--color-etoile)}
+  .pp-folio{margin:0 2.6cqw 1.2cqw;display:flex;justify-content:space-between;border-top:1px solid var(--color-trait);padding-top:.6cqw;font:1cqw var(--font-mono);color:var(--color-gris)}
+  .pp-controle{left:4cqw;right:39cqw;line-height:1.4;border-radius:8px;min-height:4.6cqw}
+  .pp-controle svg{flex-shrink:0}
+  .pp-pdf{right:max(12cqw,54px);padding-inline:0;border:0;background:transparent}
+  .pp-pdf i:not(:first-child){display:none}
+  /* Gabarits d’impression du cabinet. */
+  .pp-doc .pp-bandeau{padding:1.2cqw 2.5cqw;border-bottom:1px solid var(--color-trait);background:transparent;color:var(--color-gris);font-size:.85cqw;letter-spacing:.02em}
+  .pp-doc .pp-bandeau span:first-child{color:var(--color-encre);font-size:1.1cqw;letter-spacing:.08em}
+  .pp-doc .pp-bandeau svg{stroke:var(--color-cuivre-profond)}
+  .pp-note,.pp-pieces{width:44cqw;aspect-ratio:210/297;border-radius:.45cqw}
+  .pp-note{top:29cqw;left:5.5cqw;width:48cqw;background:#fffefa}
+  .pp-pieces{left:50cqw;top:36cqw;background:#f6f4ed}
+  .pp-pres{height:auto;aspect-ratio:16/9;border-radius:.45cqw}
+  .pp-diapos{flex:1}
+  .pp-diapo{padding-bottom:3.7cqw}
+  .pp-diapo-pied,.pp-folio{position:absolute;left:2.6cqw;right:2.6cqw;bottom:1cqw;margin:0;padding-top:.65cqw;border-top:1px solid var(--color-trait);font:.85cqw/1.3 var(--font-mono);letter-spacing:0;color:var(--color-gris)}
+  .pp-doc-corps{padding:1.8cqw 2.6cqw}
+  .pp-note .pp-doc-titre{font-size:3.45cqw;padding-bottom:.8cqw}
+  .pp-note .pp-plan{margin-top:.9cqw}
+  .pp-note .pp-plan-ligne{padding:.23cqw 0}
+  .pp-note .pp-meta{margin:.7cqw 0 1.1cqw}
+  .pp-resume{margin:.45cqw 0;text-align:justify;hyphens:auto;font-size:1.25cqw;line-height:1.4}
+  .pp-kpi{display:block;margin:.9cqw 0}
+  .pp-kpi div{display:grid;line-height:1.25;grid-template-columns:1fr 10cqw 8cqw;align-items:baseline;padding:.28cqw 0}
+  .pp-kpi dd,.pp-kpi small{text-align:right;margin:0}
+  .pp-kpi dd{font-size:1.55cqw}
+  .pp-kpi dt,.pp-plan-ligne{font-size:1.22cqw}
+  .pp-plan-titre{font-size:1.18cqw;color:var(--color-cuivre-profond)}
+  .pp-table-note{margin:.35cqw 0;font-size:1.05cqw;font-style:italic;color:var(--color-gris)}
+  .pp-capacite{border:0;border-radius:0;padding:.6cqw 0;border-block:1px solid var(--color-trait)}
+  .pp-annexe{margin:.7cqw 0 0;padding:0;border:0}
+  .pp-inventaire{width:100%;border-collapse:collapse;table-layout:fixed;text-align:left;font-size:1.3cqw;line-height:1.45}
+  .pp-inventaire thead th{font:1.05cqw var(--font-mono);color:var(--color-cuivre-profond)}
+  .pp-inventaire th,.pp-inventaire td{padding:.82cqw .5cqw .82cqw 0;vertical-align:top;font-weight:400;border-bottom:1px solid var(--color-trait)}
+  .pp-inventaire th:first-child{width:29%}
+  .pp-inventaire thead th:last-child{width:21%}
+  .pp-inventaire tbody th{font-weight:500}
+  .pp-inventaire th small{display:block;font-size:1.05cqw;color:var(--color-gris);font-weight:400}
+  .pp-case{display:inline-block;width:1cqw;height:1cqw;border:1px solid var(--color-gris);margin-right:.6cqw}
+  .pp-pres .pp-sommaire{margin-top:.9cqw}
+  .pp-pres .pp-sommaire li{padding:.23cqw 0}
+  .pp-pres .pp-chips span{border:0;border-left:1px solid var(--color-trait);border-radius:0;background:transparent}
   /* ── Chorégraphie (≈ 36 s, une seule fois). L'état de base ci-dessus est l'image finale.
        Une pause marque la fin de chaque phase :
        01 questionnaire 0,8–8,5 s · 02 rapprochement 8,6–15,4 s ·
@@ -556,10 +619,10 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
 
     .pp-anime .pp-c{animation:pp-passage-c 6.75s cubic-bezier(.2,.7,.2,1) 8.64s both}
     .pp-anime .pp-c .pp-ligne{animation:pp-monte .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(9.32s + var(--i) * .4s)}
-    .pp-anime .pp-c .pp-ligne em{animation:pp-tampon .4s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(9.65s + var(--i) * .4s)}
-    .pp-anime .pp-coherence{animation:pp-fondu .5s ease 11.61s both}
-    .pp-anime .pp-coherence span{animation:pp-monte .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(12.02s + var(--i) * .45s)}
-    .pp-anime .pp-coherence svg{animation:pp-coche .4s ease both;animation-delay:calc(12.29s + var(--i) * .45s)}
+    .pp-anime .pp-c .pp-ligne em{animation:pp-tampon .4s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(9.65s + var(--i) * .4s)}
+    .pp-anime .pp-coherence{animation:pp-fondu .5s ease 10.5s both}
+    .pp-anime .pp-coherence span{animation:pp-monte .45s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(10.85s + var(--i) * .45s)}
+    .pp-anime .pp-coherence svg{animation:pp-coche .4s ease both;animation-delay:calc(11.1s + var(--i) * .45s)}
 
     .pp-anime .pp-note{--d:15.53s;animation:pp-note 5.27s cubic-bezier(.65,0,.25,1) 15.53s both}
     .pp-anime .pp-pieces{--d:21.06s;animation:pp-pieces 4.32s cubic-bezier(.65,0,.25,1) 21.06s both}
@@ -568,15 +631,13 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     .pp-anime .pp-immeuble .t3{animation:pp-trace1 2.16s cubic-bezier(.4,0,.2,1) both,pp-fondu-t3 .6s ease both;animation-delay:calc(var(--d) + .8s),calc(var(--d) + 2.43s)}
     .pp-anime .pp-diapo.d2{animation:pp-diapo 2.56s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--d) + 2.84s)}
     .pp-anime .pp-diapo.d3{animation:pp-diapo 2.56s cubic-bezier(.4,0,.2,1) both;animation-delay:calc(var(--d) + 5.27s)}
-    .pp-anime .d2 .pp-er{animation:pp-monte .5s ease both;animation-delay:calc(var(--d) + 3.24s)}
+    .pp-anime .d2 .pp-er{animation:pp-monte .5s ease both;animation-delay:calc(var(--d) + 2.86s)}
     .pp-anime .pp-barres i b{animation:pp-remplir .7s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 5.8s + var(--i) * .2s)}
     .pp-anime .pp-jauge .val{animation:pp-anneau 1.35s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 5.94s)}
-    .pp-anime .pp-vignettes i:nth-child(5){animation:pp-vig 2.56s linear;animation-delay:calc(var(--d) + 2.84s)}
-    .pp-anime .pp-vignettes i:nth-child(6){animation:pp-vig 2.56s linear;animation-delay:calc(var(--d) + 5.27s)}
     .pp-anime .pp-el{animation:pp-monte .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d) + .5s + var(--k) * .3s)}
     .pp-anime .pp-barre-financement i{animation:pp-remplir .7s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 2.29s)}
-    .pp-anime .pp-anneau .pret{animation:pp-anneau 1.35s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 3.38s)}
-    .pp-anime .pp-anneau .apport{animation:pp-fondu .4s ease both;animation-delay:calc(var(--d) + 3.92s)}
+    .pp-anime .pp-anneau .pret{animation:pp-anneau 1.35s cubic-bezier(.3,.7,.3,1) both;animation-delay:calc(var(--d) + 2.95s)}
+    .pp-anime .pp-anneau .apport{animation:pp-fondu .4s ease both;animation-delay:calc(var(--d) + 3.0s)}
 
     .pp-anime .pp-controle{animation:pp-monte .6s cubic-bezier(.2,.7,.2,1) 35.1s both}
     .pp-anime .pp-controle svg{animation:pp-coche .5s ease 35.64s both}
@@ -590,29 +651,28 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
   @keyframes pp-trace1{from{stroke-dashoffset:1}}
   @keyframes pp-fondu-t3{from{fill:transparent}}
   @keyframes pp-diapo{0%{opacity:0;visibility:visible;transform:translateX(5cqw)}14%,86%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translateX(-3cqw)}}
-  @keyframes pp-vig{0%,100%{border-color:#e2ded7}12%,88%{border-color:#b87b4f}}
   @keyframes pp-remplir{from{transform:scaleX(0)}}
   @keyframes pp-etape{from{color:#4a4f5a}}
   @keyframes pp-etapes{from{--pp-etape:1}to{--pp-etape:8}}
   @keyframes pp-monte{from{opacity:0;transform:translateY(1.4cqw)}}
   @keyframes pp-focus{0%,70%{border-color:#b87b4f}}
   @keyframes pp-frappe{from{clip-path:inset(0 100% 0 0)}}
-  @keyframes pp-tampon{from{opacity:0;transform:scale(1.6)}}
+  @keyframes pp-tampon{from{opacity:0;transform:translateY(.5cqw)}}
   @keyframes pp-coche{from{stroke-dashoffset:16}}
   @keyframes pp-anneau{from{stroke-dasharray:0 100}}
   @keyframes pp-passage{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}8%,91%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translateY(-3cqw)}}
   /* Les chiffres glissent vers la note de synthèse, qui les reprend. */
-  @keyframes pp-passage-c{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}8%,88%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translate(0,14cqw) scale(.7)}}
+  @keyframes pp-passage-c{0%{opacity:0;visibility:visible;transform:translateY(3cqw)}8%,88%{opacity:1;visibility:visible;transform:none}100%{opacity:0;visibility:hidden;transform:translateY(-2cqw)}}
   /* Plan rapproché centré, maintenu, puis place définitive (l'état de base). */
   @keyframes pp-note{
-    0%{opacity:0;z-index:10;transform:translate(19cqw,30cqw) scale(1.12)}
-    15%{opacity:1;z-index:10;transform:translate(19cqw,-11cqw) scale(1.12)}
-    79%{z-index:10;transform:translate(19cqw,-11cqw) scale(1.12)}
+    0%{opacity:0;z-index:10;transform:translate(19cqw,30cqw) scale(1.32)}
+    15%{opacity:1;z-index:10;transform:translate(19cqw,-9cqw) scale(1.16)}
+    79%{z-index:10;transform:translate(19cqw,-9cqw) scale(1.16)}
     100%{z-index:3}}
   @keyframes pp-pieces{
-    0%{opacity:0;z-index:10;transform:translate(-19cqw,30cqw) scale(1.18)}
-    19%{opacity:1;z-index:10;transform:translate(-19cqw,-11.5cqw) scale(1.18)}
-    75%{z-index:10;transform:translate(-19cqw,-11.5cqw) scale(1.18)}
+    0%{opacity:0;z-index:10;transform:translate(-19cqw,30cqw) scale(1.32)}
+    19%{opacity:1;z-index:10;transform:translate(-19cqw,-12cqw) scale(1.23)}
+    75%{z-index:10;transform:translate(-19cqw,-12cqw) scale(1.23)}
     100%{z-index:2}}
   @keyframes pp-pres{
     0%{opacity:0;z-index:10;transform:translate(0,64cqw) scale(1.45)}
@@ -630,6 +690,11 @@ const marque = 'M1 13 7 3l3 5 2-3 5 8';
     .pp-texte{font-size:15px;margin-top:18px}
     .pp-actions{margin-top:22px}
     .pp-scene{margin:0 -8px}
+    .pp-plateau{aspect-ratio:1/1.14}
+    .pp-controle{bottom:6.3cqw;right:16cqw;min-height:0;padding:0;border:0;background:transparent;font-size:1.75cqw}
+    .pp-pdf{left:4cqw;right:auto;bottom:2cqw;font-size:1.7cqw}
+    .pp-phases li{font-size:1.65cqw;letter-spacing:0}
+    .pp-entete{font-size:1.75cqw}
     .pp-offre .btn-cuivre{grid-column:1/-1;justify-content:center}
     .pp-kicker,.pp-promesse{display:block}.pp-promesse{margin:6px 0 0}
     .pp-pied{flex-direction:column-reverse;align-items:flex-start;gap:6px;margin:0 20px;padding:6px 0 12px}

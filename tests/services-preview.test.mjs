@@ -25,10 +25,12 @@ test('Services : trois offres regroupées avant Vos espaces, liens FR/EN et vent
 });
 
 test('Stancer : aucune des trois offres ne peut ouvrir sans validation explicite',()=>{
- const env={PUBLIC_STANCER_READY:'false',PUBLIC_PEAK_PITCH_ENABLED:'true',PUBLIC_PEAK_PITCH_URL:'https://checkout.example.test',PUBLIC_PEAK_EXCHANGE_URL:'https://checkout.example.test',PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_SERVICE_URL:'https://checkout.example.test'};
+ const env={PUBLIC_STANCER_READY:'false',PUBLIC_PEAK_PITCH_ENABLED:'true',PUBLIC_PEAK_PITCH_URL:'https://checkout.example.test',PUBLIC_PEAK_EXCHANGE_ENABLED:'true',PUBLIC_PEAK_EXCHANGE_URL:'https://checkout.example.test',PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_SERVICE_URL:'https://checkout.example.test'};
  assert.equal(stancerServiceURL(env,'pitch'),null);assert.equal(stancerServiceURL(env,'exchange'),null);assert.equal(ebookCheckoutURL(env,'fr'),null);
  assert.equal(stancerServiceURL({...env,PUBLIC_STANCER_READY:'true'},'pitch'),'https://checkout.example.test');
  assert.equal(stancerServiceURL({...env,PUBLIC_STANCER_READY:'true',PUBLIC_PEAK_PITCH_ENABLED:'false'},'pitch'),null);
+ assert.equal(stancerServiceURL({...env,PUBLIC_STANCER_READY:'true'},'exchange'),'https://checkout.example.test');
+ assert.equal(stancerServiceURL({...env,PUBLIC_STANCER_READY:'true',PUBLIC_PEAK_EXCHANGE_ENABLED:'false'},'exchange'),null);
  for(const url of ['http://example.test','https://user:password@example.test','javascript:alert(1)'])assert.equal(stancerServiceURL({...env,PUBLIC_STANCER_READY:'true',PUBLIC_PEAK_EXCHANGE_URL:url},'exchange'),null);
 });
 

@@ -5,7 +5,7 @@ import {load} from 'cheerio';
 import {salesIndexable} from '../src/lib/sales-indexing.mjs';
 const read=p=>readFileSync(p,'utf8');
 const routes=['/peak-pitch/','/en/peak-pitch/','/livre/','/peak-exchange/','/contact/','/en/livre/','/en/peak-exchange/','/en/contact/'];
-const open={PUBLIC_PEAK_PITCH_ENABLED:'true',PUBLIC_PEAK_PITCH_URL:'https://pitch.example.test',PUBLIC_STANCER_READY:'true',PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_SERVICE_URL:'https://books.example.test',PUBLIC_PEAK_EXCHANGE_URL:'https://consult.example.test'};
+const open={PUBLIC_PEAK_PITCH_ENABLED:'true',PUBLIC_PEAK_PITCH_URL:'https://pitch.example.test',PUBLIC_STANCER_READY:'true',PUBLIC_EBOOK_SALES_ENABLED:'true',PUBLIC_EBOOK_SERVICE_URL:'https://books.example.test',PUBLIC_PEAK_EXCHANGE_ENABLED:'true',PUBLIC_PEAK_EXCHANGE_URL:'https://consult.example.test'};
 test('Indexation : chaque vente reste fermée sans activation et URL valide',()=>{
  for(const route of routes){
   for(const env of [{},{...open,PUBLIC_STANCER_READY:'false'}])assert.equal(salesIndexable(route,env),false,route);
@@ -19,6 +19,7 @@ test('Indexation : chaque vente reste fermée sans activation et URL valide',()=
  }
  for(const route of routes.filter(r=>!r.includes('livre')&&!r.includes('peak-pitch'))){
   assert.equal(salesIndexable(route,{...open,PUBLIC_PEAK_EXCHANGE_URL:''}),false);
+  assert.equal(salesIndexable(route,{...open,PUBLIC_PEAK_EXCHANGE_ENABLED:'false'}),false);
   assert.equal(salesIndexable(route,{...open,PUBLIC_PEAK_EXCHANGE_URL:'https://user:pass@unsafe.test'}),false);
   assert.equal(salesIndexable(route,{...open,PUBLIC_EBOOK_SALES_ENABLED:'false'}),true);
  }

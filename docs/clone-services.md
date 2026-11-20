@@ -21,7 +21,7 @@ La lecture est automatique, muette, sans boucle ; la fin conserve la dernière i
 
 `PUBLIC_PEAK_PITCH_HERO=true` est défini uniquement dans le `.env` ignoré du clone. Sa valeur d’exemple est `false`. Le contrôle de décodage de l’UHD a réussi. L’affiche finale a été inspectée ; la lecture réelle et le rendu de page restent à vérifier dans un navigateur disponible.
 
-## Ouverture Stancer, après confirmation seulement
+## Configuration Stancer
 
 Dans le clone, toutes les valeurs de vente restent fermées :
 
@@ -29,14 +29,15 @@ Dans le clone, toutes les valeurs de vente restent fermées :
 PUBLIC_STANCER_READY=false
 PUBLIC_PEAK_PITCH_ENABLED=false
 PUBLIC_PEAK_PITCH_URL=
+PUBLIC_PEAK_EXCHANGE_ENABLED=false
 PUBLIC_PEAK_EXCHANGE_URL=
 PUBLIC_EBOOK_SALES_ENABLED=false
 PUBLIC_EBOOK_SERVICE_URL=
 ```
 
-Un lien serveur renseigné ne suffit pas : les trois offres attendent `PUBLIC_STANCER_READY=true`, et PITCH/livre leur activation spécifique. Aucun lien automatique vers un paiement local n’est présenté en développement. Ce drapeau représente la confirmation du cabinet, pas une vérification automatique du compte Stancer.
+Valentin a confirmé la validation du compte Stancer le 20 novembre 2026. Le build requiert `PUBLIC_STANCER_READY=true`, l’interrupteur propre à chaque offre et son URL de service HTTPS. Pour ouvrir une offre, utiliser le serveur vérifié en mode production et appliquer les réglages correspondants documentés dans `peak-dossier`.
 
-Avant ouverture : confirmation explicite de Valentin, compte Stancer opérationnel, serveur configuré sur Stancer, recette complète du paiement et des droits de livraison/rendez-vous, CGV définitives et fiscalité du livre. Les pages de conditions sont des projets non indexables. Les pages PITCH sont privées tant que l’offre est fermée ; leur inclusion dans le sitemap sera à finaliser au lancement.
+Avant ouverture, vérifier le paiement et la livraison ou l’accès à l’agenda, ainsi que les CGV et la fiscalité du livre. Les interrupteurs contrôlent aussi l’indexation des pages commerciales. Chaque ouverture nécessite l’accord de publication de Valentin.
 
 ## Vérifications
 

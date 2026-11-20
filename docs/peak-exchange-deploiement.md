@@ -18,6 +18,7 @@ Site : worktree `C:/Users/valen/dev/peakfunding-exchange`, branche `codex/peak-e
 
 Serveur : dépôt `C:/Users/valen/dev/peak-dossier`, routes `/api/exchange/`, pages `exchange-paiement.html` et `exchange-retour.html`. Aucune dépendance à un dossier PEAK PITCH ou à une génération Claude.
 
+- `PUBLIC_PEAK_EXCHANGE_ENABLED=true` active le lien et l’indexation de l’offre après la recette.
 - `PUBLIC_PEAK_EXCHANGE_URL` : URL publique HTTPS du serveur. La compilation GitHub Pages lit la variable GitHub du même nom. Vide = page de présentation avec réservations annoncées prochainement, sans lien mort vers le serveur.
 - `PEAK_EXCHANGE_ENABLED=false` tant que la confirmation de Valentin et la recette de production ne sont pas acquises.
 - `PEAK_EXCHANGE_TERMS_URL` : conditions de vente dédiées définitives, publiées en HTTPS.
